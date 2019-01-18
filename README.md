@@ -1,3 +1,15 @@
+## Quick start
+0. Make sure you have node and npm installed
+
+1. Clone this repo
+`git clone https://github.com/TruthTreeASD/frontend.git`
+
+2. cd into the project and install dependencies
+`cd frontend && npm i`
+
+3. Run the project
+`npm start`
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
