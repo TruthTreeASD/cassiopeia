@@ -84,3 +84,6 @@ typings/
 
 # IDE files
 .idea/*
+
+# Visual studio files
+.vs/*
