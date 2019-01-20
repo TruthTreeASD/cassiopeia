@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import '../App.css';
 
 class DisplayComponent extends Component {
     render() {
         return (
             <div>
-                hello
+                <button className='DisplayButtons'>Map</button>
+                <button className='DisplayButtons'>Chart</button>
+                <div className='DisplayArea'></div>
             </div>
         )
     }
