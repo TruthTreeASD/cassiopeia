@@ -80,3 +80,10 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+
+# IDE files
+.idea/*
+
+# Visual studio files
+.vs/*

@@ -1,0 +1,17 @@
+.DisplayButtons {
+    position: relative;
+    left: 40%;
+    padding: 10px;
+    margin: 16px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.DisplayArea {
+    width: 450px;
+    height: 250px;
+    border: 2px solid;
+    display: flex;
+    left: 25%;
+    position: relative;
+}
