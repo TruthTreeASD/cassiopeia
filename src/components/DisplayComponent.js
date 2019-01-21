@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../styles/DisplayComponent.css';
-import Yellow from "./Yellow";
+import Filters from "./Filters";
 
 class DisplayComponent extends Component {
     constructor(props) {
@@ -23,7 +23,7 @@ class DisplayComponent extends Component {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                }}><Yellow /></div>
+                }}><Filters /></div>
             </div>
         )
     }

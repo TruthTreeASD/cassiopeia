@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Home from "./components/Home";
-import Red from "./components/Red";
+import LeftSideBar from "./components/LeftSideBar";
 import './App.css';
 
 class App extends Component {
@@ -9,7 +9,7 @@ class App extends Component {
       return       (
           <div>
               <Home />
-              <Red />
+              <LeftSideBar />
           </div>
       )
   }

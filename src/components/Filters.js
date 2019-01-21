@@ -5,7 +5,7 @@ import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
 
 
-class Yellow extends Component {
+class Filters extends Component {
     constructor(props) {
         super(props);
     }
@@ -57,4 +57,4 @@ class Yellow extends Component {
 
 }
 
-export default Yellow;
+export default Filters;

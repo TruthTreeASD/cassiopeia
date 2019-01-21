@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import './Red.css';
+import '../styles/LeftSideBar.css';
 import testTable from "../../src/testStuff/testTable.json";
 
-class Red extends Component {
+class LeftSideBar extends Component {
 
     render() {
         let allTableKeys = [];
@@ -67,4 +67,4 @@ class Red extends Component {
     }
 }
 
-export default Red;
+export default LeftSideBar;
