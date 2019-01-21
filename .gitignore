@@ -5,8 +5,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-.vs/" >> .gitignore
-
 # Runtime data
 pids
 *.pid
@@ -81,9 +79,11 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-
 # IDE files
 .idea/*
 
 # Visual studio files
 .vs/*
+
+# MacOS
+.DS_Store
