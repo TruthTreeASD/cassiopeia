@@ -30,17 +30,14 @@ class Red extends Component {
 
         return (
             <div>
-                <p id="redTable"></p>
-                <label class="switch">
-                    <input type="checkbox" />
-                    <span class="slider round"></span>
-                    <br />
-                    <br />
-                </label>
-                <br />
-                <br />
                 <div class="sidenav">
-
+                    {allTableKeys.map((answer, i) => {
+                        //console.log("Entered");
+                        // Return the element. Also pass key
+                        return (<button className="dropdown-btn">bat
+                           <i className="fa fa-caret-down"></i>
+                        </button>)
+                    })}
                     <button class="dropdown-btn">{allTableKeys[0]}
                         <i class="fa fa-caret-down"></i>
                     </button>
