@@ -5,24 +5,27 @@ import testTable from "../../src/testStuff/testTable.json";
 class Red extends Component {
 
     render() {
-        var allColors = [];
+        let allTableKeys = [];
 
         for (var i in testTable) {
-            allColors.push(i, testTable[i]);
-            console.log(testTable[i]);
+            allTableKeys.push(i, testTable[i]);
 
         }
+        console.log(allTableKeys);
 
-        function get_table(data) {
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
 
-            let result = ['<table border=1>'];
-            
-                for (let cell of data) {
-                    result.push(`<td>${cell}</td>`);
+        for (i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var dropdownContent = this.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
                 }
-
-            result.push('</table>');
-            return result.join('\n');
+            });
         }
 
         return (
@@ -31,11 +34,37 @@ class Red extends Component {
                 <label class="switch">
                     <input type="checkbox" />
                     <span class="slider round"></span>
+                    <br />
+                    <br />
                 </label>
-                <script type="text/javascript" language="JavaScript">
-                    get_table(allColors);
-                    alert("Hi there, and welcome.")
-                </script>
+                <br />
+                <br />
+                <div class="sidenav">
+
+                    <button class="dropdown-btn">{allTableKeys[0]}
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container">
+                        <a href="#">{allTableKeys[1][0]}
+                            <label class="switch">
+                                <input type="checkbox" />
+                                <span class="slider round"></span>
+                                <br />
+                                <br />
+                            </label>
+                        </a>
+                        <a href="#">Link 2</a>
+                        <a href="#">Link 3</a>
+                    </div>
+                    <button class="dropdown-btn">{allTableKeys[2]}
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container">
+                        <a href="#">Link 1</a>
+                        <a href="#">Link 2</a>
+                        <a href="#">Link 3</a>
+                    </div>
+                </div>
             </div>
         );
     }
