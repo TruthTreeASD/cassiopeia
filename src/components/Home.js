@@ -8,8 +8,7 @@ class Home extends Component {
     return (
       <div>
         <Header />
-        <h1>ASD 6510</h1>
-        <h2>Hello world!</h2>
+
         <FilterBy />
 
         <DisplayComponent />
