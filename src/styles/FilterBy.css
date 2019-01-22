@@ -1,0 +1,14 @@
+.FilterBy{
+	text-align: center;
+    width: 30%;
+	margin: auto;
+	border: 1px solid #eee;
+	box-shadow: 0 2px 3px #ccc;
+	padding: 16px;
+	font-size: 15px ;
+	
+}
+
+.RadioButtons{
+	font-size: 20px ;
+}
