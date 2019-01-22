@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../styles/LeftSideBar.css';
-import testTable from "../../src/testStuff/testTable.json";
+import testTable from "../../src/testStuff/cities.json";
 
 class LeftSideBar extends Component {
 
