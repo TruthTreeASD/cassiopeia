@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/TruthTreeASD/frontend.svg?branch=master)](https://travis-ci.com/TruthTreeASD/frontend)
+
 ## Quick start
 0. Make sure you have node and npm installed
 
