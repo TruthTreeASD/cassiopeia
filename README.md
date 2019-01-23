@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.com/TruthTreeASD/frontend.svg?branch=master)](https://travis-ci.com/TruthTreeASD/frontend)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
 
 ## Quick start
 0. Make sure you have node and npm installed
