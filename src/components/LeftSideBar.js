@@ -6,61 +6,69 @@ import testTable from '../../src/testStuff/cities.json';
 
 class LeftSideBar extends Component {
     render() {
-        let allTableKeys = [];
 
-        for (var i in testTable) {
+        let allTableKeys = [];
+        
+        for (let i in testTable) {
             allTableKeys.push(i, testTable[i]);
+        }
+        for (let i = 0; i < allTableKeys.length; i++) {
+            if (i % 2 === 1) {
+                let elements = []
+                for (let j in allTableKeys[i]) {
+                    elements.push(j)//, testTable[i][j]
+                }
+                allTableKeys[i] = elements;
+            }
         }
         console.log(allTableKeys);
 
-        var dropdown = document.getElementsByClassName('dropdown-btn');
-        var i;
+        
 
-        for (i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener('click', function () {
-                this.classNameList.toggle('active');
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.style.display === 'block') {
-                    dropdownContent.style.display = 'none';
+        let acc = document.getElementsByClassName("accordion");
+        let i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                let panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
                 } else {
-                    dropdownContent.style.display = 'block';
+                    panel.style.display = "block";
                 }
             });
         }
 
         return (
             <div>
-                <div className="sidenav">
+                
                     {allTableKeys.map((answer, i) => {
                         //console.log("Entered");
                         // Return the element. Also pass key
                         if (i % 2 == 0) {
                             return (
                                 <div>
-                                    <button className="dropdown-btn">
-                                        {answer}
-                                        <i className="fa fa-caret-down" />
-                                    </button>
-                                    <div className="dropdown-container">
+                                    <button class="accordion">{answer}</button>
+                                    <div class="panel">
                                         
-                                        <a href="#">
-                                            {allTableKeys[i + 1].toStrng}
-                                            <label className="switch">
-                                                <input type="checkbox" />
-                                                <span className="slider round" />
-                                            </label>
-                                        </a>
-                                        <a href="#">Link 2</a>
-                                        <a href="#">Link 3</a>
+                                            {allTableKeys[i+1].map((elem, i) => {
+                                                return (<div>
+                                                    <p>{elem}</p>
+                                                    <label className="switch">
+                                                        <input type="checkbox" />
+                                                        <span className="slider round" />
+                                                    </label>
+                                                </div>);
+                                            })}
+                                        
                                     </div>
                                 </div>
                             );
                         }
                     })}
 
-                   
-    
-        </div>
+                
 
             </div>
         );
