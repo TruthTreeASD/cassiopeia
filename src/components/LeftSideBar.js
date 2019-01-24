@@ -30,6 +30,7 @@ class LeftSideBar extends Component {
 
         for (i = 0; i < acc.length; i++) {
             acc[i].addEventListener("click", function () {
+                console.log("Clicked!!")
                 this.classList.toggle("active");
                 let panel = this.nextElementSibling;
                 if (panel.style.display === "block") {
@@ -54,11 +55,11 @@ class LeftSideBar extends Component {
                                         
                                             {allTableKeys[i+1].map((elem, i) => {
                                                 return (<div>
-                                                    <p>{elem}</p>
+                                                    <p>{elem}
                                                     <label className="switch">
                                                         <input type="checkbox" />
                                                         <span className="slider round" />
-                                                    </label>
+                                                        </label></p>
                                                 </div>);
                                             })}
                                         
