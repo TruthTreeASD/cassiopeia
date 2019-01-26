@@ -5,6 +5,37 @@ import testTable from '../../src/testStuff/cities.json';
 
 
 class LeftSideBar extends Component {
+    constructor(props) {
+        super(props);
+        this.expandCollection = this.expandCollection.bind(this);
+    }
+
+    expandCollection(answer) {
+        console.log("Clicked!!", answer)
+
+        /*this.classList.toggle("active");
+        let panel = answer.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+       /* let acc = document.getElementsByClassName("accordion");
+        let i;
+
+        for (i = 0; i < acc.length; i++) {
+            
+                console.log("Clicked!!")
+                this.classList.toggle("active");
+                let panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+ 
+        }*/
+    }
     render() {
 
         let allTableKeys = [];
@@ -25,21 +56,7 @@ class LeftSideBar extends Component {
 
         
 
-        let acc = document.getElementsByClassName("accordion");
-        let i;
 
-        for (i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function () {
-                console.log("Clicked!!")
-                this.classList.toggle("active");
-                let panel = this.nextElementSibling;
-                if (panel.style.display === "block") {
-                    panel.style.display = "none";
-                } else {
-                    panel.style.display = "block";
-                }
-            });
-        }
 
         return (
             <div>
@@ -50,7 +67,7 @@ class LeftSideBar extends Component {
                         if (i % 2 == 0) {
                             return (
                                 <div>
-                                    <button class="accordion">{answer}</button>
+                                    <button class="accordionon" onClick={() => this.expandCollection(answer)}>{answer}</button>
                                     <div class="panel">
                                         
                                             {allTableKeys[i+1].map((elem, i) => {
