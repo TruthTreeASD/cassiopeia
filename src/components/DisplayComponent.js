@@ -1,13 +1,4 @@
 import React, { Component } from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from 'recharts';
 import '../styles/DisplayComponent.css';
 import Filters from './Filters';
 import CloroplethMap from './CloroplethMap';
