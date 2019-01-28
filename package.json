@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.2.1",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.8.0",
     "husky": "^1.3.1",
     "lint-staged": "^8.1.0",
     "node-sass": "^4.11.0",
@@ -14,8 +16,10 @@
     "react-popper": "^1.3.2",
     "react-redux": "^6.0.0",
     "react-scripts": "2.1.3",
+    "react-test-renderer": "^16.7.0",
     "react-transition-group": "^2.5.3",
     "reactstrap": "^7.1.0",
+    "recharts": "^1.4.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
   },
@@ -44,5 +48,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "datamaps": "^0.5.9"
+  }
 }

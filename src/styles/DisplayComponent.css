@@ -8,8 +8,8 @@
 }
 
 .DisplayArea {
-  width: 450px;
-  height: 250px;
+  width: 600px;
+  height: 300px;
   border: 2px solid;
   display: flex;
   left: 25%;
