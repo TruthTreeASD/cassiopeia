@@ -37,7 +37,14 @@ class FilterBy extends Component {
             onClick={this.setDimension}
             value="County"
           />{' '}
-          County
+          County &nbsp;
+          <input
+            type="radio"
+            checked={dimension == 'State'}
+            onClick={this.setDimension}
+            value="State"
+          />{' '}
+          State
         </div>
         {'Selected dimension: '} {dimension}
       </div>
