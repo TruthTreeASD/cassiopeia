@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import '../styles/DisplayComponent.css';
 import Filters from './Filters';
+import CloroplethMap from './CloroplethMap';
+import CustomBarChart from './CustomBarChart';
 
 class DisplayComponent extends Component {
   constructor(props) {
@@ -14,6 +16,12 @@ class DisplayComponent extends Component {
   }
 
   render() {
+    var display;
+    if (this.state.displayComponent === 'Chart') {
+      display = <CustomBarChart />;
+    } else {
+      display = <CloroplethMap data={[['CA', 70]]} />;
+    }
     return (
       <div>
         <button
@@ -30,7 +38,7 @@ class DisplayComponent extends Component {
           {' '}
           Chart{' '}
         </button>
-        <div className="DisplayArea">{this.state.displayComponent}</div>
+        <div className="DisplayArea">{display}</div>
         <div
           style={{
             display: 'flex',
