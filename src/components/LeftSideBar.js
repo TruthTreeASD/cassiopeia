@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/LeftSideBar.css';
-
+import axios from 'axios';
 import citiesData from '../../src/testStuff/cities.json';
 import statesData from '../../src/testStuff/states.json';
 import countiesData from '../../src/testStuff/counties.json';
@@ -31,6 +31,17 @@ class LeftSideBar extends Component {
     } else if (nextProps.dimension === 'City') {
       this.setState({ sidebarData: citiesData });
     } else this.setState({ sidebarData: countiesData });
+  }
+
+  componentWillMount() {
+    // Need to make api call here - getting CORS error. Will fix later
+    // axios.get('https://truthtree.herokuapp.com/api/collections')
+    //     .then(function (response) {
+    //         console.log(response);
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error);
+    //     });
   }
 
   // Toggle state of each collection on click
