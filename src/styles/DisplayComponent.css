@@ -1,4 +1,4 @@
-.DisplayButtons {
+.displayButtons {
   position: relative;
   left: 40%;
   padding: 10px;
@@ -7,11 +7,16 @@
   cursor: pointer;
 }
 
-.DisplayArea {
+.displayArea {
   width: 600px;
   height: 300px;
   border: 2px solid;
   display: flex;
   left: 25%;
   position: relative;
+}
+
+.display {
+  grid-column-start: 2;
+  grid-column-end: span 2;
 }

@@ -19,10 +19,10 @@ class DisplayComponent extends Component {
 
   render() {
     var display;
-    var mapBtn = classNames('DisplayButtons', {
+    var mapBtn = classNames('displayButtons', {
       'btn-primary': this.state.displayComponent === 'Map'
     });
-    var ChartBtn = classNames('DisplayButtons', {
+    var ChartBtn = classNames('displayButtons', {
       'btn-primary': this.state.displayComponent === 'Chart'
     });
     if (this.state.displayComponent === 'Chart') {
@@ -31,7 +31,7 @@ class DisplayComponent extends Component {
       display = <CloroplethMap data={[['CA', 70]]} />;
     }
     return (
-      <div>
+      <div class="display">
         <button className={mapBtn} onClick={() => this.handleClick('Map')}>
           {' '}
           Map{' '}
@@ -40,7 +40,7 @@ class DisplayComponent extends Component {
           {' '}
           Chart{' '}
         </button>
-        <div className="DisplayArea">{display}</div>
+        <div className="displayArea">{display}</div>
         <div
           style={{
             display: 'flex',

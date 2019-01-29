@@ -91,6 +91,9 @@ input:checked + .slider:before {
   overflow: hidden;
 }
 
-.rightSide {
-  right: -80px;
+/*.rightSide {*/
+/*right: -80px;*/
+/*}*/
+
+.mainLeftSideBar {
 }

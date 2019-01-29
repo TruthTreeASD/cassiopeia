@@ -52,7 +52,7 @@ class LeftSideBar extends Component {
 
   render() {
     return (
-      <div>
+      <div className="mainLeftSideBar">
         {Object.keys(this.state.sidebarData).map((collection, i) => {
           return (
             <div>

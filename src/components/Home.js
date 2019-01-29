@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../styles/Home.css';
 import DisplayComponent from './DisplayComponent';
 import Header from './Header';
 import FilterBy from './FilterBy';
@@ -10,10 +11,11 @@ class Home extends Component {
     return (
       <div>
         <Header />
-        <LeftSideBar />
-        <FilterBy />
-
-        <DisplayComponent />
+        <div className="main">
+          <LeftSideBar />
+          <FilterBy />
+          <DisplayComponent />
+        </div>
       </div>
     );
   }
