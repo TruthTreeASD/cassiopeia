@@ -1,55 +1,58 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import '../styles/FilterBy.css';
-import City from '../testStuff/cities.json';
-import Country from '../testStuff/counties.json';
 
 class FilterBy extends Component {
   constructor(params) {
     super(params);
-    //initial dimension state set from props
-    this.state = {
-      dimension: this.props.dimension
-    };
     this.setDimension = this.setDimension.bind(this);
   }
 
   setDimension(e) {
-    this.setState({
-      dimension: e.target.value
+    this.props.dispatch({
+      type: 'CHANGE_DIMENSION',
+      value: e.target.value
     });
   }
+
   render() {
-    const { dimension } = this.state;
     return (
       <div className="FilterBy">
         Select the dimension to be filtered by:
         <div className="RadioButtons">
           <input
             type="radio"
-            checked={dimension == 'City'}
+            checked={this.props.dimension === 'City'}
             onClick={this.setDimension}
             value="City"
           />{' '}
           City &nbsp;
           <input
             type="radio"
-            checked={dimension == 'County'}
+            checked={this.props.dimension === 'County'}
             onClick={this.setDimension}
             value="County"
           />{' '}
           County &nbsp;
           <input
             type="radio"
-            checked={dimension == 'State'}
+            checked={this.props.dimension === 'State'}
             onClick={this.setDimension}
             value="State"
           />{' '}
           State
         </div>
-        {'Selected dimension: '} {dimension}
       </div>
     );
   }
 }
 
-export default FilterBy;
+const mapState = state => ({
+  dimension: state.filterByReducer.dimension
+});
+
+const mapDispatch = dispatch => ({ dispatch });
+export default connect(
+  mapState,
+  mapDispatch
+)(FilterBy);

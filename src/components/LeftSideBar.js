@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
 import '../styles/LeftSideBar.css';
 
-import sidebarData from '../../src/testStuff/cities.json';
+import citiesData from '../../src/testStuff/cities.json';
+import statesData from '../../src/testStuff/states.json';
+import countiesData from '../../src/testStuff/counties.json';
+import { connect } from 'react-redux';
 
 class LeftSideBar extends Component {
   constructor(props) {
     super(props);
     //   /api/collections?level=state
-    this.state = {};
+    this.state = { sidebarData: statesData };
     // Set initial state of each collection to false
-    Object.keys(sidebarData).map(key => (this.state[key] = false));
+    Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.dimension === 'State') {
+      this.setState({ sidebarData: statesData });
+    } else if (nextProps.dimension === 'City') {
+      this.setState({ sidebarData: citiesData });
+    } else this.setState({ sidebarData: countiesData });
   }
 
   // Toggle state of each collection on click
@@ -21,7 +32,7 @@ class LeftSideBar extends Component {
   render() {
     return (
       <div>
-        {Object.keys(sidebarData).map((collection, i) => {
+        {Object.keys(this.state.sidebarData).map((collection, i) => {
           return (
             <div>
               <div
@@ -55,4 +66,8 @@ class LeftSideBar extends Component {
   }
 }
 
-export default LeftSideBar;
+const mapState = state => ({
+  dimension: state.filterByReducer.dimension
+});
+
+export default connect(mapState)(LeftSideBar);
