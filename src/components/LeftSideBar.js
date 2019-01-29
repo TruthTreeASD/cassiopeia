@@ -14,6 +14,14 @@ class LeftSideBar extends Component {
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
   }
+  /*
+    componentDidMount() {
+        fetch('https://truthtree.herokuapp.com/api/states')
+            .then(res => res.json())
+            .then(json => {
+                this.setState{sidebarData:statesData}
+            })
+    }*/
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.dimension === 'State') {
