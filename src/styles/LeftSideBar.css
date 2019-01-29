@@ -21,7 +21,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #a18f8f;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -61,35 +61,36 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-
 .accordion {
-    background-color: #eee;
-    color: #444;
-    cursor: pointer;
-    padding: 18px;
-    width: 15%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 20px;
-    transition: 0.4s;
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 15%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 20px;
+  transition: 0.4s;
 }
 
-    .active, .accordion:hover {
-        background-color: #ccc;
-    }
+.active,
+.accordion:hover {
+  background-color: #ccc;
+}
 
 .panel {
-    padding: 0 60px;
-    cursor: pointer;
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
-    display: block;
-    width: 10%;
-    background-color: lightsteelblue;
-    overflow: hidden;
+  padding: 0 60px;
+  font-size: 15px;
+  cursor: pointer;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  display: block;
+  width: 10%;
+  background-color: lightsteelblue;
+  overflow: hidden;
 }
 
 .rightSide {
-    right: -80px;
+  right: -80px;
 }

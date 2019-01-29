@@ -41,13 +41,13 @@ class LeftSideBar extends Component {
               >
                 {collection}
               </div>
-              <label
+              <div
                 style={{ display: this.state[collection] ? 'block' : 'none' }}
               >
                 {Object.keys(this.state.sidebarData[collection]).map(
                   (attr, i) => {
                     return (
-                      <div className="panel">
+                      <label className="panel">
                         <p>
                           {attr}
                           <label className="switch rightSide">
@@ -55,11 +55,11 @@ class LeftSideBar extends Component {
                             <span className="slider round" />
                           </label>
                         </p>
-                      </div>
+                      </label>
                     );
                   }
                 )}
-              </label>
+              </div>
             </div>
           );
         })}
