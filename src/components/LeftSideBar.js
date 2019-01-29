@@ -44,19 +44,21 @@ class LeftSideBar extends Component {
               <div
                 style={{ display: this.state[collection] ? 'block' : 'none' }}
               >
-                {Object.keys(sidebarData[collection]).map((attr, i) => {
-                  return (
-                    <label className="panel">
-                      <p>
-                        {attr}
-                        <label className="switch rightSide">
-                          <input type="checkbox" />
-                          <span className="slider round" />
-                        </label>
-                      </p>
-                    </label>
-                  );
-                })}
+                {Object.keys(this.state.sidebarData[collection]).map(
+                  (attr, i) => {
+                    return (
+                      <label className="panel">
+                        <p>
+                          {attr}
+                          <label className="switch rightSide">
+                            <input type="checkbox" />
+                            <span className="slider round" />
+                          </label>
+                        </p>
+                      </label>
+                    );
+                  }
+                )}
               </div>
             </div>
           );
