@@ -1,54 +1,75 @@
 import React, { Component } from 'react';
 import '../styles/LeftSideBar.css';
 
-import sidebarData from '../../src/testStuff/cities.json';
-
+import citiesData from '../../src/testStuff/cities.json';
+import statesData from '../../src/testStuff/states.json';
+import countiesData from '../../src/testStuff/counties.json';
+import { connect } from 'react-redux';
 
 class LeftSideBar extends Component {
-    constructor(props) {
-        super(props);
-        //   /api/collections?level=state
-        this.state = {};
-        // Set initial state of each collection to false
-        Object.keys(sidebarData).map(key => (this.state[key] = false));
-    }
+  constructor(props) {
+    super(props);
+    //   /api/collections?level=state
+    this.state = { sidebarData: statesData };
+    // Set initial state of each collection to false
+    Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
+  }
 
-    // Toggle state of each collection on click
-    handleClick = collection => {
-        console.log("Clicked!!", collection, this.state[collection]);
-        this.setState({ [collection]: !this.state[collection] });
-    };
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.dimension === 'State') {
+      this.setState({ sidebarData: statesData });
+    } else if (nextProps.dimension === 'City') {
+      this.setState({ sidebarData: citiesData });
+    } else this.setState({ sidebarData: countiesData });
+  }
 
-    render() {
+  // Toggle state of each collection on click
+  handleClick = collection => {
+    console.log('Clicked!!', collection, this.state[collection]);
+    this.setState({ [collection]: !this.state[collection] });
+  };
 
-        return (
+  render() {
+    return (
+      <div>
+        {Object.keys(this.state.sidebarData).map((collection, i) => {
+          return (
             <div>
-                {Object.keys(sidebarData).map((collection, i) => {
+              <div
+                className="accordion"
+                onClick={() => this.handleClick(collection)}
+              >
+                {collection}
+              </div>
+              <label
+                style={{ display: this.state[collection] ? 'block' : 'none' }}
+              >
+                {Object.keys(this.state.sidebarData[collection]).map(
+                  (attr, i) => {
                     return (
-                        <div>
-                            <div className="accordion"
-                                onClick={() => this.handleClick(collection)}>{collection}</div>
-                            <label style={{ display: this.state[collection] ? "block" : "none" }}>
-                                {Object.keys(sidebarData[collection]).map((attr, i) => {
-                                    return (
-                                        <div className="panel">
-                                            <p>{attr}
-                                                <label className="switch rightSide">
-                                                    <input type="checkbox" />
-                                                    <span className="slider round" />
-                                                </label>
-                                            </p>
-                                        </div>
-                                    );
-                                })}
-                            </label>
-                        </div>
+                      <div className="panel">
+                        <p>
+                          {attr}
+                          <label className="switch rightSide">
+                            <input type="checkbox" />
+                            <span className="slider round" />
+                          </label>
+                        </p>
+                      </div>
                     );
-                })}
+                  }
+                )}
+              </label>
             </div>
-        );
-    }
-    
+          );
+        })}
+      </div>
+    );
+  }
 }
 
-export default LeftSideBar;
+const mapState = state => ({
+  dimension: state.filterByReducer.dimension
+});
+
+export default connect(mapState)(LeftSideBar);

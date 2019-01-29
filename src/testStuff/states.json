@@ -1,10 +1,10 @@
 {
-  "county_colors": {
+  "states_colors": {
     "red": [3, 4, 5],
     "blue": [30, 40, 50],
     "orange": [-3, -4, -5]
   },
-  "county_animals": {
+  "states_animals": {
     "dog": [1, 2, 3],
     "cat": [10, 20, 30],
     "fish": [-1, -2, -3]
