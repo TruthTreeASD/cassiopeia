@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import DisplayComponent from './DisplayComponent';
 import Header from './Header';
 import FilterBy from './FilterBy';
+import { connect } from 'react-redux';
 
 class Home extends Component {
   render() {
@@ -16,5 +17,8 @@ class Home extends Component {
     );
   }
 }
+const mapState = state => ({
+  dimension: state.filterByReducer.dimension
+});
 
-export default Home;
+export default connect(mapState)(Home);

@@ -9,6 +9,9 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
+import FilterByReducer from './reducers/FilterByReducer';
+import RootReducer from './reducers/RootReducer';
+
 ReactDOM.render(
   <Provider store={configureStore()}>
     <App />

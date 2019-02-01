@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../styles/Header.css';
 import logo from '../NEU-logo.png';
+import { connect } from 'react-redux';
 
 const divStyle = {
   width: '50px',
@@ -19,4 +20,8 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapState = state => ({
+  dimension: state.filterByReducer.dimension
+});
+
+export default connect(mapState)(Header);

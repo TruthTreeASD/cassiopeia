@@ -6,6 +6,8 @@ import statesData from '../../src/testStuff/states.json';
 import countiesData from '../../src/testStuff/counties.json';
 import { connect } from 'react-redux';
 
+import { combineReducers, createStore } from 'redux';
+
 class LeftSideBar extends Component {
   constructor(props) {
     super(props);
@@ -14,6 +16,14 @@ class LeftSideBar extends Component {
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
   }
+  /*
+    componentDidMount() {
+        fetch('https://truthtree.herokuapp.com/api/states')
+            .then(res => res.json())
+            .then(json => {
+                this.setState{sidebarData:statesData}
+            })
+    }*/
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.dimension === 'State') {

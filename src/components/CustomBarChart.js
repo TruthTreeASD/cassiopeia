@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { connect } from 'react-redux';
 
 class CustomBarChart extends Component {
   render() {
@@ -27,4 +28,8 @@ class CustomBarChart extends Component {
   }
 }
 
-export default CustomBarChart;
+const mapState = state => ({
+  dimension: state.filterByReducer.dimension
+});
+
+export default connect(mapState)(CustomBarChart);

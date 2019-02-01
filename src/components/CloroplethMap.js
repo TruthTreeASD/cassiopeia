@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Datamap from 'datamaps/dist/datamaps.world.min.js';
 import d3 from 'd3';
 import UsaJson from '../maps/Usa.topo.json';
+import { connect } from 'react-redux';
 
 class ChoroplethMap extends Component {
   componentDidMount() {
@@ -85,4 +86,8 @@ class ChoroplethMap extends Component {
   }
 }
 
-export default ChoroplethMap;
+const mapState = state => ({
+  dimension: state.filterByReducer.dimension
+});
+
+export default connect(mapState)(ChoroplethMap);
