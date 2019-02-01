@@ -6,6 +6,8 @@ import statesData from '../../src/testStuff/states.json';
 import countiesData from '../../src/testStuff/counties.json';
 import { connect } from 'react-redux';
 
+import { combineReducers, createStore } from 'redux';
+
 class LeftSideBar extends Component {
   constructor(props) {
     super(props);
