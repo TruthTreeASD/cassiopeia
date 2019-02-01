@@ -3,6 +3,7 @@ import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
+import { connect } from 'react-redux';
 
 class Filters extends Component {
   constructor(props) {
@@ -71,4 +72,8 @@ class Filters extends Component {
   }
 }
 
-export default Filters;
+const mapState = state => ({
+  dimension: state.filterByReducer.dimension
+});
+
+export default connect(mapState)(Filters);

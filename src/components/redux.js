@@ -30,10 +30,7 @@ console.log(store.getSate());
 class redux extends Component {
   constructor(props) {
     super(props);
-    //   /api/collections?level=state
-    this.state = { sidebarData: statesData };
-    // Set initial state of each collection to false
-    Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
+    // this.state = { sidebarData: statesData };
   }
   render() {
     return <div />;

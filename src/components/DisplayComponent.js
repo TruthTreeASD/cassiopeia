@@ -3,6 +3,7 @@ import '../styles/DisplayComponent.css';
 import Filters from './Filters';
 import CloroplethMap from './CloroplethMap';
 import CustomBarChart from './CustomBarChart';
+import { connect } from 'react-redux';
 
 class DisplayComponent extends Component {
   constructor(props) {
@@ -53,4 +54,8 @@ class DisplayComponent extends Component {
   }
 }
 
-export default DisplayComponent;
+const mapState = state => ({
+  dimension: state.filterByReducer.dimension
+});
+
+export default connect(mapState)(DisplayComponent);
