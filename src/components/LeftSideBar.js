@@ -34,14 +34,15 @@ class LeftSideBar extends Component {
   }
 
   componentWillMount() {
-    // Need to make api call here - getting CORS error. Will fix later
-    // axios.get('https://truthtree.herokuapp.com/api/collections')
-    //     .then(function (response) {
-    //         console.log(response);
-    //     })
-    //     .catch(function (error) {
-    //         console.log(error);
-    //     });
+    axios
+      .get('/api/collections')
+      .then(function(response) {
+        //data contains the variables
+        console.log(response.data);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   // Toggle state of each collection on click
