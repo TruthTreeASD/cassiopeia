@@ -8,6 +8,7 @@
     }
   ],
   "env": {
+    "ALLOWED_HOSTS" : [".herokuapp.com"]
   },
   "formation": {
   },
