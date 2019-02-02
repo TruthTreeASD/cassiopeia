@@ -90,3 +90,7 @@ input:checked + .slider:before {
   background-color: lightsteelblue;
   overflow: hidden;
 }
+
+.rightSide {
+  right: -80px;
+}

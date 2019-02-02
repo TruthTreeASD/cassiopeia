@@ -33,7 +33,7 @@ class LeftSideBar extends Component {
     } else this.setState({ sidebarData: countiesData });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     axios
       .get('/api/collections')
       .then(function(response) {
@@ -53,7 +53,7 @@ class LeftSideBar extends Component {
 
   render() {
     return (
-      <div className="mainLeftSideBar">
+      <div>
         {Object.keys(this.state.sidebarData).map((collection, i) => {
           return (
             <div>
