@@ -8,7 +8,9 @@
     }
   ],
   "env": {
-    "DANGEROUSLY_DISABLE_HOST_CHECK": true
+    "DANGEROUSLY_DISABLE_HOST_CHECK": {
+      "value": "true"
+    }
   },
   "formation": {
   },
