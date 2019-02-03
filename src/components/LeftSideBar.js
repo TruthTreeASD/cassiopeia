@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/LeftSideBar.css';
-
+import axios from 'axios';
 import citiesData from '../../src/testStuff/cities.json';
 import statesData from '../../src/testStuff/states.json';
 import countiesData from '../../src/testStuff/counties.json';
@@ -33,6 +33,18 @@ class LeftSideBar extends Component {
     } else this.setState({ sidebarData: countiesData });
   }
 
+  componentDidMount() {
+    axios
+      .get('/api/collections')
+      .then(function(response) {
+        //data contains the variables
+        console.log(response.data);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
   // Toggle state of each collection on click
   handleClick = collection => {
     console.log('Clicked!!', collection, this.state[collection]);
@@ -41,7 +53,7 @@ class LeftSideBar extends Component {
 
   render() {
     return (
-      <div>
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
         {Object.keys(this.state.sidebarData).map((collection, i) => {
           return (
             <div>
@@ -73,7 +85,7 @@ class LeftSideBar extends Component {
             </div>
           );
         })}
-      </div>
+      </nav>
     );
   }
 }
