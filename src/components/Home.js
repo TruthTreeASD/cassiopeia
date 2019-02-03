@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Container, Row } from 'reactstrap';
+
 import '../styles/Home.css';
 import DisplayComponent from './DisplayComponent';
 import Header from './Header';
@@ -9,13 +11,13 @@ import LeftSideBar from './LeftSideBar';
 class Home extends Component {
   render() {
     return (
-      <div>
-        <Header />
-        <div className="main">
+      <Row className="flex-grow-1 flex-shrink-1">
+        <LeftSideBar />
+        <div className="col-12 col-md-10">
           <FilterBy />
           <DisplayComponent />
         </div>
-      </div>
+      </Row>
     );
   }
 }
