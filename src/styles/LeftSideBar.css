@@ -69,7 +69,7 @@ input:checked + .slider:before {
   width: 100%;
   border: none;
   text-align: left;
-  outline: thin;
+  outline: 2px;
   outline-color: black;
   font-size: 20px;
   transition: 0.4s;
@@ -90,8 +90,4 @@ input:checked + .slider:before {
   width: 80%;
   background-color: lightsteelblue;
   overflow: hidden;
-}
-
-.rightSide {
-  right: -80px;
 }
