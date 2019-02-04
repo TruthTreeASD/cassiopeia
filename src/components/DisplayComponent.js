@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/DisplayComponent.css';
-import Filters from './Filters';
+import Filters from './AttributeRange';
 import CloroplethMap from './CloroplethMap';
 import CustomBarChart from './CustomBarChart';
 
