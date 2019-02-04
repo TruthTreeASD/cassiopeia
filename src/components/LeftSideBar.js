@@ -19,24 +19,51 @@ class LeftSideBar extends Component {
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
   }
-  /*
-    componentDidMount() {
-        fetch('https://truthtree.herokuapp.com/api/collections')
-            .then(res => res.json()).then(json => {
-                this.setState({
-                    sidebarData: json,
-                    isLoaded: true
-                })
-            });
-
-    }*/
-
+  // each of these will need a diff api
   componentWillReceiveProps(nextProps) {
     if (nextProps.dimension === 'State') {
-      this.setState({ sidebarData: statesData });
+      axios
+        .get('/api/collections')
+        .then(response => {
+          //data contains the variables
+          console.log(response.data);
+          this.setState({
+            sidebarData: response.data,
+            isLoaded: true
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
     } else if (nextProps.dimension === 'City') {
-      this.setState({ sidebarData: citiesData });
-    } else this.setState({ sidebarData: countiesData });
+      axios
+        .get('/api/collections')
+        .then(response => {
+          //data contains the variables
+          console.log(response.data);
+          this.setState({
+            sidebarData: response.data,
+            isLoaded: true
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      axios
+        .get('/api/collections')
+        .then(response => {
+          //data contains the variables
+          console.log(response.data);
+          this.setState({
+            sidebarData: response.data,
+            isLoaded: true
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   }
 
   componentDidMount() {
