@@ -12,18 +12,24 @@ class LeftSideBar extends Component {
   constructor(props) {
     super(props);
     //   /api/collections?level=state
-    this.state = { sidebarData: statesData };
+    this.state = {
+      sidebarData: statesData,
+      isLoaded: false
+    };
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
   }
   /*
-        componentDidMount() {
-            fetch('https://truthtree.herokuapp.com/api/states')
-                .then(res => res.json())
-                .then(json => {
-                    this.setState{sidebarData:statesData}
+    componentDidMount() {
+        fetch('https://truthtree.herokuapp.com/api/collections')
+            .then(res => res.json()).then(json => {
+                this.setState({
+                    sidebarData: json,
+                    isLoaded: true
                 })
-        }*/
+            });
+
+    }*/
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.dimension === 'State') {
@@ -39,6 +45,10 @@ class LeftSideBar extends Component {
       .then(function(response) {
         //data contains the variables
         console.log(response.data);
+        this.setState({
+          sidebarData: response.data,
+          isLoaded: true
+        });
       })
       .catch(function(error) {
         console.log(error);
@@ -52,41 +62,46 @@ class LeftSideBar extends Component {
   };
 
   render() {
-    return (
-      <nav className="col-md-2 d-none d-md-block bg-light sidebar">
-        {Object.keys(this.state.sidebarData).map((collection, i) => {
-          return (
-            <div>
-              <div
-                className="accordion"
-                onClick={() => this.handleClick(collection)}
-              >
-                {collection}
+    var { isLoaded, sidebarData } = this.state;
+    if (!isLoaded) {
+      return <div>Loading...</div>;
+    } else {
+      return (
+        <nav className="col-md-2 d-none d-md-block bg-light sidebar">
+          {Object.keys(this.state.sidebarData).map((collection, i) => {
+            return (
+              <div>
+                <div
+                  className="accordion"
+                  onClick={() => this.handleClick(collection)}
+                >
+                  {collection}
+                </div>
+                <div
+                  style={{ display: this.state[collection] ? 'block' : 'none' }}
+                >
+                  {Object.keys(this.state.sidebarData[collection]).map(
+                    (attr, i) => {
+                      return (
+                        <label className="panel float-right">
+                          <p>
+                            {attr}
+                            <label className="switch float-right">
+                              <input type="checkbox" />
+                              <span className="slider round" />
+                            </label>
+                          </p>
+                        </label>
+                      );
+                    }
+                  )}
+                </div>
               </div>
-              <div
-                style={{ display: this.state[collection] ? 'block' : 'none' }}
-              >
-                {Object.keys(this.state.sidebarData[collection]).map(
-                  (attr, i) => {
-                    return (
-                      <label className="panel float-right">
-                        <p>
-                          {attr}
-                          <label className="switch float-right">
-                            <input type="checkbox" />
-                            <span className="slider round" />
-                          </label>
-                        </p>
-                      </label>
-                    );
-                  }
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </nav>
-    );
+            );
+          })}
+        </nav>
+      );
+    }
   }
 }
 
