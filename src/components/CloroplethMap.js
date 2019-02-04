@@ -30,7 +30,12 @@ class ChoroplethMap extends Component {
 
     let map = new Datamap({
       element: document.getElementById('cloropleth_map'),
-      scope: this.props.dimension === 'State' ? 'states' : 'counties',
+      scope:
+        this.props.dimension === 'State'
+          ? 'states'
+          : this.props.dimension === 'County'
+          ? 'counties'
+          : 'land',
       geographyConfig: {
         popupOnHover: true,
         highlightOnHover: true,
