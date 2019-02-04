@@ -42,7 +42,7 @@ class LeftSideBar extends Component {
   componentDidMount() {
     axios
       .get('/api/collections')
-      .then(function(response) {
+      .then(response => {
         //data contains the variables
         console.log(response.data);
         this.setState({
@@ -50,7 +50,7 @@ class LeftSideBar extends Component {
           isLoaded: true
         });
       })
-      .catch(function(error) {
+      .catch(error => {
         console.log(error);
       });
   }
@@ -75,26 +75,29 @@ class LeftSideBar extends Component {
                   className="accordion"
                   onClick={() => this.handleClick(collection)}
                 >
-                  {collection}
+                  {this.state.sidebarData[collection].name}
                 </div>
                 <div
                   style={{ display: this.state[collection] ? 'block' : 'none' }}
                 >
-                  {Object.keys(this.state.sidebarData[collection]).map(
-                    (attr, i) => {
-                      return (
-                        <label className="panel float-right">
-                          <p>
-                            {attr}
-                            <label className="switch float-right">
-                              <input type="checkbox" />
-                              <span className="slider round" />
-                            </label>
-                          </p>
-                        </label>
-                      );
-                    }
-                  )}
+                  {Object.keys(
+                    this.state.sidebarData[collection].properties
+                  ).map((attr, i) => {
+                    return (
+                      <label className="panel float-right">
+                        <p>
+                          {
+                            this.state.sidebarData[collection].properties[attr]
+                              .name
+                          }
+                          <label className="switch float-right">
+                            <input type="checkbox" />
+                            <span className="slider round" />
+                          </label>
+                        </p>
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
             );
