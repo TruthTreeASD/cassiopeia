@@ -1,6 +1,4 @@
 .FilterBy {
-  grid-column-start: 2;
-  grid-column-end: span 2;
   text-align: center;
   width: 65%;
   margin: auto;

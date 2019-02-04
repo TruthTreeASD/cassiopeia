@@ -15,8 +15,3 @@
   left: 25%;
   position: relative;
 }
-
-.display {
-  grid-column-start: 2;
-  grid-column-end: span 2;
-}
