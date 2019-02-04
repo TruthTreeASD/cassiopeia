@@ -66,10 +66,11 @@ input:checked + .slider:before {
   color: #444;
   cursor: pointer;
   padding: 18px;
-  width: 15%;
+  width: 100%;
   border: none;
   text-align: left;
-  outline: none;
+  outline: thin;
+  outline-color: black;
   font-size: 20px;
   transition: 0.4s;
 }
@@ -86,7 +87,7 @@ input:checked + .slider:before {
   -webkit-transition: 0.4s;
   transition: 0.4s;
   display: block;
-  width: 10%;
+  width: 80%;
   background-color: lightsteelblue;
   overflow: hidden;
 }

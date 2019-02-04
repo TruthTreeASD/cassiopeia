@@ -17,13 +17,13 @@ class LeftSideBar extends Component {
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
   }
   /*
-    componentDidMount() {
-        fetch('https://truthtree.herokuapp.com/api/states')
-            .then(res => res.json())
-            .then(json => {
-                this.setState{sidebarData:statesData}
-            })
-    }*/
+      componentDidMount() {
+          fetch('https://truthtree.herokuapp.com/api/states')
+              .then(res => res.json())
+              .then(json => {
+                  this.setState{sidebarData:statesData}
+              })
+      }*/
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.dimension === 'State') {
@@ -53,7 +53,7 @@ class LeftSideBar extends Component {
 
   render() {
     return (
-      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <nav className="col-md-2 d-none d-md-block bg-light sidebar">
         {Object.keys(this.state.sidebarData).map((collection, i) => {
           return (
             <div>
