@@ -5,7 +5,7 @@ import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import { connect } from 'react-redux';
 
-class Filters extends Component {
+class AttributeRange extends Component {
   constructor(props) {
     super(props);
   }
@@ -32,24 +32,57 @@ class Filters extends Component {
 
     const wrapperStyle = { width: 400, margin: 50 };
 
+    const createSliders = this.props.attribute.attributeName.map(
+      currentAttribute => (
+        <p>
+          {currentAttribute}
+          <Range
+            min={0}
+            max={100}
+            defaultValue={[20, 50]}
+            tipFormatter={value => value}
+          />
+        </p>
+      )
+    );
+
     return (
       <div>
         <div style={wrapperStyle}>
-          <p>Test Slider</p>
-          <Range
-            min={0}
-            max={100000}
-            defaultValue={[20000, 50000]}
-            tipFormatter={value => `${value}%`}
-          />
+          <p> {createSliders} </p>
         </div>
       </div>
     );
   }
 }
 
-const mapState = state => ({
-  dimension: state.filterByReducer.dimension
-});
+const mapStateToProps = state => {
+  return {
+    attribute: state.AtrributeRangeReducer
+  };
+};
 
-export default connect(mapState)(Filters);
+const mapDispatchToProps = dispatch => {
+  /* return {
+    setAttribute: (name) =>{
+      dispatch({
+        type: "addAttribute",
+        payload: name
+
+      })
+
+     setAttribute: () =>{
+      dispatch({
+        type: "addAttribute",
+        payload: "Alcohol Tax"
+
+      })
+    }
+  };
+  */
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AttributeRange);
