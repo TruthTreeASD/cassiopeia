@@ -69,10 +69,10 @@ class LeftSideBar extends Component {
                 {Object.keys(this.state.sidebarData[collection]).map(
                   (attr, i) => {
                     return (
-                      <label className="panel">
+                      <label className="panel float-right">
                         <p>
                           {attr}
-                          <label className="switch rightSide">
+                          <label className="switch float-right">
                             <input type="checkbox" />
                             <span className="slider round" />
                           </label>
