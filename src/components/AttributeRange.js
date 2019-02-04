@@ -35,31 +35,7 @@ class Filters extends Component {
     return (
       <div>
         <div style={wrapperStyle}>
-          <p>Income</p>
-          <Slider min={0} max={100000} defaultValue={50000} handle={handle} />
-        </div>
-        <div style={wrapperStyle}>
-          <p>Income</p>
-          <Slider
-            min={0}
-            defaultValue={50000}
-            marks={{
-              10: 10000,
-              20: 20000,
-              30: 30000,
-              40: 40000,
-              50: 50000,
-              60: 60000,
-              70: 70000,
-              80: 80000,
-              90: 90000,
-              100: 100000
-            }}
-            step={null}
-          />
-        </div>
-        <div style={wrapperStyle}>
-          <p>Income</p>
+          <p>Test Slider</p>
           <Range
             min={0}
             max={100000}
