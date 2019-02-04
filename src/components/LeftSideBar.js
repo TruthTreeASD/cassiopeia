@@ -53,7 +53,7 @@ class LeftSideBar extends Component {
 
   render() {
     return (
-      <div>
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
         {Object.keys(this.state.sidebarData).map((collection, i) => {
           return (
             <div>
@@ -85,7 +85,7 @@ class LeftSideBar extends Component {
             </div>
           );
         })}
-      </div>
+      </nav>
     );
   }
 }
