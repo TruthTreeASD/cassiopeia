@@ -6,8 +6,11 @@ import { connect } from 'react-redux';
 
 class ChoroplethMap extends Component {
   componentDidMount() {
-    let dataset = {};
+    this.componentDidUpdate();
+  }
 
+  componentDidUpdate() {
+    let dataset = {};
     let onlyValues = this.props.data.map(function(obj) {
       return obj[1];
     });
@@ -20,7 +23,6 @@ class ChoroplethMap extends Component {
       .range(['#EFEFFF', '#02386F']);
 
     this.props.data.forEach(function(item) {
-      //
       let iso = item[0],
         value = item[1];
       dataset[iso] = { numberOfThings: value, fillColor: paletteScale(value) };
@@ -28,7 +30,12 @@ class ChoroplethMap extends Component {
 
     let map = new Datamap({
       element: document.getElementById('cloropleth_map'),
-      scope: 'Usa',
+      scope:
+        this.props.dimension === 'State'
+          ? 'states'
+          : this.props.dimension === 'County'
+          ? 'counties'
+          : 'land',
       geographyConfig: {
         popupOnHover: true,
         highlightOnHover: true,
@@ -76,6 +83,7 @@ class ChoroplethMap extends Component {
   render() {
     return (
       <div
+        key={this.props.dimension}
         id="cloropleth_map"
         style={{
           height: '100%',
