@@ -14,7 +14,8 @@ class LeftSideBar extends Component {
     //   /api/collections?level=state
     this.state = {
       sidebarData: statesData,
-      isLoaded: false
+      isLoaded: false,
+      selectedAttributes: []
     };
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
@@ -83,9 +84,22 @@ class LeftSideBar extends Component {
   }
 
   // Toggle state of each collection on click
-  handleClick = collection => {
+  handleClickCollection = collection => {
     console.log('Clicked!!', collection, this.state[collection]);
     this.setState({ [collection]: !this.state[collection] });
+  };
+
+  // stores attribute selected
+  handleClickAttribute = attribute => {
+    /*   if (this.selectedAttributes !== []) { //this needs to be replaced with add and remove
+            this.setState({
+                selectedAttributes: []
+            });
+            console.log('Clicked!!', attribute, this.state);
+        } else */ {
+      console.log('Clicked!!', attribute, this.state);
+      this.setState({ selectedAttributes: attribute.property_id }); // this.selectedAttributes.push(attribute.property_id) });
+    }
   };
 
   render() {
@@ -94,16 +108,17 @@ class LeftSideBar extends Component {
       return <div>Loading...</div>;
     } else {
       return (
-        <nav className="col-md-2 d-none d-md-block bg-light sidebar">
+        <nav className="col-md-2 d-none d-md-block bg-dark sidebar">
           {Object.keys(this.state.sidebarData).map((collection, i) => {
             return (
               <div>
-                <div
+                <label
                   className="accordion"
-                  onClick={() => this.handleClick(collection)}
+                  onClick={() => this.handleClickCollection(collection)}
                 >
                   {this.state.sidebarData[collection].name}
-                </div>
+                </label>
+
                 <div
                   style={{ display: this.state[collection] ? 'block' : 'none' }}
                 >
@@ -111,7 +126,14 @@ class LeftSideBar extends Component {
                     this.state.sidebarData[collection].properties
                   ).map((attr, i) => {
                     return (
-                      <label className="panel float-right">
+                      <label
+                        className="panel float-right"
+                        onClick={() =>
+                          this.handleClickAttribute(
+                            this.state.sidebarData[collection].properties[attr]
+                          )
+                        }
+                      >
                         <p>
                           {
                             this.state.sidebarData[collection].properties[attr]

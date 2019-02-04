@@ -82,7 +82,8 @@ input:checked + .slider:before {
 
 .panel {
   padding: 0 10px;
-  font-size: 15px;
+
+  font-size: 18px;
   cursor: pointer;
   -webkit-transition: 0.4s;
   transition: 0.4s;
