@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Datamap from 'datamaps/dist/datamaps.usa.min.js';
 import '../styles/CloroplethMap.css';
 import d3 from 'd3';
+import Zoom from 'react-reveal/Zoom';
 import UsaJson from '../maps/Usa.topo.json';
 import { connect } from 'react-redux';
 
@@ -84,12 +85,14 @@ class ChoroplethMap extends Component {
   render() {
     let wrapperStyle = { zoom: this.props.zoom };
     return (
-      <div
-        key={this.props.dimension}
-        id="cloropleth_map"
-        className="cloropleth-map"
-        style={wrapperStyle}
-      />
+      <Zoom>
+        <div
+          key={this.props.dimension}
+          id="cloropleth_map"
+          className="cloropleth-map"
+          style={wrapperStyle}
+        />
+      </Zoom>
     );
   }
 }
