@@ -13,7 +13,7 @@ class Home extends Component {
     return (
       <Row className="flex-grow-1 flex-shrink-1">
         <LeftSideBar />
-        <div className="col-12 col-md-10">
+        <div className="col-12 col-md-10 align-items-center">
           <FilterBy />
           <DisplayComponent />
         </div>
