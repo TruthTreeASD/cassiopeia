@@ -112,6 +112,7 @@ class LeftSideBar extends Component {
           {Object.keys(this.state.sidebarData).map((collection, i) => {
             return (
               <div>
+                {/* this next label needs to have a dynamic change when attribute is selected*/}
                 <label
                   className="accordion"
                   onClick={() => this.handleClickCollection(collection)}
