@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Datamap from 'datamaps/dist/datamaps.world.min.js';
+import Datamap from 'datamaps/dist/datamaps.usa.min.js';
+import '../styles/CloroplethMap.css';
 import d3 from 'd3';
 import UsaJson from '../maps/Usa.topo.json';
 import { connect } from 'react-redux';
@@ -71,8 +72,8 @@ class ChoroplethMap extends Component {
       setProjection: function(element) {
         var projection = d3.geo
           .mercator()
-          .center([-98.123152, 38.1304])
-          .scale(450)
+          .center([-100.123152, 38.1304])
+          .scale(500)
           .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
 
         var path = d3.geo.path().projection(projection);
@@ -81,14 +82,13 @@ class ChoroplethMap extends Component {
     });
   }
   render() {
+    let wrapperStyle = { zoom: this.props.zoom };
     return (
       <div
         key={this.props.dimension}
         id="cloropleth_map"
-        style={{
-          height: '100%',
-          width: '100%'
-        }}
+        className="cloropleth-map"
+        style={wrapperStyle}
       />
     );
   }

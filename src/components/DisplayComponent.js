@@ -9,12 +9,22 @@ import { connect } from 'react-redux';
 class DisplayComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { displayComponent: 'Map' };
+    this.state = { displayComponent: 'Map', zoom: 1 };
     this.handleClick = this.handleClick.bind(this);
+    this.zoomIn = this.zoomIn.bind(this);
+    this.zoomOut = this.zoomOut.bind(this);
   }
 
   handleClick(newState) {
     this.setState({ displayComponent: newState });
+  }
+
+  zoomIn() {
+    this.setState({ zoom: this.state.zoom + 0.25 });
+  }
+
+  zoomOut() {
+    this.setState({ zoom: this.state.zoom - 0.25 });
   }
 
   render() {
@@ -26,9 +36,9 @@ class DisplayComponent extends Component {
       'btn-primary': this.state.displayComponent === 'Chart'
     });
     if (this.state.displayComponent === 'Chart') {
-      display = <CustomBarChart />;
+      display = <CustomBarChart zoom={this.state.zoom} />;
     } else {
-      display = <CloroplethMap data={[['CA', 70]]} />;
+      display = <CloroplethMap zoom={this.state.zoom} data={[['CA', 70]]} />;
     }
     return (
       <div class="display">
@@ -41,15 +51,9 @@ class DisplayComponent extends Component {
           Chart{' '}
         </button>
         <div className="displayArea">{display}</div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <Filters />
-        </div>
+        <button onClick={() => this.zoomIn()}>+</button>
+        <button onClick={() => this.zoomOut()}>-</button>
+        <Filters />
       </div>
     );
   }

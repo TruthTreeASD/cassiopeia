@@ -8,10 +8,9 @@
 }
 
 .displayArea {
-  width: 600px;
   height: 300px;
-  border: 2px solid;
+  width: 880pt;
+  border: 2px solid #eee;
+  box-shadow: 0 2px 3px #ccc;
   display: flex;
-  left: 25%;
-  position: relative;
 }

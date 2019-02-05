@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Navbar, NavbarBrand } from 'reactstrap';
 
 import '../styles/Header.css';
-import logo from '../NEU-logo.png';
+import logo from '../truthTreeLogo.png';
 import { connect } from 'react-redux';
 
 const divStyle = {
-  width: '50px',
-  height: '50px',
+  width: '70px',
+  height: '80px',
   float: 'left'
 };
 

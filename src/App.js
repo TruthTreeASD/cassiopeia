@@ -3,7 +3,6 @@ import { Container, Row, Col } from 'reactstrap';
 
 import Home from './components/Home';
 import Header from './components/Header';
-import LeftSideBar from './components/LeftSideBar';
 import './App.css';
 
 const styles = {
