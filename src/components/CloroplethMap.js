@@ -12,6 +12,7 @@ class ChoroplethMap extends Component {
   }
 
   componentDidUpdate() {
+    document.getElementById('cloropleth_map').innerHTML = '';
     let dataset = {};
     let onlyValues = this.props.data.map(function(obj) {
       return obj[1];
