@@ -7,6 +7,7 @@ import Header from './Header';
 import FilterBy from './FilterBy';
 import { connect } from 'react-redux';
 import LeftSideBar from './LeftSideBar';
+import Filters from './Filters';
 
 class Home extends Component {
   render() {
@@ -16,6 +17,7 @@ class Home extends Component {
         <div className="col-12 col-md-10 align-items-center">
           <FilterBy />
           <DisplayComponent />
+          <Filters />
         </div>
       </Row>
     );
