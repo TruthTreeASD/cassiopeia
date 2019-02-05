@@ -98,7 +98,7 @@ class LeftSideBar extends Component {
             console.log('Clicked!!', attribute, this.state);
         } else */ {
       console.log('Clicked!!', attribute, this.state);
-      this.setState({ selectedAttributes: attribute.property_id }); // this.selectedAttributes.push(attribute.property_id) });
+      this.setState({ selectedAttributes: attribute.property_id }); // this.state.selectedAttributes.push(attribute.property_id) });
     }
   };
 
