@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import '../styles/LeftSideBar.css';
 import axios from 'axios';
-import citiesData from '../../src/testStuff/cities.json';
-import statesData from '../../src/testStuff/states.json';
-import countiesData from '../../src/testStuff/counties.json';
+//import citiesData from '../../src/testStuff/cities.json';
+//import statesData from '../../src/testStuff/states.json';
+//import countiesData from '../../src/testStuff/counties.json';
 import { connect } from 'react-redux';
 
 import { combineReducers, createStore } from 'redux';
@@ -13,7 +13,7 @@ class LeftSideBar extends Component {
     super(props);
     //   /api/collections?level=state
     this.state = {
-      sidebarData: statesData,
+      sidebarData: [],
       isLoaded: false,
       selectedAttributes: []
     };
