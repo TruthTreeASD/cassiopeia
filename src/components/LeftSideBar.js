@@ -24,7 +24,7 @@ class LeftSideBar extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.dimension === 'State') {
       axios
-        .get('/api/collections')
+        .get('/api/collections?level=state')
         .then(response => {
           //data contains the variables
           console.log(response.data);
@@ -38,7 +38,7 @@ class LeftSideBar extends Component {
         });
     } else if (nextProps.dimension === 'City') {
       axios
-        .get('/api/collections')
+        .get('/api/collections?level=city')
         .then(response => {
           //data contains the variables
           console.log(response.data);
@@ -52,7 +52,7 @@ class LeftSideBar extends Component {
         });
     } else {
       axios
-        .get('/api/collections')
+        .get('/api/collections?level=county')
         .then(response => {
           //data contains the variables
           console.log(response.data);
@@ -69,7 +69,7 @@ class LeftSideBar extends Component {
 
   componentDidMount() {
     axios
-      .get('/api/collections')
+      .get('/api/collections?level=state')
       .then(response => {
         //data contains the variables
         console.log(response.data);
