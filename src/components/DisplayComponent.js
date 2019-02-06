@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../styles/DisplayComponent.css';
 import classNames from 'classnames';
-import Filters from './Filters';
+import Filters from './AttributeRange';
 import CloroplethMap from './CloroplethMap';
 import CustomBarChart from './CustomBarChart';
 import { connect } from 'react-redux';
