@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Navbar, NavbarBrand } from 'reactstrap';
 
 import '../styles/Header.css';
-import logo from '../NEU-logo.png';
+import logo from '../TruthTree.jpeg';
 import { connect } from 'react-redux';
 
 const divStyle = {
-  width: '50px',
-  height: '50px',
+  width: '110px',
+  height: '45px',
   float: 'left'
 };
 
@@ -20,7 +20,6 @@ class Header extends Component {
           style={{ fontSize: '2.5rem' }}
         >
           <img style={divStyle} src={logo} alt="My logo" />
-          <>&nbsp;TruthTree</>
         </NavbarBrand>
       </Navbar>
     );
