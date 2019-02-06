@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import '../styles/LeftSideBar.css';
 import axios from 'axios';
-import citiesData from '../../src/testStuff/cities.json';
-import statesData from '../../src/testStuff/states.json';
-import countiesData from '../../src/testStuff/counties.json';
+//import citiesData from '../../src/testStuff/cities.json';
+//import statesData from '../../src/testStuff/states.json';
+//import countiesData from '../../src/testStuff/counties.json';
 import { connect } from 'react-redux';
 
 import { combineReducers, createStore } from 'redux';
@@ -13,7 +13,7 @@ class LeftSideBar extends Component {
     super(props);
     //   /api/collections?level=state
     this.state = {
-      sidebarData: statesData,
+      sidebarData: [],
       isLoaded: false,
       selectedAttributes: []
     };
@@ -24,7 +24,7 @@ class LeftSideBar extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.dimension === 'State') {
       axios
-        .get('/api/collections')
+        .get('/api/collections?level=state')
         .then(response => {
           //data contains the variables
           console.log(response.data);
@@ -38,7 +38,7 @@ class LeftSideBar extends Component {
         });
     } else if (nextProps.dimension === 'City') {
       axios
-        .get('/api/collections')
+        .get('/api/collections?level=city')
         .then(response => {
           //data contains the variables
           console.log(response.data);
@@ -52,7 +52,7 @@ class LeftSideBar extends Component {
         });
     } else {
       axios
-        .get('/api/collections')
+        .get('/api/collections?level=county')
         .then(response => {
           //data contains the variables
           console.log(response.data);
@@ -69,7 +69,7 @@ class LeftSideBar extends Component {
 
   componentDidMount() {
     axios
-      .get('/api/collections')
+      .get('/api/collections?level=state')
       .then(response => {
         //data contains the variables
         console.log(response.data);
@@ -112,6 +112,7 @@ class LeftSideBar extends Component {
           {Object.keys(this.state.sidebarData).map((collection, i) => {
             return (
               <div>
+                {/* this next label needs to have a dynamic change when attribute is selected*/}
                 <label
                   className="accordion"
                   onClick={() => this.handleClickCollection(collection)}

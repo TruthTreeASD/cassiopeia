@@ -31,24 +31,29 @@ class DisplayComponent extends Component {
       display = <CloroplethMap data={[['CA', 70]]} />;
     }
     return (
-      <div class="display">
-        <button className={mapBtn} onClick={() => this.handleClick('Map')}>
-          {' '}
-          Map{' '}
-        </button>
-        <button className={ChartBtn} onClick={() => this.handleClick('Chart')}>
-          {' '}
-          Chart{' '}
-        </button>
-        <div className="displayArea">{display}</div>
-        <div
+      <div className="col-12 col-md-10 align-items-center">
+        <div class="display">
+          <button className={mapBtn} onClick={() => this.handleClick('Map')}>
+            {' '}
+            Map{' '}
+          </button>
+          <button
+            className={ChartBtn}
+            onClick={() => this.handleClick('Chart')}
+          >
+            {' '}
+            Chart{' '}
+          </button>
+          <div className="displayArea">{display}</div>
+          {/* <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}
         >
-          <Filters />
+          
+        </div>*/}
         </div>
       </div>
     );
