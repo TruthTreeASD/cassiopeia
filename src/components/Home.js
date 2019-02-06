@@ -7,7 +7,7 @@ import Header from './Header';
 import FilterBy from './FilterBy';
 import { connect } from 'react-redux';
 import LeftSideBar from './LeftSideBar';
-import Filters from './Filters';
+import Filters from './AttributeRange.js';
 
 class Home extends Component {
   render() {
@@ -15,7 +15,6 @@ class Home extends Component {
       <Row className="flex-grow-1 flex-shrink-1">
         <LeftSideBar />
         <div className="col-12 col-md-10 align-items-center">
-          <FilterBy />
           <DisplayComponent />
           <Filters />
         </div>
