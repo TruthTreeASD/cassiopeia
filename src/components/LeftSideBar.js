@@ -91,14 +91,24 @@ class LeftSideBar extends Component {
 
   // stores attribute selected
   handleClickAttribute = attribute => {
-    /*   if (this.selectedAttributes !== []) { //this needs to be replaced with add and remove
-            this.setState({
-                selectedAttributes: []
-            });
-            console.log('Clicked!!', attribute, this.state);
-        } else */ {
-      console.log('Clicked!!', attribute, this.state);
-      this.setState({ selectedAttributes: attribute.property_id }); // this.state.selectedAttributes.push(attribute.property_id) });
+    console.log(attribute.property_id);
+    if (this.state.selectedAttributes.indexOf(attribute.property_id) == -1) {
+      //this needs to be replaced with add and remove
+      let newArr = this.state.selectedAttributes;
+      console.log(attribute.property_id + 10);
+      newArr = newArr.push(attribute.property_id);
+      console.log(newArr);
+      this.setState({
+        selectedAttributes: newArr
+      });
+    } else {
+      let newArr = this.state.selectedAttributes;
+      console.log(attribute.property_id + 30);
+      newArr = newArr.filter(item => item !== attribute.property_id);
+
+      this.setState({
+        selectedAttributes: newArr
+      }); // this.state.selectedAttributes.push(attribute.property_id) });
     }
   };
 
