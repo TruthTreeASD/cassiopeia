@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
 
 import Home from './components/Home';
 import Header from './components/Header';
-import LeftSideBar from './components/LeftSideBar';
+import Trending from './components/Trending';
+import Explore from './components/Explore';
+
 import './App.css';
 import './styles/Tab.css';
-import Tabs from './components/Tabs';
 
 const styles = {
   minHeight: '100vh'
@@ -15,17 +17,14 @@ const styles = {
 class App extends Component {
   render() {
     return (
-      <div className="d-flex flex-column" style={styles}>
-        <Header />
-        <Tabs>
-          <div label="Home">ML content here!</div>
-          <div label="Attribute Explore">
-            <Container className="d-flex flex-grow-1" fluid={true}>
-              <Home />
-            </Container>
-          </div>
-        </Tabs>
-      </div>
+      <Router>
+        <div className="d-flex flex-column" style={styles}>
+          <Header />
+          <Route exact path="/" component={Trending} />
+          <Route path="/explore" component={Explore} />
+          <Route path="/explore/:location" component={Home} />
+        </div>
+      </Router>
     );
   }
 }
