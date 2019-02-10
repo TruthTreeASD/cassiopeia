@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/LeftSideBar.css';
+import _ from 'lodash';
 import axios from 'axios';
 //import citiesData from '../../src/testStuff/cities.json';
 //import statesData from '../../src/testStuff/states.json';
@@ -91,21 +92,28 @@ class LeftSideBar extends Component {
 
   // stores attribute selected
   handleClickAttribute = attribute => {
-    console.log(this.state.selectedAttributes);
-    if (this.state.selectedAttributes.indexOf(attribute.property_id) == -1) {
+    console.log('====' + this.state.selectedAttributes);
+    console.log(attribute.property_id);
+    var newArr = this.state.selectedAttributes;
+    if (_.includes(newArr, attribute.property_id)) {
       //this needs to be replaced with add and remove
-      let newArr = this.state.selectedAttributes;
-      console.log(attribute.property_id + 10);
-      newArr = newArr.push(attribute.property_id);
+
+      // uncomment this to remove. I commented this because added item is getting removed on second call
+      // _.remove(newArr, elem => {
+      //   return elem === attribute.property_id;
+      // });
+
+      // console.log(attribute.property_id + 10);
+      //newArr = newArr.push(attribute.property_id);
       console.log(newArr);
       this.setState({
         selectedAttributes: newArr
       });
     } else {
-      let newArr = this.state.selectedAttributes;
-      console.log(attribute.property_id + 30);
-      newArr = newArr.filter(item => item !== attribute.property_id);
-
+      //let newArr = this.state.selectedAttributes;
+      //console.log(attribute.property_id + 30);
+      //newArr = newArr.filter(item => item !== attribute.property_id);
+      newArr.push(attribute.property_id);
       this.setState({
         selectedAttributes: newArr
       }); // this.state.selectedAttributes.push(attribute.property_id) });
