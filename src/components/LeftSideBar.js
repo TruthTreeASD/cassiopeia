@@ -92,8 +92,15 @@ class LeftSideBar extends Component {
   // stores attribute selected
   handleClickAttribute = attribute => {
     console.log(this.state.selectedAttributes);
-    if (this.state.selectedAttributes.indexOf(attribute.property_id) == -1) {
-      //this needs to be replaced with add and remove
+    let included = 0;
+    this.state.selectedAttributes.forEach(function(element) {
+      if (element == attribute.property_id) {
+        included = 1;
+      }
+    });
+    if (included == 0) {
+      // (this.state.selectedAttributes.indexOf(attribute.property_id) == -1) {
+
       let newArr = this.state.selectedAttributes;
       console.log(attribute.property_id + 10);
       newArr = newArr.push(attribute.property_id);
