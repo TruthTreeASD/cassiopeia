@@ -32,13 +32,17 @@ const PopoverSection = ({ level, items }) => {
       {items.map((item, index) => {
         item = item.item;
         let buttonText = item.name;
-        if (level !== 'Counties') {
+        if (level !== 'counties') {
           buttonText += item.county ? `, ${item.county}` : '';
         }
         buttonText += item.stateAbbr ? `, ${item.stateAbbr}` : '';
+        const url = `${level}/${item.name.toLowerCase().replace(' ', '-')}/${
+          item.id
+        }`;
+
         return (
           <ListGroupItem key={index} block>
-            {buttonText}
+            <Link to={url}>{buttonText}</Link>
           </ListGroupItem>
         );
       })}
@@ -77,6 +81,7 @@ class LocationSearchBox extends Component {
 
   _parseData = (statesData, countiesData, citiesData) => {
     const statesDataById = statesData.reduce((newStatesData, state) => {
+      state.id = state.state_code;
       newStatesData[state.state_code] = state;
       state.counties = {};
       return newStatesData;
@@ -84,6 +89,7 @@ class LocationSearchBox extends Component {
 
     countiesData.forEach(county => {
       const state = statesDataById[county.state_code];
+      county.id = county.county;
       county.state = state.name;
       county.stateAbbr = state.abbreviation;
       state.counties[county.county] = county;
@@ -195,6 +201,7 @@ class LocationSearchBox extends Component {
               id="location-search-box"
               onFocus={this.handleFocus}
               onChange={this.handleChange}
+              placeholder="Search for location"
             />
             <Popover
               placement="bottom"
