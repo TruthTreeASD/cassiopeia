@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
-
-import '../styles/Home.css';
-import DisplayComponent from './DisplayComponent';
 import { connect } from 'react-redux';
+import '../styles/Home.css';
+
+import DisplayComponent from './DisplayComponent';
 import LeftSideBar from './LeftSideBar';
-import YearSelection from './YearSelection.js';
-import Filters from './AttributeRange.js';
+import YearSelector from './YearSelector';
+import Filters from './AttributeRange';
 
 class Home extends Component {
   render() {
@@ -20,7 +20,7 @@ class Home extends Component {
               <Filters />
             </Col>
             <Col sm={{ size: 4, order: 2, offset: 0 }}>
-              <YearSelection />
+              <YearSelector />
             </Col>
           </Row>
         </div>

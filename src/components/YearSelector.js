@@ -5,20 +5,31 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
+import { connect } from 'react-redux';
 
-const DropdownMenuStyle = {
+const dropdownMenuStyle = {
   height: '200px',
   overflow: 'auto'
 };
 
-class YearSelection extends Component {
+const yearSelectorStyle = {
+  width: '200px',
+  margin: '50px'
+};
+
+let allYears = [];
+for (let i = 1966; i < 2019; i++) {
+  allYears.push(i + 1);
+}
+
+class YearSelector extends Component {
   constructor(props) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
     this.state = {
       dropdownOpen: false,
-      dropDownValue: 'Select a Year'
+      yearSelected: '2019'
     };
   }
 
@@ -28,31 +39,24 @@ class YearSelection extends Component {
     }));
   }
 
-  changeValue(e) {
-    this.setState({ dropDownValue: e.currentTarget.textContent });
-  }
-
   render() {
-    let allYears = [];
-    for (let i = 1990; i < 2019; i++) {
-      allYears.push(i + 1);
-    }
     let yearArray = allYears.map(year => (
       <DropdownItem
         id={year}
-        onClick={e => this.setState({ dropDownValue: e.target.id })}
+        onClick={e => this.setState({ yearSelected: e.target.id })}
       >
         {year}
       </DropdownItem>
     ));
 
-    const style = { width: 200, margin: 50 };
+    console.log(this.state.yearSelected);
+
     return (
-      <div style={style}>
-        <p> Year of Data: </p>
+      <div style={yearSelectorStyle}>
+        <p> Year: </p>
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-          <DropdownToggle caret>{this.state.dropDownValue}</DropdownToggle>
-          <DropdownMenu style={DropdownMenuStyle} left>
+          <DropdownToggle caret>{this.state.yearSelected}</DropdownToggle>
+          <DropdownMenu style={dropdownMenuStyle} left>
             {yearArray}
           </DropdownMenu>
         </Dropdown>
@@ -60,5 +64,10 @@ class YearSelection extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    yearSelected: state.YearSelectorReducer.yearSelected
+  };
+};
 
-export default YearSelection;
+export default connect(mapStateToProps)(YearSelector);
