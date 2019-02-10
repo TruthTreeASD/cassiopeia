@@ -36,9 +36,9 @@ const PopoverSection = ({ level, items }) => {
           buttonText += item.county ? `, ${item.county}` : '';
         }
         buttonText += item.stateAbbr ? `, ${item.stateAbbr}` : '';
-        const url = `${level}/${item.name.toLowerCase().replace(' ', '-')}/${
-          item.id
-        }`;
+        const url = `/explore/${level}/${item.name
+          .toLowerCase()
+          .replace(' ', '-')}/${item.id}`;
 
         return (
           <ListGroupItem key={index} block>
