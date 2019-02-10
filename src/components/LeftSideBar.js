@@ -109,7 +109,7 @@ class LeftSideBar extends Component {
     this.setState({
       selectedAttributes: newArr
     });
-    console.log(newArr);
+    console.log(this.state);
   };
 
   render() {
