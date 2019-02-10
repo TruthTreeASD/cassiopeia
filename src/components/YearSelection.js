@@ -5,7 +5,6 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
-import Select from 'react-select';
 
 const DropdownMenuStyle = {
   height: '200px',
