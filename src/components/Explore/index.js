@@ -7,11 +7,11 @@ class Explore extends Component {
   render() {
     return (
       <Row className="my-3">
-        <Col xs={3} />
-        <Col xs={6}>
+        <Col xs={0} md={3} />
+        <Col xs={12} md={6}>
           <LocationSearchBox />
         </Col>
-        <Col xs={3} />
+        <Col xs={0} md={3} />
       </Row>
     );
   }
