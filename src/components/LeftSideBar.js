@@ -7,11 +7,9 @@ import axios from 'axios';
 //import countiesData from '../../src/testStuff/counties.json';
 import { connect } from 'react-redux';
 
-import { combineReducers, createStore } from 'redux';
-
 class LeftSideBar extends Component {
-  constructor(props) {
-    super(props);
+  constructor(params) {
+    super(params);
     //   /api/collections?level=state
     this.state = {
       sidebarData: [],
@@ -170,8 +168,13 @@ class LeftSideBar extends Component {
   }
 }
 
-const mapState = state => ({
-  dimension: state.filterByReducer.dimension
+const mapStateToProps = state => ({
+  selectedAttributes: state.selectedAttributeReducer
 });
 
-export default connect(mapState)(LeftSideBar);
+const mapDispatchToProps = dispatch => {};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LeftSideBar);
