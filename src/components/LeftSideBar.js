@@ -123,12 +123,12 @@ class LeftSideBar extends Component {
             return (
               <div>
                 {/* this next label needs to have a dynamic change when attribute is selected*/}
-                <label
+                <button
                   className="accordion"
                   onClick={() => this.handleClickCollection(collection)}
                 >
                   {this.state.sidebarData[collection].name}
-                </label>
+                </button>
 
                 <div
                   style={{ display: this.state[collection] ? 'block' : 'none' }}
@@ -154,7 +154,7 @@ class LeftSideBar extends Component {
                             }
                           >
                             <input type="checkbox" />
-                            <span className="slider round" />
+                            {/*<span className="slider round" />*/}
                           </div>
                         </p>
                       </label>
