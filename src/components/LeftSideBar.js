@@ -154,7 +154,7 @@ class LeftSideBar extends Component {
                             }
                           >
                             <input type="checkbox" />
-                            {/*<span className="slider round" />*/}
+                            <span className="slider round" />
                           </div>
                         </p>
                       </label>
