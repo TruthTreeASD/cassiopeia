@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'reactstrap';
 
-class LocationSearchBox extends Component {
-  render() {
-    return <input />;
-  }
-}
+import LocationSearchBox from './LocationSearchBox';
 
 class Explore extends Component {
   render() {
     return (
-      <Row>
-        <Col>
+      <Row className="my-3">
+        <Col xs={0} md={3} />
+        <Col xs={12} md={6}>
           <LocationSearchBox />
         </Col>
+        <Col xs={0} md={3} />
       </Row>
     );
   }

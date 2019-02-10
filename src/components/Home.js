@@ -3,8 +3,6 @@ import { Container, Row } from 'reactstrap';
 
 import '../styles/Home.css';
 import DisplayComponent from './DisplayComponent';
-import Header from './Header';
-import FilterBy from './FilterBy';
 import { connect } from 'react-redux';
 import LeftSideBar from './LeftSideBar';
 import Filters from './AttributeRange.js';
