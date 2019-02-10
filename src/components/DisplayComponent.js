@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../styles/DisplayComponent.css';
 import classNames from 'classnames';
 import 'react-virtualized/styles.css';
-import { defaultCellRangeRenderer, Grid } from 'react-virtualized';
+import { defaultCellRangeRenderer, MultiGrid } from 'react-virtualized';
 import { connect } from 'react-redux';
 
 class DisplayComponent extends Component {
@@ -16,8 +16,8 @@ class DisplayComponent extends Component {
   cellRenderer({ columnIndex, key, rowIndex, style }) {
     let list = [
       [
-        'Brian Vaughn',
-        'Software Engineer',
+        'Name',
+        'Population',
         'San Jose',
         'CA',
         95125,
@@ -66,15 +66,16 @@ class DisplayComponent extends Component {
 
   customizedGrid(props) {
     return (
-      <Grid
+      <MultiGrid
         cellRenderer={this.cellRenderer}
         columnCount={8}
         columnWidth={150}
-        height={300}
+        fixedColumnCount={2}
+        fixedRowCount={1}
+        height={500}
         rowCount={4}
         rowHeight={30}
         width={1100}
-        className="ReactVirtualized__Grid__innerScrollContainer"
       />
     );
   }
