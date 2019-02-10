@@ -18,7 +18,7 @@ class App extends Component {
           <Switch className="container-fluid">
             <Route exact path="/" component={Trending} />
             <Route exact path="/explore" component={Explore} />
-            <Route exact path="/explore/:level/:location" component={Home} />
+            <Route exact path="/explore/:level/:name/:id" component={Home} />
           </Switch>
         </Router>
       </div>
