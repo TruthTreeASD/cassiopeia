@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Container, Row, Col } from 'reactstrap';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Home from './components/Home';
 import Header from './components/Header';
@@ -10,21 +9,19 @@ import Explore from './components/Explore';
 import './App.css';
 import './styles/Tab.css';
 
-const styles = {
-  minHeight: '100vh'
-};
-
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div className="d-flex flex-column" style={styles}>
-          <Header />
-          <Route exact path="/" component={Trending} />
-          <Route path="/explore" component={Explore} />
-          <Route path="/explore/:location" component={Home} />
-        </div>
-      </Router>
+      <div>
+        <Header />
+        <Router>
+          <Switch className="container-fluid">
+            <Route exact path="/" component={Trending} />
+            <Route exact path="/explore" component={Explore} />
+            <Route exact path="/explore/:level/:name/:id" component={Home} />
+          </Switch>
+        </Router>
+      </div>
     );
   }
 }
