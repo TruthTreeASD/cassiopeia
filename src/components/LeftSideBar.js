@@ -92,32 +92,24 @@ class LeftSideBar extends Component {
 
   // stores attribute selected
   handleClickAttribute = attribute => {
-    console.log('====' + this.state.selectedAttributes);
-    console.log(attribute.property_id);
+    //console.log('====' + this.state.selectedAttributes);
+    //console.log(attribute.property_id);
     let newArr = this.state.selectedAttributes;
     if (_.includes(newArr, attribute.property_id)) {
       //this needs to be replaced with add and remove
 
       // uncomment this to remove. I commented this because added item is getting removed on second call
-      // _.remove(newArr, elem => {
-      //   return elem === attribute.property_id;
-      // });
-
-      // console.log(attribute.property_id + 10);
-      //newArr = newArr.push(attribute.property_id);
-      console.log(newArr);
-      this.setState({
-        selectedAttributes: newArr
+      _.remove(newArr, elem => {
+        return elem === attribute.property_id;
       });
     } else {
-      //let newArr = this.state.selectedAttributes;
-      //console.log(attribute.property_id + 30);
-      //newArr = newArr.filter(item => item !== attribute.property_id);
       newArr.push(attribute.property_id);
-      this.setState({
-        selectedAttributes: newArr
-      }); // this.state.selectedAttributes.push(attribute.property_id) });
+      // this.state.selectedAttributes.push(attribute.property_id) });
     }
+    this.setState({
+      selectedAttributes: newArr
+    });
+    console.log(newArr);
   };
 
   render() {
@@ -145,23 +137,25 @@ class LeftSideBar extends Component {
                     this.state.sidebarData[collection].properties
                   ).map((attr, i) => {
                     return (
-                      <label
-                        className="panel float-right"
-                        onClick={() =>
-                          this.handleClickAttribute(
-                            this.state.sidebarData[collection].properties[attr]
-                          )
-                        }
-                      >
+                      <label className="panel float-right">
                         <p>
                           {
                             this.state.sidebarData[collection].properties[attr]
                               .name
                           }
-                          <label className="switch float-right">
+                          <div
+                            className="switch float-right"
+                            onClick={() =>
+                              this.handleClickAttribute(
+                                this.state.sidebarData[collection].properties[
+                                  attr
+                                ]
+                              )
+                            }
+                          >
                             <input type="checkbox" />
                             <span className="slider round" />
-                          </label>
+                          </div>
                         </p>
                       </label>
                     );
