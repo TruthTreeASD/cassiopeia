@@ -102,7 +102,6 @@ class LocationSearchBox extends Component {
       }
       city.county = county ? county.name : null;
     });
-    console.log(citiesData);
 
     const statesFuseOptions = createFuseOptions([
       { name: 'abbreviation', weight: 0.3 },
