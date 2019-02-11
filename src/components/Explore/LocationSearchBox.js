@@ -43,7 +43,7 @@ const PopoverSection = ({ level, items }) => {
           .replace(' ', '-')}/${item.id}`;
 
         return (
-          <ListGroupItem key={index} block>
+          <ListGroupItem key={index}>
             <Link to={url}>{buttonText}</Link>
           </ListGroupItem>
         );
