@@ -1,39 +1,18 @@
 export default (
   state = {
-    attributeName: ['Road Tax', 'Alcohol Tax'],
-    lastValues: []
+    attributeName: ['Population'],
+    populationRange: [-5, 5]
   },
   action
 ) => {
   switch (action.type) {
-    case 'addAttribute':
+    case 'RANGE_SELECTION':
       state = {
         ...state,
-        attributeName: action.payload,
-        lastValues: [...state.lastValues, action.payload]
+        populationRange: action.populationRange
       };
-      state.attributeName = action.payload;
+      console.log(this.populationRange);
       break;
   }
-
   return state;
 };
-
-/*store.subscribe(() => {
-  console.log("Store is updated", store.getState());
-
-
-});
-
-store.dispatch({
-  type: "addAttribute",
-  payload: "alcohal_tax"
-
-});
-
-store.dispatch({
-  type: "addAttribute",
-  payload: "property_tax"
-
-});
-*/

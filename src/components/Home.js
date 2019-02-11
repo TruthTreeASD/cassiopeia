@@ -24,7 +24,11 @@ class Home extends Component {
           />
           <Row className="align-items-center">
             <Col sm={{ size: 6, order: 1, offset: 1 }}>
-              <Filters />
+              <Filters
+                level={this.props.match.params.level}
+                location={this.props.match.params.name}
+                locationId={this.props.match.params.id}
+              />
             </Col>
             <Col sm={{ size: 4, order: 2, offset: 0 }}>
               <YearSelector />
