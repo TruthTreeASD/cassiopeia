@@ -11,8 +11,28 @@ class AttributeRange extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      populationRange: []
+      populationRange: [],
+      locationPopulation: 'loading'
     };
+  }
+
+  componentDidMount() {
+    console.log('in did mount');
+    let locationId = this.props.loaction;
+    console.log(locationId);
+    let url = '/api/states/' + { locationId };
+    console.log(url);
+    fetch(url)
+      .then(results => {
+        return results.json();
+      })
+      .then(data => {
+        let locationPopulation = data.results.map(population => {
+          return <p>{population.population};</p>;
+        });
+        this.setState({ locationPopulation: locationPopulation });
+        console.log('state'.this.state.locationPopulation);
+      });
   }
 
   render() {
@@ -41,7 +61,8 @@ class AttributeRange extends Component {
       currentAttribute => (
         <div>
           <p>
-            {currentAttribute} of <b>{this.props.location}</b>:{' '}
+            {currentAttribute} of <b>{this.props.location}</b>:
+            {this.state.locationPopulation}
           </p>
           <p>Select Range of {currentAttribute}:</p>
           <p className="Note"> (*range in percentage)</p>
@@ -71,27 +92,4 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  /* return {
-    setAttribute: (name) =>{
-      dispatch({
-        type: "addAttribute",
-        payload: name
-
-      })
-
-     setAttribute: () =>{
-      dispatch({
-        type: "addAttribute",
-        payload: "Alcohol Tax"
-
-      })
-    }
-  };
-  */
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AttributeRange);
+export default connect(mapStateToProps)(AttributeRange);
