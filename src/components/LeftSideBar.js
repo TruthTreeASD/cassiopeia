@@ -100,6 +100,10 @@ class LeftSideBar extends Component {
       selectedAttributes: newArr
     });
     console.log(this.props);
+    this.props.dispatch({
+      type: 'CHANGE_ATTRIBUTE',
+      value: newArr
+    });
   };
 
   render() {
@@ -164,7 +168,7 @@ const mapStateToProps = state => ({
   selectedAttributes: state.SelectedAttributeReducer
 });
 
-const mapDispatchToProps = dispatch => {};
+const mapDispatchToProps = dispatch => ({ dispatch });
 
 export default connect(
   mapStateToProps,

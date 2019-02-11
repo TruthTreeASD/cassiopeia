@@ -6,7 +6,7 @@ export default (
   action
 ) => {
   switch (action.type) {
-    case 'CHANGED_ATTRIBUTES':
+    case 'CHANGE_ATTRIBUTE':
       state = {
         ...state,
         sidebarData: action.payload,
