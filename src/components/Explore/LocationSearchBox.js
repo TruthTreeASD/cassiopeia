@@ -4,11 +4,13 @@ import { get } from 'axios';
 import Fuse from 'fuse.js';
 import { Link } from 'react-router-dom';
 
+import { TRUTHTREE_URI } from '../../constants';
+
 // TruthTree API endpoints
 const ENDPOINTS = {
-  STATES: '/api/states',
-  COUNTIES: '/api/counties',
-  CITIES: '/api/cities'
+  STATES: `${TRUTHTREE_URI}/api/states`,
+  COUNTIES: `${TRUTHTREE_URI}/api/counties`,
+  CITIES: `${TRUTHTREE_URI}/api/cities`
 };
 
 const createFuseOptions = keys => {

@@ -56,9 +56,7 @@ class YearSelector extends Component {
         <p> Year: </p>
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{this.state.yearSelected}</DropdownToggle>
-          <DropdownMenu style={dropdownMenuStyle} left>
-            {yearArray}
-          </DropdownMenu>
+          <DropdownMenu style={dropdownMenuStyle}>{yearArray}</DropdownMenu>
         </Dropdown>
       </div>
     );

@@ -22,9 +22,9 @@ class Header extends Component {
         >
           <img style={divStyle} src={logo} alt="My logo" />
           <>&nbsp;TruthTree</>
-          <div className="col-12 col-md-10 align-items-center">
+          {/*<div className="col-12 col-md-10 align-items-center">
             <FilterBy />
-          </div>
+          </div>*/}
         </NavbarBrand>
       </Navbar>
     );
