@@ -1,11 +1,11 @@
 export default (state = { yearSelected: 2019 }, action) => {
   switch (action.type) {
     case 'CHANGE_YEAR':
+      //console.log(action);
       state = {
         ...state,
-        yearSelected: action.id
+        yearSelected: action.yearSelected
       };
-      //state.yearSelected: action.id;
       break;
   }
   return state;
