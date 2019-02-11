@@ -36,7 +36,7 @@ class DisplayComponent extends Component {
     axios
       .get('/api/' + this.props.level + '/' + this.props.id)
       .then(response => {
-        let population = parseFloat(response.data.population.replace(/,/g, ''));
+        let population = response.data.population;
         maxPopulation = Math.floor(population * 1.5);
         minPopulation = Math.floor(population * 0.5);
         return axios
