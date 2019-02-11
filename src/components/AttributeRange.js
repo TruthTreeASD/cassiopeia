@@ -13,19 +13,23 @@ class AttributeRange extends Component {
     super(props);
     this.state = {
       populationRange: [],
-      locationPopulation: []
+      locationPopulation: null
     };
   }
 
   componentDidMount() {
     let url = '/api/' + this.props.level + '/' + this.props.locationId;
     console.log(url);
+    let locPop = null;
 
     axios
       .get(url)
-      .then(res => console.log(res.data))
+      .then(res => {
+        locPop = res.data.population;
+        console.log(res.data.population);
+        this.setState({ locationPopulation: locPop });
+      })
       .catch(err => console.log(err));
-    // axios.get(url).then(json => console.log(json));
   }
 
   render() {
@@ -54,8 +58,8 @@ class AttributeRange extends Component {
       (currentAttribute, i) => (
         <div key={i}>
           <p>
-            {currentAttribute} of <b>{this.props.location}</b>:
-            {this.state.locationPopulation}
+            {currentAttribute} of {this.props.location} {':  '}
+            <b>{this.state.locationPopulation}</b>
           </p>
           <p>Select Range of {currentAttribute}:</p>
           <p className="Note"> (*range in percentage)</p>
