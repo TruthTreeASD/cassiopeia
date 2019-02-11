@@ -88,15 +88,42 @@ class LeftSideBar extends Component {
     //this is getting called twice
     //if clicking on the slider.
     let newArr = this.state.selectedAttributes;
-
-    if (_.includes(newArr, attribute.property_id)) {
-      _.remove(newArr, elem => {
-        return elem === attribute.property_id;
-      });
-    } else {
-      newArr.push(attribute.property_id);
-      // this.state.selectedAttributes.push(attribute.property_id) });
-    }
+    for (let i = 0; i < newArr.length; i++) {
+      if (newArr[i][0] == attribute.property_id) {
+        _.remove(newArr, elem => {
+          return elem === newArr[i];
+        });
+        this.setState({
+          selectedAttributes: newArr
+        });
+        console.log(this.props);
+        this.props.dispatch({
+          type: 'CHANGE_ATTRIBUTE',
+          value: newArr
+        });
+        return;
+      }
+    } /*
+      newArr.forEach(function (element) {
+          if (element[0] == attribute.property_id) {
+              console.log(element)
+              _.remove(newArr, elem => {
+                  return elem === element;
+              });
+              return
+          }
+      });*/
+    newArr.push([attribute.property_id, attribute.name]);
+    /*
+        let newElem = [attribute.property_id, attribute.name]
+        if (_.includes(newArr, [attribute.property_id, attribute.name])) {
+        _.remove(newArr, elem => {
+            return elem === [attribute.property_id, attribute.name];
+        });
+      } else {
+            newArr.push([attribute.property_id, attribute.name]);
+        // this.state.selectedAttributes.push(attribute.property_id) });
+      }*/
     this.setState({
       selectedAttributes: newArr
     });
