@@ -7,6 +7,7 @@ import _ from 'lodash';
 
 import styles from 'react-virtualized/styles.css';
 import '../styles/DisplayComponent.css';
+import { TRUTHTREE_URI } from '../constants';
 
 class DisplayComponent extends Component {
   constructor(props) {
@@ -40,7 +41,10 @@ class DisplayComponent extends Component {
         minPopulation = Math.floor(population * 0.5);
         return axios
           .get(
-            '/api/states?populationRange=' + minPopulation + ',' + maxPopulation
+            `${TRUTHTREE_URI}/api/states?populationRange=` +
+              minPopulation +
+              ',' +
+              maxPopulation
           )
           .then(response => {
             _.map(response.data, obj => {
