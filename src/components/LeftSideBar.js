@@ -88,12 +88,13 @@ class LeftSideBar extends Component {
     //this is getting called twice
     //if clicking on the slider.
     let newArr = this.state.selectedAttributes;
-    if (_.includes(newArr, attribute.property_id)) {
+    let newElem = [attribute.property_id, attribute.name];
+    if (_.includes(newArr, newElem)) {
       _.remove(newArr, elem => {
-        return elem === attribute.property_id;
+        return elem === newElem;
       });
     } else {
-      newArr.push(attribute.property_id);
+      newArr.push(newElem);
       // this.state.selectedAttributes.push(attribute.property_id) });
     }
     this.setState({
