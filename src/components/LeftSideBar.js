@@ -8,8 +8,8 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 
 class LeftSideBar extends Component {
-  constructor(params) {
-    super(params);
+  constructor(props) {
+    super(props);
     //   /api/collections?level=state
     this.state = {
       sidebarData: [],
@@ -107,7 +107,7 @@ class LeftSideBar extends Component {
     this.setState({
       selectedAttributes: newArr
     });
-    console.log(this.state);
+    console.log(this.props);
   };
 
   render() {
