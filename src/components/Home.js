@@ -9,12 +9,19 @@ import YearSelector from './YearSelector';
 import Filters from './AttributeRange';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <Row className="flex-grow-1 flex-shrink-1">
         <LeftSideBar />
         <div className="col-12 col-md-10 align-items-center">
-          <DisplayComponent />
+          <DisplayComponent
+            level={this.props.match.params.level}
+            id={this.props.match.params.id}
+          />
           <Row className="align-items-center">
             <Col sm={{ size: 6, order: 1, offset: 1 }}>
               <Filters
@@ -33,7 +40,7 @@ class Home extends Component {
   }
 }
 const mapState = state => ({
-  dimension: state.filterByReducer.dimension
+  dimension: state.FilterByReducer.dimension
 });
 
 export default connect(mapState)(Home);

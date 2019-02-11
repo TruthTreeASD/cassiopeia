@@ -50,14 +50,15 @@ class AttributeRange extends Component {
     const wrapperStyle = { width: 400, margin: 50 };
 
     const createSliders = this.props.attribute.attributeName.map(
-      currentAttribute => (
-        <div>
+      (currentAttribute, i) => (
+        <div key={i}>
           <p>
             {currentAttribute} of <b>{this.props.location}</b>:
             {this.state.locationPopulation}
           </p>
           <p>Select Range of {currentAttribute}:</p>
           <p className="Note"> (*range in percentage)</p>
+          {currentAttribute}
           <Range
             min={-50}
             max={50}
@@ -71,7 +72,7 @@ class AttributeRange extends Component {
     return (
       <div>
         <div style={wrapperStyle}>
-          <p> {createSliders} </p>
+          <div> {createSliders} </div>
         </div>
       </div>
     );
