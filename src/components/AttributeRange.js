@@ -8,12 +8,22 @@ import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import '../styles/AttributeRange.css';
 
+const Range = Slider.Range;
+
+const style = { width: 400, margin: 50 };
+
+function log(value) {
+  console.log(value); //eslint-disable-line
+}
+
 class AttributeRange extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      populationRange: [],
-      locationPopulation: null
+      locationPopulation: null,
+      value: [-5, 5],
+      min: -50,
+      max: 50
     };
   }
 
@@ -32,43 +42,43 @@ class AttributeRange extends Component {
       .catch(err => console.log(err));
   }
 
+  onSliderChange = value => {
+    log(this.state.value);
+    this.setState({
+      value: value
+    });
+  };
+
   render() {
-    const createSliderWithTooltip = Slider.createSliderWithTooltip;
-    const Range = createSliderWithTooltip(Slider.Range);
-    const Handle = Slider.Handle;
-
-    const handle = props => {
-      const { value, dragging, index, ...restProps } = props;
-      return (
-        <Tooltip
-          prefixCls="rc-slider-tooltip"
-          overlay={value}
-          visible={dragging}
-          placement="top"
-          key={index}
-        >
-          <Handle value={value} {...restProps} />
-        </Tooltip>
-      );
-    };
-
     const wrapperStyle = { width: 400, margin: 50 };
 
     const createSliders = this.props.attribute.attributeName.map(
       (currentAttribute, i) => (
         <div key={i}>
           <p>
-            {currentAttribute} of {this.props.location} {':  '}
+            {currentAttribute} of {this.props.location} {':  '}{' '}
             <b>{this.state.locationPopulation}</b>
           </p>
-          <p>Select Range of {currentAttribute}:</p>
-          <p className="Note"> (*range in percentage)</p>
-          {currentAttribute}
+          <p>
+            Select range of <b>{currentAttribute}</b> for filtering other{' '}
+            <b>{this.props.level}</b>:
+          </p>
+          <p className="Note">
+            (*range selection available from -50% to +50% wrt to{' '}
+            {this.props.location} {currentAttribute})
+          </p>
+          <p>
+            Current selection: {this.state.value[0]}% to {this.state.value[1]}%
+            :
+          </p>
+
           <Range
-            min={-50}
-            max={50}
-            defaultValue={[-5, 5]}
-            tipFormatter={value => value}
+            dots
+            step={5}
+            value={this.state.value}
+            min={this.state.min}
+            max={this.state.max}
+            onChange={this.onSliderChange}
           />
         </div>
       )
