@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import '../styles/LeftSideBar.css';
 import _ from 'lodash';
 import axios from 'axios';
-//import citiesData from '../../src/testStuff/cities.json';
-//import statesData from '../../src/testStuff/states.json';
-//import countiesData from '../../src/testStuff/counties.json';
 import { connect } from 'react-redux';
 
 import { TRUTHTREE_URI } from '../constants';
@@ -28,7 +25,6 @@ class LeftSideBar extends Component {
         .get(`${TRUTHTREE_URI}/api/collections?level=state`)
         .then(response => {
           //data contains the variables
-          console.log(response.data);
           this.setState({
             sidebarData: response.data,
             isLoaded: true
@@ -42,7 +38,6 @@ class LeftSideBar extends Component {
         .get(`${TRUTHTREE_URI}/api/collections?level=city`)
         .then(response => {
           //data contains the variables
-          console.log(response.data);
           this.setState({
             sidebarData: response.data,
             isLoaded: true
@@ -56,7 +51,6 @@ class LeftSideBar extends Component {
         .get(`${TRUTHTREE_URI}/api/collections?level=county`)
         .then(response => {
           //data contains the variables
-          console.log(response.data);
           this.setState({
             sidebarData: response.data,
             isLoaded: true
@@ -73,7 +67,6 @@ class LeftSideBar extends Component {
       .get(`${TRUTHTREE_URI}/api/collections?level=state`)
       .then(response => {
         //data contains the variables
-        console.log(response.data);
         this.setState({
           sidebarData: response.data,
           isLoaded: true
@@ -92,13 +85,10 @@ class LeftSideBar extends Component {
 
   // stores attribute selected
   handleClickAttribute = attribute => {
-    //console.log('====' + this.state.selectedAttributes);
-    //console.log(attribute.property_id);
+    //this is getting called twice
+    //if clicking on the slider.
     let newArr = this.state.selectedAttributes;
     if (_.includes(newArr, attribute.property_id)) {
-      //this needs to be replaced with add and remove
-
-      // uncomment this to remove. I commented this because added item is getting removed on second call
       _.remove(newArr, elem => {
         return elem === attribute.property_id;
       });
@@ -171,7 +161,7 @@ class LeftSideBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  selectedAttributes: state.selectedAttributeReducer
+  selectedAttributes: state.SelectedAttributeReducer
 });
 
 const mapDispatchToProps = dispatch => {};
