@@ -31,6 +31,7 @@ class YearSelector extends Component {
       dropdownOpen: false,
       yearSelected: '2019'
     };
+    this.onClick = this.onClick.bind(this);
   }
 
   toggle() {
@@ -39,24 +40,29 @@ class YearSelector extends Component {
     }));
   }
 
+  onClick(e) {
+    //this.setState({ yearSelected: e.target.id });
+    console.log(e.target.id);
+    this.props.dispatch({
+      type: 'CHANGE_YEAR',
+      yearSelected: e.target.id
+    });
+  }
+
   render() {
     let yearArray = allYears.map((year, i) => (
-      <DropdownItem
-        key={i}
-        id={year}
-        onClick={e => this.setState({ yearSelected: e.target.id })}
-      >
+      <DropdownItem key={i} id={year} onClick={this.onClick}>
         {year}
       </DropdownItem>
     ));
-
-    console.log(this.state.yearSelected);
+    //console.log('year selected in render');
+    //console.log(this.props.yearSelected);
 
     return (
       <div style={yearSelectorStyle}>
         <p> Year: </p>
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-          <DropdownToggle caret>{this.state.yearSelected}</DropdownToggle>
+          <DropdownToggle caret>{this.props.yearSelected}</DropdownToggle>
           <DropdownMenu style={dropdownMenuStyle}>{yearArray}</DropdownMenu>
         </Dropdown>
       </div>
@@ -69,4 +75,9 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(YearSelector);
+const mapDispatchToProps = dispatch => ({ dispatch });
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(YearSelector);
