@@ -40,8 +40,9 @@ class YearSelector extends Component {
   }
 
   render() {
-    let yearArray = allYears.map(year => (
+    let yearArray = allYears.map((year, i) => (
       <DropdownItem
+        key={i}
         id={year}
         onClick={e => this.setState({ yearSelected: e.target.id })}
       >
@@ -56,9 +57,7 @@ class YearSelector extends Component {
         <p> Year: </p>
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{this.state.yearSelected}</DropdownToggle>
-          <DropdownMenu style={dropdownMenuStyle} left>
-            {yearArray}
-          </DropdownMenu>
+          <DropdownMenu style={dropdownMenuStyle}>{yearArray}</DropdownMenu>
         </Dropdown>
       </div>
     );

@@ -33,8 +33,8 @@ class AttributeRange extends Component {
     const wrapperStyle = { width: 400, margin: 50 };
 
     const createSliders = this.props.attribute.attributeName.map(
-      currentAttribute => (
-        <p>
+      (currentAttribute, i) => (
+        <div key={i}>
           {currentAttribute}
           <Range
             min={0}
@@ -42,14 +42,14 @@ class AttributeRange extends Component {
             defaultValue={[20, 50]}
             tipFormatter={value => value}
           />
-        </p>
+        </div>
       )
     );
 
     return (
       <div>
         <div style={wrapperStyle}>
-          <p> {createSliders} </p>
+          <div> {createSliders} </div>
         </div>
       </div>
     );
