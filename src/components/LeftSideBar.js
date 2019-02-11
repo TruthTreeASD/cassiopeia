@@ -7,6 +7,8 @@ import axios from 'axios';
 //import countiesData from '../../src/testStuff/counties.json';
 import { connect } from 'react-redux';
 
+import { TRUTHTREE_URI } from '../constants';
+
 class LeftSideBar extends Component {
   constructor(params) {
     super(params);
@@ -23,7 +25,7 @@ class LeftSideBar extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.dimension === 'State') {
       axios
-        .get('/api/collections?level=state')
+        .get(`${TRUTHTREE_URI}/api/collections?level=state`)
         .then(response => {
           //data contains the variables
           console.log(response.data);
@@ -37,7 +39,7 @@ class LeftSideBar extends Component {
         });
     } else if (nextProps.dimension === 'City') {
       axios
-        .get('/api/collections?level=city')
+        .get(`${TRUTHTREE_URI}/api/collections?level=city`)
         .then(response => {
           //data contains the variables
           console.log(response.data);
@@ -51,7 +53,7 @@ class LeftSideBar extends Component {
         });
     } else {
       axios
-        .get('/api/collections?level=county')
+        .get(`${TRUTHTREE_URI}/api/collections?level=county`)
         .then(response => {
           //data contains the variables
           console.log(response.data);
@@ -68,7 +70,7 @@ class LeftSideBar extends Component {
 
   componentDidMount() {
     axios
-      .get('/api/collections?level=state')
+      .get(`${TRUTHTREE_URI}/api/collections?level=state`)
       .then(response => {
         //data contains the variables
         console.log(response.data);
