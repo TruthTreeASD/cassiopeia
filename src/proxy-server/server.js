@@ -7,16 +7,17 @@ const PORT = process.env.PORT || 4000;
 
 const TRUTHTREE_API = 'https://truthtree.herokuapp.com';
 
+const findLocation = (idFieldName, locationId, data) => {
+  return data.find(location => location[idFieldName] === parseInt(locationId));
+};
+
 app.get('/api/states/:stateId', (req, res) => {
   axios
     .get(`${TRUTHTREE_API}/api/states`)
     .then(({ data }) => {
-      const filtered = data.filter(
-        state => state.state_code === parseInt(req.params.stateId)
-      );
-
-      if (filtered.length === 1) {
-        res.send(filtered[0]);
+      const state = findLocation('state_code', req.params.stateId, data);
+      if (state) {
+        res.send(state);
       } else {
         res.sendStatus(404);
       }
