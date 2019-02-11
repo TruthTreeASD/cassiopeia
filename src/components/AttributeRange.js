@@ -21,10 +21,11 @@ class AttributeRange extends Component {
     let url = '/api/' + this.props.level + '/' + this.props.locationId;
     console.log(url);
 
-    // axios.get(url)
-    // .then(res => console.log(res.data)
-    // .catch(err => console.log(err))
-    axios.get(url).then(json => console.log(json));
+    axios
+      .get(url)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
+    // axios.get(url).then(json => console.log(json));
   }
 
   render() {
