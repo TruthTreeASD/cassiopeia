@@ -29,7 +29,7 @@ class Home extends Component {
   }
 }
 const mapState = state => ({
-  dimension: state.filterByReducer.dimension
+  dimension: state.FilterByReducer.dimension
 });
 
 export default connect(mapState)(Home);

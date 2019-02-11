@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import '../styles/DisplayComponent.css';
 import classNames from 'classnames';
-import 'react-virtualized/styles.css';
 import { defaultCellRangeRenderer, MultiGrid } from 'react-virtualized';
 import { connect } from 'react-redux';
+import axios from 'axios/index';
+import _ from 'lodash';
+
+import 'react-virtualized/styles.css';
+import '../styles/DisplayComponent.css';
 
 class DisplayComponent extends Component {
   constructor(props) {
@@ -11,57 +14,65 @@ class DisplayComponent extends Component {
     this.cellRenderer = this.cellRenderer.bind(this);
   }
 
+  componentWillReceiveProps() {
+    // Get the current level by parsing the url
+    let currentLevel = window.location.pathname.split('/')[2];
+    let id = window.location.pathname.split('/')[4];
+    let minPopulation = 0;
+    let maxPopulation = 0;
+    let data = [['Name', 'Population']];
+
+    // Calculate min and max population
+    axios
+      .get('/api/' + currentLevel + '/' + id)
+      .then(response => {
+        let population = parseFloat(response.data.population.replace(/,/g, ''));
+        maxPopulation = Math.floor(population * 1.5);
+        minPopulation = Math.floor(population * 0.5);
+        return axios
+          .get(
+            '/api/states?populationRange=' + minPopulation + ',' + maxPopulation
+          )
+          .then(response => {
+            _.map(response.data, obj => {
+              data.push([obj.name, obj.population]);
+            });
+            this.setState({ data: data });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    this.setState({ currentLevel: currentLevel });
+    // axios
+    //     .get('/api/attributes?value='+allstatesids+'&attributes='+selectedAttributesString+'&yearList='+selectedYearString)
+    //     .then(response => {
+    //         //data contains the variables
+    //         console.log(response.data);
+    //         this.setState({
+    //             sidebarData: response.data,
+    //             isLoaded: true
+    //         });
+    //     })
+    //     .catch(error => {
+    //         console.log(error);
+    //     });
+  }
+
   // Grid data as an array of arrays
 
   cellRenderer({ columnIndex, key, rowIndex, style }) {
-    let list = [
-      [
-        'Name',
-        'Population',
-        'San Jose',
-        'CA',
-        95125,
-        'Brian Vaughn',
-        'Software Engineer',
-        'San Jose'
-      ],
-      [
-        'Brian Vaughn',
-        'Software Engineer',
-        'San Jose',
-        'CA',
-        95125,
-        'Brian Vaughn',
-        'Software Engineer',
-        'San Jose'
-      ],
-      [
-        'Brian Vaughn',
-        'Software Engineer',
-        'San Jose',
-        'CA',
-        95125,
-        'Brian Vaughn',
-        'Software Engineer',
-        'San Jose'
-      ],
-      [
-        'Brian Vaughn',
-        'Software Engineer',
-        'San Jose',
-        'CA',
-        95125,
-        'Brian Vaughn',
-        'Software Engineer',
-        'San Jose'
-      ]
-      // And so on...
-    ];
-    return (
-      <div key={key} style={style}>
-        {list[rowIndex][columnIndex]}
-      </div>
-    );
+    console.log(this);
+    // let list = this.state.data;
+    // return (
+    //   <div key={key} style={style}>
+    //     {list[rowIndex][columnIndex]}
+    //   </div>
+    // );
   }
 
   customizedGrid(props) {
@@ -90,7 +101,8 @@ class DisplayComponent extends Component {
 }
 
 const mapState = state => ({
-  dimension: state.filterByReducer.dimension
+  year: state.YearSelectorReducer.yearSelected,
+  selectedAttributes: state.SelectedAttributeReducer.selectedAttributes
 });
 
 export default connect(mapState)(DisplayComponent);
