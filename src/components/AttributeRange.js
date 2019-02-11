@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
+import { connect } from 'react-redux';
+
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-import { connect } from 'react-redux';
+import '../styles/AttributeRange.css';
 
 class AttributeRange extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      populationRange: []
+    };
   }
 
   render() {
@@ -34,15 +39,19 @@ class AttributeRange extends Component {
 
     const createSliders = this.props.attribute.attributeName.map(
       currentAttribute => (
-        <p>
-          {currentAttribute}
+        <div>
+          <p>
+            {currentAttribute} of <b>{this.props.location}</b>:{' '}
+          </p>
+          <p>Select Range of {currentAttribute}:</p>
+          <p className="Note"> (*range in percentage)</p>
           <Range
-            min={0}
-            max={100}
-            defaultValue={[20, 50]}
+            min={-50}
+            max={50}
+            defaultValue={[-5, 5]}
             tipFormatter={value => value}
           />
-        </p>
+        </div>
       )
     );
 

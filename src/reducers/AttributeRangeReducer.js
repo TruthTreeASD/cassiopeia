@@ -1,7 +1,6 @@
 export default (
   state = {
-    attributeName: ['Road Tax', 'Alcohol Tax'],
-    lastValues: []
+    attributeName: ['Population']
   },
   action
 ) => {
@@ -9,8 +8,7 @@ export default (
     case 'addAttribute':
       state = {
         ...state,
-        attributeName: action.payload,
-        lastValues: [...state.lastValues, action.payload]
+        attributeName: action.payload
       };
       state.attributeName = action.payload;
       break;
