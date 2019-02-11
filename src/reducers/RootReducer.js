@@ -1,16 +1,16 @@
 import { combineReducers } from 'redux';
 import AtrributeRangeReducer from './AttributeRangeReducer';
-import filterByReducer from './FilterByReducer';
+import FilterByReducer from './FilterByReducer';
 
-import selectedAttributeReducer from './SelectedAttributeReducer';
+import SelectedAttributeReducer from './SelectedAttributeReducer';
 
 import YearSelectorReducer from './YearSelectorReducer';
 
 export default combineReducers({
-  filterByReducer,
+  FilterByReducer,
   AtrributeRangeReducer,
 
-  selectedAttributeReducer,
+  SelectedAttributeReducer,
 
   YearSelectorReducer
 });

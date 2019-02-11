@@ -121,7 +121,7 @@ class LeftSideBar extends Component {
         <nav className="col-md-2 d-none d-md-block bg-dark sidebar">
           {Object.keys(this.state.sidebarData).map((collection, i) => {
             return (
-              <div>
+              <div key={i}>
                 {/* this next label needs to have a dynamic change when attribute is selected*/}
                 <button
                   className="accordion"
@@ -137,8 +137,8 @@ class LeftSideBar extends Component {
                     this.state.sidebarData[collection].properties
                   ).map((attr, i) => {
                     return (
-                      <label className="panel float-right">
-                        <p>
+                      <label key={i} className="panel float-right">
+                        <div>
                           {
                             this.state.sidebarData[collection].properties[attr]
                               .name
@@ -156,7 +156,7 @@ class LeftSideBar extends Component {
                             <input type="checkbox" />
                             <span className="slider round" />
                           </div>
-                        </p>
+                        </div>
                       </label>
                     );
                   })}

@@ -1,67 +1,99 @@
 import React, { Component } from 'react';
-import '../styles/DisplayComponent.css';
 import classNames from 'classnames';
-import Filters from './AttributeRange';
-import CloroplethMap from './CloroplethMap';
-import CustomBarChart from './CustomBarChart';
+import { Grid } from 'react-virtualized';
 import { connect } from 'react-redux';
+import axios from 'axios/index';
+import _ from 'lodash';
+
+import styles from 'react-virtualized/styles.css';
+import '../styles/DisplayComponent.css';
+import { TRUTHTREE_URI } from '../constants';
 
 class DisplayComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { displayComponent: 'Map' };
-    this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      currentLevel: null,
+      data: [['Name', 'Population']]
+    };
+    this.cellRenderer = this.cellRenderer.bind(this);
   }
 
-  handleClick(newState) {
-    this.setState({ displayComponent: newState });
+  cellRenderer({ columnIndex, key, rowIndex, style }) {
+    return (
+      <div key={key} style={style}>
+        {this.state.data[rowIndex][columnIndex]}
+      </div>
+    );
+  }
+
+  componentDidMount() {
+    let minPopulation = 0;
+    let maxPopulation = 0;
+    let data = [['Name', 'Population']];
+
+    // Calculate min and max population
+    axios
+      .get('/api/' + this.props.level + '/' + this.props.id)
+      .then(response => {
+        let population = parseFloat(response.data.population.replace(/,/g, ''));
+        maxPopulation = Math.floor(population * 1.5);
+        minPopulation = Math.floor(population * 0.5);
+        return axios
+          .get(
+            `${TRUTHTREE_URI}/api/states?populationRange=` +
+              minPopulation +
+              ',' +
+              maxPopulation
+          )
+          .then(response => {
+            _.map(response.data, obj => {
+              data.push([obj.name, obj.population]);
+            });
+            this.setState({ data: data });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    // axios
+    //     .get('/api/attributes?value='+allstatesids+'&attributes='+selectedAttributesString+'&yearList='+selectedYearString)
+    //     .then(response => {
+    //         //data contains the variables
+    //         console.log(response.data);
+    //         this.setState({
+    //             sidebarData: response.data,
+    //             isLoaded: true
+    //         });
+    //     })
+    //     .catch(error => {
+    //         console.log(error);
+    //     });
   }
 
   render() {
-    var display;
-    var mapBtn = classNames('displayButtons', {
-      'btn-primary': this.state.displayComponent === 'Map'
-    });
-    var ChartBtn = classNames('displayButtons', {
-      'btn-primary': this.state.displayComponent === 'Chart'
-    });
-    if (this.state.displayComponent === 'Chart') {
-      display = <CustomBarChart />;
-    } else {
-      display = <CloroplethMap data={[['CA', 70]]} />;
-    }
     return (
-      <div className="col-12 col-md-10 align-items-center">
-        <div class="display">
-          <button className={mapBtn} onClick={() => this.handleClick('Map')}>
-            {' '}
-            Map{' '}
-          </button>
-          <button
-            className={ChartBtn}
-            onClick={() => this.handleClick('Chart')}
-          >
-            {' '}
-            Chart{' '}
-          </button>
-          <div className="displayArea">{display}</div>
-          {/* <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          
-        </div>*/}
-        </div>
+      <div id="mainDisplay">
+        <Grid
+          cellRenderer={this.cellRenderer}
+          columnCount={this.state.data[0].length}
+          columnWidth={150}
+          height={500}
+          rowCount={this.state.data.length}
+          rowHeight={35}
+          width={1100}
+        />
       </div>
     );
   }
 }
 
 const mapState = state => ({
-  dimension: state.filterByReducer.dimension
+  year: state.YearSelectorReducer.yearSelected,
+  selectedAttributes: state.SelectedAttributeReducer.selectedAttributes
 });
 
 export default connect(mapState)(DisplayComponent);
