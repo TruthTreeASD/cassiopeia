@@ -19,10 +19,9 @@ class Home extends Component {
     };
   }
 
-  componentWillMount() {
-    // Get the current level by parsing the url
-    let currentLevel = window.location.pathname.split('/')[2];
-    let id = window.location.pathname.split('/')[4];
+  componentDidMount() {
+    let currentLevel = this.props.match.params.level;
+    let id = this.props.match.params.id;
     let minPopulation = 0;
     let maxPopulation = 0;
     let data = this.state.data;
@@ -51,7 +50,6 @@ class Home extends Component {
       .catch(error => {
         console.log(error);
       });
-    this.setState({ currentLevel: currentLevel });
     // axios
     //     .get('/api/attributes?value='+allstatesids+'&attributes='+selectedAttributesString+'&yearList='+selectedYearString)
     //     .then(response => {
