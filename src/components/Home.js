@@ -20,7 +20,7 @@ class Home extends Component {
               <Filters
                 level={this.props.match.params.level}
                 location={this.props.match.params.name}
-                licationId={this.props.match.params.id}
+                locationId={this.props.match.params.id}
               />
             </Col>
             <Col sm={{ size: 4, order: 2, offset: 0 }}>

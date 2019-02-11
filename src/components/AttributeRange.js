@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
@@ -12,27 +13,18 @@ class AttributeRange extends Component {
     super(props);
     this.state = {
       populationRange: [],
-      locationPopulation: 'loading'
+      locationPopulation: []
     };
   }
 
   componentDidMount() {
-    console.log('in did mount');
-    let locationId = this.props.loaction;
-    console.log(locationId);
-    let url = '/api/states/' + { locationId };
+    let url = '/api/' + this.props.level + '/' + this.props.locationId;
     console.log(url);
-    fetch(url)
-      .then(results => {
-        return results.json();
-      })
-      .then(data => {
-        let locationPopulation = data.results.map(population => {
-          return <p>{population.population};</p>;
-        });
-        this.setState({ locationPopulation: locationPopulation });
-        console.log('state'.this.state.locationPopulation);
-      });
+
+    // axios.get(url)
+    // .then(res => console.log(res.data)
+    // .catch(err => console.log(err))
+    axios.get(url).then(json => console.log(json));
   }
 
   render() {
