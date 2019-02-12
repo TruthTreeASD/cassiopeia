@@ -3,7 +3,7 @@ import '../styles/LeftSideBar.css';
 import _ from 'lodash';
 import axios from 'axios';
 import { connect } from 'react-redux';
-
+//import { Grid } from 'react-virtualized';
 import { TRUTHTREE_URI } from '../constants';
 
 class LeftSideBar extends Component {
@@ -140,11 +140,10 @@ class LeftSideBar extends Component {
       return <div>Loading...</div>;
     } else {
       return (
-        <nav className="col-md-2 d-none d-md-block bg-dark sidebar">
+        <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
           {Object.keys(this.state.sidebarData).map((collection, i) => {
             return (
               <div key={i}>
-                {/* this next label needs to have a dynamic change when attribute is selected*/}
                 <button
                   className="accordion"
                   onClick={() => this.handleClickCollection(collection)}

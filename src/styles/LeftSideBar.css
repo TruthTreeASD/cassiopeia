@@ -92,3 +92,8 @@ input:checked + .slider:before {
   background-color: lightsteelblue;
   overflow: hidden;
 }
+
+.scrollLeftBar {
+  max-height: 800px;
+  overflow-y: auto;
+}
