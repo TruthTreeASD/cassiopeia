@@ -96,7 +96,7 @@ class AttributeRange extends Component {
 
 const mapStateToProps = state => {
   return {
-    attribute: state.AtrributeRangeReducer
+    attribute: state.AttributeRangeReducer
   };
 };
 const mapDispatchToProps = dispatch => ({ dispatch });

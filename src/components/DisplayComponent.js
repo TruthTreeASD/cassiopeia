@@ -93,7 +93,8 @@ class DisplayComponent extends Component {
 
 const mapState = state => ({
   year: state.YearSelectorReducer.yearSelected,
-  selectedAttributes: state.SelectedAttributeReducer.selectedAttributes
+  selectedAttributes: state.SelectedAttributeReducer.selectedAttributes,
+  populationRange: state.AttributeRangeReducer.populationRange
 });
 
 export default connect(mapState)(DisplayComponent);

@@ -8,12 +8,11 @@ export default (
   switch (action.type) {
     case 'RANGE_SELECTION':
       //console.log(action);
-      state = {
+      return {
         ...state,
         populationRange: action.populationRange
       };
-
-      break;
+    default:
+      return state;
   }
-  return state;
 };

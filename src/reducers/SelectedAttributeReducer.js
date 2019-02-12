@@ -5,16 +5,14 @@ export default (
   },
   action
 ) => {
+  console.log(action);
   switch (action.type) {
     case 'CHANGE_ATTRIBUTE':
       return {
         ...state,
-        sidebarData: action.payload,
-        selectedAttributes: action.value
+        selectedAttributes: Array.from(action.value)
       };
-      break;
     default:
       return state;
   }
-  return state;
 };
