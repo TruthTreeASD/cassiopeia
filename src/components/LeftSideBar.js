@@ -67,7 +67,7 @@ class LeftSideBar extends Component {
     console.log(this.props.match.params.id);
     axios
       .get(
-        `${TRUTHTREE_URI}/api/collections?locationId=` +
+        `${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
           this.props.match.params.id
       )
       .then(response => {
