@@ -31,7 +31,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
   },
-  "proxy": "https://locahost:4000/",
+  "proxy": "http://locahost:4000/",
   "scripts": {
     "start-with-proxy": "node ./src/proxy-server/server.js & react-scripts start",
     "start": "react-scripts start",
