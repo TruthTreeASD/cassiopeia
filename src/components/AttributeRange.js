@@ -66,10 +66,6 @@ class AttributeRange extends Component {
             (*range selection available from -50% to +50% wrt to{' '}
             {this.props.location} {currentAttribute})
           </p>
-          <p>
-            Current selection: {this.props.attribute.populationRange[0]}% to{' '}
-            {this.props.attribute.populationRange[1]}% :
-          </p>
 
           <Range
             dots
@@ -81,7 +77,8 @@ class AttributeRange extends Component {
           />
 
           <p>
-            Current selection: {this.state.value[0]}% to {this.state.value[1]}%
+            Current selection: {this.props.attribute.populationRange[0]}% to{' '}
+            {this.props.attribute.populationRange[1]}% :
           </p>
         </div>
       )
