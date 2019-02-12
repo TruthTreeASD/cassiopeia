@@ -83,7 +83,6 @@ class LocationSearchBox extends Component {
 
   _parseData = (statesData, countiesData, citiesData) => {
     const statesDataById = statesData.reduce((newStatesData, state) => {
-      state.id = state.state_code;
       newStatesData[state.state_code] = state;
       state.counties = {};
       return newStatesData;
@@ -91,7 +90,6 @@ class LocationSearchBox extends Component {
 
     countiesData.forEach(county => {
       const state = statesDataById[county.state_code];
-      county.id = county.county;
       county.state = state.name;
       county.stateAbbr = state.abbreviation;
       state.counties[county.county] = county;
