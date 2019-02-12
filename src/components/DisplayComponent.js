@@ -112,13 +112,19 @@ class DisplayComponent extends Component {
             console.log(
               this.state.data[this.state.locationIds.indexOf(row.location_id)]
             );
+            console.log(
+              _.map(row.attributes, elem => {
+                return elem.data[0].value;
+              })
+            );
             console.log('++++++++++');
             this.state.data[
-              this.state.locationIds.indexOf(row.location_id)
+              this.state.locationIds.indexOf(row.location_id) + 1
             ].push(
-              _.map(row.attributes, elem => {
-                return elem.data[0];
-              })
+              row.attributes[0].data[0].value
+              // _.map(row.attributes, elem => {
+              //     return elem.data[0].value;
+              // })
             );
           });
         })
