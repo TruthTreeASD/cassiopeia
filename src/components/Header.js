@@ -1,37 +1,61 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand } from 'reactstrap';
-import { Container, Row, Col } from 'reactstrap';
+import {
+  Collapse,
+  Nav,
+  Navbar,
+  NavbarBrand,
+  NavItem,
+  NavLink,
+  NavbarToggler
+} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 import '../styles/Header.css';
-import logo from '../TruthTreeLogo.png';
+import logo from '../truthtree-logo.png';
 import { connect } from 'react-redux';
-import FilterBy from './FilterBy';
 
-const divStyle = {
-  width: '50px',
-  height: '50px',
-  float: 'left'
+const logoStyle = {
+  width: 50
 };
 
 class Header extends Component {
+  state = {
+    collapseOpen: false
+  };
+
   render() {
     return (
-      <Navbar className="header">
-        <NavbarBrand
-          className="d-flex align-items-center"
-          style={{ fontSize: '2.5rem' }}
-        >
-          <Row className="align-items-center">
-            <Col sm={{ size: 2, order: 1 }}>
-              <img style={divStyle} src={logo} alt="My logo" />
-              <>&nbsp;</>
-            </Col>
-            <Col sm={{ size: 4, order: 2, offset: 1 }}>TruthTree</Col>
-          </Row>
-          {/*<div className="col-12 col-md-10 align-items-center">
-            <FilterBy />
-          </div>*/}
+      <Navbar color="light" light expand="md">
+        <NavbarBrand>
+          <Link to="/">
+            <img
+              src={logo}
+              style={logoStyle}
+              class="d-inline-block"
+              alt="TruthTree logo"
+            />
+          </Link>
+          &nbsp;TruthTree
         </NavbarBrand>
+        <NavbarToggler
+          onClick={() =>
+            this.setState({ collapseOpen: !this.state.collapseOpen })
+          }
+        />
+        <Collapse isOpen={this.state.collapseOpen} navbar>
+          <Nav className="ml-auto" navbar>
+            <NavItem>
+              <NavLink tag={Link} to="/">
+                Trending
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/explore">
+                Explore
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
       </Navbar>
     );
   }
