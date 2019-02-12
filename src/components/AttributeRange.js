@@ -49,8 +49,6 @@ class AttributeRange extends Component {
   };
 
   render() {
-    const wrapperStyle = { width: 400 };
-
     const createSliders = this.props.attribute.attributeName.map(
       (currentAttribute, i) => (
         <div key={i}>
@@ -86,7 +84,7 @@ class AttributeRange extends Component {
 
     return (
       <div>
-        <div style={wrapperStyle}>
+        <div>
           <div> {createSliders} </div>
         </div>
       </div>
