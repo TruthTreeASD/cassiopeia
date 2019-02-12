@@ -42,7 +42,7 @@ class Home extends Component {
               </CardHeader>
               <CardBody>
                 <Row>
-                  <Col>
+                  <Col className="border-right">
                     <Filters
                       level={this.props.match.params.level}
                       location={this.props.match.params.name}
