@@ -12,8 +12,8 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div>
-          <Header />
+        <div className="d-flex flex-column">
+          <Header className="flex-grow-0 flex-shrink-0" />
           <Switch>
             <Route exact path="/" component={Trending} />
             <Route exact path="/explore" component={Explore} />

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Spinner, Popover, Input, ListGroup, ListGroupItem } from 'reactstrap';
 import { get } from 'axios';
 import Fuse from 'fuse.js';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { TRUTHTREE_URI } from '../../constants';
 
@@ -65,6 +65,7 @@ class LocationSearchBox extends Component {
       matchedCounties: [],
       matchedCities: []
     };
+    this.timer = null;
   }
 
   componentDidMount() {
@@ -136,40 +137,27 @@ class LocationSearchBox extends Component {
   };
 
   handleChange = event => {
-    const matchedStates = this.state.statesData.search(event.target.value);
-    const matchedCounties = this.state.countiesData.search(event.target.value);
-    const matchedCities = this.state.citiesData.search(event.target.value);
-    const popoverOpen = this.shouldPopoverOpen(
-      matchedStates,
-      matchedCounties,
-      matchedCities
-    );
-    this.setState({
-      matchedStates,
-      matchedCounties,
-      matchedCities,
-      popoverOpen
-    });
-  };
-
-  handleFocus = () => {
-    this.setState({
-      popoverOpen: this.shouldPopoverOpen(
-        this.state.matchedStates,
-        this.state.matchedCounties,
-        this.state.matchedCities
-      )
-    });
-  };
-
-  handleBlur = () => {
-    this.setState({
-      popoverOpen: this.shouldPopoverOpen(
-        this.state.matchedStates,
-        this.state.matchedCounties,
-        this.state.matchedCities
-      )
-    });
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+    const searchPhrase = event.target.value;
+    this.timer = setTimeout(() => {
+      const matchedStates = this.state.statesData.search(searchPhrase);
+      const matchedCounties = this.state.countiesData.search(searchPhrase);
+      const matchedCities = this.state.citiesData.search(searchPhrase);
+      const popoverOpen = this.shouldPopoverOpen(
+        matchedStates,
+        matchedCounties,
+        matchedCities
+      );
+      this.setState({
+        matchedStates,
+        matchedCounties,
+        matchedCities,
+        popoverOpen
+      });
+    }, 300);
   };
 
   shouldPopoverOpen = (matchedStates, matchedCounties, matchedCities) => {
@@ -199,7 +187,6 @@ class LocationSearchBox extends Component {
           <div>
             <Input
               id="location-search-box"
-              onFocus={this.handleFocus}
               onChange={this.handleChange}
               placeholder="Search for location"
             />
@@ -234,4 +221,4 @@ class LocationSearchBox extends Component {
   }
 }
 
-export default LocationSearchBox;
+export default withRouter(LocationSearchBox);
