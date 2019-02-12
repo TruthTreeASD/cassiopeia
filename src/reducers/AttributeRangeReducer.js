@@ -1,17 +1,18 @@
 export default (
   state = {
     attributeName: ['Population'],
-    populationRange: [-5, 5]
+    populationRange: [-50, 50]
   },
   action
 ) => {
   switch (action.type) {
     case 'RANGE_SELECTION':
+      //console.log(action);
       state = {
         ...state,
         populationRange: action.populationRange
       };
-      console.log(this.populationRange);
+
       break;
   }
   return state;

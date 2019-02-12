@@ -43,9 +43,10 @@ class AttributeRange extends Component {
   }
 
   onSliderChange = value => {
-    log(this.state.value);
-    this.setState({
-      value: value
+    console.log();
+    this.props.dispatch({
+      type: 'RANGE_SELECTION',
+      populationRange: value
     });
   };
 
@@ -68,14 +69,14 @@ class AttributeRange extends Component {
             {this.props.location} {currentAttribute})
           </p>
           <p>
-            Current selection: {this.state.value[0]}% to {this.state.value[1]}%
-            :
+            Current selection: {this.props.attribute.populationRange[0]}% to{' '}
+            {this.props.attribute.populationRange[1]}% :
           </p>
 
           <Range
             dots
             step={5}
-            value={this.state.value}
+            value={this.props.attribute.populationRange}
             min={this.state.min}
             max={this.state.max}
             onChange={this.onSliderChange}
@@ -99,5 +100,9 @@ const mapStateToProps = state => {
     attribute: state.AtrributeRangeReducer
   };
 };
+const mapDispatchToProps = dispatch => ({ dispatch });
 
-export default connect(mapStateToProps)(AttributeRange);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AttributeRange);
