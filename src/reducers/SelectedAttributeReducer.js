@@ -6,17 +6,15 @@ export default (
   action
 ) => {
   switch (action.type) {
-    case 'addAttribute':
-      state = {
+    case 'CHANGE_ATTRIBUTE':
+      return {
         ...state,
         sidebarData: action.payload,
-        selectedAttributes: [...state.lastValues, action.payload]
+        selectedAttributes: action.value
       };
-      // state.attributeName = action.payload;
       break;
     default:
       return state;
   }
-
   return state;
 };
