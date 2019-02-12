@@ -82,7 +82,6 @@ input:checked + .slider:before {
 
 .panel {
   padding: 0 10px;
-
   font-size: 12px;
   cursor: pointer;
   -webkit-transition: 0.4s;
@@ -94,6 +93,6 @@ input:checked + .slider:before {
 }
 
 .scrollLeftBar {
-  max-height: 800px;
+  max-height: 520px;
   overflow-y: auto;
 }
