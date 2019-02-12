@@ -5,6 +5,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 //import { Grid } from 'react-virtualized';
 import { TRUTHTREE_URI } from '../constants';
+import { withRouter } from 'react-router-dom';
 
 class LeftSideBar extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class LeftSideBar extends Component {
     };
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
-  }
+  } /*
   // each of these will need a diff api
   componentWillReceiveProps(nextProps) {
     if (nextProps.dimension === 'State') {
@@ -60,11 +61,15 @@ class LeftSideBar extends Component {
           console.log(error);
         });
     }
-  }
+  }*/
 
   componentDidMount() {
+    console.log(this.props.match.params.id);
     axios
-      .get(`${TRUTHTREE_URI}/api/collections?level=state`)
+      .get(
+        `${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
+          this.props.match.params.id
+      )
       .then(response => {
         //data contains the variables
         this.setState({
@@ -200,4 +205,4 @@ const mapDispatchToProps = dispatch => ({ dispatch });
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LeftSideBar);
+)(withRouter(LeftSideBar));
