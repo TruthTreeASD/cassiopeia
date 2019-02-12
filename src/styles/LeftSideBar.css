@@ -93,6 +93,6 @@ input:checked + .slider:before {
 }
 
 .scrollLeftBar {
-  max-height: 520px;
+  max-height: 800px;
   overflow-y: auto;
 }
