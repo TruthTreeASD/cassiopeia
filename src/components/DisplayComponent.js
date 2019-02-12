@@ -14,9 +14,11 @@ class DisplayComponent extends Component {
     super(props);
     this.state = {
       currentLevel: null,
-      data: [['Name', 'Population']]
+      data: [['Name', 'Population']],
+      locationIds: []
     };
     this.cellRenderer = this.cellRenderer.bind(this);
+    this.getAttributeType = this.getAttributeType.bind(this);
   }
 
   cellRenderer({ columnIndex, key, rowIndex, style }) {
@@ -27,11 +29,24 @@ class DisplayComponent extends Component {
     );
   }
 
+  getAttributeType(type) {
+    if (type === 'ids')
+      return _.flatMap(this.props.selectedAttributes, elem => {
+        return elem[0];
+      });
+    else
+      return _.last(
+        _.flatMap(this.props.selectedAttributes, elem => {
+          return elem[1];
+        })
+      );
+  }
+
   componentDidMount() {
     let minPopulation = 0;
     let maxPopulation = 0;
     let data = [['Name', 'Population']];
-
+    let locationIds = [];
     // Calculate min and max population
     axios
       .get('/api/' + this.props.level + '/' + this.props.id)
@@ -49,8 +64,10 @@ class DisplayComponent extends Component {
           .then(response => {
             _.map(response.data, obj => {
               data.push([obj.name, obj.population]);
+              locationIds.push(obj.id);
             });
             this.setState({ data: data });
+            this.setState({ locationIds: locationIds });
           })
           .catch(error => {
             console.log(error);
@@ -59,22 +76,34 @@ class DisplayComponent extends Component {
       .catch(error => {
         console.log(error);
       });
-    // axios
-    //     .get('/api/attributes?value='+allstatesids+'&attributes='+selectedAttributesString+'&yearList='+selectedYearString)
-    //     .then(response => {
-    //         //data contains the variables
-    //         console.log(response.data);
-    //         this.setState({
-    //             sidebarData: response.data,
-    //             isLoaded: true
-    //         });
-    //     })
-    //     .catch(error => {
-    //         console.log(error);
-    //     });
   }
 
   render() {
+    console.log('----------');
+    console.log(this.props);
+    console.log('----------');
+    let attributes = this.getAttributeType('ids');
+    if (attributes.length > 0) {
+      // let data = Array.from(this.state.data)
+      this.state.data[0].push(this.getAttributeType('name'));
+      axios
+        .get(
+          '/api/attributes?locationIds=' +
+            this.state.locationIds +
+            '&attributeIds=' +
+            attributes +
+            '&yearList=' +
+            this.props.year
+        )
+        .then(response => {
+          //data contains the variables
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+
     return (
       <div id="mainDisplay">
         <Grid
