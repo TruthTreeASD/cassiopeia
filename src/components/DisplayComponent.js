@@ -19,6 +19,7 @@ class DisplayComponent extends Component {
     };
     this.cellRenderer = this.cellRenderer.bind(this);
     this.getAttributeType = this.getAttributeType.bind(this);
+    this.populationRangeCall = this.populationRangeCall.bind(this);
   }
 
   cellRenderer({ columnIndex, key, rowIndex, style }) {
@@ -43,6 +44,10 @@ class DisplayComponent extends Component {
   }
 
   componentDidMount() {
+    this.populationRangeCall();
+  }
+
+  populationRangeCall() {
     let minPopulation = 0;
     let maxPopulation = 0;
     let data = [['Name', 'Population']];
@@ -52,8 +57,12 @@ class DisplayComponent extends Component {
       .get('/api/' + this.props.level + '/' + this.props.id)
       .then(response => {
         let population = response.data.population;
-        maxPopulation = Math.floor(population * 1.5);
-        minPopulation = Math.floor(population * 0.5);
+        maxPopulation = Math.floor(
+          population + (this.props.populationRange[1] / 100) * population
+        );
+        minPopulation = Math.floor(
+          population + (this.props.populationRange[0] / 100) * population
+        );
         return axios
           .get(
             `${TRUTHTREE_URI}/api/states?populationRange=` +
@@ -98,12 +107,20 @@ class DisplayComponent extends Component {
         .then(response => {
           //data contains the variables
           console.log(response.data);
-          // _.map(response.data, (row) => {
-          //     this.state.data[this.state.locationIds.indexOf(row.location_id)].push(
-          //         _.map(row.attributes, (elem) => {
-          //           return elem.data[0]
-          //         }))
-          // })
+          _.map(response.data, row => {
+            console.log('+++++++++');
+            console.log(
+              this.state.data[this.state.locationIds.indexOf(row.location_id)]
+            );
+            console.log('++++++++++');
+            this.state.data[
+              this.state.locationIds.indexOf(row.location_id)
+            ].push(
+              _.map(row.attributes, elem => {
+                return elem.data[0];
+              })
+            );
+          });
         })
         .catch(error => {
           console.log(error);
