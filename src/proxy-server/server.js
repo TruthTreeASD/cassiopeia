@@ -14,7 +14,7 @@ app.get('/api/states/:stateId', (req, res) => {
   axios
     .get(`${TRUTHTREE_URI}/api/states`)
     .then(({ data }) => {
-      const state = findLocation('state_code', req.params.stateId, data);
+      const state = findLocation('id', req.params.stateId, data);
       if (state) {
         res.send(state);
       } else {
