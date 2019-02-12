@@ -11,16 +11,16 @@ import './styles/Tab.css';
 class App extends Component {
   render() {
     return (
-      <div>
-        <Header />
-        <Router>
-          <Switch className="container-fluid">
+      <Router>
+        <div>
+          <Header />
+          <Switch>
             <Route exact path="/" component={Trending} />
             <Route exact path="/explore" component={Explore} />
             <Route exact path="/explore/:level/:name/:id" component={Home} />
           </Switch>
-        </Router>
-      </div>
+        </div>
+      </Router>
     );
   }
 }
