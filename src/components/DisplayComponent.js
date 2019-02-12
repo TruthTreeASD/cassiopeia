@@ -98,6 +98,12 @@ class DisplayComponent extends Component {
         .then(response => {
           //data contains the variables
           console.log(response.data);
+          // _.map(response.data, (row) => {
+          //     this.state.data[this.state.locationIds.indexOf(row.location_id)].push(
+          //         _.map(row.attributes, (elem) => {
+          //           return elem.data[0]
+          //         }))
+          // })
         })
         .catch(error => {
           console.log(error);
