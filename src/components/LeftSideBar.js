@@ -63,9 +63,11 @@ class LeftSideBar extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.params);
     axios
-      .get(`${TRUTHTREE_URI}/api/collections?level=state`)
+      .get(`${TRUTHTREE_URI}/api/collections?locationId=` + this.props.id)
       .then(response => {
+        console.log(response.data);
         //data contains the variables
         this.setState({
           sidebarData: response.data,
