@@ -10,8 +10,6 @@ import '../styles/AttributeRange.css';
 
 const Range = Slider.Range;
 
-const style = { width: 400, margin: 50 };
-
 function log(value) {
   console.log(value); //eslint-disable-line
 }
@@ -51,7 +49,7 @@ class AttributeRange extends Component {
   };
 
   render() {
-    const wrapperStyle = { width: 400, margin: 50 };
+    const wrapperStyle = { width: 400 };
 
     const createSliders = this.props.attribute.attributeName.map(
       (currentAttribute, i) => (
@@ -68,10 +66,6 @@ class AttributeRange extends Component {
             (*range selection available from -50% to +50% wrt to{' '}
             {this.props.location} {currentAttribute})
           </p>
-          <p>
-            Current selection: {this.props.attribute.populationRange[0]}% to{' '}
-            {this.props.attribute.populationRange[1]}% :
-          </p>
 
           <Range
             dots
@@ -81,6 +75,11 @@ class AttributeRange extends Component {
             max={this.state.max}
             onChange={this.onSliderChange}
           />
+
+          <p>
+            Current selection: {this.props.attribute.populationRange[0]}% to{' '}
+            {this.props.attribute.populationRange[1]}% :
+          </p>
         </div>
       )
     );
