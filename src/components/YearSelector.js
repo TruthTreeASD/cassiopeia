@@ -12,11 +12,6 @@ const dropdownMenuStyle = {
   overflow: 'auto'
 };
 
-const yearSelectorStyle = {
-  width: '200px',
-  margin: '50px'
-};
-
 let allYears = [];
 for (let i = 1966; i < 2019; i++) {
   allYears.push(i + 1);
@@ -59,8 +54,8 @@ class YearSelector extends Component {
     //console.log(this.props.yearSelected);
 
     return (
-      <div style={yearSelectorStyle}>
-        <p> Year: </p>
+      <div>
+        <p> Select Year of Data to be displayed: </p>
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{this.props.yearSelected}</DropdownToggle>
           <DropdownMenu style={dropdownMenuStyle}>{yearArray}</DropdownMenu>
