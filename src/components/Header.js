@@ -25,7 +25,7 @@ class Header extends Component {
 
   render() {
     return (
-      <Navbar color="light" light expand="md">
+      <Navbar color="light" light expand="md" className={this.props.className}>
         <NavbarBrand>
           <Link to="/">
             <img
