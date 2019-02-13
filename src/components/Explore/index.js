@@ -22,7 +22,7 @@ class Explore extends Component {
           style={searchBoxWrapperStyle}
         >
           <Row className="justify-content-center">
-            <Col xs={6}>
+            <Col xs={8} md={6}>
               <LocationSearchBox />
             </Col>
           </Row>
