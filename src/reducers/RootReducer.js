@@ -3,10 +3,12 @@ import AtrributeRangeReducer from './AttributeRangeReducer';
 import FilterByReducer from './FilterByReducer';
 import SelectedAttributeReducer from './SelectedAttributeReducer';
 import YearSelectorReducer from './YearSelectorReducer';
+import LocationSearchBoxReducer from './LocationSearchBoxReducer';
 
 export default combineReducers({
   FilterByReducer,
   AtrributeRangeReducer,
   SelectedAttributeReducer,
-  YearSelectorReducer
+  YearSelectorReducer,
+  LocationSearchBoxReducer
 });
