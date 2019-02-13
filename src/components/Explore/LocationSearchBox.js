@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Spinner, Popover, Input, ListGroup, ListGroupItem } from 'reactstrap';
 import { get } from 'axios';
 import Fuse from 'fuse.js';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { updateSuggestions } from '../../actions/LocationSearchBoxActions';
 
 import { TRUTHTREE_URI } from '../../constants';
 
@@ -25,6 +28,15 @@ const createFuseOptions = keys => {
   };
 };
 
+const getMatchedLocationPrettyNames = item => {
+  let prettyName = item.name;
+  if (item.type === 'city') {
+    prettyName += item.county ? `, ${item.county}` : '';
+  }
+  prettyName += item.stateAbbr ? `, ${item.stateAbbr}` : '';
+  return prettyName;
+};
+
 const PopoverSection = ({ level, items }) => {
   return (
     <ListGroup>
@@ -33,18 +45,14 @@ const PopoverSection = ({ level, items }) => {
       </ListGroupItem>
       {items.map((item, index) => {
         item = item.item;
-        let buttonText = item.name;
-        if (level !== 'counties') {
-          buttonText += item.county ? `, ${item.county}` : '';
-        }
-        buttonText += item.stateAbbr ? `, ${item.stateAbbr}` : '';
+        const linkLabel = getMatchedLocationPrettyNames(item);
         const url = `/explore/${level}/${item.name
           .toLowerCase()
           .replace(' ', '-')}/${item.id}`;
 
         return (
           <ListGroupItem key={index}>
-            <Link to={url}>{buttonText}</Link>
+            <Link to={url}>{linkLabel}</Link>
           </ListGroupItem>
         );
       })}
@@ -65,6 +73,8 @@ class LocationSearchBox extends Component {
       matchedCounties: [],
       matchedCities: []
     };
+
+    // For delay purposes
     this.timer = null;
   }
 
@@ -84,6 +94,7 @@ class LocationSearchBox extends Component {
 
   _parseData = (statesData, countiesData, citiesData) => {
     const statesDataById = statesData.reduce((newStatesData, state) => {
+      state.type = 'state';
       newStatesData[state.state_code] = state;
       state.counties = {};
       return newStatesData;
@@ -91,6 +102,7 @@ class LocationSearchBox extends Component {
 
     countiesData.forEach(county => {
       const state = statesDataById[county.state_code];
+      county.type = 'county';
       county.state = state.name;
       county.stateAbbr = state.abbreviation;
       state.counties[county.county] = county;
@@ -99,6 +111,7 @@ class LocationSearchBox extends Component {
     citiesData.forEach(city => {
       const state = statesDataById[city.state_code];
       const county = state.counties[city.county];
+      city.type = 'city';
 
       if (state) {
         city.state = state.name;
@@ -151,14 +164,41 @@ class LocationSearchBox extends Component {
         matchedCounties,
         matchedCities
       );
-      this.setState({
-        matchedStates,
-        matchedCounties,
-        matchedCities,
-        popoverOpen
-      });
+      this.setState(
+        {
+          matchedStates,
+          matchedCounties,
+          matchedCities,
+          popoverOpen
+        },
+        () => {
+          this.props.dispatch(
+            updateSuggestions(
+              this.getSuggestedNameList(
+                matchedStates,
+                matchedCounties,
+                matchedCities
+              )
+            )
+          );
+        }
+      );
     }, 300);
   };
+
+  getSuggestedNameList(matchedStates, matchedCounties, matchedCities) {
+    const suggestedStates = matchedStates.slice(0, 3);
+    const suggestedCounties = matchedCounties.slice(0, 3);
+    const suggestedCities = matchedCities.slice(0, 3);
+    const suggestedLocations = [].concat(
+      suggestedStates,
+      suggestedCounties,
+      suggestedCities
+    );
+    return suggestedLocations
+      .map(item => item.item)
+      .map(getMatchedLocationPrettyNames);
+  }
 
   shouldPopoverOpen = (matchedStates, matchedCounties, matchedCities) => {
     return (
@@ -221,4 +261,4 @@ class LocationSearchBox extends Component {
   }
 }
 
-export default withRouter(LocationSearchBox);
+export default connect()(LocationSearchBox);
