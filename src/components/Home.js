@@ -2,16 +2,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import '../styles/Home.css';
-import {
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Button,
-  CardHeader
-} from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 import DisplayComponent from './DisplayComponent';
 import LeftSideBar from './LeftSideBar';
