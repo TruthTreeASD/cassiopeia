@@ -94,7 +94,7 @@ class LeftSideBar extends Component {
     //if clicking on the slider.
     let newArr = this.state.selectedAttributes;
     for (let i = 0; i < newArr.length; i++) {
-      if (newArr[i][0] == attribute.property_id) {
+      if (newArr[i][0] === attribute.property_id) {
         _.remove(newArr, elem => {
           return elem === newArr[i];
         });
@@ -132,7 +132,6 @@ class LeftSideBar extends Component {
     this.setState({
       selectedAttributes: newArr
     });
-    console.log(this.props);
     this.props.dispatch({
       type: 'CHANGE_ATTRIBUTE',
       value: newArr
@@ -140,7 +139,7 @@ class LeftSideBar extends Component {
   };
 
   render() {
-    var { isLoaded, sidebarData } = this.state;
+    var { isLoaded } = this.state;
     if (!isLoaded) {
       return <div>Loading...</div>;
     } else {

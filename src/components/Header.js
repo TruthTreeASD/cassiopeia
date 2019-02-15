@@ -31,7 +31,7 @@ class Header extends Component {
             <img
               src={logo}
               style={logoStyle}
-              class="d-inline-block"
+              className="d-inline-block"
               alt="TruthTree logo"
             />
           </Link>

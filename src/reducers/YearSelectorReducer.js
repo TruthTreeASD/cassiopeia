@@ -7,6 +7,8 @@ export default (state = { yearSelected: 2019 }, action) => {
         yearSelected: action.yearSelected
       };
       break;
+    default:
+      return state;
   }
   return state;
 };

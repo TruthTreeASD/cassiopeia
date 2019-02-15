@@ -12,9 +12,7 @@ export default (
         sidebarData: action.payload,
         selectedAttributes: action.value
       };
-      break;
     default:
       return state;
   }
-  return state;
 };
