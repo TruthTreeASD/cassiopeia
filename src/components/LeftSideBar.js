@@ -43,7 +43,7 @@ class LeftSideBar extends Component {
     axios
       .get(
         `${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
-          this.props.match.params.id
+          this.props.match.params.id // +&year=2016
       )
       .then(response => {
         //data contains the variables
