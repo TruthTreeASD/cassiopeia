@@ -21,9 +21,10 @@ class LeftSideBar extends Component {
   } /*
   // each of these will need a diff api
   componentWillReceiveProps(nextProps) {
-    if (nextProps.dimension === 'State') {
+      let year = nextProps.year;
       axios
-        .get(`${TRUTHTREE_URI}/api/collections?level=state`)
+          .get(`${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
+              this.props.match.params.id+this.props.year)
         .then(response => {
           //data contains the variables
           this.setState({
@@ -34,33 +35,7 @@ class LeftSideBar extends Component {
         .catch(error => {
           console.log(error);
         });
-    } else if (nextProps.dimension === 'City') {
-      axios
-        .get(`${TRUTHTREE_URI}/api/collections?level=city`)
-        .then(response => {
-          //data contains the variables
-          this.setState({
-            sidebarData: response.data,
-            isLoaded: true
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      axios
-        .get(`${TRUTHTREE_URI}/api/collections?level=county`)
-        .then(response => {
-          //data contains the variables
-          this.setState({
-            sidebarData: response.data,
-            isLoaded: true
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
+    } 
   }*/
 
   componentDidMount() {
@@ -108,27 +83,9 @@ class LeftSideBar extends Component {
         });
         return;
       }
-    } /*
-      newArr.forEach(function (element) {
-          if (element[0] == attribute.property_id) {
-              console.log(element)
-              _.remove(newArr, elem => {
-                  return elem === element;
-              });
-              return
-          }
-      });*/
+    }
     newArr.push([attribute.property_id, attribute.name]);
-    /*
-        let newElem = [attribute.property_id, attribute.name]
-        if (_.includes(newArr, [attribute.property_id, attribute.name])) {
-        _.remove(newArr, elem => {
-            return elem === [attribute.property_id, attribute.name];
-        });
-      } else {
-            newArr.push([attribute.property_id, attribute.name]);
-        // this.state.selectedAttributes.push(attribute.property_id) });
-      }*/
+
     this.setState({
       selectedAttributes: newArr
     });
@@ -136,6 +93,8 @@ class LeftSideBar extends Component {
       type: 'CHANGE_ATTRIBUTE',
       value: newArr
     });
+
+    this.setState({ [attribute]: !this.state[attribute] });
   };
 
   render() {
