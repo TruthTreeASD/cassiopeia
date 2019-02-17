@@ -14,7 +14,8 @@ class LeftSideBar extends Component {
     this.state = {
       sidebarData: [],
       isLoaded: false,
-      selectedAttributes: []
+      selectedAttributes: [],
+      collapsedLeft: false
     };
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
