@@ -49,7 +49,7 @@ class LeftSideBar extends Component {
       .then(response => {
         //data contains the variables
         this.setState({
-          sidebarData: response.data,
+          sidebarData: response.data.data,
           isLoaded: true
         });
       })
@@ -98,6 +98,11 @@ class LeftSideBar extends Component {
     this.setState({ [attribute]: !this.state[attribute] });
   };
 
+  collapseLeftBar() {
+    console.log('Clicked hi');
+    this.setState({ collapsedLeft: !this.state.collapsedLeft });
+  }
+
   render() {
     var { isLoaded } = this.state;
     if (!isLoaded) {
@@ -105,7 +110,14 @@ class LeftSideBar extends Component {
     } else {
       return (
         <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
-          <div>
+          <button onClick={() => this.collapseLeftBar()}>
+            {!this.state.collapsedLeft ? 'Hide Left Nav' : 'Show Left Nav'}
+          </button>
+          <div
+            style={{
+              display: !this.state.collapsedLeft ? 'block' : 'none'
+            }}
+          >
             {Object.keys(this.state.sidebarData).map((collection, i) => {
               return (
                 <div key={i}>
