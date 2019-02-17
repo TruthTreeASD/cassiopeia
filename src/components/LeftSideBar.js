@@ -108,66 +108,76 @@ class LeftSideBar extends Component {
     if (!isLoaded) {
       return <div>Loading...</div>;
     } else {
-      return (
-        <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
-          <button onClick={() => this.collapseLeftBar()}>
-            {!this.state.collapsedLeft ? 'Hide Left Nav' : 'Show Left Nav'}
-          </button>
-          <div
-            style={{
-              display: !this.state.collapsedLeft ? 'block' : 'none'
-            }}
+      if (this.state.collapsedLeft) {
+        return (
+          <button
+            className="col-md-flex d-md-flex"
+            onClick={() => this.collapseLeftBar()}
           >
-            {Object.keys(this.state.sidebarData).map((collection, i) => {
-              return (
-                <div key={i}>
-                  <button
-                    className="accordion"
-                    onClick={() => this.handleClickCollection(collection)}
-                  >
-                    {this.state.sidebarData[collection].name}
-                  </button>
+            {!this.state.collapsedLeft ? 'Hide Left Nav' : 'Show'}
+          </button>
+        );
+      } else {
+        return (
+          <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
+            <button onClick={() => this.collapseLeftBar()}>
+              {!this.state.collapsedLeft ? 'Hide Left Nav' : 'Show Left Nav'}
+            </button>
+            <div
+              style={{
+                display: !this.state.collapsedLeft ? 'block' : 'none'
+              }}
+            >
+              {Object.keys(this.state.sidebarData).map((collection, i) => {
+                return (
+                  <div key={i}>
+                    <button
+                      className="accordion"
+                      onClick={() => this.handleClickCollection(collection)}
+                    >
+                      {this.state.sidebarData[collection].name}
+                    </button>
 
-                  <div
-                    style={{
-                      display: this.state[collection] ? 'block' : 'none'
-                    }}
-                  >
-                    {Object.keys(
-                      this.state.sidebarData[collection].properties
-                    ).map((attr, i) => {
-                      return (
-                        <label key={i} className="panel float-right">
-                          <div>
-                            {
-                              this.state.sidebarData[collection].properties[
-                                attr
-                              ].name
-                            }
-                            <div
-                              className="switch float-right"
-                              onClick={() =>
-                                this.handleClickAttribute(
-                                  this.state.sidebarData[collection].properties[
-                                    attr
-                                  ]
-                                )
+                    <div
+                      style={{
+                        display: this.state[collection] ? 'block' : 'none'
+                      }}
+                    >
+                      {Object.keys(
+                        this.state.sidebarData[collection].properties
+                      ).map((attr, i) => {
+                        return (
+                          <label key={i} className="panel float-right">
+                            <div>
+                              {
+                                this.state.sidebarData[collection].properties[
+                                  attr
+                                ].name
                               }
-                            >
-                              <input type="checkbox" />
-                              <span className="slider round" />
+                              <div
+                                className="switch float-right"
+                                onClick={() =>
+                                  this.handleClickAttribute(
+                                    this.state.sidebarData[collection]
+                                      .properties[attr]
+                                  )
+                                }
+                              >
+                                <input type="checkbox" />
+                                <span className="slider round" />
+                              </div>
                             </div>
-                          </div>
-                        </label>
-                      );
-                    })}
+                          </label>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </nav>
-      );
+                );
+              })}
+            </div>
+          </nav>
+        );
+      }
     }
   }
 }
