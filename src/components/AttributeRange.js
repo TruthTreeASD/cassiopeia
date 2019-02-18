@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -9,10 +8,6 @@ import 'rc-tooltip/assets/bootstrap.css';
 import '../styles/AttributeRange.css';
 
 const Range = Slider.Range;
-
-function log(value) {
-  console.log(value); //eslint-disable-line
-}
 
 class AttributeRange extends Component {
   constructor(props) {

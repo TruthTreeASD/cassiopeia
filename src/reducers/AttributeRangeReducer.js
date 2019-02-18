@@ -7,7 +7,6 @@ export default (
 ) => {
   switch (action.type) {
     case 'RANGE_SELECTION':
-      //console.log(action);
       return {
         ...state,
         populationRange: action.populationRange

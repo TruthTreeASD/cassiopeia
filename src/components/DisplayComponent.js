@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import { Grid } from 'react-virtualized';
 import { connect } from 'react-redux';
 import axios from 'axios/index';
 import _ from 'lodash';
-
-import styles from 'react-virtualized/styles.css';
 import '../styles/DisplayComponent.css';
 import { TRUTHTREE_URI } from '../constants';
 

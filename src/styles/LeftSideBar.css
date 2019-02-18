@@ -96,3 +96,16 @@ input:checked + .slider:before {
   max-height: 800px;
   overflow-y: auto;
 }
+
+.collapse {
+  display: none;
+}
+
+.collapse.in {
+  display: block;
+}
+
+.leftSearch {
+  width: 75%;
+  margin-bottom: 15px;
+}
