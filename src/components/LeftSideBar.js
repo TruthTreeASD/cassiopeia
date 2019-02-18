@@ -15,7 +15,8 @@ class LeftSideBar extends Component {
       sidebarData: [],
       isLoaded: false,
       selectedAttributes: [],
-      collapsedLeft: false
+      collapsedLeft: false,
+      searchedString: ''
     };
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
@@ -105,6 +106,7 @@ class LeftSideBar extends Component {
 
   handleChange = event => {
     console.log(event.target.value);
+    this.setState({ searchedString: event.target.value });
   };
 
   render() {
