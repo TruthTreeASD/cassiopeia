@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 //import { Grid } from 'react-virtualized';
 import { TRUTHTREE_URI } from '../constants';
 import { withRouter } from 'react-router-dom';
+import configureStore from '../store';
 
 class LeftSideBar extends Component {
   constructor(props) {
@@ -111,6 +112,33 @@ class LeftSideBar extends Component {
     }
   };
 
+  renderSearchTerm = collection => {
+    if (
+      this.state.searchedString == '' ||
+      this.state.sidebarData[collection].name
+        .toLowerCase()
+        .search(this.state.searchedString) > -1
+    ) {
+      return true;
+    }
+    var attr;
+    for (attr in this.state.sidebarData[collection].properties) {
+      if (
+        this.state.sidebarData[collection].properties[attr].name
+          .toLowerCase()
+          .search(this.state.searchedString) > -1
+      ) {
+        console.log(
+          'found attribute in search' +
+            this.state.sidebarData[collection].properties[attr].name
+        );
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   render() {
     var { isLoaded } = this.state;
     if (!isLoaded) {
@@ -146,12 +174,7 @@ class LeftSideBar extends Component {
               }}
             >
               {Object.keys(this.state.sidebarData).map((collection, i) => {
-                if (
-                  this.state.searchedString == '' ||
-                  this.state.sidebarData[collection].name
-                    .toLowerCase()
-                    .search(this.state.searchedString) > -1
-                ) {
+                if (this.renderSearchTerm(collection)) {
                   return (
                     <div key={i}>
                       <button
