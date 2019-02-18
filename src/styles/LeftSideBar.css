@@ -104,3 +104,8 @@ input:checked + .slider:before {
 .collapse.in {
   display: block;
 }
+
+.leftSearch {
+  width: 75%;
+  margin-bottom: 15px;
+}

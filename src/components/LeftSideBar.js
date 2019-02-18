@@ -103,6 +103,10 @@ class LeftSideBar extends Component {
     this.setState({ collapsedLeft: !this.state.collapsedLeft });
   }
 
+  handleChange = event => {
+    console.log(event.target.value);
+  };
+
   render() {
     var { isLoaded } = this.state;
     if (!isLoaded) {
@@ -120,8 +124,17 @@ class LeftSideBar extends Component {
       } else {
         return (
           <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
-            <button onClick={() => this.collapseLeftBar()}>
-              {!this.state.collapsedLeft ? 'Hide Left Nav' : 'Show Left Nav'}
+            <input
+              className="leftSearch"
+              id="attribute-search-box"
+              onChange={this.handleChange}
+              placeholder="Search for a property"
+            />
+            <button
+              className="float-right"
+              onClick={() => this.collapseLeftBar()}
+            >
+              {!this.state.collapsedLeft ? 'Hide' : 'Show Left Nav'}
             </button>
             <div
               style={{
@@ -164,7 +177,14 @@ class LeftSideBar extends Component {
                                 }
                               >
                                 <input type="checkbox" />
-                                <span className="slider round" />
+                                <span
+                                  className="slider round"
+                                  style={
+                                    {
+                                      //display: !this.state.collapsedLeft ? 'block' : 'none'
+                                    }
+                                  }
+                                />
                               </div>
                             </div>
                           </label>
