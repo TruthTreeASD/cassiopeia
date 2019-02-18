@@ -158,6 +158,8 @@ class LeftSideBar extends Component {
           <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
             <input
               className="leftSearch"
+              data-spy="affix"
+              data-offset-top="197" //trying to make search box stay top
               id="attribute-search-box"
               onChange={this.handleChangeSearch}
               placeholder="Search for a property"
