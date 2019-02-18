@@ -12,7 +12,6 @@ import { Link } from 'react-router-dom';
 
 import '../styles/Header.css';
 import logo from '../truthtree-logo.png';
-import { connect } from 'react-redux';
 
 const logoStyle = {
   width: 50
@@ -61,8 +60,4 @@ class Header extends Component {
   }
 }
 
-const mapState = state => ({
-  dimension: state.FilterByReducer.dimension
-});
-
-export default connect(mapState)(Header);
+export default Header;

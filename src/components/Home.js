@@ -26,7 +26,6 @@ class Home extends Component {
             <Card>
               <CardHeader>
                 <div>
-                  {' '}
                   Selected Location: <b>{this.props.match.params.name}</b>
                 </div>
               </CardHeader>
