@@ -1,4 +1,4 @@
-export default (state = { yearSelected: 2019 }, action) => {
+export default (state = { yearSelected: 2016 }, action) => {
   switch (action.type) {
     case 'CHANGE_YEAR':
       //console.log(action);
