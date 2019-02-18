@@ -103,6 +103,7 @@ class LeftSideBar extends Component {
   collapseLeftBar() {
     console.log('Clicked hi');
     this.setState({ collapsedLeft: !this.state.collapsedLeft });
+    this.setState({ searchedString: '' });
   }
 
   handleChangeSearch = event => {
