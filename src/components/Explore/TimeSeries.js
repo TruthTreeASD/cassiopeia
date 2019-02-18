@@ -10,14 +10,26 @@ import {
 } from 'recharts';
 import { connect } from 'react-redux';
 const data = [
-  { name: '1967', uv: 400, pv: 1200 },
-  { name: '1969', uv: 200, pv: 2400 },
-  { name: '2005', uv: '', pv: 2000 },
-  { name: '2010', uv: 300, pv: 1500 }
+  { year: '1967', location1: 400, location2: 1200 },
+  { year: '1969', location1: 200, location2: 2400 },
+  { year: '2005', location1: 700, location2: 2000 },
+  { year: '2010', location1: 300, location2: 1500 }
 ];
 
 class TimeSeries extends Component {
   render() {
+    console.log('In Render');
+    let rows = data.length;
+    let cols = Object.keys(data[0]).length;
+    console.log('Rows is ' + rows);
+    console.log('Cols is ' + cols);
+
+    // const createLine => (
+    //     <div key={i}>
+    //
+    //     </div>
+    //   )
+    // );
     return (
       <div>
         <LineChart
@@ -27,17 +39,18 @@ class TimeSeries extends Component {
           margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
         >
           <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="year" />
           <YAxis />
           <Tooltip />
           <Legend />
+
           <Line
             type="monotone"
-            dataKey="pv"
+            dataKey="location1"
             stroke="#8884d8"
             activeDot={{ r: 8 }}
           />
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="location2" stroke="#82ca9d" />
         </LineChart>
       </div>
     );
