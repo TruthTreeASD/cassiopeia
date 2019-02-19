@@ -13,7 +13,7 @@ const dropdownMenuStyle = {
 };
 
 let allYears = [];
-for (let i = 1966; i < 2019; i++) {
+for (let i = 1966; i < 2016; i++) {
   allYears.push(i + 1);
 }
 
@@ -24,7 +24,7 @@ class YearSelector extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       dropdownOpen: false,
-      yearSelected: '2019'
+      yearSelected: '2016'
     };
     this.onClick = this.onClick.bind(this);
   }
