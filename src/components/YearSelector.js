@@ -50,8 +50,6 @@ class YearSelector extends Component {
         {year}
       </DropdownItem>
     ));
-    //console.log('year selected in render');
-    //console.log(this.props.yearSelected);
 
     return (
       <div>
