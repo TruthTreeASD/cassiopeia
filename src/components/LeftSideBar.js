@@ -21,6 +21,11 @@ class LeftSideBar extends Component {
     };
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
+    Object.keys(this.state.sidebarData).map(key =>
+      Object.keys(this.state.sidebarData[key]).map(
+        attrKey => (this.state.sidebarData[key][attrKey] = false)
+      )
+    );
   } /*
   // each of these will need a diff api
   componentWillReceiveProps(nextProps) {
@@ -70,6 +75,14 @@ class LeftSideBar extends Component {
   handleClickAttribute = attribute => {
     //this is getting called twice
     //if clicking on the slider.
+
+    /*      this.setState({
+            sidebarData[collection].properties[
+                attr
+            ] : !this.state.sidebarData[collection].properties[
+            attr
+            ]
+        });*/
     let newArr = this.state.selectedAttributes;
     for (let i = 0; i < newArr.length; i++) {
       if (newArr[i][0] === attribute.property_id) {
@@ -196,7 +209,17 @@ class LeftSideBar extends Component {
                           this.state.sidebarData[collection].properties
                         ).map((attr, i) => {
                           return (
-                            <label key={i} className="panel float-right">
+                            <label
+                              key={i}
+                              className="panel float-right"
+                              style={{
+                                background: this.state.sidebarData[collection][
+                                  attr
+                                ]
+                                  ? 'orange'
+                                  : 'lightsteelblue'
+                              }}
+                            >
                               <div>
                                 {
                                   this.state.sidebarData[collection].properties[
@@ -207,6 +230,7 @@ class LeftSideBar extends Component {
                                   className="switch float-right"
                                   onClick={() =>
                                     this.handleClickAttribute(
+                                      collection,
                                       this.state.sidebarData[collection]
                                         .properties[attr]
                                     )
