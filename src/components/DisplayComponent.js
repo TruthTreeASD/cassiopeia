@@ -28,16 +28,10 @@ class DisplayComponent extends Component {
   }
 
   getAttributeType(type) {
-    if (type === 'ids')
-      return _.flatMap(this.props.selectedAttributes, elem => {
-        return elem[0];
-      });
-    else
-      return _.last(
-        _.flatMap(this.props.selectedAttributes, elem => {
-          return elem[1];
-        })
-      );
+    console.log(this.props.selectedAttributes);
+    return _.flatMap(this.props.selectedAttributes, elem => {
+      return type === 'ids' ? elem[0] : elem[1];
+    });
   }
 
   componentDidMount() {
@@ -49,9 +43,15 @@ class DisplayComponent extends Component {
     let maxPopulation = 0;
     let data = [['Name', 'Population']];
     let locationIds = [];
+    let year = this.props.yearSelected ? this.props.yearSelected : 2016;
     // Calculate min and max population
     axios
-      .get('/api/' + this.props.level + '/' + this.props.id)
+      .get(
+        `${TRUTHTREE_URI}/api/population?locationId=` +
+          this.props.id +
+          '&year=' +
+          year
+      )
       .then(response => {
         let population = response.data.population;
         maxPopulation = Math.floor(
@@ -90,8 +90,8 @@ class DisplayComponent extends Component {
     console.log('----------');
     let attributes = this.getAttributeType('ids');
     if (attributes.length > 0) {
-      // let data = Array.from(this.state.data)
-      this.state.data[0].push(this.getAttributeType('name'));
+      let temp = ['Name', 'Population'];
+      this.state.data[0] = temp.concat(this.getAttributeType('name'));
       axios
         .get(
           '/api/attributes?locationIds=' +
