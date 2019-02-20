@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 //import { Grid } from 'react-virtualized';
 import { TRUTHTREE_URI } from '../constants';
 import { withRouter } from 'react-router-dom';
+import configureStore from '../store';
 
 class LeftSideBar extends Component {
   constructor(props) {
@@ -14,16 +15,19 @@ class LeftSideBar extends Component {
     this.state = {
       sidebarData: [],
       isLoaded: false,
-      selectedAttributes: []
+      selectedAttributes: [],
+      collapsedLeft: false,
+      searchedString: ''
     };
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
   } /*
   // each of these will need a diff api
   componentWillReceiveProps(nextProps) {
-    if (nextProps.dimension === 'State') {
+      let year = nextProps.year;
       axios
-        .get(`${TRUTHTREE_URI}/api/collections?level=state`)
+          .get(`${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
+              this.props.match.params.id+this.props.year)
         .then(response => {
           //data contains the variables
           this.setState({
@@ -34,33 +38,7 @@ class LeftSideBar extends Component {
         .catch(error => {
           console.log(error);
         });
-    } else if (nextProps.dimension === 'City') {
-      axios
-        .get(`${TRUTHTREE_URI}/api/collections?level=city`)
-        .then(response => {
-          //data contains the variables
-          this.setState({
-            sidebarData: response.data,
-            isLoaded: true
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      axios
-        .get(`${TRUTHTREE_URI}/api/collections?level=county`)
-        .then(response => {
-          //data contains the variables
-          this.setState({
-            sidebarData: response.data,
-            isLoaded: true
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
+    } 
   }*/
 
   componentDidMount() {
@@ -68,12 +46,12 @@ class LeftSideBar extends Component {
     axios
       .get(
         `${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
-          this.props.match.params.id
+          this.props.match.params.id // +&year=2016
       )
       .then(response => {
         //data contains the variables
         this.setState({
-          sidebarData: response.data,
+          sidebarData: response.data.data,
           isLoaded: true
         });
       })
@@ -94,7 +72,7 @@ class LeftSideBar extends Component {
     //if clicking on the slider.
     let newArr = this.state.selectedAttributes;
     for (let i = 0; i < newArr.length; i++) {
-      if (newArr[i][0] == attribute.property_id) {
+      if (newArr[i][0] === attribute.property_id) {
         _.remove(newArr, elem => {
           return elem === newArr[i];
         });
@@ -108,90 +86,152 @@ class LeftSideBar extends Component {
         });
         return;
       }
-    } /*
-      newArr.forEach(function (element) {
-          if (element[0] == attribute.property_id) {
-              console.log(element)
-              _.remove(newArr, elem => {
-                  return elem === element;
-              });
-              return
-          }
-      });*/
+    }
     newArr.push([attribute.property_id, attribute.name]);
-    /*
-        let newElem = [attribute.property_id, attribute.name]
-        if (_.includes(newArr, [attribute.property_id, attribute.name])) {
-        _.remove(newArr, elem => {
-            return elem === [attribute.property_id, attribute.name];
-        });
-      } else {
-            newArr.push([attribute.property_id, attribute.name]);
-        // this.state.selectedAttributes.push(attribute.property_id) });
-      }*/
+
     this.setState({
       selectedAttributes: newArr
     });
-    console.log(this.props);
     this.props.dispatch({
       type: 'CHANGE_ATTRIBUTE',
       value: newArr
     });
+
+    this.setState({ [attribute]: !this.state[attribute] });
+  };
+
+  collapseLeftBar() {
+    console.log('Clicked hi');
+    this.setState({ collapsedLeft: !this.state.collapsedLeft });
+  }
+
+  handleChangeSearch = event => {
+    console.log(event.target.value);
+    this.setState({ searchedString: event.target.value.toLowerCase() });
+    if (this.state.searchedString == '') {
+    }
+  };
+
+  renderSearchTerm = collection => {
+    if (
+      this.state.searchedString == '' ||
+      this.state.sidebarData[collection].name
+        .toLowerCase()
+        .search(this.state.searchedString) > -1
+    ) {
+      return true;
+    }
+    var attr;
+    for (attr in this.state.sidebarData[collection].properties) {
+      if (
+        this.state.sidebarData[collection].properties[attr].name
+          .toLowerCase()
+          .search(this.state.searchedString) > -1
+      ) {
+        console.log(
+          'found attribute in search' +
+            this.state.sidebarData[collection].properties[attr].name
+        );
+        return true;
+      }
+    }
+
+    return false;
   };
 
   render() {
-    var { isLoaded, sidebarData } = this.state;
+    var { isLoaded } = this.state;
     if (!isLoaded) {
       return <div>Loading...</div>;
     } else {
-      return (
-        <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
-          {Object.keys(this.state.sidebarData).map((collection, i) => {
-            return (
-              <div key={i}>
-                <button
-                  className="accordion"
-                  onClick={() => this.handleClickCollection(collection)}
-                >
-                  {this.state.sidebarData[collection].name}
-                </button>
+      if (this.state.collapsedLeft) {
+        return (
+          <button
+            className="col-md-flex d-md-flex"
+            onClick={() => this.collapseLeftBar()}
+          >
+            {!this.state.collapsedLeft ? 'Hide Left Nav' : 'Show'}
+          </button>
+        );
+      } else {
+        return (
+          <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
+            <input
+              className="leftSearch"
+              id="attribute-search-box"
+              onChange={this.handleChangeSearch}
+              placeholder="Search for a property"
+            />
+            <button
+              className="float-right"
+              onClick={() => this.collapseLeftBar()}
+            >
+              {!this.state.collapsedLeft ? 'Hide' : 'Show Left Nav'}
+            </button>
+            <div
+              style={{
+                display: !this.state.collapsedLeft ? 'block' : 'none'
+              }}
+            >
+              {Object.keys(this.state.sidebarData).map((collection, i) => {
+                if (this.renderSearchTerm(collection)) {
+                  return (
+                    <div key={i}>
+                      <button
+                        className="accordion"
+                        onClick={() => this.handleClickCollection(collection)}
+                      >
+                        {this.state.sidebarData[collection].name}
+                      </button>
 
-                <div
-                  style={{ display: this.state[collection] ? 'block' : 'none' }}
-                >
-                  {Object.keys(
-                    this.state.sidebarData[collection].properties
-                  ).map((attr, i) => {
-                    return (
-                      <label key={i} className="panel float-right">
-                        <div>
-                          {
-                            this.state.sidebarData[collection].properties[attr]
-                              .name
-                          }
-                          <div
-                            className="switch float-right"
-                            onClick={() =>
-                              this.handleClickAttribute(
-                                this.state.sidebarData[collection].properties[
-                                  attr
-                                ]
-                              )
-                            }
-                          >
-                            <input type="checkbox" />
-                            <span className="slider round" />
-                          </div>
-                        </div>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </nav>
-      );
+                      <div
+                        style={{
+                          display: this.state[collection] ? 'block' : 'none'
+                        }}
+                      >
+                        {Object.keys(
+                          this.state.sidebarData[collection].properties
+                        ).map((attr, i) => {
+                          return (
+                            <label key={i} className="panel float-right">
+                              <div>
+                                {
+                                  this.state.sidebarData[collection].properties[
+                                    attr
+                                  ].name
+                                }
+                                <div
+                                  className="switch float-right"
+                                  onClick={() =>
+                                    this.handleClickAttribute(
+                                      this.state.sidebarData[collection]
+                                        .properties[attr]
+                                    )
+                                  }
+                                >
+                                  <input type="checkbox" />
+                                  <span
+                                    className="slider round"
+                                    style={
+                                      {
+                                        //display: !this.state.collapsedLeft ? 'block' : 'none'
+                                      }
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                }
+              })}
+            </div>
+          </nav>
+        );
+      }
     }
   }
 }
