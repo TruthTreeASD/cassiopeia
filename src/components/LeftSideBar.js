@@ -72,17 +72,14 @@ class LeftSideBar extends Component {
   };
 
   // stores attribute selected
-  handleClickAttribute = attribute => {
+  handleClickAttribute(collection, attribute) {
     //this is getting called twice
     //if clicking on the slider.
 
-    /*      this.setState({
-            sidebarData[collection].properties[
-                attr
-            ] : !this.state.sidebarData[collection].properties[
-            attr
-            ]
-        });*/
+    this.setState({
+      [[collection][attribute]]: !this.state.sidebarData[collection][attribute]
+    });
+    console.log(this.state[collection][attribute]);
     let newArr = this.state.selectedAttributes;
     for (let i = 0; i < newArr.length; i++) {
       if (newArr[i][0] === attribute.property_id) {
@@ -110,8 +107,8 @@ class LeftSideBar extends Component {
       value: newArr
     });
 
-    this.setState({ [attribute]: !this.state[attribute] });
-  };
+    //this.setState({ [attribute]: !this.state[attribute] });
+  }
 
   collapseLeftBar() {
     console.log('Clicked hi');
