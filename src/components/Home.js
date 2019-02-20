@@ -8,6 +8,7 @@ import LeftSideBar from './LeftSideBar';
 import YearSelector from './YearSelector';
 import Filters from './AttributeRange';
 import Tabs from './Explore/Tabs';
+import TimeSeriesChart from './Explore/TimeSeries';
 
 class Home extends Component {
   render() {
@@ -26,7 +27,9 @@ class Home extends Component {
                   />
                 </div>
 
-                <div label="Time Series View">Coming soon :)</div>
+                <div label="Time Series View">
+                  <TimeSeriesChart />
+                </div>
 
                 <div label="Map View">Coming soon :)</div>
               </Tabs>
