@@ -71,18 +71,34 @@ class LeftSideBar extends Component {
     this.setState({ [collection]: !this.state[collection] });
   };
 
+  isAttributeSelected(attribute) {
+    console.log(attribute.name);
+    let newArr = this.state.selectedAttributes;
+    let id = attribute.property_id;
+    //   for (let i = 0; i < newArr.length; i++) {
+    //      if (newArr[i][0] === attribute.property_id) {
+    //         console.log("attribute is shown");
+    //        return true;
+    //   }
+
+    //s }
+    // console.log(this.state.selectedAttributes);
+    return false;
+  }
+
   // stores attribute selected
   handleClickAttribute(collection, attribute) {
     //this is getting called twice
     //if clicking on the slider.
 
-    this.setState({
+    /* this.setState({
       [[collection][attribute]]: !this.state.sidebarData[collection][attribute]
     });
-    console.log(this.state[collection][attribute]);
+    console.log(this.state[collection][attribute]);*/
     let newArr = this.state.selectedAttributes;
+    let id = attribute.property_id;
     for (let i = 0; i < newArr.length; i++) {
-      if (newArr[i][0] === attribute.property_id) {
+      if (newArr[i][0] === id) {
         _.remove(newArr, elem => {
           return elem === newArr[i];
         });
@@ -97,7 +113,7 @@ class LeftSideBar extends Component {
         return;
       }
     }
-    newArr.push([attribute.property_id, attribute.name]);
+    newArr.push([id, attribute.name]);
 
     this.setState({
       selectedAttributes: newArr
@@ -210,10 +226,9 @@ class LeftSideBar extends Component {
                               key={i}
                               className="panel float-right"
                               style={{
-                                background: this.state.sidebarData[collection][
-                                  attr
-                                ]
-                                  ? 'orange'
+                                background: false // this.isAttributeSelected(this.state.sidebarData[collection].properties[attr])
+                                  ? //  this.state.sidebarData[collection][attr]
+                                    'bisque'
                                   : 'lightsteelblue'
                               }}
                             >
@@ -224,7 +239,7 @@ class LeftSideBar extends Component {
                                   ].name
                                 }
                                 <div
-                                  className="switch float-right"
+                                  //className="switch float-right"
                                   onClick={() =>
                                     this.handleClickAttribute(
                                       collection,
@@ -234,14 +249,14 @@ class LeftSideBar extends Component {
                                   }
                                 >
                                   <input type="checkbox" />
-                                  <span
+                                  {/* <span
                                     className="slider round"
                                     style={
                                       {
                                         //display: !this.state.collapsedLeft ? 'block' : 'none'
                                       }
                                     }
-                                  />
+                                  />*/}
                                 </div>
                               </div>
                             </label>
