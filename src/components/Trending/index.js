@@ -7,7 +7,6 @@ class Trending extends Component {
     return (
       <Container fluid>
         <Row>
-          <TimeSeries />
           <Col>Trending topics</Col>
         </Row>
       </Container>
