@@ -8,7 +8,8 @@ import LeftSideBar from './LeftSideBar';
 import YearSelector from './YearSelector';
 import Filters from './AttributeRange';
 import Tabs from './Explore/Tabs';
-import TimeSeriesChart from './Explore/TimeSeries';
+import TimeSeriesView from './Explore/TimeSeriesView';
+import CarouselTest from './Explore/CarouselTest';
 
 class Home extends Component {
   render() {
@@ -28,7 +29,7 @@ class Home extends Component {
                 </div>
 
                 <div label="Time Series View">
-                  <TimeSeriesChart />
+                  <TimeSeriesView />
                 </div>
 
                 <div label="Map View">Coming soon :)</div>

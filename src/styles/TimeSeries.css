@@ -1,0 +1,9 @@
+.chartDiv {
+  align-items: center;
+  padding-left: 70px;
+  margin: 20px;
+}
+
+.CarouselItem {
+  background-color: rgba(0, 0, 0, 0.1);
+}
