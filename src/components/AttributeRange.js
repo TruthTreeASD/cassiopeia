@@ -6,6 +6,7 @@ import axios from 'axios';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import '../styles/AttributeRange.css';
+import { TRUTHTREE_URI } from '../constants';
 
 const Range = Slider.Range;
 
@@ -21,7 +22,12 @@ class AttributeRange extends Component {
   }
 
   componentDidMount() {
-    let url = '/api/' + this.props.level + '/' + this.props.locationId;
+    let year = this.props.yearSelected ? this.props.yearSelected : 2016;
+    let url =
+      `${TRUTHTREE_URI}/api/population?locationId=` +
+      this.props.locationId +
+      '&year=' +
+      year;
     console.log(url);
     let locPop = null;
 
@@ -89,7 +95,8 @@ class AttributeRange extends Component {
 
 const mapStateToProps = state => {
   return {
-    attribute: state.AtrributeRangeReducer
+    year: state.YearSelectorReducer.yearSelected,
+    attribute: state.AttributeRangeReducer
   };
 };
 const mapDispatchToProps = dispatch => ({ dispatch });

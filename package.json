@@ -32,7 +32,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
   },
-  "proxy": "http://localhost:4000/",
+  "proxy": "https://truthtree.herokuapp.com/",
   "scripts": {
     "start-with-proxy": "node ./src/proxy-server/server.js & react-scripts start",
     "start": "react-scripts start",

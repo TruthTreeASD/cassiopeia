@@ -7,14 +7,11 @@ export default (
 ) => {
   switch (action.type) {
     case 'RANGE_SELECTION':
-      state = {
+      return {
         ...state,
         populationRange: action.populationRange
       };
-
-      break;
     default:
       return state;
   }
-  return state;
 };
