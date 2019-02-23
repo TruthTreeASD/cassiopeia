@@ -199,8 +199,6 @@ class LeftSideBar extends Component {
                 if (this.renderSearchTerm(collection)) {
                   return (
                     <div key={i}>
-                      {' '}
-                      {/*BUGS START HERE*/}
                       <button
                         className="accordion"
                         onClick={() => this.handleClickCollection(collection)}
@@ -216,7 +214,7 @@ class LeftSideBar extends Component {
                           this.state.sidebarData[collection].attributes
                         ).map((attr, i) => {
                           return (
-                            <label
+                            <label //{/*BUGS START HERE*/}
                               onClick={() =>
                                 this.handleClickAttribute(
                                   collection,
