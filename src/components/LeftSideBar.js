@@ -47,7 +47,6 @@ class LeftSideBar extends Component {
   }*/
 
   componentDidMount() {
-    console.log(this.props.match.params.id);
     axios
       .get(
         `${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
@@ -67,7 +66,6 @@ class LeftSideBar extends Component {
 
   // Toggle state of each collection on click
   handleClickCollection = collection => {
-    console.log('Clicked!!', collection, this.state[collection]);
     this.setState({ [collection]: !this.state[collection] });
   };
 
@@ -105,7 +103,7 @@ class LeftSideBar extends Component {
         this.setState({
           selectedAttributes: newArr
         });
-        console.log(this.props);
+
         this.props.dispatch({
           type: 'CHANGE_ATTRIBUTE',
           value: newArr
@@ -114,6 +112,7 @@ class LeftSideBar extends Component {
       }
     }
     newArr.push([id, attribute.name]);
+    console.log(this.props);
 
     this.setState({
       selectedAttributes: newArr
@@ -127,13 +126,11 @@ class LeftSideBar extends Component {
   }
 
   collapseLeftBar() {
-    console.log('Clicked hi');
     this.setState({ collapsedLeft: !this.state.collapsedLeft });
     this.setState({ searchedString: '' });
   }
 
   handleChangeSearch = event => {
-    console.log(event.target.value);
     this.setState({ searchedString: event.target.value.toLowerCase() });
     if (this.state.searchedString == '') {
     }
@@ -155,10 +152,6 @@ class LeftSideBar extends Component {
           .toLowerCase()
           .search(this.state.searchedString) > -1
       ) {
-        console.log(
-          'found attribute in search' +
-            this.state.sidebarData[collection].attributes[attr].name
-        );
         return true;
       }
     }
@@ -223,6 +216,14 @@ class LeftSideBar extends Component {
                         ).map((attr, i) => {
                           return (
                             <label
+                              onClick={() =>
+                                this.handleClickAttribute(
+                                  collection,
+                                  this.state.sidebarData[collection].attributes[
+                                    attr
+                                  ]
+                                )
+                              }
                               key={i}
                               className="panel float-right"
                               style={{
@@ -233,30 +234,12 @@ class LeftSideBar extends Component {
                               }}
                             >
                               <div>
-                                {
-                                  this.state.sidebarData[collection].attributes[
-                                    attr
-                                  ].name
-                                }
-                                <div
-                                  //className="switch float-right"
-                                  onClick={() =>
-                                    this.handleClickAttribute(
-                                      collection,
-                                      this.state.sidebarData[collection]
-                                        .attributes[attr]
-                                    )
-                                  }
-                                >
+                                <div>
                                   <input type="checkbox" />
-                                  {/* <span
-                                    className="slider round"
-                                    style={
-                                      {
-                                        //display: !this.state.collapsedLeft ? 'block' : 'none'
-                                      }
-                                    }
-                                  />*/}
+                                  {
+                                    this.state.sidebarData[collection]
+                                      .attributes[attr].name
+                                  }
                                 </div>
                               </div>
                             </label>

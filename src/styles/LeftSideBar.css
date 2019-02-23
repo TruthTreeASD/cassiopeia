@@ -2,11 +2,11 @@
   background-color: #eee;
   color: #444;
   cursor: pointer;
-  padding: 18px;
+  padding: 8px;
   width: 100%;
   border: none;
   text-align: left;
-  outline: 2px;
+  outline: 5px;
   outline-color: black;
   font-size: 14px;
   transition: 0.4s;
@@ -18,13 +18,13 @@
 }
 
 .panel {
-  padding: 0 10px;
-  font-size: 12px;
+  padding: 5px;
+  font-size: 14px;
   cursor: pointer;
   -webkit-transition: 0.4s;
   transition: 0.4s;
   display: block;
-  width: 80%;
+  width: 90%;
   background-color: lightsteelblue;
   overflow: hidden;
 }
