@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios/index';
+import { connect } from 'react-redux';
+
 import TimeSeriesChart from './TimeSeriesChart';
+
+import { TRUTHTREE_URI } from '../../constants';
 
 class TimeSeriesView extends Component {
   constructor(props) {
@@ -10,14 +15,7 @@ class TimeSeriesView extends Component {
         { year: '1969', location1: 200, location2: 2400, location0: 100 },
         { year: '1971', location1: 700, location2: 2000, location0: 50 },
         { year: '1973', location1: 300, location2: 3000, location0: 25 },
-        { year: '1975', location1: 300, location2: 3000, location0: 25 },
-        { year: '1977', location1: 300, location2: 3000, location0: 25 },
-        { year: '1979', location1: 300, location2: 3000, location0: 25 },
-        { year: '1981', location1: 300, location2: 3000, location0: 25 },
-        { year: '1983', location1: 300, location2: 3000, location0: 25 },
-        { year: '1985', location1: 300, location2: 3000, location0: 25 },
-        { year: '1987', location1: 300, location2: 3000, location0: 25 },
-        { year: '1989', location1: 300, location2: 3000, location0: 25 }
+        { year: '1975', location1: 300, location2: 3000, location0: 25 }
       ],
 
       locations: [
@@ -28,6 +26,22 @@ class TimeSeriesView extends Component {
     };
   }
 
+  componentDidMount() {
+    let minPopulation = 0;
+    let maxPopulation = 0;
+    let data = [['Name', 'Population']];
+    let locationIds = [];
+    let year = this.props.yearSelected ? this.props.yearSelected : 2016;
+
+    axios
+      .get('${TRUTHTREE_URI}/api/population?locationId=10000000&year=2015')
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
   render() {
     return (
       <TimeSeriesChart
@@ -38,5 +52,7 @@ class TimeSeriesView extends Component {
     );
   }
 }
-
-export default TimeSeriesView;
+const mapState = state => ({
+  year: state.YearSelectorReducer.yearSelected
+});
+export default connect(mapState)(TimeSeriesView);

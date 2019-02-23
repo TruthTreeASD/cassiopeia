@@ -36,6 +36,11 @@ class CarouselTest extends Component {
         { year: '1985', location1: 300, location2: 3000, location0: 25 },
         { year: '1987', location1: 300, location2: 3000, location0: 25 },
         { year: '1989', location1: 300, location2: 3000, location0: 25 }
+      ],
+      locations: [
+        { id: 'location0', name: 'location0', color: 'red' },
+        { id: 'location1', name: 'location1', color: 'blue' },
+        { id: 'location2', name: 'location2', color: 'purple' }
       ]
     };
     this.next = this.next.bind(this);
@@ -87,7 +92,11 @@ class CarouselTest extends Component {
           onExited={this.onExited}
           key={item.src}
         >
-          <TimeSeriesChart data={this.state.data} />
+          <TimeSeriesChart
+            data={this.state.data}
+            attributeName="Population"
+            locations={this.state.locations}
+          />
           <CarouselCaption
             captionText={item.caption}
             captionHeader={item.caption}

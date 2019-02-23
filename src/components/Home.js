@@ -32,7 +32,9 @@ class Home extends Component {
                   <TimeSeriesView />
                 </div>
 
-                <div label="Map View">Coming soon :)</div>
+                <div label="Map View">
+                  <CarouselTest />
+                </div>
               </Tabs>
             </Card>
 
