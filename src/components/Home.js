@@ -7,6 +7,8 @@ import DisplayComponent from './DisplayComponent';
 import LeftSideBar from './LeftSideBar';
 import YearSelector from './YearSelector';
 import Filters from './AttributeRange';
+import Tabs from './Explore/Tabs';
+import TimeSeriesChart from './Explore/TimeSeries';
 
 class Home extends Component {
   render() {
@@ -17,10 +19,20 @@ class Home extends Component {
 
           <div className="col-12 col-md-10 align-items-center">
             <Card>
-              <DisplayComponent
-                level={this.props.match.params.level}
-                id={this.props.match.params.id}
-              />
+              <Tabs>
+                <div label="Table View">
+                  <DisplayComponent
+                    level={this.props.match.params.level}
+                    id={this.props.match.params.id}
+                  />
+                </div>
+
+                <div label="Time Series View">
+                  <TimeSeriesChart />
+                </div>
+
+                <div label="Map View">Coming soon :)</div>
+              </Tabs>
             </Card>
 
             <Card>
