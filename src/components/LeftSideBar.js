@@ -199,13 +199,14 @@ class LeftSideBar extends Component {
                 if (this.renderSearchTerm(collection)) {
                   return (
                     <div key={i}>
+                      {' '}
+                      {/*BUGS START HERE*/}
                       <button
                         className="accordion"
                         onClick={() => this.handleClickCollection(collection)}
                       >
                         {this.state.sidebarData[collection].name}
                       </button>
-
                       <div
                         style={{
                           display: this.state[collection] ? 'block' : 'none'
@@ -246,6 +247,7 @@ class LeftSideBar extends Component {
                           );
                         })}
                       </div>
+                      {/*BUGS END HERE*/}
                     </div>
                   );
                 }
