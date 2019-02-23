@@ -74,9 +74,9 @@ class LeftSideBar extends Component {
   isAttributeSelected(attribute) {
     console.log(attribute.name);
     let newArr = this.state.selectedAttributes;
-    let id = attribute.property_id;
+    let id = attribute.attribute_id;
     //   for (let i = 0; i < newArr.length; i++) {
-    //      if (newArr[i][0] === attribute.property_id) {
+    //      if (newArr[i][0] === attribute.attribute_id) {
     //         console.log("attribute is shown");
     //        return true;
     //   }
@@ -96,7 +96,7 @@ class LeftSideBar extends Component {
     });
     console.log(this.state[collection][attribute]);*/
     let newArr = this.state.selectedAttributes;
-    let id = attribute.property_id;
+    let id = attribute.attribute_id;
     for (let i = 0; i < newArr.length; i++) {
       if (newArr[i][0] === id) {
         _.remove(newArr, elem => {
