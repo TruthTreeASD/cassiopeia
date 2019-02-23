@@ -21,6 +21,11 @@ class LeftSideBar extends Component {
     };
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
+    Object.keys(this.state.sidebarData).map(key =>
+      Object.keys(this.state.sidebarData[key]).map(
+        attrKey => (this.state.sidebarData[key][attrKey] = false)
+      )
+    );
   } /*
   // each of these will need a diff api
   componentWillReceiveProps(nextProps) {
@@ -42,7 +47,6 @@ class LeftSideBar extends Component {
   }*/
 
   componentDidMount() {
-    console.log(this.props.match.params.id);
     axios
       .get(
         `${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
@@ -51,7 +55,7 @@ class LeftSideBar extends Component {
       .then(response => {
         //data contains the variables
         this.setState({
-          sidebarData: response.data.data,
+          sidebarData: response.data,
           isLoaded: true
         });
       })
@@ -62,24 +66,44 @@ class LeftSideBar extends Component {
 
   // Toggle state of each collection on click
   handleClickCollection = collection => {
-    console.log('Clicked!!', collection, this.state[collection]);
     this.setState({ [collection]: !this.state[collection] });
   };
 
+  isAttributeSelected(attribute) {
+    console.log(attribute.name);
+    let newArr = this.state.selectedAttributes;
+    let id = attribute.attribute_id;
+    //   for (let i = 0; i < newArr.length; i++) {
+    //      if (newArr[i][0] === attribute.attribute_id) {
+    //         console.log("attribute is shown");
+    //        return true;
+    //   }
+
+    //s }
+    // console.log(this.state.selectedAttributes);
+    return false;
+  }
+
   // stores attribute selected
-  handleClickAttribute = attribute => {
+  handleClickAttribute(collection, attribute) {
     //this is getting called twice
     //if clicking on the slider.
+
+    /* this.setState({
+      [[collection][attribute]]: !this.state.sidebarData[collection][attribute]
+    });
+    console.log(this.state[collection][attribute]);*/
     let newArr = this.state.selectedAttributes;
+    let id = attribute.attribute_id;
     for (let i = 0; i < newArr.length; i++) {
-      if (newArr[i][0] === attribute.property_id) {
+      if (newArr[i][0] === id) {
         _.remove(newArr, elem => {
           return elem === newArr[i];
         });
         this.setState({
           selectedAttributes: newArr
         });
-        console.log(this.props);
+
         this.props.dispatch({
           type: 'CHANGE_ATTRIBUTE',
           value: newArr
@@ -87,7 +111,8 @@ class LeftSideBar extends Component {
         return;
       }
     }
-    newArr.push([attribute.property_id, attribute.name]);
+    newArr.push([id, attribute.name]);
+    console.log(this.props);
 
     this.setState({
       selectedAttributes: newArr
@@ -97,16 +122,15 @@ class LeftSideBar extends Component {
       value: newArr
     });
 
-    this.setState({ [attribute]: !this.state[attribute] });
-  };
+    //this.setState({ [attribute]: !this.state[attribute] });
+  }
 
   collapseLeftBar() {
-    console.log('Clicked hi');
     this.setState({ collapsedLeft: !this.state.collapsedLeft });
+    this.setState({ searchedString: '' });
   }
 
   handleChangeSearch = event => {
-    console.log(event.target.value);
     this.setState({ searchedString: event.target.value.toLowerCase() });
     if (this.state.searchedString == '') {
     }
@@ -122,16 +146,12 @@ class LeftSideBar extends Component {
       return true;
     }
     var attr;
-    for (attr in this.state.sidebarData[collection].properties) {
+    for (attr in this.state.sidebarData[collection].attributes) {
       if (
-        this.state.sidebarData[collection].properties[attr].name
+        this.state.sidebarData[collection].attributes[attr].name
           .toLowerCase()
           .search(this.state.searchedString) > -1
       ) {
-        console.log(
-          'found attribute in search' +
-            this.state.sidebarData[collection].properties[attr].name
-        );
         return true;
       }
     }
@@ -158,6 +178,8 @@ class LeftSideBar extends Component {
           <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
             <input
               className="leftSearch"
+              data-spy="affix"
+              data-offset-top="197" //trying to make search box stay top
               id="attribute-search-box"
               onChange={this.handleChangeSearch}
               placeholder="Search for a property"
@@ -183,47 +205,47 @@ class LeftSideBar extends Component {
                       >
                         {this.state.sidebarData[collection].name}
                       </button>
-
                       <div
                         style={{
                           display: this.state[collection] ? 'block' : 'none'
                         }}
                       >
                         {Object.keys(
-                          this.state.sidebarData[collection].properties
+                          this.state.sidebarData[collection].attributes
                         ).map((attr, i) => {
                           return (
-                            <label key={i} className="panel float-right">
-                              <div>
-                                {
-                                  this.state.sidebarData[collection].properties[
+                            <label //{/*BUGS START HERE*/}
+                              onClick={() =>
+                                this.handleClickAttribute(
+                                  collection,
+                                  this.state.sidebarData[collection].attributes[
                                     attr
-                                  ].name
-                                }
-                                <div
-                                  className="switch float-right"
-                                  onClick={() =>
-                                    this.handleClickAttribute(
-                                      this.state.sidebarData[collection]
-                                        .properties[attr]
-                                    )
-                                  }
-                                >
+                                  ]
+                                )
+                              }
+                              key={i}
+                              className="panel float-right"
+                              style={{
+                                background: false // this.isAttributeSelected(this.state.sidebarData[collection].properties[attr])
+                                  ? //  this.state.sidebarData[collection][attr]
+                                    'bisque'
+                                  : 'lightsteelblue'
+                              }}
+                            >
+                              <div>
+                                <div>
                                   <input type="checkbox" />
-                                  <span
-                                    className="slider round"
-                                    style={
-                                      {
-                                        //display: !this.state.collapsedLeft ? 'block' : 'none'
-                                      }
-                                    }
-                                  />
+                                  {
+                                    this.state.sidebarData[collection]
+                                      .attributes[attr].name
+                                  }
                                 </div>
                               </div>
                             </label>
                           );
                         })}
                       </div>
+                      {/*BUGS END HERE*/}
                     </div>
                   );
                 }
