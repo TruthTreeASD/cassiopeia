@@ -56,7 +56,7 @@ class LeftSideBar extends Component {
       .then(response => {
         //data contains the variables
         this.setState({
-          sidebarData: response.data.data,
+          sidebarData: response.data,
           isLoaded: true
         });
       })
@@ -149,15 +149,15 @@ class LeftSideBar extends Component {
       return true;
     }
     var attr;
-    for (attr in this.state.sidebarData[collection].properties) {
+    for (attr in this.state.sidebarData[collection].attributes) {
       if (
-        this.state.sidebarData[collection].properties[attr].name
+        this.state.sidebarData[collection].attributes[attr].name
           .toLowerCase()
           .search(this.state.searchedString) > -1
       ) {
         console.log(
           'found attribute in search' +
-            this.state.sidebarData[collection].properties[attr].name
+            this.state.sidebarData[collection].attributes[attr].name
         );
         return true;
       }
@@ -219,7 +219,7 @@ class LeftSideBar extends Component {
                         }}
                       >
                         {Object.keys(
-                          this.state.sidebarData[collection].properties
+                          this.state.sidebarData[collection].attributes
                         ).map((attr, i) => {
                           return (
                             <label
@@ -234,7 +234,7 @@ class LeftSideBar extends Component {
                             >
                               <div>
                                 {
-                                  this.state.sidebarData[collection].properties[
+                                  this.state.sidebarData[collection].attributes[
                                     attr
                                   ].name
                                 }
@@ -244,7 +244,7 @@ class LeftSideBar extends Component {
                                     this.handleClickAttribute(
                                       collection,
                                       this.state.sidebarData[collection]
-                                        .properties[attr]
+                                        .attributes[attr]
                                     )
                                   }
                                 >
