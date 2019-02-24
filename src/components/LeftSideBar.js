@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 //import { Grid } from 'react-virtualized';
 import { TRUTHTREE_URI } from '../constants';
 import { withRouter } from 'react-router-dom';
-import configureStore from '../store';
 
 class LeftSideBar extends Component {
   constructor(props) {
@@ -23,7 +22,7 @@ class LeftSideBar extends Component {
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
     Object.keys(this.state.sidebarData).map(key =>
       Object.keys(this.state.sidebarData[key]).map(
-        attrKey => (this.state.sidebarData[key][attrKey] = false)
+        attrKey => (this.state[key + attrKey] = false)
       )
     );
   } /*
@@ -69,30 +68,12 @@ class LeftSideBar extends Component {
     this.setState({ [collection]: !this.state[collection] });
   };
 
-  isAttributeSelected(attribute) {
-    console.log(attribute.name);
-    let newArr = this.state.selectedAttributes;
-    let id = attribute.attribute_id;
-    //   for (let i = 0; i < newArr.length; i++) {
-    //      if (newArr[i][0] === attribute.attribute_id) {
-    //         console.log("attribute is shown");
-    //        return true;
-    //   }
-
-    //s }
-    // console.log(this.state.selectedAttributes);
-    return false;
-  }
-
   // stores attribute selected
   handleClickAttribute(collection, attribute) {
-    //this is getting called twice
-    //if clicking on the slider.
-
-    /* this.setState({
-      [[collection][attribute]]: !this.state.sidebarData[collection][attribute]
+    this.setState({
+      [collection + attribute]: !this.state[collection + attribute]
     });
-    console.log(this.state[collection][attribute]);*/
+    //console.log(this.state[collection+attribute]);
     let newArr = this.state.selectedAttributes;
     let id = attribute.attribute_id;
     for (let i = 0; i < newArr.length; i++) {
@@ -112,7 +93,7 @@ class LeftSideBar extends Component {
       }
     }
     newArr.push([id, attribute.name]);
-    console.log(this.props);
+    //console.log(this.props);
 
     this.setState({
       selectedAttributes: newArr
@@ -175,7 +156,7 @@ class LeftSideBar extends Component {
         );
       } else {
         return (
-          <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
+          <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-light sidebar">
             <input
               className="leftSearch"
               data-spy="affix"
@@ -226,20 +207,20 @@ class LeftSideBar extends Component {
                               key={i}
                               className="panel float-right"
                               style={{
-                                background: false // this.isAttributeSelected(this.state.sidebarData[collection].properties[attr])
-                                  ? //  this.state.sidebarData[collection][attr]
-                                    'bisque'
-                                  : 'lightsteelblue'
+                                background: this.state[collection + attr]
+                                  ? 'bisque'
+                                  : '#d4f3c7'
                               }}
                             >
+                              {console.log(this.state[collection + attr])}
+
                               <div>
-                                <div>
-                                  <input type="checkbox" />
-                                  {
-                                    this.state.sidebarData[collection]
-                                      .attributes[attr].name
-                                  }
-                                </div>
+                                {/* <input type="checkbox"/>*/}
+                                {
+                                  this.state.sidebarData[collection].attributes[
+                                    attr
+                                  ].name
+                                }
                               </div>
                             </label>
                           );
