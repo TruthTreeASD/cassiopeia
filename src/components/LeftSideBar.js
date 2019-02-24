@@ -22,7 +22,10 @@ class LeftSideBar extends Component {
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
     Object.keys(this.state.sidebarData).map(key =>
       Object.keys(this.state.sidebarData[key]).map(
-        attrKey => (this.state[key + attrKey] = false)
+        attrKey =>
+          (this.state[
+            this.state.sidebarData[key].attributes[attrKey]
+          ].attribute_id = false)
       )
     );
   } /*
@@ -71,9 +74,9 @@ class LeftSideBar extends Component {
   // stores attribute selected
   handleClickAttribute(collection, attribute) {
     this.setState({
-      [collection + attribute]: !this.state[collection + attribute]
+      [attribute.attribute_id]: !this.state[attribute.attribute_id]
     });
-    //console.log(this.state[collection+attribute]);
+    console.log(this.state[attribute]);
     let newArr = this.state.selectedAttributes;
     let id = attribute.attribute_id;
     for (let i = 0; i < newArr.length; i++) {
@@ -207,13 +210,15 @@ class LeftSideBar extends Component {
                               key={i}
                               className="panel float-right"
                               style={{
-                                background: this.state[collection + attr]
+                                background: this.state[
+                                  this.state.sidebarData[collection].attributes[
+                                    attr
+                                  ].attribute_id
+                                ]
                                   ? 'bisque'
                                   : '#d4f3c7'
                               }}
                             >
-                              {console.log(this.state[collection + attr])}
-
                               <div>
                                 {/* <input type="checkbox"/>*/}
                                 {
