@@ -7,3 +7,13 @@
 .CarouselItem {
   background-color: rgba(0, 0, 0, 0.1);
 }
+
+svg.recharts-surface tspan {
+  font-size: 0.6rem !important;
+  color: black !important;
+  font-family: Arial;
+}
+
+.recharts-tooltip-wrapper {
+  font-size: 0.6rem !important;
+}

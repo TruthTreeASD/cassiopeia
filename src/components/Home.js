@@ -29,7 +29,7 @@ class Home extends Component {
                 </div>
 
                 <div label="Time Series View">
-                  <TimeSeriesView />
+                  <TimeSeriesView id={this.props.match.params.id} />
                 </div>
 
                 <div label="Map View">

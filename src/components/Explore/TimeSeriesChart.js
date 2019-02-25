@@ -21,12 +21,9 @@ class TimeSeries extends Component {
 
   render() {
     console.log('In Render');
-    let rows = this.props.data.length;
-    let cols = Object.keys(this.props.data[0]).length;
-    console.log('Rows is ' + rows);
-    console.log('Cols is ' + cols);
     console.log(this.props.locations);
     console.log(this.props.data);
+    this.props.data.reverse();
 
     const attributeName = this.props.attributeName;
 
@@ -46,7 +43,9 @@ class TimeSeries extends Component {
             padding={{ left: 20, right: 20 }}
           />
           <XAxis dataKey="year" label="Year" />
-          <YAxis />
+          <YAxis
+            label={{ value: 'Population', angle: -90, position: 'insideLeft' }}
+          />
           <Tooltip />
           <Legend verticalAlign="bottom" iconSize="10" />
           {this.props.locations.map((location, i) => (
