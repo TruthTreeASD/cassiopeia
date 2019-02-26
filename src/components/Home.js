@@ -10,6 +10,7 @@ import Filters from './AttributeRange';
 import Tabs from './Explore/Tabs';
 import TimeSeriesView from './Explore/TimeSeriesView';
 import CarouselTest from './Explore/CarouselTest';
+import GridTest from './Explore/GridTest';
 
 class Home extends Component {
   render() {
@@ -32,8 +33,12 @@ class Home extends Component {
                   <TimeSeriesView id={this.props.match.params.id} />
                 </div>
 
-                <div label="Map View">
+                <div label="Carousel View">
                   <CarouselTest />
+                </div>
+
+                <div label="Grid View">
+                  <GridTest />
                 </div>
               </Tabs>
             </Card>
