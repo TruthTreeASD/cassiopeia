@@ -44,11 +44,12 @@ class TimeSeriesView extends Component {
     }
   }
 
-  /*  componentWillReceiveProps() {
-    this.fetchResponse();
-
+  componentWillReceiveProps() {
+    const len = this.props.selectedAttributes.length;
+    if (len != 0) {
+      this.fetchResponse();
+    }
   }
-  */
 
   fetchLocations() {
     let minPopulation = 0;
