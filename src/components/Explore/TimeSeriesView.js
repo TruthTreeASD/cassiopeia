@@ -31,50 +31,85 @@ class TimeSeriesView extends Component {
       dataReal: [],
       locationIds: []
     };
-    this.populationRangeCall = this.populationRangeCall.bind(this);
+    this.fetchResponse = this.fetchResponse.bind(this);
     this.formatResponse = this.formatResponse.bind(this);
     this.initializeYearMap = this.initializeYearMap.bind(this);
+    this.fetchLocations = this.fetchLocations.bind(this);
   }
 
   componentDidMount() {
-    this.populationRangeCall();
+    this.fetchResponse();
     console.log('after call');
   }
 
   componentWillReceiveProps() {
-    this.populationRangeCall();
+    this.fetchResponse();
     console.log('after call');
   }
 
-  createData() {}
+  fetchLocations() {
+    let minPopulation = 0;
+    let maxPopulation = 0;
+    let locationIds = [];
+    let year = this.props.yearSelected ? this.props.yearSelected : 2016;
+    console.log('In fetch locations');
+    axios
+      .get(
+        `${TRUTHTREE_URI}/api/population?locationId=` +
+          this.props.id +
+          '&year=' +
+          year
+      )
+      .then(response => {
+        let population = response.data.population;
+        maxPopulation = Math.floor(
+          population + (this.props.populationRange[1] / 100) * population
+        );
+        minPopulation = Math.floor(
+          population + (this.props.populationRange[0] / 100) * population
+        );
+        return axios
+          .get(
+            `${TRUTHTREE_URI}/api/states?populationRange=` +
+              minPopulation +
+              ',' +
+              maxPopulation
+          )
+          .then(response => {
+            _.map(response.data, obj => {
+              locationIds.push(obj.id);
+            });
+            this.setState({ locationIds: locationIds });
+            console.log('Location Ids are:');
+            console.log(locationIds);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
-  populationRangeCall() {
+  fetchResponse() {
     let temp = [];
     let info = [];
     let locationIds = [];
-    let url = `${TRUTHTREE_URI}/api/attributes?locationIds=` + this.props.id;
+    let url =
+      `${TRUTHTREE_URI}/api/attributes?locationIds=` +
+      this.props.id +
+      '&attributeIds=' +
+      this.props.selectedAttributes[0][0];
+    console.log(url);
+    console.log('Selected attributes');
     console.log(this.props.selectedAttributes);
-
+    this.fetchLocations();
     axios
-      .get(
-        'http://localhost:8080/api/attributes?locationIds=' +
-          this.props.id +
-          '&attributeIds=' +
-          this.props.selectedAttributes[0][0]
-      )
+      .get(url)
       .then(response => {
         console.log(response);
         this.formatResponse(response);
-
-        // _.map(this.state.temp, obj => {
-        //   info.push([ obj.year,obj.value]);
-        // });
-        // locationIds.push(this.props.id);
-        // this.setState({ info: info });
-        // this.setState({ locationIds: locationIds });
-        // console.log(this.state.temp);
-        // this.state.info.reverse();
-        // console.log(this.state.info);
       })
       .catch(error => {
         console.log(error);
@@ -119,11 +154,6 @@ class TimeSeriesView extends Component {
     console.log(map);
     data.push(map);
     console.log('after map push to data');
-
-    // response.map(locationAttr => {
-    //
-    // })
-    // this.setState({ data: response.data[0].attributes[0].data });
     this.setState({ data: data, locations: locations });
   }
 
@@ -151,6 +181,7 @@ class TimeSeriesView extends Component {
     });
   }
 }
+
 const mapState = state => ({
   selectedAttributes: state.SelectedAttributeReducer.selectedAttributes,
   year: state.YearSelectorReducer.yearSelected,
