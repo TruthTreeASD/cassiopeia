@@ -45,10 +45,12 @@ class LeftSideBar extends Component {
       });
   }
 
-  /// componentWillReceiveProps(nextProps) {
-  //     this.setState({ selectedAttributes: nextProps.selectedAttributes });
-  //    console.log('got prop');
-  //  }
+  componentWillReceiveProps(nextProps) {
+    // if (this.state.selectedAttributes != nextProps.selectedAttributes) {
+    // this.setState({ selectedAttributes: nextProps.selectedAttributes });
+    //  }
+    console.log('got prop');
+  }
 
   isAttributeSelected = attribute_id => {
     for (let i = 0; i < this.state.selectedAttributes.length; i++) {
