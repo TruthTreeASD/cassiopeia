@@ -29,7 +29,20 @@ class TimeSeriesView extends Component {
       info: [],
       temp: [],
       dataReal: [],
-      locationIds: []
+      locationIds: [],
+      lineColors: [
+        'red',
+        'purple',
+        'green',
+        'blue',
+        'deeppink',
+        'orange',
+        'navy',
+        'olive',
+        'lime',
+        'indianred',
+        'dimgrey'
+      ]
     };
     this.fetchResponse = this.fetchResponse.bind(this);
     this.formatResponse = this.formatResponse.bind(this);
@@ -155,7 +168,9 @@ class TimeSeriesView extends Component {
           map[attributesForEachLocation.attribute_id] = val;
         });
         location['id'] = dataForEachLocation.location_id;
-        location['color'] = 'purple';
+        let select = this.state.lineColors[Math.floor(Math.random() * 11)];
+        console.log(select);
+        location['color'] = select;
         location['name'] = dataForEachLocation.location_id;
         locations.push(location);
         console.log(location);
