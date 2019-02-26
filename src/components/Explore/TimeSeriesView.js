@@ -82,14 +82,17 @@ class TimeSeriesView extends Component {
   }
 
   formatResponse(response) {
+    console.log('In format response');
     console.log(response);
     let data = [];
     let locations = [];
     let map = {};
     response.data.map(dataForEachLocation => {
       let location = {};
+      console.log('data for each location');
       console.log(dataForEachLocation);
       dataForEachLocation.attributes.map(attributesForEachLocation => {
+        console.log('attribute for each location');
         console.log(attributesForEachLocation);
         attributesForEachLocation.data.map(attrValue => {
           let val = map[attributesForEachLocation.attribute_id];
@@ -108,12 +111,14 @@ class TimeSeriesView extends Component {
         });
         location['id'] = dataForEachLocation.location_id;
         location['color'] = 'purple';
-        location['name'] = 'location1';
+        location['name'] = dataForEachLocation.location_id;
         locations.push(location);
+        console.log(location);
       });
     });
     console.log(map);
     data.push(map);
+    console.log('after map push to data');
 
     // response.map(locationAttr => {
     //
@@ -123,11 +128,14 @@ class TimeSeriesView extends Component {
   }
 
   initializeYearMap() {
+    console.log('in initialize year map');
     let yearArr = [];
     for (let i = 1967; i < 2017; i++) {
-      let yearEntry = { year: i, 10000000: 0 };
+      let yearEntry = { year: i };
       yearArr.push(yearEntry);
     }
+    console.log('year array is ');
+    console.log(yearArr);
     return yearArr;
   }
 
@@ -136,7 +144,7 @@ class TimeSeriesView extends Component {
       return (
         <TimeSeriesChart
           data={attrData[this.props.selectedAttributes[i][i]]}
-          attributeName={this.props.selectedAttributes[i][i]}
+          attributeName={this.props.selectedAttributes[i][1]}
           locations={this.state.locations}
         />
       );

@@ -23,7 +23,7 @@ class TimeSeries extends Component {
     console.log('In Render');
     console.log(this.props.locations);
     console.log(this.props.data);
-    this.props.data.reverse();
+    console.log(this.props.attributeName);
 
     const attributeName = this.props.attributeName;
 
@@ -44,7 +44,7 @@ class TimeSeries extends Component {
           />
           <XAxis dataKey="year" label="Year" />
           <YAxis
-            label={{ value: 'Population', angle: -90, position: 'insideLeft' }}
+            label={{ value: attributeName, angle: -90, position: 'insideLeft' }}
           />
           <Tooltip />
           <Legend verticalAlign="bottom" iconSize={10} />
