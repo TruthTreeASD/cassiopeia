@@ -38,14 +38,17 @@ class TimeSeriesView extends Component {
   }
 
   componentDidMount() {
-    this.fetchResponse();
-    console.log('after call');
+    const len = this.props.selectedAttributes.length;
+    if (len != 0) {
+      this.fetchResponse();
+    }
   }
 
-  componentWillReceiveProps() {
+  /*  componentWillReceiveProps() {
     this.fetchResponse();
-    console.log('after call');
+
   }
+  */
 
   fetchLocations() {
     let minPopulation = 0;
@@ -170,15 +173,21 @@ class TimeSeriesView extends Component {
   }
 
   render() {
-    return this.state.data.map((attrData, i) => {
-      return (
-        <TimeSeriesChart
-          data={attrData[this.props.selectedAttributes[i][i]]}
-          attributeName={this.props.selectedAttributes[i][1]}
-          locations={this.state.locations}
-        />
-      );
-    });
+    const len = this.props.selectedAttributes.length;
+
+    if (len === 0) {
+      return <div>Select an attribute</div>;
+    } else {
+      return this.state.data.map((attrData, i) => {
+        return (
+          <TimeSeriesChart
+            data={attrData[this.props.selectedAttributes[i][i]]}
+            attributeName={this.props.selectedAttributes[i][1]}
+            locations={this.state.locations}
+          />
+        );
+      });
+    }
   }
 }
 
