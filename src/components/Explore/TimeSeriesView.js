@@ -57,6 +57,7 @@ class TimeSeriesView extends Component {
     let locationIds = [];
     let year = this.props.yearSelected ? this.props.yearSelected : 2016;
     console.log('In fetch locations');
+
     axios
       .get(
         `${TRUTHTREE_URI}/api/population?locationId=` +
@@ -86,6 +87,12 @@ class TimeSeriesView extends Component {
             this.setState({ locationIds: locationIds });
             console.log('Location Ids are:');
             console.log(locationIds);
+            console.log(
+              `${TRUTHTREE_URI}/api/population?locationId=` +
+                this.state.locationIds +
+                '&year=' +
+                year
+            );
           })
           .catch(error => {
             console.log(error);
@@ -99,10 +106,9 @@ class TimeSeriesView extends Component {
   fetchResponse() {
     let temp = [];
     let info = [];
-    let locationIds = [];
     let url =
       `${TRUTHTREE_URI}/api/attributes?locationIds=` +
-      this.props.id +
+      this.state.locationIds +
       '&attributeIds=' +
       this.props.selectedAttributes[0][0];
     console.log(url);
