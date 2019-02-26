@@ -20,6 +20,7 @@ class Home extends Component {
 
           <div className="col-12 col-md-10 align-items-center">
             <Card>
+              <AttributeDeselector />
               <Tabs>
                 <div label="Table View">
                   <DisplayComponent
@@ -53,7 +54,6 @@ class Home extends Component {
                   </Col>
                   <Col>
                     <YearSelector />
-                    <AttributeDeselector />
                   </Col>
                 </Row>
               </CardBody>

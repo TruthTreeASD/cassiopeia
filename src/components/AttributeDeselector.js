@@ -8,21 +8,27 @@ import SelectedAttributeReducer from '../reducers/SelectedAttributeReducer';
 class AttributeDeselector extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
     this.state = {
-      selectedAttributes: this.props.selectedAttributes
+      selectedAttributes: []
     };
   }
 
   componentDidMount() {
+    this.setState({ selectedAttribtes: this.props.selectedAttributes });
+    console.log(this.state.selectedAttributes);
     console.log('it worked' + this.state.selectedAttributes);
   }
   componentWillReceiveProps(nextProps) {
-    this.setState({ selectedAttributes: this.nextProps.selectedAttributes });
+    this.setState({ selectedAttributes: nextProps.selectedAttributes });
+    console.log('got prop');
   }
 
   render() {
-    return <div>TESTING DESELECTOR</div>;
+    if (this.state.selectedAttributes.length < 1) {
+      return <div>TESTING DESELECTOR</div>;
+    } else {
+      return <div>attribute Selected</div>;
+    }
   }
 }
 
