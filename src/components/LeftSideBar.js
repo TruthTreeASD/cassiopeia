@@ -3,7 +3,7 @@ import '../styles/LeftSideBar.css';
 import _ from 'lodash';
 import axios from 'axios';
 import { connect } from 'react-redux';
-//import { Grid } from 'react-virtualized';
+
 import { TRUTHTREE_URI } from '../constants';
 import { withRouter } from 'react-router-dom';
 import { isAbsolute } from 'path';
@@ -21,33 +21,11 @@ class LeftSideBar extends Component {
     };
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
-    /*Object.keys(this.state.sidebarData).map(key =>
-      Object.keys(this.state.sidebarData[key]).map(
-        attrKey =>
-          (this.state[
-            this.state.sidebarData[key].attributes[attrKey]
-          ].attribute_id = false)
-      )
-    );*/
-  } /*
-  // each of these will need a diff api
-  componentWillReceiveProps(nextProps) {
-      let year = nextProps.year;
-      axios
-          .get(`${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
-              this.props.match.params.id+this.props.year)
-        .then(response => {
-          //data contains the variables
-          this.setState({
-            sidebarData: response.data,
-            isLoaded: true
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } 
-  }*/
+  }
+  /* componentWillReceiveProps(nextProps) {
+        this.setState({ selectedAttributes: nextProps.selectedAttributes });
+        console.log('got prop');//update later with year.
+    }*/
 
   componentDidMount() {
     axios
@@ -83,10 +61,6 @@ class LeftSideBar extends Component {
 
   // stores attribute selected
   handleClickAttribute(collection, attribute) {
-    /* this.setState({
-      [attribute.attribute_id]: !this.state[attribute.attribute_id]
-    });
-    console.log(this.state[attribute]);*/
     let newArr = this.state.selectedAttributes;
     let id = attribute.attribute_id;
     for (let i = 0; i < newArr.length; i++) {
@@ -208,7 +182,7 @@ class LeftSideBar extends Component {
                           this.state.sidebarData[collection].attributes
                         ).map((attr, i) => {
                           return (
-                            <label //{/*BUGS START HERE*/}
+                            <label
                               onClick={() =>
                                 this.handleClickAttribute(
                                   collection,
@@ -224,11 +198,7 @@ class LeftSideBar extends Component {
                                   this.state.sidebarData[collection].attributes[
                                     attr
                                   ].attribute_id
-                                ) /* this.state[
-                                  this.state.sidebarData[collection].attributes[
-                                    attr
-                                  ].attribute_id
-                                ]*/
+                                )
                                   ? 'bisque'
                                   : '#d4f3c7'
                               }}
@@ -245,7 +215,6 @@ class LeftSideBar extends Component {
                           );
                         })}
                       </div>
-                      {/*BUGS END HERE*/}
                     </div>
                   );
                 }
