@@ -47,7 +47,7 @@ class TimeSeries extends Component {
             label={{ value: 'Population', angle: -90, position: 'insideLeft' }}
           />
           <Tooltip />
-          <Legend verticalAlign="bottom" iconSize="10" />
+          <Legend verticalAlign="bottom" iconSize={10} />
           {this.props.locations.map((location, i) => (
             <Line
               key={location.id}
