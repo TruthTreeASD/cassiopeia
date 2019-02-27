@@ -60,7 +60,7 @@ class AttributeDeselector extends Component {
                   this.deselectAttribute(this.state.selectedAttributes[i])
                 }
               >
-                {this.state.selectedAttributes[i][1]}
+                <div>{this.state.selectedAttributes[i][1]}</div>
               </button>
             );
           })}
