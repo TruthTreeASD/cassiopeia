@@ -9,7 +9,6 @@ import YearSelector from './YearSelector';
 import Filters from './AttributeRange';
 import Tabs from './Explore/Tabs';
 import TimeSeriesView from './Explore/TimeSeriesView';
-import CarouselTest from './Explore/CarouselTest';
 import GridTest from './Explore/GridTest';
 
 class Home extends Component {
@@ -31,10 +30,6 @@ class Home extends Component {
 
                 <div label="Time Series View">
                   <TimeSeriesView id={this.props.match.params.id} />
-                </div>
-
-                <div label="Carousel View">
-                  <CarouselTest />
                 </div>
 
                 <div label="Grid View">

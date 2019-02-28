@@ -31,7 +31,7 @@ class TimeSeriesChartTinyView extends Component {
       <div className="chartDivTiny">
         <div> {this.props.attributeName} </div>
         <LineChart
-          width={400}
+          width={450}
           height={200}
           data={this.props.data}
           margin={{ top: 5, right: 5, bottom: 5, left: 5 }}

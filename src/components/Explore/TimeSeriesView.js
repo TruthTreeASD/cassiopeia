@@ -206,6 +206,7 @@ class TimeSeriesView extends Component {
             data={attrData[this.props.selectedAttributes[i][i]]}
             attributeName={this.props.selectedAttributes[i][1]}
             locations={this.state.locations}
+            condition="large"
           />
         );
       });

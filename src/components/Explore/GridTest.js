@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Container,
+  CardDeck,
   Row,
   Col,
   Card,
@@ -15,6 +16,9 @@ import {
   ModalBody,
   ModalFooter
 } from 'reactstrap';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+
 import TimeSeriesChartTiny from './TimeSeriesChartTinyView';
 import TimeSeriesChart from './TimeSeriesChart';
 import '../../styles/TimeSeries.css';
@@ -54,89 +58,75 @@ class GridTest extends Component {
       modal: !prevState.modal
     }));
   }
+  //
+  // <Card sm="8">
+  //   <CardBody>
+  //     <TimeSeriesChartTiny
+  //       data={this.state.data}
+  //       attributeName="Population"
+  //       locations={this.state.locations}
+  //     />
+  //     <Button color="danger" onClick={this.modalToggle}>
+  //       Expand
+  //     </Button>
+  //     <Modal
+  //       isOpen={this.state.modal}
+  //       toggle={this.modalToggle}
+  //       className="GridModal"
+  //     >
+  //       <ModalHeader toggle={this.modalToggle}>
+  //         Modal title
+  //       </ModalHeader>
+  //       <ModalBody>
+  //         <TimeSeriesChart
+  //           data={this.state.data}
+  //           attributeName="Population"
+  //           locations={this.state.locations}
+  //         />
+  //       </ModalBody>
+  //       <ModalFooter>
+  //         <Button color="secondary" onClick={this.modalToggle}>
+  //           Cancel
+  //         </Button>
+  //       </ModalFooter>
+  //     </Modal>
+  //   </CardBody>
+  // </Card>
+  //
+
+  getAttributeNames(type) {
+    console.log(this.props.selectedAttributes);
+    return _.flatMap(this.props.selectedAttributes, elem => {
+      return type === 'name' ? elem[1] : elem[0];
+    });
+  }
 
   render() {
+    let attributes = this.getAttributeNames('name');
+
+    let cards = attributes.map((card, index) => {
+      console.log('Index is ' + index);
+      return (
+        <Card sm="8">
+          <CardBody>
+            <TimeSeriesChart
+              data={this.state.data}
+              attributeName={card}
+              locations={this.state.locations}
+              condition="tiny"
+            />
+          </CardBody>
+        </Card>
+      );
+    });
     return (
       <Container className="GridContainer">
-        <Row>
-          <Col xs="6">
-            <Card>
-              <CardBody>
-                <TimeSeriesChartTiny
-                  data={this.state.data}
-                  attributeName="Population"
-                  locations={this.state.locations}
-                />
-                <Button color="danger" onClick={this.modalToggle}>
-                  Expand
-                </Button>
-                <Modal
-                  isOpen={this.state.modal}
-                  toggle={this.modalToggle}
-                  className="GridModal"
-                >
-                  <ModalHeader toggle={this.modalToggle}>
-                    Modal title
-                  </ModalHeader>
-                  <ModalBody>
-                    <TimeSeriesChart
-                      data={this.state.data}
-                      attributeName="Population"
-                      locations={this.state.locations}
-                    />
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="secondary" onClick={this.modalToggle}>
-                      Cancel
-                    </Button>
-                  </ModalFooter>
-                </Modal>
-              </CardBody>
-            </Card>
-          </Col>
-
-          <Col xs="6">
-            <Card>
-              <CardBody>
-                <TimeSeriesChartTiny
-                  data={this.state.data}
-                  attributeName="Population"
-                  locations={this.state.locations}
-                />
-                <Button>Button</Button>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="6">
-            <Card>
-              <CardBody>
-                <TimeSeriesChartTiny
-                  data={this.state.data}
-                  attributeName="Population"
-                  locations={this.state.locations}
-                />
-                <Button>Button</Button>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xs="6">
-            <Card>
-              <CardBody>
-                <TimeSeriesChartTiny
-                  data={this.state.data}
-                  attributeName="Population"
-                  locations={this.state.locations}
-                />
-                <Button>Button</Button>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <Row> {cards}</Row>
       </Container>
     );
   }
 }
-
-export default GridTest;
+const mapState = state => ({
+  selectedAttributes: state.SelectedAttributeReducer.selectedAttributes
+});
+export default connect(mapState)(GridTest);
