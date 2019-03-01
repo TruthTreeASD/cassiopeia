@@ -8,7 +8,6 @@ import LeftSideBar from './LeftSideBar';
 import YearSelector from './YearSelector';
 import Filters from './AttributeRange';
 import Tabs from './Explore/Tabs';
-import TimeSeriesView from './Explore/TimeSeriesView';
 import TimeSeriesGrid from './Explore/TimeSeriesGrid';
 
 class Home extends Component {
@@ -29,10 +28,6 @@ class Home extends Component {
                 </div>
 
                 <div label="Time Series View">
-                  <TimeSeriesView id={this.props.match.params.id} />
-                </div>
-
-                <div label="Grid View">
                   <TimeSeriesGrid id={this.props.match.params.id} />
                 </div>
               </Tabs>
