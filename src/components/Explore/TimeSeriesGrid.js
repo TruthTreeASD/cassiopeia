@@ -42,6 +42,7 @@ class GridTest extends Component {
 
   render() {
     let attributes = this.getAttributeNames('name');
+    let len = attributes.length;
 
     let cards = attributes.map((card, index) => {
       console.log('Index is ' + index);
@@ -53,11 +54,21 @@ class GridTest extends Component {
         </Card>
       );
     });
-    return (
-      <Container className="GridContainer">
-        <Row> {cards}</Row>
-      </Container>
-    );
+
+    if (len == 0) {
+      return (
+        <Container className="alert">
+          {' '}
+          Please select minimum of one attribute{' '}
+        </Container>
+      );
+    } else {
+      return (
+        <Container className="GridContainer">
+          <Row> {cards}</Row>
+        </Container>
+      );
+    }
   }
 }
 const mapState = state => ({

@@ -38,3 +38,10 @@ svg.recharts-surface tspan {
   max-width: 1100px !important;
   margin: 1.75rem auto;
 }
+
+.alert {
+  padding: 20px;
+  background-color: lightgrey;
+  color: grey;
+  font-style: italic;
+}
