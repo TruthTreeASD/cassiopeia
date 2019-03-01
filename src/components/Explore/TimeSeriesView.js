@@ -52,15 +52,15 @@ class TimeSeriesView extends Component {
 
   componentDidMount() {
     const len = this.props.selectedAttributes.length;
-    if (len != 0) {
-      this.fetchResponse();
+    if (len !== 0) {
+      this.fetchLocations();
     }
   }
 
   componentWillReceiveProps() {
     const len = this.props.selectedAttributes.length;
-    if (len != 0) {
-      this.fetchResponse();
+    if (len !== 0) {
+      this.fetchLocations();
     }
   }
 
@@ -106,6 +106,7 @@ class TimeSeriesView extends Component {
                 '&year=' +
                 year
             );
+            this.fetchResponse();
           })
           .catch(error => {
             console.log(error);
@@ -123,11 +124,10 @@ class TimeSeriesView extends Component {
       `${TRUTHTREE_URI}/api/attributes?locationIds=` +
       this.state.locationIds +
       '&attributeIds=' +
-      this.props.selectedAttributes[0][0];
+      this.props.selectedAttributes[this.props.index][0];
     console.log(url);
     console.log('Selected attributes');
     console.log(this.props.selectedAttributes);
-    this.fetchLocations();
     axios
       .get(url)
       .then(response => {
@@ -203,10 +203,10 @@ class TimeSeriesView extends Component {
       return this.state.data.map((attrData, i) => {
         return (
           <TimeSeriesChart
-            data={attrData[this.props.selectedAttributes[i][i]]}
-            attributeName={this.props.selectedAttributes[i][1]}
+            data={attrData[this.props.selectedAttributes[this.props.index][i]]}
+            attributeName={this.props.selectedAttributes[this.props.index][1]}
             locations={this.state.locations}
-            condition="large"
+            condition={this.props.condition}
           />
         );
       });
