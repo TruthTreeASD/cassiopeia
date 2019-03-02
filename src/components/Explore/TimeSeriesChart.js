@@ -8,10 +8,7 @@ import {
   Tooltip,
   Legend
 } from 'recharts';
-import { connect } from 'react-redux';
 import '../../styles/TimeSeries.css';
-
-const stroke = ['red', 'blue', 'green', 'purple', 'orange', 'grey', 'yellow'];
 
 class TimeSeries extends Component {
   constructor(props) {
@@ -20,11 +17,6 @@ class TimeSeries extends Component {
   }
 
   render() {
-    console.log('In Render');
-    // console.log(this.props.locations);
-    // console.log(this.props.data);
-    // console.log(this.props.attributeName);
-
     const attributeName = this.props.attributeName;
     if (this.props.condition === 'large') {
       return (
@@ -32,7 +24,7 @@ class TimeSeries extends Component {
           <div> {this.props.attributeName} </div>
           <LineChart
             width={1050}
-            height={500}
+            height={450}
             data={this.props.data}
             margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
           >

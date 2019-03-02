@@ -13,8 +13,6 @@ class TimeSeriesView extends Component {
       locations: [],
       data: [],
       currentLevel: null,
-      info: [],
-      temp: [],
       dataReal: [],
       locationIds: [],
       lineColors: [
@@ -103,8 +101,6 @@ class TimeSeriesView extends Component {
   }
 
   fetchResponse() {
-    let temp = [];
-    let info = [];
     let url =
       `${TRUTHTREE_URI}/api/attributes?locationIds=` +
       this.state.locationIds +

@@ -34,7 +34,6 @@ class GridTest extends Component {
   }
 
   getAttributeNames(type) {
-    console.log(this.props.selectedAttributes);
     return _.flatMap(this.props.selectedAttributes, elem => {
       return type === 'name' ? elem[1] : elem[0];
     });
@@ -67,7 +66,7 @@ class GridTest extends Component {
       );
     });
 
-    if (len == 0) {
+    if (len === 0) {
       return (
         <Container className="alert">
           {' '}
