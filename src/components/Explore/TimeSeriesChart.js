@@ -89,7 +89,6 @@ class TimeSeries extends Component {
               }}
             />
             <Tooltip />
-            <Legend verticalAlign="bottom" iconSize={10} />
             {this.props.locations.map((location, i) => (
               <Line
                 key={location.id}

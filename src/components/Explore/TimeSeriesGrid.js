@@ -50,6 +50,29 @@ class GridTest extends Component {
         <Card sm="8">
           <CardBody>
             <TimeSeriesView index={index} condition="tiny" id={this.props.id} />
+            <Button color="secondary" onClick={this.modalToggle}>
+              {' '}
+              Expand{' '}
+            </Button>
+            <Modal
+              isOpen={this.state.modal}
+              toggle={this.modalToggle}
+              className="GridModal"
+            >
+              <ModalHeader toggle={this.modalToggle}> Modal title </ModalHeader>
+              <ModalBody>
+                <TimeSeriesView
+                  index={index}
+                  condition="large"
+                  id={this.props.id}
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button color="secondary" onClick={this.modalToggle}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Modal>
           </CardBody>
         </Card>
       );
