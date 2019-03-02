@@ -10,19 +10,6 @@ class TimeSeriesView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // data: [
-      //   { year: '1967', location1: 400, location2: 1200, location0: 200 },
-      //   { year: '1969', location1: 200, location2: 2400, location0: 100 },
-      //   { year: '1971', location1: 700, location2: 2000, location0: 50 },
-      //   { year: '1973', location1: 300, location2: 3000, location0: 25 },
-      //   { year: '1975', location1: 300, location2: 3000, location0: 25 }
-      // ],
-
-      // locations: [
-      //   { id: 'location0', name: 'location0', color: 'purple' },
-      //   { id: 'location1', name: 'location1', color: 'blue' },
-      //   { id: 'location2', name: 'location2', color: 'purple' }
-      // ],
       locations: [],
       data: [],
       currentLevel: null,
@@ -52,15 +39,15 @@ class TimeSeriesView extends Component {
 
   componentDidMount() {
     const len = this.props.selectedAttributes.length;
-    if (len != 0) {
-      this.fetchResponse();
+    if (len !== 0) {
+      this.fetchLocations();
     }
   }
 
   componentWillReceiveProps() {
     const len = this.props.selectedAttributes.length;
-    if (len != 0) {
-      this.fetchResponse();
+    if (len !== 0) {
+      this.fetchLocations();
     }
   }
 
@@ -106,6 +93,7 @@ class TimeSeriesView extends Component {
                 '&year=' +
                 year
             );
+            this.fetchResponse();
           })
           .catch(error => {
             console.log(error);
@@ -123,11 +111,10 @@ class TimeSeriesView extends Component {
       `${TRUTHTREE_URI}/api/attributes?locationIds=` +
       this.state.locationIds +
       '&attributeIds=' +
-      this.props.selectedAttributes[0][0];
+      this.props.selectedAttributes[this.props.index][0];
     console.log(url);
     console.log('Selected attributes');
     console.log(this.props.selectedAttributes);
-    this.fetchLocations();
     axios
       .get(url)
       .then(response => {
@@ -203,9 +190,10 @@ class TimeSeriesView extends Component {
       return this.state.data.map((attrData, i) => {
         return (
           <TimeSeriesChart
-            data={attrData[this.props.selectedAttributes[i][i]]}
-            attributeName={this.props.selectedAttributes[i][1]}
+            data={attrData[this.props.selectedAttributes[this.props.index][i]]}
+            attributeName={this.props.selectedAttributes[this.props.index][1]}
             locations={this.state.locations}
+            condition={this.props.condition}
           />
         );
       });

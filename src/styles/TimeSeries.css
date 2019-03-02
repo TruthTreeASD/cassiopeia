@@ -1,6 +1,6 @@
 .chartDiv {
   align-items: center;
-  padding-left: 70px;
+  padding-left: 20px;
   margin: 20px;
 }
 
@@ -35,6 +35,13 @@ svg.recharts-surface tspan {
 }
 
 .modal-dialog {
-  max-width: 1100px !important;
+  max-width: 1200px !important;
   margin: 1.75rem auto;
+}
+
+.alert {
+  padding: 20px;
+  background-color: lightgrey;
+  color: grey;
+  font-style: italic;
 }
