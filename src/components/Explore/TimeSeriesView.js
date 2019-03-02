@@ -56,7 +56,6 @@ class TimeSeriesView extends Component {
     let maxPopulation = 0;
     let locationIds = [];
     let year = this.props.yearSelected ? this.props.yearSelected : 2016;
-    console.log('In fetch locations');
 
     axios
       .get(
@@ -85,14 +84,13 @@ class TimeSeriesView extends Component {
               locationIds.push(obj.id);
             });
             this.setState({ locationIds: locationIds });
-            console.log('Location Ids are:');
-            console.log(locationIds);
-            console.log(
-              `${TRUTHTREE_URI}/api/population?locationId=` +
-                this.state.locationIds +
-                '&year=' +
-                year
-            );
+            // console.log('Location Ids are:', locationIds);
+            // console.log(
+            //   `${TRUTHTREE_URI}/api/population?locationId=` +
+            //     this.state.locationIds +
+            //     '&year=' +
+            //     year
+            // );
             this.fetchResponse();
           })
           .catch(error => {
@@ -112,13 +110,9 @@ class TimeSeriesView extends Component {
       this.state.locationIds +
       '&attributeIds=' +
       this.props.selectedAttributes[this.props.index][0];
-    console.log(url);
-    console.log('Selected attributes');
-    console.log(this.props.selectedAttributes);
     axios
       .get(url)
       .then(response => {
-        console.log(response);
         this.formatResponse(response);
       })
       .catch(error => {
@@ -127,18 +121,12 @@ class TimeSeriesView extends Component {
   }
 
   formatResponse(response) {
-    console.log('In format response');
-    console.log(response);
     let data = [];
     let locations = [];
     let map = {};
     response.data.map(dataForEachLocation => {
       let location = {};
-      console.log('data for each location');
-      console.log(dataForEachLocation);
       dataForEachLocation.attributes.map(attributesForEachLocation => {
-        console.log('attribute for each location');
-        console.log(attributesForEachLocation);
         attributesForEachLocation.data.map(attrValue => {
           let val = map[attributesForEachLocation.attribute_id];
           if (val === undefined) {
@@ -156,28 +144,21 @@ class TimeSeriesView extends Component {
         });
         location['id'] = dataForEachLocation.location_id;
         let select = this.state.lineColors[Math.floor(Math.random() * 11)];
-        console.log(select);
         location['color'] = select;
         location['name'] = dataForEachLocation.location_id;
         locations.push(location);
-        console.log(location);
       });
     });
-    console.log(map);
     data.push(map);
-    console.log('after map push to data');
     this.setState({ data: data, locations: locations });
   }
 
   initializeYearMap() {
-    console.log('in initialize year map');
     let yearArr = [];
     for (let i = 1967; i < 2017; i++) {
       let yearEntry = { year: i };
       yearArr.push(yearEntry);
     }
-    console.log('year array is ');
-    console.log(yearArr);
     return yearArr;
   }
 

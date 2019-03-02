@@ -21,9 +21,9 @@ class TimeSeries extends Component {
 
   render() {
     console.log('In Render');
-    console.log(this.props.locations);
-    console.log(this.props.data);
-    console.log(this.props.attributeName);
+    // console.log(this.props.locations);
+    // console.log(this.props.data);
+    // console.log(this.props.attributeName);
 
     const attributeName = this.props.attributeName;
     if (this.props.condition === 'large') {
