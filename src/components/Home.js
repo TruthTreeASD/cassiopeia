@@ -6,6 +6,7 @@ import { Card, CardBody, CardHeader } from 'reactstrap';
 import DisplayComponent from './DisplayComponent';
 import LeftSideBar from './LeftSideBar';
 import YearSelector from './YearSelector';
+import AttributeDeselector from './AttributeDeselector';
 import Filters from './AttributeRange';
 import Tabs from './Explore/Tabs';
 import TimeSeriesView from './Explore/TimeSeriesView';
@@ -21,6 +22,7 @@ class Home extends Component {
 
           <div className="col-12 col-md-10 align-items-center">
             <Card>
+              <AttributeDeselector />
               <Tabs>
                 <div label="Table View">
                   <DisplayComponent
