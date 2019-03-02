@@ -40,39 +40,28 @@ class GridTest extends Component {
     });
   }
 
+  handExpandClick = attrId =>
+    this.setState({
+      modal: true,
+      modalAttrIndex: attrId
+    });
+
   render() {
     let attributes = this.getAttributeNames('name');
     let len = attributes.length;
 
     let cards = attributes.map((card, index) => {
-      console.log('Index is ' + index);
       return (
-        <Card sm="8">
+        <Card key={index} sm="8">
           <CardBody>
             <TimeSeriesView index={index} condition="tiny" id={this.props.id} />
-            <Button color="secondary" onClick={this.modalToggle}>
+            <Button
+              color="secondary"
+              onClick={() => this.handExpandClick(index)}
+            >
               {' '}
               Expand{' '}
             </Button>
-            <Modal
-              isOpen={this.state.modal}
-              toggle={this.modalToggle}
-              className="GridModal"
-            >
-              <ModalHeader toggle={this.modalToggle}> Modal title </ModalHeader>
-              <ModalBody>
-                <TimeSeriesView
-                  index={index}
-                  condition="large"
-                  id={this.props.id}
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="secondary" onClick={this.modalToggle}>
-                  Cancel
-                </Button>
-              </ModalFooter>
-            </Modal>
           </CardBody>
         </Card>
       );
@@ -88,7 +77,28 @@ class GridTest extends Component {
     } else {
       return (
         <Container className="GridContainer">
-          <Row> {cards}</Row>
+          <Row>
+            {cards}
+            <Modal
+              isOpen={this.state.modal}
+              toggle={this.modalToggle}
+              className="GridModal"
+            >
+              <ModalHeader toggle={this.modalToggle}> Modal title </ModalHeader>
+              <ModalBody>
+                <TimeSeriesView
+                  index={this.state.modalAttrIndex}
+                  condition="large"
+                  id={this.props.id}
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button color="secondary" onClick={this.modalToggle}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Modal>
+          </Row>
         </Container>
       );
     }
