@@ -8,7 +8,8 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  Badge
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -55,11 +56,11 @@ class GridTest extends Component {
           <CardBody>
             <TimeSeriesView index={index} condition="tiny" id={this.props.id} />
             <Button
+              className="button"
               color="secondary"
               onClick={() => this.handExpandClick(index)}
             >
-              {' '}
-              Expand{' '}
+              <Badge>Expand</Badge>
             </Button>
           </CardBody>
         </Card>
@@ -83,7 +84,6 @@ class GridTest extends Component {
               toggle={this.modalToggle}
               className="GridModal"
             >
-              <ModalHeader toggle={this.modalToggle}> Modal title </ModalHeader>
               <ModalBody>
                 <TimeSeriesView
                   index={this.state.modalAttrIndex}

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Badge } from 'reactstrap';
+
 import {
   LineChart,
   Line,
@@ -21,7 +23,10 @@ class TimeSeries extends Component {
     if (this.props.condition === 'large') {
       return (
         <div className="chartDiv">
-          <div> {this.props.attributeName} </div>
+          <Badge color="info" className="popupHeader">
+            {' '}
+            {this.props.attributeName} vs Year{' '}
+          </Badge>
           <LineChart
             width={1050}
             height={450}
@@ -34,7 +39,13 @@ class TimeSeries extends Component {
               strokeDasharray="5 5"
               padding={{ left: 20, right: 20 }}
             />
-            <XAxis dataKey="year" label="Year" />
+            <XAxis
+              dataKey="year"
+              label={{
+                value: 'Year',
+                position: 'insideBottom'
+              }}
+            />
             <YAxis
               label={{
                 value: attributeName,
@@ -59,9 +70,9 @@ class TimeSeries extends Component {
     } else {
       return (
         <div className="chartDiv">
-          <div> {this.props.attributeName} </div>
+          <Badge color="info"> {this.props.attributeName} vs Year </Badge>
           <LineChart
-            width={450}
+            width={475}
             height={200}
             data={this.props.data}
             margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
@@ -72,7 +83,13 @@ class TimeSeries extends Component {
               strokeDasharray="5 5"
               padding={{ left: 20, right: 20 }}
             />
-            <XAxis dataKey="year" label="Year" />
+            <XAxis
+              dataKey="year"
+              label={{
+                value: 'Year',
+                position: 'insideBottom'
+              }}
+            />
             <YAxis
               label={{
                 value: attributeName,

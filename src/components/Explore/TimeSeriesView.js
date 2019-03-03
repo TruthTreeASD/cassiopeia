@@ -82,13 +82,7 @@ class TimeSeriesView extends Component {
               locationIds.push(obj.id);
             });
             this.setState({ locationIds: locationIds });
-            // console.log('Location Ids are:', locationIds);
-            // console.log(
-            //   `${TRUTHTREE_URI}/api/population?locationId=` +
-            //     this.state.locationIds +
-            //     '&year=' +
-            //     year
-            // );
+
             this.fetchResponse();
           })
           .catch(error => {
@@ -147,6 +141,7 @@ class TimeSeriesView extends Component {
     });
     data.push(map);
     this.setState({ data: data, locations: locations });
+    console.log(data);
   }
 
   initializeYearMap() {

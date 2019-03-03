@@ -1,7 +1,11 @@
 .chartDiv {
   align-items: center;
-  padding-left: 20px;
-  margin: 20px;
+  padding-left: 5px;
+  margin: 5px;
+}
+.button {
+  background-color: white !important;
+  border-color: white !important;
 }
 
 .chartDivTiny {
@@ -10,14 +14,12 @@
   margin: 20px;
 }
 
-.CarouselItem {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-svg.recharts-surface tspan {
-  font-size: 0.6rem !important;
-  color: black !important;
-  font-family: Arial;
+span.popupHeader.badge.badge-info {
+  font-size: 15px !important;
+  line-height: 2 !important;
+  margin-bottom: 20px !important;
+  align-items: center !important;
+  align-content: center !important;
 }
 
 .recharts-tooltip-wrapper {
@@ -27,6 +29,16 @@ svg.recharts-surface tspan {
 .GridContainer {
   height: 500px;
   overflow: auto;
+}
+
+span.recharts-legend-item-text {
+  font-size: 10px !important;
+}
+
+svg.recharts-surface tspan {
+  font-size: 0.6rem !important;
+  color: black !important;
+  font-family: Arial;
 }
 
 .GridModal {
