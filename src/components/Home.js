@@ -9,7 +9,7 @@ import YearSelector from './YearSelector';
 import AttributeDeselector from './AttributeDeselector';
 import Filters from './AttributeRange';
 import Tabs from './Explore/Tabs';
-import TimeSeriesChart from './Explore/TimeSeries';
+import TimeSeriesGrid from './Explore/TimeSeriesGrid';
 
 class Home extends Component {
   render() {
@@ -30,10 +30,8 @@ class Home extends Component {
                 </div>
 
                 <div label="Time Series View">
-                  <TimeSeriesChart />
+                  <TimeSeriesGrid id={this.props.match.params.id} />
                 </div>
-
-                <div label="Map View">Coming soon :)</div>
               </Tabs>
             </Card>
 
