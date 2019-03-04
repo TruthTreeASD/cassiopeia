@@ -13,6 +13,16 @@ import { Link } from 'react-router-dom';
 import '../styles/Header.css';
 import logo from '../truthtree-logo.png';
 
+const navbarStyle = {
+  backgroundColor: 'rgba(13, 22, 38, 0.8)'
+};
+
+const navBrandStyle = {
+  '&:hover': {
+    textDecoration: 'none'
+  }
+};
+
 const logoStyle = {
   width: 50
 };
@@ -24,8 +34,8 @@ class Header extends Component {
 
   render() {
     return (
-      <Navbar color="light" light expand="md" className={this.props.className}>
-        <NavbarBrand>
+      <Navbar style={navbarStyle} expand="md" className="fixed-top">
+        <NavbarBrand style={navBrandStyle}>
           <Link to="/">
             <img
               src={logo}
@@ -33,8 +43,8 @@ class Header extends Component {
               className="d-inline-block"
               alt="TruthTree logo"
             />
+            &nbsp;TruthTree
           </Link>
-          &nbsp;TruthTree
         </NavbarBrand>
         <NavbarToggler
           onClick={() =>
@@ -45,12 +55,12 @@ class Header extends Component {
           <Nav className="ml-auto" navbar>
             <NavItem>
               <NavLink tag={Link} to="/">
-                Trending
+                Explore
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} to="/explore">
-                Explore
+              <NavLink tag={Link} to="/about">
+                About
               </NavLink>
             </NavItem>
           </Nav>
