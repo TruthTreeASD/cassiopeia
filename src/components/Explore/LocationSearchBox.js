@@ -1,10 +1,25 @@
 import React, { Component } from 'react';
-import { Spinner, Popover, Input, ListGroup, ListGroupItem } from 'reactstrap';
+import {
+  Container,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Spinner,
+  Popover,
+  Input,
+  ListGroup,
+  ListGroupItem
+} from 'reactstrap';
 import { get } from 'axios';
 import Fuse from 'fuse.js';
+import Autosuggest from 'react-autosuggest';
 import { Link, withRouter } from 'react-router-dom';
+import _ from 'lodash';
+import { connect } from 'react-redux';
 
 import { TRUTHTREE_URI } from '../../constants';
+import { updateValue } from '../../actions/LocationSearchBoxActions';
 
 // TruthTree API endpoints
 const ENDPOINTS = {
@@ -52,20 +67,67 @@ const PopoverSection = ({ level, items }) => {
   );
 };
 
+const renderInputComponent = inputProps => (
+  <div>
+    <Label
+      style={{ cursor: 'pointer', color: 'white' }}
+      for="location-search-box"
+    >
+      Search for a U.S location:
+    </Label>
+    <Input
+      {...inputProps}
+      id="location-search-box"
+      name="location-search-box"
+      placeholder="Try something like Seattle or Boston"
+    />
+  </div>
+);
+
+const renderSuggestionsContainer = ({ containerProps, children }) => {
+  const style = {
+    height: '5em'
+  };
+  return (
+    <div style={style} {...containerProps}>
+      {children}
+    </div>
+  );
+};
+
+const renderSuggestion = suggestion => {
+  let item = suggestion.item;
+  let buttonText = item.name;
+  // if (level !== 'counties') {
+  //   buttonText += item.county ? `, ${item.county}` : '';
+  // }
+  buttonText += item.stateAbbr ? `, ${item.stateAbbr}` : '';
+  const url = `/explore/${item.name.toLowerCase().replace(' ', '-')}/${
+    item.id
+  }`;
+  return <Link to="/">{item.name}</Link>;
+};
+
 class LocationSearchBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
+      value: '',
       popoverOpen: false,
       statesData: undefined,
       countiesData: undefined,
       citiesData: undefined,
       matchedStates: [],
       matchedCounties: [],
-      matchedCities: []
+      matchedCities: [],
+      suggestions: []
     };
     this.timer = null;
+    this.debouncedhandleSuggestionsFetchRequested = _.debounce(
+      this.handleSuggestionsFetchRequested,
+      250
+    );
   }
 
   componentDidMount() {
@@ -136,89 +198,74 @@ class LocationSearchBox extends Component {
     });
   };
 
-  handleChange = event => {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
-    const searchPhrase = event.target.value;
-    this.timer = setTimeout(() => {
-      const matchedStates = this.state.statesData.search(searchPhrase);
-      const matchedCounties = this.state.countiesData.search(searchPhrase);
-      const matchedCities = this.state.citiesData.search(searchPhrase);
-      const popoverOpen = this.shouldPopoverOpen(
-        matchedStates,
-        matchedCounties,
-        matchedCities
-      );
-      this.setState({
-        matchedStates,
-        matchedCounties,
-        matchedCities,
-        popoverOpen
-      });
-    }, 300);
+  handleInputChange = (_, { newValue }) => {
+    this.props.dispatch(updateValue(newValue));
   };
 
-  shouldPopoverOpen = (matchedStates, matchedCounties, matchedCities) => {
-    return (
-      matchedStates.length > 0 ||
-      matchedCounties.length > 0 ||
-      matchedCities.length > 0
+  handleSuggestionsFetchRequested = ({ value }) => {
+    const searchPhrase = value;
+    const matchedStates = this.state.statesData.search(searchPhrase);
+    const matchedCounties = this.state.countiesData.search(searchPhrase);
+    const matchedCities = this.state.citiesData.search(searchPhrase);
+    const temp = [].concat(
+      matchedStates.slice(0, 5),
+      matchedCounties.slice(0, 5),
+      matchedCities.slice(0, 5)
     );
+    temp.sort((a, b) => a.score - b.score);
+    this.setState({
+      suggestions: temp.slice(0, 10)
+    });
   };
 
   render() {
-    const {
-      loading,
-      matchedStates,
-      matchedCounties,
-      matchedCities,
-      popoverOpen
-    } = this.state;
+    const { loading } = this.state;
+
+    const inputProps = {
+      value: this.props.value,
+      onChange: this.handleInputChange
+    };
 
     return (
-      <div>
-        {loading ? (
-          <div className="d-flex justify-content-center">
-            <Spinner className="align-self-center" color="primary" />
-          </div>
-        ) : (
-          <div>
-            <Input
-              id="location-search-box"
-              onChange={this.handleChange}
-              placeholder="Search for location"
-            />
-            <Popover
-              placement="bottom"
-              isOpen={popoverOpen}
-              target="location-search-box"
-            >
-              {matchedStates.length > 0 && (
-                <PopoverSection
-                  level="states"
-                  items={matchedStates.slice(0, 3)}
-                />
-              )}
-              {matchedCounties.length > 0 && (
-                <PopoverSection
-                  level="counties"
-                  items={matchedCounties.slice(0, 3)}
-                />
-              )}
-              {matchedCities.length > 0 && (
-                <PopoverSection
-                  level="cities"
-                  items={matchedCities.slice(0, 3)}
-                />
-              )}
-            </Popover>
-          </div>
-        )}
-      </div>
+      <Container>
+        <Row className="py-3">
+          {loading ? (
+            <Col className="d-flex justify-content-center">
+              <Spinner className="align-self-center" color="primary" />
+            </Col>
+          ) : (
+            <Col>
+              <Autosuggest
+                theme={{
+                  container: 'position-relative',
+                  suggestionsList:
+                    'list-group position-absolute w-100 overflow-y',
+                  suggestion: 'list-group-item'
+                }}
+                suggestions={this.state.suggestions}
+                alwaysRenderSuggestions
+                onSuggestionsClearRequested={() =>
+                  this.setState({ suggestions: [] })
+                }
+                onSuggestionsFetchRequested={
+                  this.debouncedhandleSuggestionsFetchRequested
+                }
+                getSuggestionValue={suggestion => suggestion}
+                renderInputComponent={renderInputComponent}
+                renderSuggestionsContainer={renderSuggestionsContainer}
+                renderSuggestion={renderSuggestion}
+                inputProps={inputProps}
+              />
+            </Col>
+          )}
+        </Row>
+      </Container>
     );
   }
 }
 
-export default withRouter(LocationSearchBox);
+const mapStateToProps = store => ({
+  value: store.LocationSearchBoxReducer.value
+});
+
+export default connect(mapStateToProps)(withRouter(LocationSearchBox));

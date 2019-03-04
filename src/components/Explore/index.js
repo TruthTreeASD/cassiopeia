@@ -3,31 +3,21 @@ import { Container, Row, Col } from 'reactstrap';
 
 import Map from './Map';
 import LocationSearchBox from './LocationSearchBox';
+import Intro from './Intro';
 
 const exploreStyle = {
-  flex: '1 1 auto'
-};
-
-const searchBoxWrapperStyle = {
-  zIndex: 99
+  flex: '1 1 100%'
 };
 
 class Explore extends Component {
   render() {
     return (
-      <div className="position-relative" style={exploreStyle}>
-        <Container
-          fluid
-          className="position-absolute my-3"
-          style={searchBoxWrapperStyle}
-        >
-          <Row className="justify-content-center">
-            <Col xs={6}>
-              <LocationSearchBox />
-            </Col>
-          </Row>
-        </Container>
+      <div
+        style={exploreStyle}
+        className="d-flex align-items-center position-relative"
+      >
         <Map />
+        <Intro />
       </div>
     );
   }
