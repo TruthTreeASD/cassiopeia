@@ -215,8 +215,8 @@ class LeftSideBar extends Component {
                                     attr
                                   ].attribute_id
                                 )
-                                  ? 'bisque'
-                                  : '#d4f3c7'
+                                  ? '#d4f3c7'
+                                  : 'white'
                               }}
                             >
                               <div>
