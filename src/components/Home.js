@@ -20,7 +20,9 @@ class Home extends Component {
 
           <div className="col-12 col-md-10 align-items-center">
             <Card>
-              <AttributeDeselector />
+              <div className={'attribute-selector-padding'}>
+                <AttributeDeselector />
+              </div>
               <Tabs>
                 <div label="Table View">
                   <DisplayComponent
