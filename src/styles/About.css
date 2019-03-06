@@ -1,0 +1,10 @@
+.about {
+  height: 100%;
+  background-color: #f8f9fa;
+}
+
+.float-center {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 30px;
+}
