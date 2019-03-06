@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Spinner } from 'reactstrap';
 import axios from 'axios/index';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -10,6 +11,7 @@ class TimeSeriesView extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       locations: [],
       data: [],
       currentLevel: null,
@@ -140,8 +142,7 @@ class TimeSeriesView extends Component {
       });
     });
     data.push(map);
-    this.setState({ data: data, locations: locations });
-    console.log(data);
+    this.setState({ data: data, locations: locations, loading: false });
   }
 
   initializeYearMap() {
@@ -156,19 +157,35 @@ class TimeSeriesView extends Component {
   render() {
     const len = this.props.selectedAttributes.length;
 
+    const { loading } = this.state;
+
     if (len === 0) {
       return <div>Select an attribute</div>;
     } else {
-      return this.state.data.map((attrData, i) => {
+      if (loading === true) {
         return (
-          <TimeSeriesChart
-            data={attrData[this.props.selectedAttributes[this.props.index][i]]}
-            attributeName={this.props.selectedAttributes[this.props.index][1]}
-            locations={this.state.locations}
-            condition={this.props.condition}
-          />
+          <div className="d-flex justify-content-center">
+            <Spinner
+              className="align-self-center"
+              color="secondary"
+              size="sm"
+            />
+          </div>
         );
-      });
+      } else {
+        return this.state.data.map((attrData, i) => {
+          return (
+            <TimeSeriesChart
+              data={
+                attrData[this.props.selectedAttributes[this.props.index][i]]
+              }
+              attributeName={this.props.selectedAttributes[this.props.index][1]}
+              locations={this.state.locations}
+              condition={this.props.condition}
+            />
+          );
+        });
+      }
     }
   }
 }
