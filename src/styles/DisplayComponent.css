@@ -29,3 +29,12 @@
   border-right: 1px solid black;
   padding: 5px;
 }
+
+#dropdown {
+  display: inline-block;
+  margin: 15px;
+}
+
+#normalisation {
+  margin-left: 10px;
+}

@@ -5,6 +5,13 @@ import axios from 'axios/index';
 import _ from 'lodash';
 import '../styles/DisplayComponent.css';
 import { TRUTHTREE_URI } from '../constants';
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle
+} from 'reactstrap';
+import { Table } from 'reactstrap';
 
 class DisplayComponent extends Component {
   constructor(props) {
@@ -12,11 +19,17 @@ class DisplayComponent extends Component {
     this.state = {
       currentLevel: null,
       data: [['Name', 'Population']],
-      locationIds: []
+      locationIds: [],
+      dropdownOpen: false,
+      selectedNormalization: 'No attribute',
+      normalizationValues: []
     };
     this.cellRenderer = this.cellRenderer.bind(this);
     this.getAttributeType = this.getAttributeType.bind(this);
     this.populationRangeCall = this.populationRangeCall.bind(this);
+    this.normalizationValuesCall = this.normalizationValuesCall.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.setSelectedNormalization = this.setSelectedNormalization.bind(this);
   }
 
   cellRenderer({ columnIndex, key, rowIndex, style }) {
@@ -35,7 +48,35 @@ class DisplayComponent extends Component {
   }
 
   componentDidMount() {
+    this.setState(prevState => ({
+      data: [['Name', 'Population']]
+    }));
+    this.normalizationValuesCall();
     this.populationRangeCall();
+  }
+
+  toggle() {
+    this.setState(prevState => ({
+      dropdownOpen: !prevState.dropdownOpen
+    }));
+  }
+
+  setSelectedNormalization(value) {
+    this.setState(prevState => ({
+      selectedNormalization: value
+    }));
+  }
+
+  normalizationValuesCall() {
+    axios
+      .get(`${TRUTHTREE_URI}/api/normalization_types`)
+      .then(response => {
+        console.log(response.data);
+        this.setState({ normalizationValues: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   populationRangeCall() {
@@ -132,6 +173,40 @@ class DisplayComponent extends Component {
 
     return (
       <div id="mainDisplay">
+        <div id="normalisation">
+          Normalization attribute:
+          <Dropdown
+            id="dropdown"
+            isOpen={this.state.dropdownOpen}
+            toggle={this.toggle}
+          >
+            <DropdownToggle caret>
+              {this.state.selectedNormalization}
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem
+                onClick={() => this.setSelectedNormalization('No attribute')}
+              >
+                No attribute
+              </DropdownItem>
+              <DropdownItem
+                onClick={() => this.setSelectedNormalization('Gross')}
+              >
+                Gross
+              </DropdownItem>
+              <DropdownItem
+                onClick={() => this.setSelectedNormalization('Per Capita')}
+              >
+                Per Capita
+              </DropdownItem>
+              <DropdownItem
+                onClick={() => this.setSelectedNormalization('Per Revenue')}
+              >
+                Per Revenue
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
         <Grid
           cellRenderer={this.cellRenderer}
           columnCount={this.state.data[0].length}
