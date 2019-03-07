@@ -127,7 +127,7 @@ class DisplayComponent extends Component {
 
   render() {
     console.log('----------');
-    console.log(this.props);
+    console.log(this.state.data);
     console.log('----------');
     let attributes = this.getAttributeType('ids');
     if (attributes.length > 0) {
@@ -157,7 +157,7 @@ class DisplayComponent extends Component {
             );
             console.log('++++++++++');
             this.state.data[
-              this.state.locationIds.indexOf(row.location_id)
+              1 + this.state.locationIds.indexOf(row.location_id)
             ].push(
               row.attributes[0].data[0].value
               // _.map(row.attributes, elem => {
@@ -207,15 +207,31 @@ class DisplayComponent extends Component {
             </DropdownMenu>
           </Dropdown>
         </div>
-        <Grid
-          cellRenderer={this.cellRenderer}
-          columnCount={this.state.data[0].length}
-          columnWidth={150}
-          height={500}
-          rowCount={this.state.data.length}
-          rowHeight={35}
-          width={1100}
-        />
+        <Table hover>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Population</th>
+              {this.props.selectedAttributes.map((column, index) => {
+                return <th key={index}>{column[1]}</th>;
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.data.map((column, index) => {
+              if (index === 0) return;
+              else {
+                return (
+                  <tr key={index}>
+                    {column.map((value, i) => {
+                      return <td key={i}>{value}</td>;
+                    })}
+                  </tr>
+                );
+              }
+            })}
+          </tbody>
+        </Table>
       </div>
     );
   }
