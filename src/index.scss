@@ -19,3 +19,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.overflow-y {
+  overflow-y: auto !important;
+}
+
+$primary: #6f9ba5;
+
+@import '~bootstrap/scss/bootstrap';
