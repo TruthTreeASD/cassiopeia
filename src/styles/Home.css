@@ -1,3 +1,7 @@
 .border-right {
   border-right: 1px solid black;
 }
+
+.attribute-selector-padding {
+  padding: 10px;
+}
