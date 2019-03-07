@@ -23,11 +23,6 @@ class LeftSideBar extends Component {
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
   }
 
-  /* componentWillReceiveProps(nextProps) {
-        this.setState({ selectedAttributes: nextProps.selectedAttributes });
-        console.log('got prop');//update later with year.
-    }*/
-
   componentDidMount() {
     axios
       .get(
@@ -88,7 +83,6 @@ class LeftSideBar extends Component {
       }
     }
     newArr.push([id, attribute.name]);
-    //console.log(this.props);
 
     this.setState({
       selectedAttributes: newArr
@@ -106,6 +100,7 @@ class LeftSideBar extends Component {
     this.setState({ searchedString: '' });
   }
 
+  //updates search bar with text
   handleChangeSearch = event => {
     this.setState({ searchedString: event.target.value.toLowerCase() });
     if (this.state.searchedString == '') {
@@ -142,14 +137,13 @@ class LeftSideBar extends Component {
     } else {
       if (this.state.collapsedLeft) {
         return (
-          <button className={'btn'}>
+          <button className={'btn'} onClick={() => this.collapseLeftBar()}>
             <i
               className={
                 'col-md-flex d-md-flex ' + !this.state.collapsedLeft
                   ? 'fa fa-chevron-right'
                   : 'fa fa-chevron-left'
               }
-              onClick={() => this.collapseLeftBar()}
             />
           </button>
         );
@@ -167,14 +161,13 @@ class LeftSideBar extends Component {
                   placeholder="Property Lookup"
                 />
               </div>
-              <button className={'btn'}>
+              <button className={'btn'} onClick={() => this.collapseLeftBar()}>
                 <i
                   className={
                     'chevron-icon-padding ' + !this.state.collapsedLeft
                       ? 'fa fa-chevron-left'
                       : 'fa fa-chevron-right'
                   }
-                  onClick={() => this.collapseLeftBar()}
                 />
               </button>
             </div>
