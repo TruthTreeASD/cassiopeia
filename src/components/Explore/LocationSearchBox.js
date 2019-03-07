@@ -1,16 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Container,
-  Row,
-  Col,
-  FormGroup,
-  Label,
-  Spinner,
-  Popover,
-  Input,
-  ListGroup,
-  ListGroupItem
-} from 'reactstrap';
+import { Container, Row, Col, Label, Spinner, Input } from 'reactstrap';
 import { get } from 'axios';
 import Fuse from 'fuse.js';
 import Autosuggest from 'react-autosuggest';
@@ -28,6 +17,12 @@ const ENDPOINTS = {
   CITIES: `${TRUTHTREE_URI}/api/cities`
 };
 
+const TYPE_CODE = {
+  0: 'states',
+  1: 'counties',
+  2: 'cities'
+};
+
 const createFuseOptions = keys => {
   return {
     threshold: 0.6,
@@ -38,33 +33,6 @@ const createFuseOptions = keys => {
     minMatchCharLength: 2,
     keys: keys
   };
-};
-
-const PopoverSection = ({ level, items }) => {
-  return (
-    <ListGroup>
-      <ListGroupItem>
-        <strong className="text-uppercase">{level}</strong>
-      </ListGroupItem>
-      {items.map((item, index) => {
-        item = item.item;
-        let buttonText = item.name;
-        if (level !== 'counties') {
-          buttonText += item.county ? `, ${item.county}` : '';
-        }
-        buttonText += item.stateAbbr ? `, ${item.stateAbbr}` : '';
-        const url = `/explore/${level}/${item.name
-          .toLowerCase()
-          .replace(' ', '-')}/${item.id}`;
-
-        return (
-          <ListGroupItem key={index}>
-            <Link to={url}>{buttonText}</Link>
-          </ListGroupItem>
-        );
-      })}
-    </ListGroup>
-  );
 };
 
 const renderInputComponent = inputProps => (
@@ -95,17 +63,22 @@ const renderSuggestionsContainer = ({ containerProps, children }) => {
   );
 };
 
+const getSuggestionLabel = suggestion => {
+  let item = suggestion.item;
+  let label = item.name;
+  if (item.typeCode !== 1) {
+    label += item.county ? `, ${item.county}` : '';
+  }
+  label += item.stateAbbr ? `, ${item.stateAbbr}` : '';
+  return label;
+};
+
 const renderSuggestion = suggestion => {
   let item = suggestion.item;
-  let buttonText = item.name;
-  // if (level !== 'counties') {
-  //   buttonText += item.county ? `, ${item.county}` : '';
-  // }
-  buttonText += item.stateAbbr ? `, ${item.stateAbbr}` : '';
-  const url = `/explore/${item.name.toLowerCase().replace(' ', '-')}/${
-    item.id
-  }`;
-  return <Link to="/">{item.name}</Link>;
+  const url = `/explore/${
+    TYPE_CODE[item.typeCode]
+  }/${item.name.toLowerCase().replace(' ', '-')}/${item.id}`;
+  return <Link to={url}>{getSuggestionLabel(suggestion)}</Link>;
 };
 
 class LocationSearchBox extends Component {
@@ -148,6 +121,7 @@ class LocationSearchBox extends Component {
     const statesDataById = statesData.reduce((newStatesData, state) => {
       newStatesData[state.state_code] = state;
       state.counties = {};
+      state.typeCode = 0;
       return newStatesData;
     }, {});
 
@@ -155,6 +129,7 @@ class LocationSearchBox extends Component {
       const state = statesDataById[county.state_code];
       county.state = state.name;
       county.stateAbbr = state.abbreviation;
+      county.typeCode = 1;
       state.counties[county.county] = county;
     });
 
@@ -170,6 +145,7 @@ class LocationSearchBox extends Component {
         city.stateAbbr = null;
       }
       city.county = county ? county.name : null;
+      city.typeCode = 2;
     });
 
     const statesFuseOptions = createFuseOptions([
@@ -250,7 +226,7 @@ class LocationSearchBox extends Component {
                 onSuggestionsFetchRequested={
                   this.debouncedhandleSuggestionsFetchRequested
                 }
-                getSuggestionValue={suggestion => suggestion}
+                getSuggestionValue={getSuggestionLabel}
                 renderInputComponent={renderInputComponent}
                 renderSuggestionsContainer={renderSuggestionsContainer}
                 renderSuggestion={renderSuggestion}
