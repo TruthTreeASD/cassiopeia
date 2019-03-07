@@ -19,6 +19,7 @@ class DisplayComponent extends Component {
       currentLevel: null,
       data: {},
       locationIds: [],
+      selectedAttributes: [],
       dropdownOpen: false,
       selectedNormalization: 'No attribute',
       normalizationValues: []
@@ -28,6 +29,11 @@ class DisplayComponent extends Component {
     this.normalizationValuesCall = this.normalizationValuesCall.bind(this);
     this.toggle = this.toggle.bind(this);
     this.setSelectedNormalization = this.setSelectedNormalization.bind(this);
+    this.attributeCall = this.attributeCall.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ selectedAttributes: nextProps.selectedAttributes });
   }
 
   getAttributeType(type) {
@@ -39,7 +45,8 @@ class DisplayComponent extends Component {
 
   componentDidMount() {
     this.setState(prevState => ({
-      data: {}
+      data: {},
+      selectedAttribtes: this.props.selectedAttributes
     }));
     this.normalizationValuesCall();
     this.populationRangeCall();
@@ -115,7 +122,7 @@ class DisplayComponent extends Component {
       });
   }
 
-  render() {
+  attributeCall() {
     let attributes = this.getAttributeType('ids');
     if (attributes.length > 0) {
       axios
@@ -128,17 +135,22 @@ class DisplayComponent extends Component {
             this.props.year
         )
         .then(response => {
+          let data = this.state.data;
           _.map(response.data, row => {
             _.map(row.attributes, elem => {
-              this.state.data[row.location_id][elem.attribute_id] =
-                elem.data[0].value;
+              data[row.location_id][elem.attribute_id] = elem.data[0].value;
             });
           });
+          this.setState({ data: data });
         })
         .catch(error => {
           console.log(error);
         });
     }
+  }
+
+  render() {
+    this.attributeCall();
 
     return (
       <div id="mainDisplay">
@@ -181,7 +193,7 @@ class DisplayComponent extends Component {
             <tr>
               <th>Name</th>
               <th>Population</th>
-              {this.props.selectedAttributes.map((column, index) => {
+              {this.state.selectedAttributes.map((column, index) => {
                 return <th key={index}>{column[1]}</th>;
               })}
             </tr>
@@ -192,7 +204,7 @@ class DisplayComponent extends Component {
                 <tr key={index}>
                   <td>{row['name']}</td>
                   <td>{row['1']}</td>
-                  {this.props.selectedAttributes.map(column => {
+                  {this.state.selectedAttributes.map(column => {
                     return <td>{row[column[0]]}</td>;
                   })}
                 </tr>
