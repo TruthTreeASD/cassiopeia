@@ -51,17 +51,27 @@ class AttributeDeselector extends Component {
       return <div />;
     } else {
       return (
-        <div>
-          Selected Filters : |
+        <div className={'row'}>
+          <span
+            className="text-info"
+            style={{ padding: '10px', fontSize: '18px' }}
+          >
+            Selected Filters
+          </span>
           {Object.keys(this.state.selectedAttributes).map((attributes, i) => {
             return (
-              <button
-                onClick={() =>
-                  this.deselectAttribute(this.state.selectedAttributes[i])
-                }
-              >
-                <div>{this.state.selectedAttributes[i][1]}</div>
-              </button>
+              <div style={{ padding: '10px' }}>
+                <button className="btn btn-light">
+                  <i
+                    className="fa fa-times"
+                    style={{ paddingRight: '10px' }}
+                    onClick={() =>
+                      this.deselectAttribute(this.state.selectedAttributes[i])
+                    }
+                  />
+                  {this.state.selectedAttributes[i][1]}
+                </button>
+              </div>
             );
           })}
         </div>

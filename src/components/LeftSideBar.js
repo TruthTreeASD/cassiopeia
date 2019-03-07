@@ -22,6 +22,7 @@ class LeftSideBar extends Component {
     // Set initial state of each collection to false
     Object.keys(this.state.sidebarData).map(key => (this.state[key] = false));
   }
+
   /* componentWillReceiveProps(nextProps) {
         this.setState({ selectedAttributes: nextProps.selectedAttributes });
         console.log('got prop');//update later with year.
@@ -141,34 +142,44 @@ class LeftSideBar extends Component {
     } else {
       if (this.state.collapsedLeft) {
         return (
-          <button
-            className="col-md-flex d-md-flex"
-            onClick={() => this.collapseLeftBar()}
-          >
-            {!this.state.collapsedLeft ? 'Hide Left Nav' : 'Show'}
+          <button className={'btn'}>
+            <i
+              className={
+                'col-md-flex d-md-flex ' + !this.state.collapsedLeft
+                  ? 'fa fa-chevron-right'
+                  : 'fa fa-chevron-left'
+              }
+              onClick={() => this.collapseLeftBar()}
+            />
           </button>
         );
       } else {
         return (
           <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-light sidebar">
-            <input
-              className="leftSearch"
-              data-spy="affix"
-              data-offset-top="197" //trying to make search box stay top
-              id="attribute-search-box"
-              onChange={this.handleChangeSearch}
-              placeholder="Search for a property"
-            />
-            <button
-              className="float-right"
-              onClick={() => this.collapseLeftBar()}
-            >
-              {!this.state.collapsedLeft ? 'Hide' : 'Show Left Nav'}
-            </button>
+            <div className="row">
+              <div className="col-10">
+                <input
+                  className="form-control leftSearch"
+                  data-spy="affix"
+                  data-offset-top="197" //trying to make search box stay top
+                  id="attribute-search-box"
+                  onChange={this.handleChangeSearch}
+                  placeholder="Property Lookup"
+                />
+              </div>
+              <button className={'btn'}>
+                <i
+                  className={
+                    'chevron-icon-padding ' + !this.state.collapsedLeft
+                      ? 'fa fa-chevron-left'
+                      : 'fa fa-chevron-right'
+                  }
+                  onClick={() => this.collapseLeftBar()}
+                />
+              </button>
+            </div>
             <div
-              style={{
-                display: !this.state.collapsedLeft ? 'block' : 'none'
-              }}
+              style={{ display: !this.state.collapsedLeft ? 'block' : 'none' }}
             >
               {Object.keys(this.state.sidebarData).map((collection, i) => {
                 if (this.renderSearchTerm(collection)) {
@@ -206,8 +217,8 @@ class LeftSideBar extends Component {
                                     attr
                                   ].attribute_id
                                 )
-                                  ? 'bisque'
-                                  : '#d4f3c7'
+                                  ? '#d4f3c7'
+                                  : 'white'
                               }}
                             >
                               <div>
