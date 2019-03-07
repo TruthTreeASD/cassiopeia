@@ -29,16 +29,40 @@ class DisplayComponent extends Component {
     this.normalizationValuesCall = this.normalizationValuesCall.bind(this);
     this.toggle = this.toggle.bind(this);
     this.setSelectedNormalization = this.setSelectedNormalization.bind(this);
-    this.attributeCall = this.attributeCall.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ selectedAttributes: nextProps.selectedAttributes });
+    let attributes = _.flatMap(nextProps.selectedAttributes, elem => {
+      return elem[0];
+    });
+    if (attributes.length > 0) {
+      axios
+        .get(
+          '/api/attributes?locationIds=' +
+            this.state.locationIds +
+            '&attributeIds=' +
+            attributes +
+            '&yearList=' +
+            this.props.year
+        )
+        .then(response => {
+          let data = this.state.data;
+          _.map(response.data, row => {
+            _.map(row.attributes, elem => {
+              data[row.location_id][elem.attribute_id] = elem.data[0].value;
+            });
+          });
+          this.setState({ data: data });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   }
 
   getAttributeType(type) {
-    console.log(this.props.selectedAttributes);
-    return _.flatMap(this.props.selectedAttributes, elem => {
+    return _.flatMap(this.state.selectedAttributes, elem => {
       return type === 'ids' ? elem[0] : elem[1];
     });
   }
@@ -122,36 +146,7 @@ class DisplayComponent extends Component {
       });
   }
 
-  attributeCall() {
-    let attributes = this.getAttributeType('ids');
-    if (attributes.length > 0) {
-      axios
-        .get(
-          '/api/attributes?locationIds=' +
-            this.state.locationIds +
-            '&attributeIds=' +
-            attributes +
-            '&yearList=' +
-            this.props.year
-        )
-        .then(response => {
-          let data = this.state.data;
-          _.map(response.data, row => {
-            _.map(row.attributes, elem => {
-              data[row.location_id][elem.attribute_id] = elem.data[0].value;
-            });
-          });
-          this.setState({ data: data });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  }
-
   render() {
-    this.attributeCall();
-
     return (
       <div id="mainDisplay">
         <div id="normalisation">
@@ -204,8 +199,8 @@ class DisplayComponent extends Component {
                 <tr key={index}>
                   <td>{row['name']}</td>
                   <td>{row['1']}</td>
-                  {this.state.selectedAttributes.map(column => {
-                    return <td>{row[column[0]]}</td>;
+                  {this.state.selectedAttributes.map((column, i) => {
+                    return <td key={i}>{row[column[0]]}</td>;
                   })}
                 </tr>
               );
