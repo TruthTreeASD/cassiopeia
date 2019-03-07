@@ -13,6 +13,16 @@ import { Link } from 'react-router-dom';
 import '../styles/Header.css';
 import logo from '../truthtree-logo.png';
 
+const navbarStyle = {
+  backgroundColor: 'rgba(13, 22, 38, 0.8)'
+};
+
+const navBrandStyle = {
+  '&:hover': {
+    textDecoration: 'none'
+  }
+};
+
 const logoStyle = {
   width: 50
 };
@@ -24,8 +34,8 @@ class Header extends Component {
 
   render() {
     return (
-      <Navbar color="light" light expand="md" className={this.props.className}>
-        <NavbarBrand>
+      <Navbar style={navbarStyle} expand="md" className="fixed-top">
+        <NavbarBrand className="text-primary" style={navBrandStyle}>
           <Link to="/">
             <img
               src={logo}
@@ -43,8 +53,8 @@ class Header extends Component {
         />
         <Collapse isOpen={this.state.collapseOpen} navbar>
           <Nav className="ml-auto" navbar>
-            <NavItem className="border-right">
-              <NavLink tag={Link} to="/explore">
+            <NavItem>
+              <NavLink tag={Link} to="/">
                 Explore
               </NavLink>
             </NavItem>

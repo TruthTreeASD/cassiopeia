@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Jumbotron, Button } from 'reactstrap';
+import { Container, Jumbotron } from 'reactstrap';
 import '../../styles/About.css';
+
+const aboutStyle = {
+  paddingTop: 70
+};
 
 class About extends Component {
   render() {
     return (
-      <Container fluid className="about">
+      <Container fluid style={aboutStyle} className="about">
         <Jumbotron className="float-center">
           <h1 className="display-3">TruthTree</h1>
           <p>A Public Data Vizipedia/Wiki-Laboratory</p>

@@ -17,7 +17,6 @@ it('should have a navbar component with the following properties', () => {
   let navbar = header.find(Navbar);
   expect(navbar.length).toEqual(1);
   expect(navbar.props().expand).toEqual('md');
-  expect(navbar.props().color).toEqual('light');
 });
 
 it('should have a navbarbrand component with the following properties', () => {
