@@ -82,7 +82,8 @@ class LeftSideBar extends Component {
         return;
       }
     }
-    newArr.push([id, attribute.name]);
+    newArr.push([id, attribute.name, collection]);
+    console.log(collection);
 
     this.setState({
       selectedAttributes: newArr
@@ -196,7 +197,7 @@ class LeftSideBar extends Component {
                             <label
                               onClick={() =>
                                 this.handleClickAttribute(
-                                  collection,
+                                  this.state.sidebarData[collection].name,
                                   this.state.sidebarData[collection].attributes[
                                     attr
                                   ]
@@ -215,7 +216,6 @@ class LeftSideBar extends Component {
                               }}
                             >
                               <div>
-                                {/* <input type="checkbox"/>*/}
                                 {
                                   this.state.sidebarData[collection].attributes[
                                     attr
