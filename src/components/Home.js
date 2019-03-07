@@ -11,10 +11,14 @@ import Filters from './AttributeRange';
 import Tabs from './Explore/Tabs';
 import TimeSeriesGrid from './Explore/TimeSeriesGrid';
 
+const homeStyle = {
+  paddingTop: 70
+};
+
 class Home extends Component {
   render() {
     return (
-      <Container fluid>
+      <Container fluid style={homeStyle}>
         <Row>
           <LeftSideBar />
 
