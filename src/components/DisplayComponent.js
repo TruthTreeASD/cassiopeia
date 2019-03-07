@@ -1,47 +1,77 @@
 import React, { Component } from 'react';
-import { Grid } from 'react-virtualized';
 import { connect } from 'react-redux';
 import axios from 'axios/index';
 import _ from 'lodash';
 import '../styles/DisplayComponent.css';
 import { TRUTHTREE_URI } from '../constants';
+import { Table } from 'reactstrap';
+
+import Normalization from './Normalization';
 
 class DisplayComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentLevel: null,
-      data: [['Name', 'Population']],
-      locationIds: []
+      data: {},
+      locationIds: [],
+      selectedAttributes: [],
+      dropdownOpen: false,
+      selectedNormalization: 'No attribute',
+      normalizationValues: []
     };
-    this.cellRenderer = this.cellRenderer.bind(this);
     this.getAttributeType = this.getAttributeType.bind(this);
     this.populationRangeCall = this.populationRangeCall.bind(this);
   }
 
-  cellRenderer({ columnIndex, key, rowIndex, style }) {
-    return (
-      <div key={key} style={style}>
-        {this.state.data[rowIndex][columnIndex]}
-      </div>
-    );
+  componentWillReceiveProps(nextProps) {
+    this.setState({ selectedAttributes: nextProps.selectedAttributes });
+    let attributes = _.flatMap(nextProps.selectedAttributes, elem => {
+      return elem[0];
+    });
+    if (attributes.length > 0) {
+      axios
+        .get(
+          '/api/attributes?locationIds=' +
+            this.state.locationIds +
+            '&attributeIds=' +
+            attributes +
+            '&yearList=' +
+            this.props.year
+        )
+        .then(response => {
+          let data = this.state.data;
+          _.map(response.data, row => {
+            _.map(row.attributes, elem => {
+              data[row.location_id][elem.attribute_id] = elem.data[0].value;
+            });
+          });
+          this.setState({ data: data });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   }
 
   getAttributeType(type) {
-    console.log(this.props.selectedAttributes);
-    return _.flatMap(this.props.selectedAttributes, elem => {
+    return _.flatMap(this.state.selectedAttributes, elem => {
       return type === 'ids' ? elem[0] : elem[1];
     });
   }
 
   componentDidMount() {
+    this.setState(prevState => ({
+      data: {},
+      selectedAttribtes: this.props.selectedAttributes
+    }));
     this.populationRangeCall();
   }
 
   populationRangeCall() {
     let minPopulation = 0;
     let maxPopulation = 0;
-    let data = [['Name', 'Population']];
+    let data = {};
     let locationIds = [];
     let year = this.props.yearSelected ? this.props.yearSelected : 2016;
     // Calculate min and max population
@@ -69,7 +99,7 @@ class DisplayComponent extends Component {
           )
           .then(response => {
             _.map(response.data, obj => {
-              data.push([obj.name, obj.population]);
+              data[obj.id] = { name: obj.name, '1': obj.population };
               locationIds.push(obj.id);
             });
             this.setState({ data: data });
@@ -85,62 +115,33 @@ class DisplayComponent extends Component {
   }
 
   render() {
-    console.log('----------');
-    console.log(this.props);
-    console.log('----------');
-    let attributes = this.getAttributeType('ids');
-    if (attributes.length > 0) {
-      let temp = ['Name', 'Population'];
-      this.state.data[0] = temp.concat(this.getAttributeType('name'));
-      axios
-        .get(
-          '/api/attributes?locationIds=' +
-            this.state.locationIds +
-            '&attributeIds=' +
-            attributes +
-            '&yearList=' +
-            this.props.year
-        )
-        .then(response => {
-          //data contains the variables
-          console.log(response.data);
-          _.map(response.data, row => {
-            console.log('+++++++++');
-            console.log(
-              this.state.data[this.state.locationIds.indexOf(row.location_id)]
-            );
-            console.log(
-              _.map(row.attributes, elem => {
-                return elem.data;
-              })
-            );
-            console.log('++++++++++');
-            this.state.data[
-              this.state.locationIds.indexOf(row.location_id)
-            ].push(
-              row.attributes[0].data[0].value
-              // _.map(row.attributes, elem => {
-              //     return elem.data[0].value;
-              // })
-            );
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-
     return (
       <div id="mainDisplay">
-        <Grid
-          cellRenderer={this.cellRenderer}
-          columnCount={this.state.data[0].length}
-          columnWidth={150}
-          height={500}
-          rowCount={this.state.data.length}
-          rowHeight={35}
-          width={1100}
-        />
+        <Normalization />
+        <Table hover>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Population</th>
+              {this.state.selectedAttributes.map((column, index) => {
+                return <th key={index}>{column[1]}</th>;
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {_.values(this.state.data).map((row, index) => {
+              return (
+                <tr key={index}>
+                  <td>{row['name']}</td>
+                  <td>{row['1']}</td>
+                  {this.state.selectedAttributes.map((column, i) => {
+                    return <td key={i}>{row[column[0]]}</td>;
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
       </div>
     );
   }
