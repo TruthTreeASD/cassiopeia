@@ -35,7 +35,7 @@ class Header extends Component {
   render() {
     return (
       <Navbar style={navbarStyle} expand="md" className="fixed-top">
-        <NavbarBrand style={navBrandStyle}>
+        <NavbarBrand className="text-primary" style={navBrandStyle}>
           <Link to="/">
             <img
               src={logo}
@@ -43,8 +43,8 @@ class Header extends Component {
               className="d-inline-block"
               alt="TruthTree logo"
             />
-            &nbsp;TruthTree
           </Link>
+          &nbsp;TruthTree
         </NavbarBrand>
         <NavbarToggler
           onClick={() =>
