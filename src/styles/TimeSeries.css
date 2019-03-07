@@ -1,0 +1,59 @@
+.chartDiv {
+  align-items: center;
+  padding-left: 5px;
+  margin: 5px;
+}
+.button {
+  background-color: white !important;
+  border-color: white !important;
+}
+
+.chartDivTiny {
+  align-items: center;
+  padding-left: 10px;
+  margin: 20px;
+}
+
+span.popupHeader.badge.badge-info {
+  font-size: 15px !important;
+  line-height: 2 !important;
+  margin-bottom: 20px !important;
+  align-items: center !important;
+  align-content: center !important;
+}
+
+.recharts-tooltip-wrapper {
+  font-size: 0.6rem !important;
+}
+
+.GridContainer {
+  height: 500px;
+  overflow: auto;
+}
+
+span.recharts-legend-item-text {
+  font-size: 10px !important;
+}
+
+svg.recharts-surface tspan {
+  font-size: 0.6rem !important;
+  color: black !important;
+  font-family: Arial;
+}
+
+.GridModal {
+  max-width: 1000px !important;
+  margin: auto;
+}
+
+.modal-dialog {
+  max-width: 1200px !important;
+  margin: 1.75rem auto;
+}
+
+.alert {
+  padding: 20px;
+  background-color: lightgrey;
+  color: grey;
+  font-style: italic;
+}

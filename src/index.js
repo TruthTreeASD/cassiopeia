@@ -5,6 +5,8 @@ import configureStore from './store';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'react-typist/dist/Typist.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css';
 import './index.scss';
 
 ReactDOM.render(

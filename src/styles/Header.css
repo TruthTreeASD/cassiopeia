@@ -6,3 +6,7 @@
   font-family: Apple Chancery, cursive;
   font-weight: bold;
 }
+
+.border-right {
+  border-right: 1px solid black;
+}
