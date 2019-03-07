@@ -12,7 +12,7 @@ import Tabs from './Explore/Tabs';
 import TimeSeriesGrid from './Explore/TimeSeriesGrid';
 
 const homeStyle = {
-  paddingTop: 70
+  paddingTop: 90
 };
 
 class Home extends Component {
