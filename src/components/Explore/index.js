@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
 
 import Map from './Map';
-import LocationSearchBox from './LocationSearchBox';
 import Intro from './Intro';
 
 const exploreStyle = {
