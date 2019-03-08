@@ -16,7 +16,8 @@ class DisplayComponent extends Component {
       data: {},
       locationIds: [],
       selectedAttributes: [],
-      year: 2016
+      year: 2016,
+      selectedNormalizationName: 'GROSS'
     };
     this.getAttributeType = this.getAttributeType.bind(this);
     this.populationRangeCall = this.populationRangeCall.bind(this);
@@ -25,7 +26,9 @@ class DisplayComponent extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       selectedAttributes: nextProps.selectedAttributes,
-      year: nextProps.year
+      year: nextProps.year,
+      selectedNormalizationName: nextProps.selectedNormalizationName,
+      normalizationKeys: nextProps.normalizationKeys
     });
     let attributes = _.flatMap(nextProps.selectedAttributes, elem => {
       return elem[0];
@@ -37,6 +40,8 @@ class DisplayComponent extends Component {
             this.state.locationIds +
             '&attributeIds=' +
             attributes +
+            '&normalizationType=' +
+            nextProps.selectedNormalizationName +
             '&yearList=' +
             nextProps.year
         )
@@ -44,7 +49,12 @@ class DisplayComponent extends Component {
           let data = this.state.data;
           _.map(response.data, row => {
             _.map(row.attributes, elem => {
-              data[row.location_id][elem.attribute_id] = elem.data[0].value;
+              data[row.location_id][elem.attribute_id] =
+                nextProps.selectedNormalizationName === 'PER_CAPITA'
+                  ? elem.data[0].per_capita
+                  : nextProps.selectedNormalizationName === 'BY_REVENUE'
+                  ? elem.data[0].by_revenue
+                  : elem.data[0].value;
             });
           });
           this.setState({ data: data });
@@ -63,11 +73,12 @@ class DisplayComponent extends Component {
   }
 
   componentDidMount() {
-    this.setState(prevState => ({
+    this.setState({
       data: {},
       selectedAttribtes: this.props.selectedAttributes,
-      year: this.props.yearSelected
-    }));
+      year: this.props.yearSelected,
+      selectedNormalizationName: this.props.selectedNormalizationName
+    });
     this.populationRangeCall();
   }
 
@@ -165,7 +176,9 @@ class DisplayComponent extends Component {
 const mapState = state => ({
   year: state.YearSelectorReducer.yearSelected,
   selectedAttributes: state.SelectedAttributeReducer.selectedAttributes,
-  populationRange: state.AttributeRangeReducer.populationRange
+  populationRange: state.AttributeRangeReducer.populationRange,
+  selectedNormalizationName:
+    state.NormalizationReducer.selectedNormalizationName
 });
 
 export default connect(mapState)(DisplayComponent);
