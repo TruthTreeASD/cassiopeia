@@ -135,7 +135,7 @@ class DisplayComponent extends Component {
               return (
                 <tr key={index}>
                   <td>{row['name']}</td>
-                  <td>{row['1']}</td>
+                  <td>{row['1'].toLocaleString()}</td>
                   {this.state.selectedAttributes.map((column, i) => {
                     let url =
                       'https://www.google.com/search?q=' +
