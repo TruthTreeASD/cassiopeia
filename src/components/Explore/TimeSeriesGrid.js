@@ -6,7 +6,6 @@ import {
   CardBody,
   Button,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
   Badge

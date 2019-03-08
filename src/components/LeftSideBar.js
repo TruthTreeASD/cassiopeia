@@ -7,7 +7,6 @@ import { confirmAlert } from 'react-confirm-alert';
 
 import { TRUTHTREE_URI } from '../constants';
 import { withRouter } from 'react-router-dom';
-import { isAbsolute } from 'path';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 class LeftSideBar extends Component {
@@ -117,13 +116,13 @@ class LeftSideBar extends Component {
   //updates search bar with text
   handleChangeSearch = event => {
     this.setState({ searchedString: event.target.value.toLowerCase() });
-    if (this.state.searchedString == '') {
+    if (this.state.searchedString === '') {
     }
   };
 
   renderSearchTerm = collection => {
     if (
-      this.state.searchedString == '' ||
+      this.state.searchedString === '' ||
       this.state.sidebarData[collection].name
         .toLowerCase()
         .search(this.state.searchedString) > -1
