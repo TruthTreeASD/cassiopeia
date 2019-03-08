@@ -6,7 +6,7 @@ import '../styles/DisplayComponent.css';
 import { TRUTHTREE_URI } from '../constants';
 import { Table } from 'reactstrap';
 
-import Normalization from './Normalization';
+import Normalization from './Explore/Normalization';
 
 class DisplayComponent extends Component {
   constructor(props) {

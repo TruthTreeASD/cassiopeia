@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import '../styles/Header.css';
+import '../../styles/Header.css';
 import {
   Dropdown,
   DropdownItem,
@@ -10,7 +10,7 @@ import {
 import axios from 'axios/index';
 import { connect } from 'react-redux';
 
-import { TRUTHTREE_URI } from '../constants';
+import { TRUTHTREE_URI } from '../../constants';
 
 class Normalization extends Component {
   constructor(props) {
