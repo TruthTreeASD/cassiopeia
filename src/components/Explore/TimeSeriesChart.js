@@ -24,8 +24,7 @@ class TimeSeries extends Component {
       return (
         <div className="chartDiv">
           <Badge color="info" className="popupHeader">
-            {' '}
-            {this.props.attributeName} vs Year{' '}
+            {this.props.collectionName} - {this.props.attributeName}
           </Badge>
           <LineChart
             width={1050}
@@ -70,9 +69,12 @@ class TimeSeries extends Component {
     } else {
       return (
         <div className="chartDiv">
-          <Badge color="info"> {this.props.attributeName} vs Year </Badge>
+          <Badge color="info">
+            {' '}
+            {this.props.collectionName} - {this.props.attributeName}{' '}
+          </Badge>
           <LineChart
-            width={475}
+            width={495}
             height={200}
             data={this.props.data}
             margin={{ top: 5, right: 5, bottom: 5, left: 5 }}

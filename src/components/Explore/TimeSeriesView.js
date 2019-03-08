@@ -180,6 +180,9 @@ class TimeSeriesView extends Component {
                 attrData[this.props.selectedAttributes[this.props.index][i]]
               }
               attributeName={this.props.selectedAttributes[this.props.index][1]}
+              collectionName={
+                this.props.selectedAttributes[this.props.index][2]
+              }
               locations={this.state.locations}
               condition={this.props.condition}
             />
