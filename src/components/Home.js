@@ -56,7 +56,7 @@ class Home extends Component {
                       locationId={this.props.match.params.id}
                     />
                   </Col>
-                  <Col>
+                  <Col sm="2" xs="2">
                     <YearSelector />
                   </Col>
                 </Row>
