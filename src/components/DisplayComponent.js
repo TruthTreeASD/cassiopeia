@@ -16,16 +16,17 @@ class DisplayComponent extends Component {
       data: {},
       locationIds: [],
       selectedAttributes: [],
-      dropdownOpen: false,
-      selectedNormalization: 'No attribute',
-      normalizationValues: []
+      year: 2016
     };
     this.getAttributeType = this.getAttributeType.bind(this);
     this.populationRangeCall = this.populationRangeCall.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ selectedAttributes: nextProps.selectedAttributes });
+    this.setState({
+      selectedAttributes: nextProps.selectedAttributes,
+      year: nextProps.year
+    });
     let attributes = _.flatMap(nextProps.selectedAttributes, elem => {
       return elem[0];
     });
@@ -37,7 +38,7 @@ class DisplayComponent extends Component {
             '&attributeIds=' +
             attributes +
             '&yearList=' +
-            this.props.year
+            nextProps.year
         )
         .then(response => {
           let data = this.state.data;
@@ -52,6 +53,7 @@ class DisplayComponent extends Component {
           console.log(error);
         });
     }
+    this.populationRangeCall();
   }
 
   getAttributeType(type) {
@@ -63,7 +65,8 @@ class DisplayComponent extends Component {
   componentDidMount() {
     this.setState(prevState => ({
       data: {},
-      selectedAttribtes: this.props.selectedAttributes
+      selectedAttribtes: this.props.selectedAttributes,
+      year: this.props.yearSelected
     }));
     this.populationRangeCall();
   }
@@ -73,14 +76,13 @@ class DisplayComponent extends Component {
     let maxPopulation = 0;
     let data = {};
     let locationIds = [];
-    let year = this.props.yearSelected ? this.props.yearSelected : 2016;
     // Calculate min and max population
     axios
       .get(
         `${TRUTHTREE_URI}/api/population?locationId=` +
           this.props.id +
           '&year=' +
-          year
+          this.state.year
       )
       .then(response => {
         let population = response.data.population;
@@ -133,9 +135,22 @@ class DisplayComponent extends Component {
               return (
                 <tr key={index}>
                   <td>{row['name']}</td>
-                  <td>{row['1']}</td>
+                  <td>{row['1'].toLocaleString()}</td>
                   {this.state.selectedAttributes.map((column, i) => {
-                    return <td key={i}>{row[column[0]]}</td>;
+                    let url =
+                      'https://www.google.com/search?q=' +
+                      row['name'] +
+                      '+' +
+                      this.state.selectedAttributes[i][1];
+                    return (
+                      <td key={i}>
+                        <a href={url} target="_blank">
+                          {row[column[0]]
+                            ? row[column[0]].toLocaleString()
+                            : ''}
+                        </a>
+                      </td>
+                    );
                   })}
                 </tr>
               );
