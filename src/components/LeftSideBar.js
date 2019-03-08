@@ -3,10 +3,12 @@ import '../styles/LeftSideBar.css';
 import _ from 'lodash';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { confirmAlert } from 'react-confirm-alert';
 
 import { TRUTHTREE_URI } from '../constants';
 import { withRouter } from 'react-router-dom';
 import { isAbsolute } from 'path';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 class LeftSideBar extends Component {
   constructor(props) {
@@ -45,7 +47,7 @@ class LeftSideBar extends Component {
     // if (this.state.selectedAttributes != nextProps.selectedAttributes) {
     // this.setState({ selectedAttributes: nextProps.selectedAttributes });
     //  }
-    console.log('got prop');
+    //console.log('got prop');
   }
 
   isAttributeSelected = attribute_id => {
@@ -82,18 +84,29 @@ class LeftSideBar extends Component {
         return;
       }
     }
-    newArr.push([id, attribute.name, collection]);
-    console.log(collection);
 
-    this.setState({
-      selectedAttributes: newArr
-    });
-    this.props.dispatch({
-      type: 'CHANGE_ATTRIBUTE',
-      value: newArr
-    });
-
-    //this.setState({ [attribute]: !this.state[attribute] });
+    // To limit number of selected attributes to 10
+    if (newArr.length < 10) {
+      newArr.push([id, attribute.name, collection]);
+      this.setState({
+        selectedAttributes: newArr
+      });
+      this.props.dispatch({
+        type: 'CHANGE_ATTRIBUTE',
+        value: newArr
+      });
+    } else {
+      confirmAlert({
+        title: 'Error!',
+        message:
+          'Number of selected attributes exceeded limit of 10, please remove attributes to add more.',
+        buttons: [
+          {
+            label: 'OK'
+          }
+        ]
+      });
+    }
   }
 
   collapseLeftBar() {
