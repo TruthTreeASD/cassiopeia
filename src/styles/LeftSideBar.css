@@ -53,3 +53,22 @@
   padding-top: 5px;
   padding-bottom: 10px;
 }
+
+h1,
+.h1 {
+  font-size: 25px !important;
+  color: #6f9ba5 !important;
+  font-weight: bold !important;
+}
+
+.react-confirm-alert-body {
+  padding: 10px !important;
+  background: rgba(13, 22, 38, 0.8) !important;
+  color: white !important;
+}
+
+.react-confirm-alert-button-group > button {
+  background: white !important;
+  color: #6f9ba5 !important;
+  font-weight: bold !important;
+}
