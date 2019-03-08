@@ -6,7 +6,6 @@ import {
   CardBody,
   Button,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
   Badge
@@ -54,7 +53,6 @@ class GridTest extends Component {
     let cards = attributes.map((card, index) => {
       return (
         <div>
-          <Normalization />
           <Card key={index} sm="8">
             <CardBody>
               <TimeSeriesView
@@ -85,6 +83,7 @@ class GridTest extends Component {
     } else {
       return (
         <Container className="GridContainer">
+          <Normalization />
           <Row>
             {cards}
             <Modal

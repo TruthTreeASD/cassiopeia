@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios/index';
 import _ from 'lodash';
-import { TRUTHTREE_URI } from '../constants';
-import SelectedAttributeReducer from '../reducers/SelectedAttributeReducer';
 
 class AttributeDeselector extends Component {
   constructor(props) {
