@@ -14,6 +14,7 @@ class TimeSeriesView extends Component {
       loading: true,
       locations: [],
       data: [],
+      locationData: [],
       currentLevel: null,
       dataReal: [],
       locationIds: [],
@@ -56,7 +57,7 @@ class TimeSeriesView extends Component {
     let maxPopulation = 0;
     let locationIds = [];
     let year = this.props.yearSelected ? this.props.yearSelected : 2016;
-
+    let locationData = {};
     axios
       .get(
         `${TRUTHTREE_URI}/api/population?locationId=` +
@@ -81,10 +82,11 @@ class TimeSeriesView extends Component {
           )
           .then(response => {
             _.map(response.data, obj => {
+              locationData[obj.id] = { name: obj.name, '1': obj.population };
               locationIds.push(obj.id);
             });
             this.setState({ locationIds: locationIds });
-
+            this.setState({ locationData: locationData });
             this.fetchResponse();
           })
           .catch(error => {
@@ -118,6 +120,8 @@ class TimeSeriesView extends Component {
     let map = {};
     response.data.map(dataForEachLocation => {
       let location = {};
+      let lData = this.state.locationData[dataForEachLocation.location_id];
+      let locationName = lData['name'];
       dataForEachLocation.attributes.map(attributesForEachLocation => {
         attributesForEachLocation.data.map(attrValue => {
           let val = map[attributesForEachLocation.attribute_id];
@@ -129,15 +133,14 @@ class TimeSeriesView extends Component {
             da[dataForEachLocation.location_id] === 0 ||
             da[dataForEachLocation.location_id] === undefined
           ) {
-            val[attrValue.year - 1967][dataForEachLocation.location_id] =
-              attrValue.value;
+            val[attrValue.year - 1967][locationName] = attrValue.value;
           }
           map[attributesForEachLocation.attribute_id] = val;
         });
         location['id'] = dataForEachLocation.location_id;
         let select = this.state.lineColors[Math.floor(Math.random() * 11)];
         location['color'] = select;
-        location['name'] = dataForEachLocation.location_id;
+        location['name'] = locationName;
         locations.push(location);
       });
     });
@@ -162,7 +165,7 @@ class TimeSeriesView extends Component {
     if (len === 0) {
       return <div>Select an attribute</div>;
     } else {
-      if (loading === true) {
+      if (loading) {
         return (
           <div className="d-flex justify-content-center">
             <Spinner
