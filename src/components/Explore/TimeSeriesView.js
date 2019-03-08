@@ -136,13 +136,16 @@ class TimeSeriesView extends Component {
             val[attrValue.year - 1967][locationName] = attrValue.value;
           }
           map[attributesForEachLocation.attribute_id] = val;
+          return null;
         });
         location['id'] = dataForEachLocation.location_id;
         let select = this.state.lineColors[Math.floor(Math.random() * 11)];
         location['color'] = select;
         location['name'] = locationName;
         locations.push(location);
+        return null;
       });
+      return null;
     });
     data.push(map);
     this.setState({ data: data, locations: locations, loading: false });
