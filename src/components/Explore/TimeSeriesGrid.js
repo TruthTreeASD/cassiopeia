@@ -112,6 +112,7 @@ class GridTest extends Component {
   }
 }
 const mapState = state => ({
-  selectedAttributes: state.SelectedAttributeReducer.selectedAttributes
+  selectedAttributes: state.SelectedAttributeReducer.selectedAttributes,
+  selectedNormalization: state.NormalizationReducer.selectedNormalizationName
 });
 export default connect(mapState)(GridTest);
