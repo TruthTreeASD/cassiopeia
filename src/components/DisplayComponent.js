@@ -17,9 +17,9 @@ class DisplayComponent extends Component {
       locationIds: [],
       selectedAttributes: [],
       year: 2016,
-      selectedNormalizationName: 'GROSS'
+      selectedNormalizationName: 'GROSS',
+      populationRange: [-25, 25]
     };
-    this.getAttributeType = this.getAttributeType.bind(this);
     this.populationRangeCall = this.populationRangeCall.bind(this);
   }
 
@@ -28,8 +28,12 @@ class DisplayComponent extends Component {
       selectedAttributes: nextProps.selectedAttributes,
       year: nextProps.year,
       selectedNormalizationName: nextProps.selectedNormalizationName,
+      populationRange: nextProps.populationRange,
       normalizationKeys: nextProps.normalizationKeys
     });
+    if (this.state.populationRange !== nextProps.populationRange) {
+      this.populationRangeCall();
+    }
     let attributes = _.flatMap(nextProps.selectedAttributes, elem => {
       return elem[0];
     });
@@ -63,13 +67,6 @@ class DisplayComponent extends Component {
           console.log(error);
         });
     }
-    this.populationRangeCall();
-  }
-
-  getAttributeType(type) {
-    return _.flatMap(this.state.selectedAttributes, elem => {
-      return type === 'ids' ? elem[0] : elem[1];
-    });
   }
 
   componentDidMount() {
@@ -87,13 +84,14 @@ class DisplayComponent extends Component {
     let maxPopulation = 0;
     let data = {};
     let locationIds = [];
+    let year = this.state.year ? this.state.year : 2016;
     // Calculate min and max population
     axios
       .get(
         `${TRUTHTREE_URI}/api/population?locationId=` +
           this.props.id +
           '&year=' +
-          this.state.year
+          year
       )
       .then(response => {
         let population = response.data.population;
@@ -155,10 +153,8 @@ class DisplayComponent extends Component {
                       this.state.selectedAttributes[i][1];
                     return (
                       <td key={i}>
-                        <a href={url} target="_blank">
-                          {row[column[0]]
-                            ? row[column[0]].toLocaleString()
-                            : ''}
+                        <a href={url} target="_blank" rel="noopener noreferrer">
+                          {row[column[0]]}
                         </a>
                       </td>
                     );
