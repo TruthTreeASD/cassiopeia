@@ -61,14 +61,13 @@ class AttributeDeselector extends Component {
           {Object.keys(this.state.selectedAttributes).map((attributes, i) => {
             return (
               <div style={{ padding: '10px' }}>
-                <button className="btn btn-light">
-                  <i
-                    className="fa fa-times"
-                    style={{ paddingRight: '10px' }}
-                    onClick={() =>
-                      this.deselectAttribute(this.state.selectedAttributes[i])
-                    }
-                  />
+                <button
+                  className="btn btn-light"
+                  onClick={() =>
+                    this.deselectAttribute(this.state.selectedAttributes[i])
+                  }
+                >
+                  <i className="fa fa-times" style={{ paddingRight: '10px' }} />
                   {this.state.selectedAttributes[i][1]}
                 </button>
               </div>
