@@ -51,7 +51,6 @@ class Normalization extends Component {
     axios
       .get(`${TRUTHTREE_URI}/api/normalization_types`)
       .then(response => {
-        console.log(response.data);
         this.setState({ normalizationValues: response.data });
       })
       .catch(error => {
