@@ -2,3 +2,8 @@
   font-size: 18px;
   padding: 10px;
 }
+
+button.btn.btn-light.selected-attribute-button {
+  background-color: rgb(35, 49, 62, 0.7) !important;
+  font-size: 13px;
+}

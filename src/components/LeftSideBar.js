@@ -216,7 +216,7 @@ class LeftSideBar extends Component {
                                 )
                               }
                               key={i}
-                              className="panel float-right"
+                              className="panel float-right attributes"
                               style={{
                                 background: this.isAttributeSelected(
                                   this.state.sidebarData[collection].attributes[

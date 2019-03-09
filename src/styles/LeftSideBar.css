@@ -1,5 +1,5 @@
 .accordion {
-  background-color: rgb(35, 49, 62);
+  background-color: rgb(35, 49, 62, 0);
   color: white;
   cursor: pointer;
   padding: 8px;
@@ -10,17 +10,18 @@
   outline-color: lightsteelblue;
   font-size: 14px;
   transition: 0.4s;
+  border-radius: 5px;
 }
 
 nav.scrollLeftBar.col-md-2.d-none.d-md-block.bg-light.sidebar {
-  background-color: rgb(35, 49, 62) !important;
+  background-color: rgb(35, 49, 62, 0.8) !important;
   height: 100%;
   overflow: auto;
 }
 .active,
 .accordion:hover {
-  background-color: #6f9ba5 !important;
-  color: rgb(35, 49, 62);
+  background-color: rgb(191, 217, 213) !important;
+  color: black;
 }
 
 .panel {
@@ -87,4 +88,8 @@ h1,
   background: white !important;
   color: #6f9ba5 !important;
   font-weight: bold !important;
+}
+
+.float-right.attributes {
+  border-radius: 5px;
 }

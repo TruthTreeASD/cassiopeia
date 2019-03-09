@@ -7,5 +7,39 @@
 }
 
 .home {
-  background-color: #6f9ba5;
+  background-color: white;
+}
+
+.bottom-panel.card {
+  background-color: rgb(223, 236, 234);
+}
+
+.bottom-panel-header.card-header {
+  background-color: rgb(191, 217, 213) !important;
+}
+
+.right-panel.card {
+  background-color: rgb(223, 236, 234);
+  margin-bottom: 5px;
+}
+
+.tab-list {
+  background-color: rgb(191, 217, 213) !important;
+}
+
+.tab-list-item.tab-list-active {
+  background-color: rgb(223, 236, 234);
+  font-weight: bold;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.selected-attributes.card {
+  background-color: rgb(223, 236, 234);
+  margin-bottom: 5px;
+}
+
+.col-12.col-md-10.align-items-center {
+  padding-left: 5px;
+  padding-right: 5px;
 }

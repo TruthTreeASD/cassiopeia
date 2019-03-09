@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
+import '../styles/AttributeDeselector.css';
+
 class AttributeDeselector extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +53,7 @@ class AttributeDeselector extends Component {
         <div className={'row'}>
           <span
             className="text-info"
-            style={{ padding: '10px', fontSize: '18px' }}
+            style={{ padding: '20px', fontSize: '15px' }}
           >
             Selected Filters
           </span>
@@ -59,7 +61,7 @@ class AttributeDeselector extends Component {
             return (
               <div style={{ padding: '10px' }}>
                 <button
-                  className="btn btn-light"
+                  className="btn btn-light selected-attribute-button"
                   onClick={() =>
                     this.deselectAttribute(this.state.selectedAttributes[i])
                   }
