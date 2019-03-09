@@ -18,7 +18,7 @@ const homeStyle = {
 class Home extends Component {
   render() {
     return (
-      <Container fluid style={homeStyle}>
+      <Container fluid style={homeStyle} className="home">
         <Row>
           <LeftSideBar />
 
