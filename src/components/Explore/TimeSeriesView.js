@@ -14,6 +14,7 @@ class TimeSeriesView extends Component {
       loading: true,
       locations: [],
       data: [],
+      locationData: [],
       currentLevel: null,
       dataReal: [],
       locationIds: [],
@@ -56,7 +57,7 @@ class TimeSeriesView extends Component {
     let maxPopulation = 0;
     let locationIds = [];
     let year = this.props.yearSelected ? this.props.yearSelected : 2016;
-
+    let locationData = {};
     axios
       .get(
         `${TRUTHTREE_URI}/api/population?locationId=` +
@@ -81,10 +82,11 @@ class TimeSeriesView extends Component {
           )
           .then(response => {
             _.map(response.data, obj => {
+              locationData[obj.id] = { name: obj.name, '1': obj.population };
               locationIds.push(obj.id);
             });
             this.setState({ locationIds: locationIds });
-
+            this.setState({ locationData: locationData });
             this.fetchResponse();
           })
           .catch(error => {
@@ -101,7 +103,9 @@ class TimeSeriesView extends Component {
       `${TRUTHTREE_URI}/api/attributes?locationIds=` +
       this.state.locationIds +
       '&attributeIds=' +
-      this.props.selectedAttributes[this.props.index][0];
+      this.props.selectedAttributes[this.props.index][0] +
+      '&normalizationType=' +
+      this.props.selectedNormalization;
     axios
       .get(url)
       .then(response => {
@@ -116,8 +120,11 @@ class TimeSeriesView extends Component {
     let data = [];
     let locations = [];
     let map = {};
+
     response.data.map(dataForEachLocation => {
       let location = {};
+      let lData = this.state.locationData[dataForEachLocation.location_id];
+      let locationName = lData['name'];
       dataForEachLocation.attributes.map(attributesForEachLocation => {
         attributesForEachLocation.data.map(attrValue => {
           let val = map[attributesForEachLocation.attribute_id];
@@ -129,17 +136,25 @@ class TimeSeriesView extends Component {
             da[dataForEachLocation.location_id] === 0 ||
             da[dataForEachLocation.location_id] === undefined
           ) {
-            val[attrValue.year - 1967][dataForEachLocation.location_id] =
-              attrValue.value;
+            if (this.props.selectedNormalization === 'GROSS') {
+              val[attrValue.year - 1967][locationName] = attrValue.value;
+            } else if (this.props.selectedNormalization === 'PER_CAPITA') {
+              val[attrValue.year - 1967][locationName] = attrValue.per_capita;
+            } else if (this.props.selectedNormalization === 'BY_REVENUE') {
+              val[attrValue.year - 1967][locationName] = attrValue.by_revenue;
+            }
           }
           map[attributesForEachLocation.attribute_id] = val;
+          return null;
         });
         location['id'] = dataForEachLocation.location_id;
         let select = this.state.lineColors[Math.floor(Math.random() * 11)];
         location['color'] = select;
-        location['name'] = dataForEachLocation.location_id;
+        location['name'] = locationName;
         locations.push(location);
+        return null;
       });
+      return null;
     });
     data.push(map);
     this.setState({ data: data, locations: locations, loading: false });
@@ -162,7 +177,7 @@ class TimeSeriesView extends Component {
     if (len === 0) {
       return <div>Select an attribute</div>;
     } else {
-      if (loading === true) {
+      if (loading) {
         return (
           <div className="d-flex justify-content-center">
             <Spinner
@@ -180,6 +195,9 @@ class TimeSeriesView extends Component {
                 attrData[this.props.selectedAttributes[this.props.index][i]]
               }
               attributeName={this.props.selectedAttributes[this.props.index][1]}
+              collectionName={
+                this.props.selectedAttributes[this.props.index][2]
+              }
               locations={this.state.locations}
               condition={this.props.condition}
             />
@@ -193,6 +211,7 @@ class TimeSeriesView extends Component {
 const mapState = state => ({
   selectedAttributes: state.SelectedAttributeReducer.selectedAttributes,
   year: state.YearSelectorReducer.yearSelected,
-  populationRange: state.AttributeRangeReducer.populationRange
+  populationRange: state.AttributeRangeReducer.populationRange,
+  selectedNormalization: state.NormalizationReducer.selectedNormalizationName
 });
 export default connect(mapState)(TimeSeriesView);

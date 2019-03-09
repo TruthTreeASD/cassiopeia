@@ -23,10 +23,12 @@ class TimeSeries extends Component {
     if (this.props.condition === 'large') {
       return (
         <div className="chartDiv">
-          <Badge color="info" className="popupHeader">
-            {' '}
-            {this.props.attributeName} vs Year{' '}
-          </Badge>
+          <div style={{ padding: '10px' }}>
+            <Badge color="info" className="popupHeader">
+              {this.props.collectionName} - {this.props.attributeName}
+            </Badge>
+          </div>
+
           <LineChart
             width={1050}
             height={450}
@@ -57,7 +59,7 @@ class TimeSeries extends Component {
             <Legend verticalAlign="bottom" iconSize={10} />
             {this.props.locations.map((location, i) => (
               <Line
-                key={location.id}
+                key={location.name}
                 type="monotone"
                 dataKey={location.name}
                 stroke={location.color}
@@ -70,9 +72,11 @@ class TimeSeries extends Component {
     } else {
       return (
         <div className="chartDiv">
-          <Badge color="info"> {this.props.attributeName} vs Year </Badge>
+          <div style={{ padding: '10px' }}>
+            <Badge color="info"> {this.props.collectionName} - {this.props.attributeName} </Badge>
+          </div>
           <LineChart
-            width={475}
+            width={495}
             height={200}
             data={this.props.data}
             margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
@@ -100,7 +104,7 @@ class TimeSeries extends Component {
             <Tooltip />
             {this.props.locations.map((location, i) => (
               <Line
-                key={location.id}
+                key={location.name}
                 type="monotone"
                 dataKey={location.name}
                 stroke={location.color}

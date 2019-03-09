@@ -5,7 +5,6 @@ export default (
   },
   action
 ) => {
-  console.log(action);
   switch (action.type) {
     case 'CHANGE_ATTRIBUTE':
       return {

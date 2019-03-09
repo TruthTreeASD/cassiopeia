@@ -6,7 +6,6 @@ import {
   CardBody,
   Button,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
   Badge
@@ -15,6 +14,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import TimeSeriesView from './TimeSeriesView';
+import Normalization from './Normalization';
 
 import '../../styles/TimeSeries.css';
 
@@ -52,18 +52,24 @@ class GridTest extends Component {
 
     let cards = attributes.map((card, index) => {
       return (
-        <Card key={index} sm="8">
-          <CardBody>
-            <TimeSeriesView index={index} condition="tiny" id={this.props.id} />
-            <Button
-              className="button"
-              color="secondary"
-              onClick={() => this.handExpandClick(index)}
-            >
-              <Badge>Expand</Badge>
-            </Button>
-          </CardBody>
-        </Card>
+        <div>
+          <Card key={index} sm="8">
+            <CardBody>
+              <TimeSeriesView
+                index={index}
+                condition="tiny"
+                id={this.props.id}
+              />
+              <Button
+                className="button"
+                color="secondary"
+                onClick={() => this.handExpandClick(index)}
+              >
+                <Badge>Expand</Badge>
+              </Button>
+            </CardBody>
+          </Card>
+        </div>
       );
     });
 
@@ -77,6 +83,7 @@ class GridTest extends Component {
     } else {
       return (
         <Container className="GridContainer">
+          <Normalization />
           <Row>
             {cards}
             <Modal
