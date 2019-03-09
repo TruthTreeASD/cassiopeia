@@ -7,14 +7,13 @@ import { Link, withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 
-import { TRUTHTREE_URI } from '../../constants';
 import { updateValue } from '../../actions/LocationSearchBoxActions';
 
 // TruthTree API endpoints
 const ENDPOINTS = {
-  STATES: `${TRUTHTREE_URI}/api/states`,
-  COUNTIES: `${TRUTHTREE_URI}/api/counties`,
-  CITIES: `${TRUTHTREE_URI}/api/cities`
+  STATES: `/api/states`,
+  COUNTIES: `/api/counties`,
+  CITIES: `/api/cities`
 };
 
 const TYPE_CODE = {
@@ -76,7 +75,7 @@ const getSuggestionLabel = suggestion => {
 const renderSuggestion = suggestion => {
   let item = suggestion.item;
   const url = `/explore/${
-    TYPE_CODE[item.typeCode]
+    TYPE_CODE[item.type_code]
   }/${item.name.toLowerCase().replace(' ', '-')}/${item.id}`;
   return <Link to={url}>{getSuggestionLabel(suggestion)}</Link>;
 };
@@ -121,20 +120,18 @@ class LocationSearchBox extends Component {
     const statesDataById = statesData.reduce((newStatesData, state) => {
       newStatesData[state.state_code] = state;
       state.counties = {};
-      state.typeCode = 0;
       return newStatesData;
     }, {});
 
     countiesData.forEach(county => {
-      const state = statesDataById[county.state_code];
+      const state = statesDataById[county.fips_code_state];
       county.state = state.name;
       county.stateAbbr = state.abbreviation;
-      county.typeCode = 1;
       state.counties[county.county] = county;
     });
 
     citiesData.forEach(city => {
-      const state = statesDataById[city.state_code];
+      const state = statesDataById[city.fips_code_state];
       const county = state.counties[city.county];
 
       if (state) {
@@ -145,7 +142,6 @@ class LocationSearchBox extends Component {
         city.stateAbbr = null;
       }
       city.county = county ? county.name : null;
-      city.typeCode = 2;
     });
 
     const statesFuseOptions = createFuseOptions([
@@ -204,7 +200,7 @@ class LocationSearchBox extends Component {
 
     return (
       <Container>
-        <Row className="py-3">
+        <Row className="my-3">
           {loading ? (
             <Col className="d-flex justify-content-center">
               <Spinner className="align-self-center" color="primary" />
