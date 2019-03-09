@@ -10,6 +10,21 @@ import { TRUTHTREE_URI } from '../constants';
 
 const Range = Slider.Range;
 
+const marks = {
+  '-50': '50',
+  '-50': '-50%',
+  '-40': '-40%',
+  '-30': '-30%',
+  '-20': '-20%',
+  '-10': '-10%',
+  '0': '0%',
+  '10': '10%',
+  '20': '+20%',
+  '30': '+30%',
+  '40': '+40%',
+  '50': '+50%'
+};
+
 class AttributeRange extends Component {
   constructor(props) {
     super(props);
@@ -52,7 +67,7 @@ class AttributeRange extends Component {
   render() {
     const createSliders = this.props.attribute.attributeName.map(
       (currentAttribute, i) => (
-        <div key={i}>
+        <div className="outer" key={i}>
           <p>
             {currentAttribute} of {this.props.location} {':  '}{' '}
             <b>{this.state.locationPopulation}</b>
@@ -72,10 +87,11 @@ class AttributeRange extends Component {
             value={this.props.attribute.populationRange}
             min={this.state.min}
             max={this.state.max}
+            marks={marks}
             onChange={this.onSliderChange}
           />
 
-          <p>
+          <p className="selectionText">
             Current selection: {this.props.attribute.populationRange[0]}% to{' '}
             {this.props.attribute.populationRange[1]}% :
           </p>
