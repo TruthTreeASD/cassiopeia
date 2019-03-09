@@ -1,3 +1,11 @@
 .Note {
   font-size: 10px;
 }
+
+.outer {
+  padding: 35px;
+}
+
+.selectionText {
+  margin-top: 40px;
+}

@@ -1,7 +1,7 @@
 export default (
   state = {
     attributeName: ['Population'],
-    populationRange: [-50, 50]
+    populationRange: [-25, 25]
   },
   action
 ) => {
