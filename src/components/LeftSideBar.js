@@ -224,7 +224,7 @@ class LeftSideBar extends Component {
                                   ].attribute_id
                                 )
                                   ? '#d4f3c7'
-                                  : 'white'
+                                  : 'lightgrey'
                               }}
                             >
                               <div>

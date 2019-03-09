@@ -1,6 +1,6 @@
 .accordion {
-  background-color: #eee;
-  color: #444;
+  background-color: rgb(35, 49, 62);
+  color: white;
   cursor: pointer;
   padding: 8px;
   width: 100%;
@@ -12,9 +12,15 @@
   transition: 0.4s;
 }
 
+nav.scrollLeftBar.col-md-2.d-none.d-md-block.bg-light.sidebar {
+  background-color: rgb(35, 49, 62) !important;
+  height: 100%;
+  overflow: auto;
+}
 .active,
 .accordion:hover {
-  background-color: bisque;
+  background-color: #6f9ba5 !important;
+  color: rgb(35, 49, 62);
 }
 
 .panel {
@@ -43,7 +49,7 @@
 }
 
 .sidebar {
-  padding-left: 0px !important;
+  padding-left: 10px !important;
   padding-right: 0px !important;
 }
 
@@ -58,6 +64,10 @@
   padding-right: 5px;
   padding-top: 5px;
   padding-bottom: 10px;
+}
+
+button.btn {
+  color: white !important;
 }
 
 h1,
