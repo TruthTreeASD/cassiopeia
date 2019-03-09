@@ -16,17 +16,24 @@ class DisplayComponent extends Component {
       data: {},
       locationIds: [],
       selectedAttributes: [],
-      year: 2016
+      year: 2016,
+      selectedNormalizationName: 'GROSS',
+      populationRange: [-25, 25]
     };
-    this.getAttributeType = this.getAttributeType.bind(this);
     this.populationRangeCall = this.populationRangeCall.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       selectedAttributes: nextProps.selectedAttributes,
-      year: nextProps.year
+      year: nextProps.year,
+      selectedNormalizationName: nextProps.selectedNormalizationName,
+      populationRange: nextProps.populationRange,
+      normalizationKeys: nextProps.normalizationKeys
     });
+    if (this.state.populationRange !== nextProps.populationRange) {
+      this.populationRangeCall();
+    }
     let attributes = _.flatMap(nextProps.selectedAttributes, elem => {
       return elem[0];
     });
@@ -37,6 +44,8 @@ class DisplayComponent extends Component {
             this.state.locationIds +
             '&attributeIds=' +
             attributes +
+            '&normalizationType=' +
+            nextProps.selectedNormalizationName +
             '&yearList=' +
             nextProps.year
         )
@@ -44,7 +53,12 @@ class DisplayComponent extends Component {
           let data = this.state.data;
           _.map(response.data, row => {
             _.map(row.attributes, elem => {
-              data[row.location_id][elem.attribute_id] = elem.data[0].value;
+              data[row.location_id][elem.attribute_id] =
+                nextProps.selectedNormalizationName === 'PER_CAPITA'
+                  ? elem.data[0].per_capita
+                  : nextProps.selectedNormalizationName === 'BY_REVENUE'
+                  ? elem.data[0].by_revenue
+                  : elem.data[0].value;
             });
           });
           this.setState({ data: data });
@@ -53,21 +67,15 @@ class DisplayComponent extends Component {
           console.log(error);
         });
     }
-    this.populationRangeCall();
-  }
-
-  getAttributeType(type) {
-    return _.flatMap(this.state.selectedAttributes, elem => {
-      return type === 'ids' ? elem[0] : elem[1];
-    });
   }
 
   componentDidMount() {
-    this.setState(prevState => ({
+    this.setState({
       data: {},
       selectedAttribtes: this.props.selectedAttributes,
-      year: this.props.yearSelected
-    }));
+      year: this.props.yearSelected,
+      selectedNormalizationName: this.props.selectedNormalizationName
+    });
     this.populationRangeCall();
   }
 
@@ -76,13 +84,14 @@ class DisplayComponent extends Component {
     let maxPopulation = 0;
     let data = {};
     let locationIds = [];
+    let year = this.state.year ? this.state.year : 2016;
     // Calculate min and max population
     axios
       .get(
         `${TRUTHTREE_URI}/api/population?locationId=` +
           this.props.id +
           '&year=' +
-          this.state.year
+          year
       )
       .then(response => {
         let population = response.data.population;
@@ -94,7 +103,7 @@ class DisplayComponent extends Component {
         );
         return axios
           .get(
-            `${TRUTHTREE_URI}/api/states?populationRange=` +
+            `${TRUTHTREE_URI}/api/${this.props.level}?populationRange=` +
               minPopulation +
               ',' +
               maxPopulation
@@ -144,10 +153,8 @@ class DisplayComponent extends Component {
                       this.state.selectedAttributes[i][1];
                     return (
                       <td key={i}>
-                        <a href={url} target="_blank">
-                          {row[column[0]]
-                            ? row[column[0]].toLocaleString()
-                            : ''}
+                        <a href={url} target="_blank" rel="noopener noreferrer">
+                          {row[column[0]]}
                         </a>
                       </td>
                     );
@@ -165,7 +172,9 @@ class DisplayComponent extends Component {
 const mapState = state => ({
   year: state.YearSelectorReducer.yearSelected,
   selectedAttributes: state.SelectedAttributeReducer.selectedAttributes,
-  populationRange: state.AttributeRangeReducer.populationRange
+  populationRange: state.AttributeRangeReducer.populationRange,
+  selectedNormalizationName:
+    state.NormalizationReducer.selectedNormalizationName
 });
 
 export default connect(mapState)(DisplayComponent);

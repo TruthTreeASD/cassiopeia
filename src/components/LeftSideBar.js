@@ -50,8 +50,8 @@ class LeftSideBar extends Component {
   }
 
   isAttributeSelected = attribute_id => {
-    for (let i = 0; i < this.state.selectedAttributes.length; i++) {
-      if (this.state.selectedAttributes[i][0] === attribute_id) {
+    for (let i = 0; i < this.props.selectedAttributes.length; i++) {
+      if (this.props.selectedAttributes[i][0] === attribute_id) {
         return true;
       }
     }
@@ -65,7 +65,7 @@ class LeftSideBar extends Component {
 
   // stores attribute selected
   handleClickAttribute(collection, attribute) {
-    let newArr = this.state.selectedAttributes;
+    let newArr = this.props.selectedAttributes;
     let id = attribute.attribute_id;
     for (let i = 0; i < newArr.length; i++) {
       if (newArr[i][0] === id) {
@@ -251,7 +251,7 @@ class LeftSideBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  selectedAttributes: state.SelectedAttributeReducer
+  selectedAttributes: state.SelectedAttributeReducer.selectedAttributes
 });
 
 const mapDispatchToProps = dispatch => ({ dispatch });

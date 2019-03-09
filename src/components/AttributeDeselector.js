@@ -14,19 +14,14 @@ class AttributeDeselector extends Component {
 
   componentDidMount() {
     this.setState({ selectedAttribtes: this.props.selectedAttributes });
-    console.log(this.state.selectedAttributes);
-    console.log('it worked' + this.state.selectedAttributes);
   }
   componentWillReceiveProps(nextProps) {
     this.setState({ selectedAttributes: nextProps.selectedAttributes });
-    console.log('got prop');
   }
 
   deselectAttribute(attribute) {
-    console.log('Clicked button');
     let newArr = this.state.selectedAttributes;
     let id = attribute[0];
-    console.log(attribute);
     for (let i = 0; i < newArr.length; i++) {
       if (newArr[i][0] === id) {
         _.remove(newArr, elem => {
@@ -35,7 +30,6 @@ class AttributeDeselector extends Component {
         this.setState({
           selectedAttributes: newArr
         });
-
         this.props.dispatch({
           type: 'CHANGE_ATTRIBUTE',
           value: newArr
