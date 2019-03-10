@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
 
-import LocationSearchBox from './LocationSearchBox';
+import DummySearchBox from './DummySearchBox';
 import IntroHeading from './IntroHeading';
 
 const introContainerStyle = {
@@ -11,8 +13,12 @@ const introContainerStyle = {
 
 class Intro extends Component {
   render() {
+    const { searchPhrase } = this.props;
+    const introContainerClasses = classNames({
+      'd-none': searchPhrase !== ''
+    });
     return (
-      <Container>
+      <Container className={introContainerClasses}>
         <Row>
           <Col
             style={introContainerStyle}
@@ -23,7 +29,7 @@ class Intro extends Component {
             className="py-3 px-4"
           >
             <IntroHeading />
-            <LocationSearchBox />
+            <DummySearchBox />
           </Col>
         </Row>
       </Container>
@@ -31,4 +37,8 @@ class Intro extends Component {
   }
 }
 
-export default Intro;
+const mapStateToProps = store => ({
+  searchPhrase: store.LocationSearchBoxReducer.value
+});
+
+export default connect(mapStateToProps)(Intro);
