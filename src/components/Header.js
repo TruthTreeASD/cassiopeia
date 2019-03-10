@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import {
+  Container,
+  Row,
+  Col,
   Collapse,
   Nav,
   Navbar,
@@ -8,7 +11,11 @@ import {
   NavLink,
   NavbarToggler
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
+
+import LocationSearchBox from './Explore/LocationSearchBox';
 
 import '../styles/Header.css';
 import logo from '../truthtree-logo.png';
@@ -29,10 +36,16 @@ const logoStyle = {
 
 class Header extends Component {
   state = {
-    collapseOpen: false
+    collapseOpen: false,
+    shouldShowSearchBox: false
   };
 
   render() {
+    const { searchPhrase } = this.props;
+    const searchBoxContainerClasses = classNames({
+      'justify-content-center': true,
+      'd-none': searchPhrase === ''
+    });
     return (
       <Navbar style={navbarStyle} expand="md" className="fixed-top">
         <NavbarBrand className="text-primary" style={navBrandStyle}>
@@ -52,6 +65,13 @@ class Header extends Component {
           }
         />
         <Collapse isOpen={this.state.collapseOpen} navbar>
+          <Container>
+            <Row className={searchBoxContainerClasses}>
+              <Col md={10} lg={7}>
+                <LocationSearchBox />
+              </Col>
+            </Row>
+          </Container>
           <Nav className="ml-auto" navbar>
             <NavItem>
               <NavLink tag={Link} to="/">
@@ -70,4 +90,8 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = store => ({
+  searchPhrase: store.LocationSearchBoxReducer.value
+});
+
+export default withRouter(connect(mapStateToProps)(Header));
