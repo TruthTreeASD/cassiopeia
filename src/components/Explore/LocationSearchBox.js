@@ -167,7 +167,6 @@ class LocationSearchBox extends Component {
 
   storeInputRef = searchBox => {
     if (searchBox !== null) {
-      console.log('here', searchBox.input);
       this.input = searchBox.input;
     }
   };
