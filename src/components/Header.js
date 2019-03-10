@@ -36,8 +36,7 @@ const logoStyle = {
 
 class Header extends Component {
   state = {
-    collapseOpen: false,
-    shouldShowSearchBox: false
+    collapseOpen: false
   };
 
   render() {
