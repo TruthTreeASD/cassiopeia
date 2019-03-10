@@ -13,7 +13,7 @@ class IntroHeading extends Component {
       <Container>
         <Row>
           <Col style={introHeadingStyle}>
-            <h1 className="display-5 text-primary">Welcome to TruthTree</h1>
+            <h1 className="text-primary">Welcome to TruthTree</h1>
             <Typist avgTypingDelay={20} cursor={{ hideWhenDone: true }}>
               We're an open source data visualization project that focuses on
               U.S government financial spending. &nbsp;
