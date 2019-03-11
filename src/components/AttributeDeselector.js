@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { Col, Row } from 'reactstrap';
 
 import '../styles/AttributeDeselector.css';
 
@@ -44,30 +45,35 @@ class AttributeDeselector extends Component {
       return <div />;
     } else {
       return (
-        <div className={'row'}>
-          <span
+        <Row>
+          <Col
             className="text-info"
             style={{ padding: '20px', fontSize: '15px' }}
           >
             Selected Filters
-          </span>
-          {Object.keys(this.state.selectedAttributes).map((attributes, i) => {
-            return (
-              <div style={{ padding: '10px' }}>
-                <button
-                  className="btn btn-light selected-attribute-button"
-                  onClick={() =>
-                    this.deselectAttribute(this.state.selectedAttributes[i])
-                  }
-                >
-                  <i className="fa fa-times" style={{ paddingRight: '10px' }} />
-                  {this.state.selectedAttributes[i][2]}-
-                  {this.state.selectedAttributes[i][1]}
-                </button>
-              </div>
-            );
-          })}
-        </div>
+          </Col>
+          <Col>
+            {Object.keys(this.state.selectedAttributes).map((attributes, i) => {
+              return (
+                <div style={{ padding: '10px' }}>
+                  <button
+                    className="btn btn-light selected-attribute-button"
+                    onClick={() =>
+                      this.deselectAttribute(this.state.selectedAttributes[i])
+                    }
+                  >
+                    <i
+                      className="fa fa-times"
+                      style={{ paddingRight: '10px' }}
+                    />
+                    {this.state.selectedAttributes[i][2]}-
+                    {this.state.selectedAttributes[i][1]}
+                  </button>
+                </div>
+              );
+            })}
+          </Col>
+        </Row>
       );
     }
   }

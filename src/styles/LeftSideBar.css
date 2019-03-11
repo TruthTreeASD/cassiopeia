@@ -20,7 +20,7 @@ nav.scrollLeftBar.col-md-2.d-none.d-md-block.bg-light.sidebar {
 }
 .active,
 .accordion:hover {
-  background-color: rgb(191, 217, 213) !important;
+  background-color: darkgrey !important;
   color: black;
 }
 
