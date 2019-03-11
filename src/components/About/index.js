@@ -11,7 +11,7 @@ class About extends Component {
     return (
       <Container fluid style={aboutStyle} className="about">
         <Jumbotron className="float-center">
-          <h1 className="display-3">TruthTree</h1>
+          <h1 className="text-primary">TruthTree</h1>
           <p>A Public Data Vizipedia/Wiki-Laboratory</p>
           <hr className="my-2" />
           <p className="lead">
