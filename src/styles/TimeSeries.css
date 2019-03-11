@@ -53,7 +53,7 @@ svg.recharts-surface tspan {
 
 .alert {
   padding: 20px;
-  background-color: lightgrey;
-  color: grey;
+  background-color: rgb(191, 217, 213);
+  color: black;
   font-style: italic;
 }

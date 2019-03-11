@@ -216,15 +216,15 @@ class LeftSideBar extends Component {
                                 )
                               }
                               key={i}
-                              className="panel float-right"
+                              className="panel float-right attributes"
                               style={{
                                 background: this.isAttributeSelected(
                                   this.state.sidebarData[collection].attributes[
                                     attr
                                   ].attribute_id
                                 )
-                                  ? '#d4f3c7'
-                                  : 'white'
+                                  ? '#bfd9d5'
+                                  : 'lightgrey'
                               }}
                             >
                               <div>

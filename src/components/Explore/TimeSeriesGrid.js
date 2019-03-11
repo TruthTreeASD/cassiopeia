@@ -54,7 +54,7 @@ class GridTest extends Component {
       return (
         <div>
           <Card key={index} sm="8">
-            <CardBody>
+            <CardBody className="time-series-card">
               <TimeSeriesView
                 index={index}
                 condition="tiny"

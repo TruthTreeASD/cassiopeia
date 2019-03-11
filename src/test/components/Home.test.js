@@ -69,7 +69,7 @@ it('should have all other components in main div', () => {
     .find(Row)
     .first()
     .childAt(1);
-  expect(mainDiv.children().length).toEqual(2);
+  expect(mainDiv.children().length).toEqual(3);
   expect(mainDiv.childAt(0).matchesElement(<Card />));
   expect(mainDiv.childAt(1).matchesElement(<Card />));
 });
