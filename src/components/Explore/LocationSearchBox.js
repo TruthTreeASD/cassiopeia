@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Label, Spinner, Input } from 'reactstrap';
+import { Container, Row, Col, Spinner, Input } from 'reactstrap';
 import { get } from 'axios';
 import Fuse from 'fuse.js';
 import Autosuggest from 'react-autosuggest';
@@ -7,7 +7,10 @@ import { Link, withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 
-import { updateValue } from '../../actions/LocationSearchBoxActions';
+import {
+  updateValue,
+  finishLoading
+} from '../../actions/LocationSearchBoxActions';
 
 // TruthTree API endpoints
 const ENDPOINTS = {
@@ -33,23 +36,6 @@ const createFuseOptions = keys => {
     keys: keys
   };
 };
-
-const renderInputComponent = inputProps => (
-  <div>
-    <Label
-      style={{ cursor: 'pointer', color: 'white' }}
-      for="location-search-box"
-    >
-      Search for a U.S location:
-    </Label>
-    <Input
-      {...inputProps}
-      id="location-search-box"
-      name="location-search-box"
-      placeholder="Try something like Seattle or Boston"
-    />
-  </div>
-);
 
 const renderSuggestionsContainer = ({ containerProps, children }) => {
   const style = {
@@ -84,7 +70,6 @@ class LocationSearchBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
       value: '',
       popoverOpen: false,
       statesData: undefined,
@@ -95,7 +80,6 @@ class LocationSearchBox extends Component {
       matchedCities: [],
       suggestions: []
     };
-    this.timer = null;
     this.debouncedhandleSuggestionsFetchRequested = _.debounce(
       this.handleSuggestionsFetchRequested,
       250
@@ -116,10 +100,17 @@ class LocationSearchBox extends Component {
       .catch(err => console.log(err));
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.value !== prevProps.value) {
+      this.inputRef.focus();
+    }
+  }
+
   _parseData = (statesData, countiesData, citiesData) => {
     const statesDataById = statesData.reduce((newStatesData, state) => {
       newStatesData[state.state_code] = state;
       state.counties = {};
+      state.type_code = 0;
       return newStatesData;
     }, {});
 
@@ -162,12 +153,22 @@ class LocationSearchBox extends Component {
       { name: 'county', weight: 0.05 }
     ]);
 
-    this.setState({
-      loading: false,
-      statesData: new Fuse(statesData, statesFuseOptions),
-      countiesData: new Fuse(countiesData, countiesFuseOptions),
-      citiesData: new Fuse(citiesData, citiesFuseOptions)
-    });
+    this.setState(
+      {
+        statesData: new Fuse(statesData, statesFuseOptions),
+        countiesData: new Fuse(countiesData, countiesFuseOptions),
+        citiesData: new Fuse(citiesData, citiesFuseOptions)
+      },
+      () => {
+        this.props.dispatch(finishLoading());
+      }
+    );
+  };
+
+  storeInputRef = searchBox => {
+    if (searchBox !== null) {
+      this.input = searchBox.input;
+    }
   };
 
   handleInputChange = (_, { newValue }) => {
@@ -179,28 +180,37 @@ class LocationSearchBox extends Component {
     const matchedStates = this.state.statesData.search(searchPhrase);
     const matchedCounties = this.state.countiesData.search(searchPhrase);
     const matchedCities = this.state.citiesData.search(searchPhrase);
-    const temp = [].concat(
-      matchedStates.slice(0, 5),
-      matchedCounties.slice(0, 5),
-      matchedCities.slice(0, 5)
-    );
+    const temp = [].concat(matchedStates, matchedCounties, matchedCities);
     temp.sort((a, b) => a.score - b.score);
     this.setState({
       suggestions: temp.slice(0, 10)
     });
   };
+  renderInputComponent = inputProps => (
+    <div>
+      <Input
+        {...inputProps}
+        id="location-search-box"
+        name="location-search-box"
+        placeholder="Try something like Seattle or Boston"
+        innerRef={input => {
+          this.inputRef = input;
+        }}
+      />
+    </div>
+  );
 
   render() {
-    const { loading } = this.state;
+    const { loading, value } = this.props;
 
     const inputProps = {
-      value: this.props.value,
+      value,
       onChange: this.handleInputChange
     };
 
     return (
       <Container>
-        <Row className="my-3">
+        <Row>
           {loading ? (
             <Col className="d-flex justify-content-center">
               <Spinner className="align-self-center" color="primary" />
@@ -208,6 +218,7 @@ class LocationSearchBox extends Component {
           ) : (
             <Col>
               <Autosuggest
+                ref={this.storeInputRef}
                 theme={{
                   container: 'position-relative',
                   suggestionsList:
@@ -223,7 +234,7 @@ class LocationSearchBox extends Component {
                   this.debouncedhandleSuggestionsFetchRequested
                 }
                 getSuggestionValue={getSuggestionLabel}
-                renderInputComponent={renderInputComponent}
+                renderInputComponent={this.renderInputComponent}
                 renderSuggestionsContainer={renderSuggestionsContainer}
                 renderSuggestion={renderSuggestion}
                 inputProps={inputProps}
@@ -237,7 +248,8 @@ class LocationSearchBox extends Component {
 }
 
 const mapStateToProps = store => ({
-  value: store.LocationSearchBoxReducer.value
+  value: store.LocationSearchBoxReducer.value,
+  loading: store.LocationSearchBoxReducer.loading
 });
 
 export default connect(mapStateToProps)(withRouter(LocationSearchBox));

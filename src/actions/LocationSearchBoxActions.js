@@ -4,3 +4,9 @@ export const updateValue = value => {
     payload: value
   };
 };
+
+export const finishLoading = () => {
+  return {
+    type: 'SEARCHBOX_FINISH_LOADING'
+  };
+};
