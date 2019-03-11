@@ -153,7 +153,12 @@ class DisplayComponent extends Component {
                       this.state.selectedAttributes[i][1];
                     return (
                       <td key={i}>
-                        <a href={url} target="_blank" rel="noopener noreferrer">
+                        <a
+                          className="link-value"
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           {row[column[0]]}
                         </a>
                       </td>

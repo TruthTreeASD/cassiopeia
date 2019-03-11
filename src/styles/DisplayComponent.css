@@ -10,3 +10,7 @@
 .table-header {
   background-color: rgb(191, 217, 213);
 }
+
+.link-value {
+  color: black !important;
+}

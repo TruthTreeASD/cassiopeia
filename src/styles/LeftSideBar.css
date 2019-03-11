@@ -67,7 +67,7 @@ nav.scrollLeftBar.col-md-2.d-none.d-md-block.bg-light.sidebar {
   padding-bottom: 10px;
 }
 
-<<<<<<< head button.btn {
+button.btn {
   color: white !important;
 }
 
@@ -92,4 +92,5 @@ h1,
 
 .float-right.attributes {
   border-radius: 5px;
+  margin-right: 10px;
 }
