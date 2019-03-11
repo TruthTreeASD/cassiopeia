@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Slider from 'rc-slider';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { Alert } from 'reactstrap';
 
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
@@ -12,7 +11,6 @@ import { TRUTHTREE_URI } from '../constants';
 const Range = Slider.Range;
 
 const marks = {
-  '-50': '50',
   '-50': '-50%',
   '-40': '-40%',
   '-30': '-30%',
@@ -44,14 +42,12 @@ class AttributeRange extends Component {
       this.props.locationId +
       '&year=' +
       year;
-    console.log(url);
     let locPop = null;
 
     axios
       .get(url)
       .then(res => {
         locPop = res.data.population;
-        console.log(res.data.population);
         this.setState({ locationPopulation: locPop });
       })
       .catch(err => console.log(err));
