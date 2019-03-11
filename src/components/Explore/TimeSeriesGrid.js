@@ -22,10 +22,16 @@ class GridTest extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      modal: false,
+      locations: {},
+      locationIds: [],
+      userSelectedLocations: []
     };
 
     this.modalToggle = this.modalToggle.bind(this);
+    this.updateLocation = this.updateLocation.bind(this);
+    this.renderLocationList = this.renderLocationList.bind(this);
+    this.selectLocations = this.selectLocations.bind(this);
   }
 
   modalToggle() {
@@ -38,6 +44,50 @@ class GridTest extends Component {
     return _.flatMap(this.props.selectedAttributes, elem => {
       return type === 'name' ? elem[1] : elem[0];
     });
+  }
+
+  updateLocation(locations, locationIds) {
+    this.setState({ locations, locationIds });
+  }
+
+  selectLocations(event) {
+    let selected = Object.assign([], this.state.userSelectedLocations);
+    if (selected.length < 10) {
+      let clickedLocation = parseInt(event.target.value);
+      if (selected.includes(clickedLocation)) {
+        selected = selected.filter(val => {
+          return val !== clickedLocation;
+        });
+      } else {
+        selected.push(clickedLocation);
+      }
+      console.log(event.target.value);
+      this.setState({ userSelectedLocations: selected });
+    } else {
+      alert(
+        'Hey please select at most 10 locations. You can still plot this location by dropping any of the selected location!'
+      );
+    }
+  }
+
+  renderLocationList() {
+    let locationlist = this.state.locationIds.map(location => {
+      return (
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            value={location}
+            id="defaultCheck1"
+            onClick={this.selectLocations}
+          />
+          <label className="form-check-label" htmlFor="defaultCheck1">
+            {this.state.locations[location].name}
+          </label>
+        </div>
+      );
+    });
+    return locationlist;
   }
 
   handExpandClick = attrId =>
@@ -53,12 +103,22 @@ class GridTest extends Component {
     let cards = attributes.map((card, index) => {
       return (
         <div>
+          <div style={{ paddingBottom: '10px' }}>
+            <Card>
+              <CardBody>
+                <h6>Select up to 10 locations:</h6>
+                {this.renderLocationList()}
+              </CardBody>
+            </Card>
+          </div>
           <Card key={index} sm="8">
             <CardBody>
               <TimeSeriesView
                 index={index}
                 condition="tiny"
                 id={this.props.id}
+                updateLocation={this.updateLocation}
+                userSelectedLocations={this.state.userSelectedLocations}
               />
               <Button
                 className="button"
@@ -96,6 +156,8 @@ class GridTest extends Component {
                   index={this.state.modalAttrIndex}
                   condition="large"
                   id={this.props.id}
+                  updateLocation={this.updateLocation}
+                  userSelectedLocations={this.state.userSelectedLocations}
                 />
               </ModalBody>
               <ModalFooter>
