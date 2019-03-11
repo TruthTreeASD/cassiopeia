@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Slider from 'rc-slider';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { Alert } from 'reactstrap';
 
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
@@ -72,9 +73,13 @@ class AttributeRange extends Component {
             {currentAttribute} of {this.props.location} {':  '}{' '}
             <b>{this.state.locationPopulation}</b>
           </p>
-          <p>
-            Select range of <b>{currentAttribute}</b> for filtering other{' '}
-            <b>{this.props.level}</b>:
+          <p className="no-margin">
+            Select range of {currentAttribute} for filtering other{' '}
+            {this.props.level}:{' '}
+            <b>
+              {this.props.attribute.populationRange[0]}% to{' '}
+              {this.props.attribute.populationRange[1]}%
+            </b>
           </p>
           <p className="Note">
             (*range selection available from -50% to +50% wrt to{' '}
@@ -90,11 +95,6 @@ class AttributeRange extends Component {
             marks={marks}
             onChange={this.onSliderChange}
           />
-
-          <p className="selectionText">
-            Current selection: {this.props.attribute.populationRange[0]}% to{' '}
-            {this.props.attribute.populationRange[1]}% :
-          </p>
         </div>
       )
     );

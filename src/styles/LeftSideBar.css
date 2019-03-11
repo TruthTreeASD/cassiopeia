@@ -1,6 +1,6 @@
 .accordion {
-  background-color: #eee;
-  color: #444;
+  background-color: rgb(35, 49, 62, 0);
+  color: white;
   cursor: pointer;
   padding: 8px;
   width: 100%;
@@ -10,11 +10,18 @@
   outline-color: lightsteelblue;
   font-size: 14px;
   transition: 0.4s;
+  border-radius: 5px;
 }
 
+nav.scrollLeftBar.col-md-2.d-none.d-md-block.bg-light.sidebar {
+  background-color: rgb(35, 49, 62, 0.8) !important;
+  height: 100%;
+  overflow: auto;
+}
 .active,
 .accordion:hover {
-  background-color: bisque;
+  background-color: darkgrey !important;
+  color: black;
 }
 
 .panel {
@@ -42,9 +49,15 @@
   display: block;
 }
 
+.sidebar {
+  padding-left: 10px !important;
+  padding-right: 0px !important;
+}
+
 .leftSearch {
   width: 75%;
   margin-bottom: 15px;
+  margin-top: 5px !important;
 }
 
 .chevron-icon-padding {
@@ -52,6 +65,17 @@
   padding-right: 5px;
   padding-top: 5px;
   padding-bottom: 10px;
+}
+
+button.btn {
+  color: white !important;
+}
+
+h1,
+.h1 {
+  font-size: 25px !important;
+  color: #6f9ba5 !important;
+  font-weight: bold !important;
 }
 
 .react-confirm-alert-body {
@@ -64,4 +88,9 @@
   background: white !important;
   color: #6f9ba5 !important;
   font-weight: bold !important;
+}
+
+.float-right.attributes {
+  border-radius: 5px;
+  margin-right: 10px;
 }

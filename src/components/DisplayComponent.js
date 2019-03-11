@@ -129,8 +129,8 @@ class DisplayComponent extends Component {
     return (
       <div id="mainDisplay">
         <Normalization />
-        <Table hover>
-          <thead>
+        <Table hover size="sm">
+          <thead className="table-header">
             <tr>
               <th>Name</th>
               <th>Population</th>
@@ -153,7 +153,12 @@ class DisplayComponent extends Component {
                       this.state.selectedAttributes[i][1];
                     return (
                       <td key={i}>
-                        <a href={url} target="_blank" rel="noopener noreferrer">
+                        <a
+                          className="link-value"
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           {row[column[0]]}
                         </a>
                       </td>

@@ -2,10 +2,34 @@
   font-size: 10px;
 }
 
+.no-margin {
+  margin-bottom: 0px;
+}
 .outer {
-  padding: 35px;
+  padding: 10px;
+  margin-bottom: 30px;
 }
 
 .selectionText {
   margin-top: 40px;
+}
+
+.rc-slider-rail {
+  background-color: darkgrey !important;
+}
+.rc-slider-dot {
+  border-color: darkgrey !important;
+}
+
+.rc-slider-track {
+  background-color: black !important;
+}
+
+.rc-slider-dot-active {
+  border-color: black !important;
+  background-color: black !important;
+}
+
+.rc-slider-handle {
+  background-color: black !important;
 }
