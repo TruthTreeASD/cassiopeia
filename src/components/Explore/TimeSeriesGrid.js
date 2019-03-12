@@ -13,6 +13,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { confirmAlert } from 'react-confirm-alert';
 
 import TimeSeriesView from './TimeSeriesView';
 import Normalization from './Normalization';
@@ -75,9 +76,16 @@ class GridTest extends Component {
       selected.push(clickedLocation);
       this.setState({ userSelectedLocations: selected });
     } else {
-      alert(
-        'Hey please select at most 10 locations. You can still plot this location by dropping any of the selected location!'
-      );
+      confirmAlert({
+        title: 'Error!',
+        message:
+          'Number of selected locations exceeded limit of 10, please remove existing location to add more.',
+        buttons: [
+          {
+            label: 'OK'
+          }
+        ]
+      });
     }
   }
 
