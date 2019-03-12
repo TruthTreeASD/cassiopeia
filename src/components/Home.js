@@ -33,6 +33,7 @@ class Home extends Component {
                   <DisplayComponent
                     level={this.props.match.params.level}
                     id={this.props.match.params.id}
+                    location={this.props.match.params.name}
                   />
                 </div>
 
