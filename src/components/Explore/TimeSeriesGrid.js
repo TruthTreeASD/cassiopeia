@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import {
   Container,
   Row,
+  Col,
   Card,
   CardBody,
+  CardHeader,
   Button,
   Modal,
   ModalBody,
@@ -12,6 +14,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { confirmAlert } from 'react-confirm-alert';
 
 import TimeSeriesView from './TimeSeriesView';
 import Normalization from './Normalization';
@@ -22,10 +25,16 @@ class GridTest extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      modal: false,
+      locations: {},
+      locationIds: [],
+      userSelectedLocations: []
     };
 
     this.modalToggle = this.modalToggle.bind(this);
+    this.updateLocation = this.updateLocation.bind(this);
+    this.renderLocationList = this.renderLocationList.bind(this);
+    this.selectLocations = this.selectLocations.bind(this);
   }
 
   modalToggle() {
@@ -40,6 +49,71 @@ class GridTest extends Component {
     });
   }
 
+  updateLocation(locations, locationIds) {
+    let defaultLocations = this.state.userSelectedLocations;
+    if (defaultLocations.length === 0) {
+      if (locationIds.length > 10) {
+        defaultLocations = locationIds.slice(0, 10);
+      } else {
+        defaultLocations = locationIds;
+      }
+    }
+    this.setState({
+      locations,
+      locationIds,
+      userSelectedLocations: defaultLocations
+    });
+  }
+
+  selectLocations(event) {
+    let selected = Object.assign([], this.state.userSelectedLocations);
+    let clickedLocation = parseInt(event.target.value);
+    if (selected.includes(clickedLocation)) {
+      selected = selected.filter(val => {
+        return val !== clickedLocation;
+      });
+      this.setState({ userSelectedLocations: selected });
+    } else if (selected.length < 10) {
+      selected.push(clickedLocation);
+      this.setState({ userSelectedLocations: selected });
+    } else {
+      confirmAlert({
+        title: 'Error!',
+        message:
+          'Number of selected locations exceeded limit of 10, please remove existing location to add more.',
+        buttons: [
+          {
+            label: 'OK'
+          }
+        ]
+      });
+    }
+  }
+
+  renderLocationList() {
+    let locationlist = this.state.locationIds.map(location => {
+      return (
+        <Col
+          sm="3"
+          className="form-check checkbox checkbox-circle checkbox-yellow"
+        >
+          <input
+            className="form-check-input"
+            type="checkbox"
+            value={location}
+            id="checkbox-input"
+            checked={this.state.userSelectedLocations.includes(location)}
+            onClick={this.selectLocations}
+          />
+          <label className="form-check-label" htmlFor="checkbox-input">
+            {this.state.locations[location].name}
+          </label>
+        </Col>
+      );
+    });
+    return <Row className="location-list-padding">{locationlist}</Row>;
+  }
+
   handExpandClick = attrId =>
     this.setState({
       modal: true,
@@ -52,25 +126,25 @@ class GridTest extends Component {
 
     let cards = attributes.map((card, index) => {
       return (
-        <div>
-          <Card key={index} sm="8">
-            <CardBody className="time-series-card">
-              <TimeSeriesView
-                index={index}
-                condition="tiny"
-                id={this.props.id}
-                level={this.props.level}
-              />
-              <Button
-                className="button"
-                color="secondary"
-                onClick={() => this.handExpandClick(index)}
-              >
-                <Badge>Expand</Badge>
-              </Button>
-            </CardBody>
-          </Card>
-        </div>
+        <Card key={index}>
+          <CardBody className="time-series-card">
+            <TimeSeriesView
+              index={index}
+              condition="tiny"
+              id={this.props.id}
+              level={this.props.level}
+              updateLocation={this.updateLocation}
+              userSelectedLocations={this.state.userSelectedLocations}
+            />
+            <Button
+              className="button"
+              color="secondary"
+              onClick={() => this.handExpandClick(index)}
+            >
+              <Badge>Expand</Badge>
+            </Button>
+          </CardBody>
+        </Card>
       );
     });
 
@@ -84,7 +158,27 @@ class GridTest extends Component {
     } else {
       return (
         <Container className="GridContainer">
-          <Normalization />
+          <Row>
+            <Card>
+              <CardBody>
+                <Row>
+                  <Normalization />
+                </Row>
+                <hr />
+                <Row className="SelectedLocations">
+                  <i>
+                    Select locations from the selected range to be plotted in
+                    the graph:{' '}
+                  </i>
+                  {this.renderLocationList()}
+                </Row>
+              </CardBody>
+            </Card>
+          </Row>
+          <Row>
+            {' '}
+            <div className="Space" />
+          </Row>
           <Row>
             {cards}
             <Modal
@@ -97,6 +191,8 @@ class GridTest extends Component {
                   index={this.state.modalAttrIndex}
                   condition="large"
                   id={this.props.id}
+                  updateLocation={this.updateLocation}
+                  userSelectedLocations={this.state.userSelectedLocations}
                   level={this.props.level}
                 />
               </ModalBody>
@@ -112,6 +208,7 @@ class GridTest extends Component {
     }
   }
 }
+
 const mapState = state => ({
   selectedAttributes: state.SelectedAttributeReducer.selectedAttributes
 });
