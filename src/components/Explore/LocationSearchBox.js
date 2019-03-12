@@ -226,7 +226,6 @@ class LocationSearchBox extends Component {
                   suggestion: 'list-group-item'
                 }}
                 suggestions={this.state.suggestions}
-                alwaysRenderSuggestions
                 onSuggestionsClearRequested={() =>
                   this.setState({ suggestions: [] })
                 }
