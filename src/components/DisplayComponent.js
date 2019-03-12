@@ -35,16 +35,7 @@ class DisplayComponent extends Component {
       normalizationKeys: nextProps.normalizationKeys
     });
     if (this.state.populationRange !== nextProps.populationRange) {
-      console.log(this.state);
-      console.log(nextProps.populationRange[1] / 100);
-      console.log(
-        (nextProps.populationRange[1] / 100) * this.state.currentPopulation
-      );
-      console.log(
-        this.state.currentPopulation +
-          nextProps.populationRange[1] * this.state.currentPopulation
-      );
-      let currentRows = _.filter(this.state.data, e => {
+      let currentRows = _.pickBy(this.state.data, e => {
         return (
           e['1'] <=
             this.state.currentPopulation +
@@ -57,7 +48,7 @@ class DisplayComponent extends Component {
         );
       });
       this.setState({ selectedData: currentRows });
-      this.setState({ locationIds: _.map(currentRows, elem => elem['1']) });
+      this.setState({ locationIds: _.keys(currentRows) });
     }
     let attributes = _.flatMap(nextProps.selectedAttributes, elem => {
       return elem[0];
@@ -147,7 +138,7 @@ class DisplayComponent extends Component {
               data[obj.id] = { name: obj.name, '1': obj.population };
             });
             this.setState({ data: data });
-            let currentRows = _.filter(this.state.data, e => {
+            let currentRows = _.pickBy(this.state.data, e => {
               return (
                 e['1'] <= population + 0.25 * population &&
                 e['1'] >= population - 0.25 * population
@@ -155,7 +146,7 @@ class DisplayComponent extends Component {
             });
             this.setState({ selectedData: currentRows });
             this.setState({
-              locationIds: _.map(currentRows, elem => elem['1'])
+              locationIds: _.keys(currentRows)
             });
           })
           .catch(error => {
