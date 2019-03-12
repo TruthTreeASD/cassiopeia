@@ -30,7 +30,8 @@ class TimeSeriesView extends Component {
         'lime',
         'indianred',
         'dimgrey'
-      ]
+      ],
+      populationRange: [-25, 25]
     };
     this.fetchResponse = this.fetchResponse.bind(this);
     this.formatResponse = this.formatResponse.bind(this);
@@ -45,7 +46,10 @@ class TimeSeriesView extends Component {
     }
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      selectedAttributes: nextProps.selectedAttributes
+    });
     const len = this.props.selectedAttributes.length;
     if (len !== 0) {
       this.fetchLocations();
@@ -55,9 +59,10 @@ class TimeSeriesView extends Component {
   fetchLocations() {
     let minPopulation = 0;
     let maxPopulation = 0;
-    let locationIds = [];
     let year = this.props.yearSelected ? this.props.yearSelected : 2016;
-    let locationData = {};
+    let data = {};
+    let population = 0;
+    // Calculate min and max population
     axios
       .get(
         `${TRUTHTREE_URI}/api/population?locationId=` +
@@ -66,29 +71,36 @@ class TimeSeriesView extends Component {
           year
       )
       .then(response => {
-        let population = response.data.population;
-        maxPopulation = Math.floor(
-          population + (this.props.populationRange[1] / 100) * population
-        );
-        minPopulation = Math.floor(
-          population + (this.props.populationRange[0] / 100) * population
-        );
+        population = response.data.population;
+        this.setState({ currentPopulation: population });
+        maxPopulation = Math.floor(population + 0.5 * population);
+        minPopulation = Math.floor(population - 0.5 * population);
         return axios
           .get(
-            `${TRUTHTREE_URI}/api/` +
-              this.props.level +
-              '?populationRange=' +
+            `${TRUTHTREE_URI}/api/${this.props.level}?populationRange=` +
               minPopulation +
               ',' +
               maxPopulation
           )
           .then(response => {
+            console.log(response.data);
             _.map(response.data, obj => {
-              locationData[obj.id] = { name: obj.name, '1': obj.population };
-              locationIds.push(obj.id);
+              data[obj.id] = { name: obj.name, '1': obj.population };
             });
-            this.setState({ locationIds: locationIds });
-            this.setState({ locationData: locationData });
+            this.setState({ locationData: data });
+            let currentRows = _.pickBy(data, e => {
+              return (
+                e['1'] <=
+                  population +
+                    (this.props.populationRange[1] / 100) * population &&
+                e['1'] >=
+                  population +
+                    (this.props.populationRange[0] / 100) * population
+              );
+            });
+            this.setState({
+              locationIds: _.keys(currentRows)
+            });
             this.fetchResponse();
           })
           .catch(error => {
@@ -111,6 +123,7 @@ class TimeSeriesView extends Component {
     axios
       .get(url)
       .then(response => {
+        console.log(response);
         this.formatResponse(response);
       })
       .catch(error => {

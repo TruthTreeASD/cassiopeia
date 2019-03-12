@@ -141,8 +141,8 @@ class DisplayComponent extends Component {
           });
         }
         this.setState({ currentPopulation: population });
-        maxPopulation = Math.floor(population + (50 / 100) * population);
-        minPopulation = Math.floor(population + (-50 / 100) * population);
+        maxPopulation = Math.floor(population + 0.5 * population);
+        minPopulation = Math.floor(population - 0.5 * population);
         return axios
           .get(
             `${TRUTHTREE_URI}/api/${this.props.level}?populationRange=` +
