@@ -69,8 +69,6 @@ svg.recharts-surface tspan {
 .location-list-padding {
   padding-left: 40px !important;
   padding-top: 10px;
-  max-height: 200px;
-  overflow-y: auto;
 }
 
 hr {
