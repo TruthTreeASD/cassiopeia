@@ -7,19 +7,19 @@
 }
 
 .home {
-  background-color: rgb(223, 236, 234);
+  background-color: white;
 }
 
 .bottom-panel.card {
-  background-color: rgb(223, 236, 234);
+  background-color: white;
 }
 
 .bottom-panel-header.card-header {
-  background-color: rgb(191, 217, 213) !important;
+  background-color: white !important;
 }
 
 .right-panel.card {
-  background-color: rgb(223, 236, 234);
+  background-color: white;
   margin-bottom: 5px;
 }
 

@@ -162,7 +162,8 @@ class LeftSideBar extends Component {
         );
       } else {
         return (
-          <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-light sidebar">
+          <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
+            {/*May want to change this color*/}
             <div className="row">
               <div className="col-10">
                 <input
@@ -224,7 +225,7 @@ class LeftSideBar extends Component {
                                   ].attribute_id
                                 )
                                   ? '#bfd9d5'
-                                  : 'lightgrey'
+                                  : 'white'
                               }}
                             >
                               <div>
