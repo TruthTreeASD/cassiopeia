@@ -60,6 +60,7 @@ class TimeSeriesView extends Component {
     let minPopulation = 0;
     let maxPopulation = 0;
     let year = this.props.yearSelected ? this.props.yearSelected : 2016;
+    let locationIds = [];
     let data = {};
     let population = 0;
     // Calculate min and max population
@@ -101,9 +102,8 @@ class TimeSeriesView extends Component {
             this.setState({
               locationIds: _.keys(currentRows)
             });
-            this.setState({ locationIds: locationIds });
-            this.setState({ locationData: locationData });
-            this.props.updateLocation(locationData, locationIds);
+            this.setState({ locationData: data });
+            this.props.updateLocation(data, _.keys(currentRows));
             this.fetchResponse();
           })
           .catch(error => {
@@ -141,6 +141,9 @@ class TimeSeriesView extends Component {
 
     response.data.map(dataForEachLocation => {
       let location = {};
+      console.log(this.state.locationData);
+      console.log(dataForEachLocation.location_id);
+      console.log(response.location_id);
       let lData = this.state.locationData[dataForEachLocation.location_id];
       let locationName = lData['name'];
       dataForEachLocation.attributes.map(attributesForEachLocation => {
