@@ -12,21 +12,22 @@ import Tabs from './Explore/Tabs';
 import TimeSeriesGrid from './Explore/TimeSeriesGrid';
 
 const homeStyle = {
-  paddingTop: 90
+  paddingTop: 75
 };
 
 class Home extends Component {
   render() {
     return (
-      <Container fluid style={homeStyle}>
+      <Container fluid style={homeStyle} className="home">
         <Row>
           <LeftSideBar />
 
           <div className="col-12 col-md-10 align-items-center">
-            <Card>
-              <div className={'attribute-selector-padding'}>
-                <AttributeDeselector />
-              </div>
+            <Card className="selected-attributes">
+              <AttributeDeselector />
+            </Card>
+
+            <Card className="right-panel">
               <Tabs>
                 <div label="Table View">
                   <DisplayComponent
@@ -41,8 +42,8 @@ class Home extends Component {
               </Tabs>
             </Card>
 
-            <Card>
-              <CardHeader>
+            <Card className="bottom-panel">
+              <CardHeader className="bottom-panel-header">
                 <div>
                   Selected Location: <b>{this.props.match.params.name}</b>
                 </div>
