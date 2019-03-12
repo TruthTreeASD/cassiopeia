@@ -124,6 +124,7 @@ class GridTest extends Component {
               index={index}
               condition="tiny"
               id={this.props.id}
+              level={this.props.level}
               updateLocation={this.updateLocation}
               userSelectedLocations={this.state.userSelectedLocations}
             />
@@ -181,6 +182,7 @@ class GridTest extends Component {
                   id={this.props.id}
                   updateLocation={this.updateLocation}
                   userSelectedLocations={this.state.userSelectedLocations}
+                  level={this.props.level}
                 />
               </ModalBody>
               <ModalFooter>
