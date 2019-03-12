@@ -91,8 +91,6 @@ class GridTest extends Component {
   }
 
   renderLocationList() {
-    console.log(this.state.userSelectedLocations);
-    console.log(this.state.locationIds);
     let locationlist = this.state.locationIds.map(location => {
       return (
         <Col

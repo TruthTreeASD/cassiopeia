@@ -84,7 +84,6 @@ class TimeSeriesView extends Component {
               maxPopulation
           )
           .then(response => {
-            console.log(response.data);
             _.map(response.data, obj => {
               data[obj.id] = { name: obj.name, '1': obj.population };
             });
