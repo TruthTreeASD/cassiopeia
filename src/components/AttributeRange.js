@@ -11,7 +11,6 @@ import { TRUTHTREE_URI } from '../constants';
 const Range = Slider.Range;
 
 const marks = {
-  '-50': '50',
   '-50': '-50%',
   '-40': '-40%',
   '-30': '-30%',
