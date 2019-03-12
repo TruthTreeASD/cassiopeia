@@ -3,15 +3,19 @@
 }
 
 .attribute-selector-padding {
+  padding: 20px;
+}
+
+.padding {
   padding: 10px;
 }
 
 .home {
-  background-color: rgb(223, 236, 234);
+  background-color: white;
 }
 
 .bottom-panel.card {
-  background-color: rgb(223, 236, 234);
+  background-color: white;
 }
 
 .bottom-panel-header.card-header {
@@ -19,7 +23,7 @@
 }
 
 .right-panel.card {
-  background-color: rgb(223, 236, 234);
+  background-color: white;
   margin-bottom: 5px;
 }
 

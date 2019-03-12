@@ -3,6 +3,7 @@
   padding-left: 5px;
   margin: 5px;
 }
+
 .button {
   background-color: white !important;
   border-color: white !important;
@@ -56,4 +57,11 @@ svg.recharts-surface tspan {
   background-color: rgb(191, 217, 213);
   color: black;
   font-style: italic;
+}
+
+.padding {
+  padding-bottom: 10px;
+}
+.location-list-padding {
+  padding: 10px;
 }

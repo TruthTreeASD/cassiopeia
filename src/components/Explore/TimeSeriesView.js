@@ -26,7 +26,7 @@ class TimeSeriesView extends Component {
         'deeppink',
         'orange',
         'navy',
-        'olive',
+        'slategray',
         'lime',
         'indianred',
         'dimgrey'
