@@ -129,7 +129,7 @@ class DisplayComponent extends Component {
     return (
       <div id="mainDisplay">
         <Normalization />
-        <Table hover size="sm">
+        <Table hover striped size="sm">
           <thead className="table-header">
             <tr>
               <th>Name</th>
