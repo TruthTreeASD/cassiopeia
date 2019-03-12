@@ -5,6 +5,7 @@ import {
   Col,
   Card,
   CardBody,
+  CardHeader,
   Button,
   Modal,
   ModalBody,
@@ -13,6 +14,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { confirmAlert } from 'react-confirm-alert';
 
 import TimeSeriesView from './TimeSeriesView';
 import Normalization from './Normalization';
@@ -75,9 +77,16 @@ class GridTest extends Component {
       selected.push(clickedLocation);
       this.setState({ userSelectedLocations: selected });
     } else {
-      alert(
-        'Hey please select at most 10 locations. You can still plot this location by dropping any of the selected location!'
-      );
+      confirmAlert({
+        title: 'Error!',
+        message:
+          'Number of selected locations exceeded limit of 10, please remove existing location to add more.',
+        buttons: [
+          {
+            label: 'OK'
+          }
+        ]
+      });
     }
   }
 
@@ -85,8 +94,7 @@ class GridTest extends Component {
     let locationlist = this.state.locationIds.map(location => {
       return (
         <Col
-          lg={6}
-          md={6}
+          sm="3"
           className="form-check checkbox checkbox-circle checkbox-yellow"
         >
           <input
@@ -150,23 +158,26 @@ class GridTest extends Component {
     } else {
       return (
         <Container className="GridContainer">
-          <Row className="padding">
+          <Row>
             <Card>
               <CardBody>
                 <Row>
-                  <Col lg={5}>
-                    <Normalization />
-                  </Col>
-                  <Col>
-                    <h6>
-                      Select locations falling in population Range(Max 10
-                      allowed):
-                    </h6>
-                    {this.renderLocationList()}
-                  </Col>
+                  <Normalization />
+                </Row>
+                <hr />
+                <Row className="SelectedLocations">
+                  <i>
+                    Select locations from the selected range to be plotted in
+                    the graph:{' '}
+                  </i>
+                  {this.renderLocationList()}
                 </Row>
               </CardBody>
             </Card>
+          </Row>
+          <Row>
+            {' '}
+            <div className="Space" />
           </Row>
           <Row>
             {cards}

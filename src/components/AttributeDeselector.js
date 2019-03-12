@@ -42,12 +42,18 @@ class AttributeDeselector extends Component {
 
   render() {
     if (this.state.selectedAttributes.length < 1) {
-      return <div />;
+      return (
+        <Row>
+          <Col xs="auto" className="filters">
+            Selected Attributes: None
+          </Col>
+        </Row>
+      );
     } else {
       return (
         <Row>
           <Col xs="auto" className="filters">
-            Selected Filters:
+            Selected Attributes:
           </Col>
           <Col>
             {Object.keys(this.state.selectedAttributes).map((attributes, i) => {

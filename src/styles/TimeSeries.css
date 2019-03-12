@@ -1,3 +1,7 @@
+.form-check-label {
+  text-transform: lowercase;
+  font-size: 14px;
+}
 .chartDiv {
   align-items: center;
   padding-left: 5px;
@@ -63,5 +67,20 @@ svg.recharts-surface tspan {
   padding-bottom: 10px;
 }
 .location-list-padding {
-  padding: 10px;
+  padding-left: 40px !important;
+  padding-top: 10px;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-bottom: 1px solid #ccc !important;
+  padding: 0;
+  margin-top: 0px !important;
+  margin-bottom: 5px !important;
+}
+
+div.Space {
+  margin: 10px !important;
 }
