@@ -100,10 +100,10 @@ class TimeSeriesView extends Component {
               );
             });
             this.setState({
-              locationIds: _.keys(currentRows)
+              locationIds: _.map(_.keys(currentRows), _.toInteger)
             });
             this.setState({ locationData: data });
-            this.props.updateLocation(data, _.keys(currentRows));
+            this.props.updateLocation(data, this.state.locationIds);
             this.fetchResponse();
           })
           .catch(error => {
@@ -141,9 +141,6 @@ class TimeSeriesView extends Component {
 
     response.data.map(dataForEachLocation => {
       let location = {};
-      console.log(this.state.locationData);
-      console.log(dataForEachLocation.location_id);
-      console.log(response.location_id);
       let lData = this.state.locationData[dataForEachLocation.location_id];
       let locationName = lData['name'];
       dataForEachLocation.attributes.map(attributesForEachLocation => {
