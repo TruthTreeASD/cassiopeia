@@ -97,11 +97,10 @@ class DisplayComponent extends Component {
       data: {},
       selectedAttributes: this.props.selectedAttributes,
       year: this.props.yearSelected,
-      selectedNormalizationName: this.props.selectedNormalizationName
+      selectedNormalizationName: this.props.selectedNormalizationName,
+      populationRange: this.props.populationRange
     });
-    if (!this.state.currentPopulation) {
-      this.populationRangeCall();
-    }
+    this.populationRangeCall();
   }
 
   getFormattedName(rowName) {
@@ -157,8 +156,12 @@ class DisplayComponent extends Component {
             this.setState({ data: data });
             let currentRows = _.pickBy(this.state.data, e => {
               return (
-                e['1'] <= population + 0.25 * population &&
-                e['1'] >= population - 0.25 * population
+                e['1'] <=
+                  population +
+                    (this.state.populationRange[1] / 100) * population &&
+                e['1'] >=
+                  population +
+                    (this.state.populationRange[0] / 100) * population
               );
             });
             this.setState({ selectedData: currentRows });
