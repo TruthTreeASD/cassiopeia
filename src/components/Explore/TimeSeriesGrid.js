@@ -51,7 +51,7 @@ class GridTest extends Component {
     let defaultLocations = this.state.userSelectedLocations;
     if (defaultLocations.length === 0) {
       if (locationIds.length > 10) {
-        defaultLocations = locationIds.subarray(0, 10);
+        defaultLocations = locationIds.slice(0, 10);
       } else {
         defaultLocations = locationIds;
       }
