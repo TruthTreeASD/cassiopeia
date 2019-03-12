@@ -59,6 +59,7 @@ class GridTest extends Component {
                 index={index}
                 condition="tiny"
                 id={this.props.id}
+                level={this.props.level}
               />
               <Button
                 className="button"
@@ -96,6 +97,7 @@ class GridTest extends Component {
                   index={this.state.modalAttrIndex}
                   condition="large"
                   id={this.props.id}
+                  level={this.props.level}
                 />
               </ModalBody>
               <ModalFooter>

@@ -37,7 +37,6 @@ class YearSelector extends Component {
 
   onClick(e) {
     //this.setState({ yearSelected: e.target.id });
-    console.log(e.target.id);
     this.props.dispatch({
       type: 'CHANGE_YEAR',
       yearSelected: e.target.id

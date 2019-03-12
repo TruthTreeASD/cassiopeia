@@ -75,7 +75,9 @@ class TimeSeriesView extends Component {
         );
         return axios
           .get(
-            `${TRUTHTREE_URI}/api/states?populationRange=` +
+            `${TRUTHTREE_URI}/api/` +
+              this.props.level +
+              '?populationRange=' +
               minPopulation +
               ',' +
               maxPopulation
