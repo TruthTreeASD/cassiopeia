@@ -26,7 +26,7 @@ class TimeSeriesView extends Component {
         'deeppink',
         'orange',
         'navy',
-        'olive',
+        'slategray',
         'lime',
         'indianred',
         'dimgrey'
@@ -89,6 +89,7 @@ class TimeSeriesView extends Component {
             });
             this.setState({ locationIds: locationIds });
             this.setState({ locationData: locationData });
+            this.props.updateLocation(locationData, locationIds);
             this.fetchResponse();
           })
           .catch(error => {
@@ -149,11 +150,18 @@ class TimeSeriesView extends Component {
           map[attributesForEachLocation.attribute_id] = val;
           return null;
         });
-        location['id'] = dataForEachLocation.location_id;
-        let select = this.state.lineColors[Math.floor(Math.random() * 11)];
-        location['color'] = select;
-        location['name'] = locationName;
-        locations.push(location);
+        if (
+          this.props.userSelectedLocations.includes(
+            dataForEachLocation.location_id
+          )
+        ) {
+          location['id'] = dataForEachLocation.location_id;
+          // let select = this.state.lineColors[Math.floor(Math.random() * 11)];
+          let select = this.state.lineColors[locations.length - 1];
+          location['color'] = select;
+          location['name'] = locationName;
+          locations.push(location);
+        }
         return null;
       });
       return null;
