@@ -150,8 +150,9 @@ class LeftSideBar extends Component {
     } else {
       if (this.state.collapsedLeft) {
         return (
-          <button className={'btn'} onClick={() => this.collapseLeftBar()}>
+          <button className="btn" onClick={() => this.collapseLeftBar()}>
             <i
+              style={{ color: 'black' }}
               className={
                 'col-md-flex d-md-flex ' + !this.state.collapsedLeft
                   ? 'fa fa-chevron-right'
@@ -164,6 +165,7 @@ class LeftSideBar extends Component {
         return (
           <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
             {/*May want to change this color*/}
+
             <div className="row">
               <div className="col-10">
                 <input

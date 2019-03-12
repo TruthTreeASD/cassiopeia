@@ -3,6 +3,10 @@
 }
 
 .attribute-selector-padding {
+  padding: 20px;
+}
+
+.padding {
   padding: 10px;
 }
 

@@ -10,7 +10,7 @@ button.btn.btn-light.selected-attribute-button {
   margin: 2px;
 }
 
-.filters.col-auto {
+.filters {
   padding-left: 25px;
   font-style: italic;
   font-size: 15px;

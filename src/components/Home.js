@@ -22,8 +22,8 @@ class Home extends Component {
         <Row>
           <LeftSideBar />
 
-          <div className="col-12 col-md-10 align-items-center">
-            <Card className="selected-attributes">
+          <div className="col-12 col-md-10 align-items-center padding">
+            <Card className="selected-attributes padding">
               <AttributeDeselector />
             </Card>
 
@@ -33,11 +33,15 @@ class Home extends Component {
                   <DisplayComponent
                     level={this.props.match.params.level}
                     id={this.props.match.params.id}
+                    location={this.props.match.params.name}
                   />
                 </div>
 
                 <div label="Time Series View">
-                  <TimeSeriesGrid id={this.props.match.params.id} />
+                  <TimeSeriesGrid
+                    id={this.props.match.params.id}
+                    level={this.props.match.params.level}
+                  />
                 </div>
               </Tabs>
             </Card>
