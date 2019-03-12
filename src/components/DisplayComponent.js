@@ -24,6 +24,7 @@ class DisplayComponent extends Component {
       populationRange: [-25, 25]
     };
     this.populationRangeCall = this.populationRangeCall.bind(this);
+    this.getFormattedName = this.getFormattedName.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -93,6 +94,14 @@ class DisplayComponent extends Component {
       selectedNormalizationName: this.props.selectedNormalizationName
     });
     this.populationRangeCall();
+  }
+
+  getFormattedName(rowName) {
+    if (rowName.toLowerCase() === this.props.location.replace(/-/g, ' ')) {
+      return <b>{_.capitalize(rowName)}</b>;
+    } else {
+      return _.capitalize(rowName);
+    }
   }
 
   populationRangeCall() {
@@ -176,7 +185,7 @@ class DisplayComponent extends Component {
             {_.values(this.state.selectedData).map((row, index) => {
               return (
                 <tr key={index}>
-                  <td>{row['name']}</td>
+                  <td>{this.getFormattedName(row['name'])}</td>
                   <td>{row['1'].toLocaleString()}</td>
                   {this.state.selectedAttributes.map((column, i) => {
                     let url =
@@ -192,7 +201,9 @@ class DisplayComponent extends Component {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {row[column[0]]}
+                          {row[column[0]]
+                            ? row[column[0]].toLocaleString()
+                            : '-'}
                         </a>
                       </td>
                     );
