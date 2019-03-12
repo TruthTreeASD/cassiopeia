@@ -25,6 +25,7 @@ class DisplayComponent extends Component {
     };
     this.populationRangeCall = this.populationRangeCall.bind(this);
     this.getFormattedName = this.getFormattedName.bind(this);
+    this.attributeCall = this.attributeCall.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,45 +56,52 @@ class DisplayComponent extends Component {
       return elem[0];
     });
     if (attributes.length > 0) {
-      axios
-        .get(
-          '/api/attributes?locationIds=' +
-            this.state.locationIds +
-            '&attributeIds=' +
-            attributes +
-            '&normalizationType=' +
-            nextProps.selectedNormalizationName +
-            '&yearList=' +
-            nextProps.year
-        )
-        .then(response => {
-          let data = this.state.selectedData;
-          _.map(response.data, row => {
-            _.map(row.attributes, elem => {
-              data[row.location_id][elem.attribute_id] =
-                nextProps.selectedNormalizationName === 'PER_CAPITA'
-                  ? elem.data[0].per_capita
-                  : nextProps.selectedNormalizationName === 'BY_REVENUE'
-                  ? elem.data[0].by_revenue
-                  : elem.data[0].value;
-            });
-          });
-          this.setState({ selectedData: data });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      this.attributeCall(attributes, nextProps);
     }
+  }
+
+  attributeCall(attributes, nextProps) {
+    let year = nextProps.year ? nextProps.year : 2016;
+    axios
+      .get(
+        '/api/attributes?locationIds=' +
+          this.state.locationIds +
+          '&attributeIds=' +
+          attributes +
+          '&normalizationType=' +
+          nextProps.selectedNormalizationName +
+          '&yearList=' +
+          year
+      )
+      .then(response => {
+        let data = this.state.selectedData;
+        _.map(response.data, row => {
+          _.map(row.attributes, elem => {
+            data[row.location_id][elem.attribute_id] =
+              nextProps.selectedNormalizationName === 'PER_CAPITA'
+                ? elem.data[0].per_capita
+                : nextProps.selectedNormalizationName === 'BY_REVENUE'
+                ? elem.data[0].by_revenue
+                : elem.data[0].value;
+          });
+        });
+        this.setState({ selectedData: data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   componentDidMount() {
     this.setState({
       data: {},
-      selectedAttribtes: this.props.selectedAttributes,
+      selectedAttributes: this.props.selectedAttributes,
       year: this.props.yearSelected,
       selectedNormalizationName: this.props.selectedNormalizationName
     });
-    this.populationRangeCall();
+    if (!this.state.currentPopulation) {
+      this.populationRangeCall();
+    }
   }
 
   getFormattedName(rowName) {
@@ -157,6 +165,15 @@ class DisplayComponent extends Component {
             this.setState({
               locationIds: _.keys(currentRows)
             });
+            if (this.props.selectedAttributes) {
+              let attributes = _.flatMap(
+                this.props.selectedAttributes,
+                elem => {
+                  return elem[0];
+                }
+              );
+              this.attributeCall(attributes, this.state);
+            }
           })
           .catch(error => {
             console.log(error);
