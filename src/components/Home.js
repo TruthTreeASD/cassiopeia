@@ -37,7 +37,10 @@ class Home extends Component {
                 </div>
 
                 <div label="Time Series View">
-                  <TimeSeriesGrid id={this.props.match.params.id} />
+                  <TimeSeriesGrid
+                    id={this.props.match.params.id}
+                    level={this.props.match.params.level}
+                  />
                 </div>
               </Tabs>
             </Card>
