@@ -209,6 +209,8 @@ class DisplayComponent extends Component {
                       'https://www.google.com/search?q=' +
                       row['name'] +
                       '+' +
+                      this.state.selectedAttributes[i][2] +
+                      ' ' +
                       this.state.selectedAttributes[i][1];
                     return (
                       <td key={i}>
