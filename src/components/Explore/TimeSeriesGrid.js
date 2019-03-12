@@ -5,6 +5,7 @@ import {
   Col,
   Card,
   CardBody,
+  CardHeader,
   Button,
   Modal,
   ModalBody,
@@ -93,8 +94,7 @@ class GridTest extends Component {
     let locationlist = this.state.locationIds.map(location => {
       return (
         <Col
-          lg={6}
-          md={6}
+          sm="3"
           className="form-check checkbox checkbox-circle checkbox-yellow"
         >
           <input
@@ -158,23 +158,26 @@ class GridTest extends Component {
     } else {
       return (
         <Container className="GridContainer">
-          <Row className="padding">
+          <Row>
             <Card>
               <CardBody>
                 <Row>
-                  <Col lg={5}>
-                    <Normalization />
-                  </Col>
-                  <Col>
-                    <h6>
-                      Select locations falling in population Range(Max 10
-                      allowed):
-                    </h6>
-                    {this.renderLocationList()}
-                  </Col>
+                  <Normalization />
+                </Row>
+                <hr />
+                <Row className="SelectedLocations">
+                  <i>
+                    Select locations from the selected range to be plotted in
+                    the graph:{' '}
+                  </i>
+                  {this.renderLocationList()}
                 </Row>
               </CardBody>
             </Card>
+          </Row>
+          <Row>
+            {' '}
+            <div className="Space" />
           </Row>
           <Row>
             {cards}
