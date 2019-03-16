@@ -10,6 +10,7 @@ import AttributeDeselector from './AttributeDeselector';
 import Filters from './AttributeRange';
 import Tabs from './Explore/Tabs';
 import TimeSeriesGrid from './Explore/TimeSeriesGrid';
+import StoryCreationComponent from './StoryCreationComponent';
 
 const homeStyle = {
   paddingTop: 75
@@ -42,6 +43,10 @@ class Home extends Component {
                     id={this.props.match.params.id}
                     level={this.props.match.params.level}
                   />
+                </div>
+
+                <div label="Create a Story">
+                  <StoryCreationComponent />
                 </div>
               </Tabs>
             </Card>
