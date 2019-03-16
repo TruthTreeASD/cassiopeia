@@ -42,8 +42,9 @@ class StoryCreationComponent extends Component {
 
   render() {
     var { isLoaded } = this.state;
+    var active = false;
 
-    return <div>STORYCOMPONENT</div>;
+    return <div>USER STORY</div>;
   }
 }
 
