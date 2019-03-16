@@ -44,7 +44,48 @@ class StoryCreationComponent extends Component {
     var { isLoaded } = this.state;
     var active = false;
 
-    return <div>USER STORY</div>;
+    return (
+      <div>
+        <p>Tell us what you found!</p>
+        <input
+          className="form-control"
+          data-spy="affix"
+          data-offset-top="197"
+          //id="attribute-search-box"
+          //onChange={this.handleChangeSearch}
+          placeholder="Author Name"
+        />
+        <br />
+        <input
+          className="form-control"
+          data-spy="affix"
+          data-offset-top="197"
+          // id="attribute-search-box"
+          //onChange={this.handleChangeSearch}
+          placeholder="Tags"
+        />
+        <br />
+        <textarea
+          className="form-control"
+          rows="5"
+          data-spy="affix"
+          data-offset-top="197"
+          //id="attribute-search-box"
+          //onChange={this.handleChangeSearch}
+          placeholder="Story"
+        />
+        <button
+          className="btn btn-light selected-attribute-button"
+          onClick={
+            () => console.log('Submitted form')
+            //    this.deselectAttribute(this.state.selectedAttributes[i])
+          }
+        >
+          <i className="fa" />
+          SUBMIT STORY
+        </button>
+      </div>
+    );
   }
 }
 
