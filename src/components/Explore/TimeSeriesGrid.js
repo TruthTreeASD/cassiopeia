@@ -10,11 +10,13 @@ import {
   Modal,
   ModalBody,
   ModalFooter,
+  ModalHeader,
   Badge
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { confirmAlert } from 'react-confirm-alert';
+import domtoimage from 'dom-to-image';
 
 import TimeSeriesView from './TimeSeriesView';
 import Normalization from './Normalization';
@@ -35,8 +37,25 @@ class GridTest extends Component {
     this.updateLocation = this.updateLocation.bind(this);
     this.renderLocationList = this.renderLocationList.bind(this);
     this.selectLocations = this.selectLocations.bind(this);
+    this.ImageCapture = this.ImageCapture.bind(this);
   }
 
+  ImageCapture = () => {
+    var newRef = this.refs.image;
+    const fileName = this.attrId;
+    console.log(fileName);
+    domtoimage
+      .toJpeg(newRef, { quality: 1 })
+      .then(function(dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'TruthTree.jpeg';
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch(function(error) {
+        console.error('oops, something went wrong!', error);
+      });
+  };
   modalToggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
@@ -186,17 +205,22 @@ class GridTest extends Component {
               toggle={this.modalToggle}
               className="GridModal"
             >
-              <ModalBody>
-                <TimeSeriesView
-                  index={this.state.modalAttrIndex}
-                  condition="large"
-                  id={this.props.id}
-                  updateLocation={this.updateLocation}
-                  userSelectedLocations={this.state.userSelectedLocations}
-                  level={this.props.level}
-                />
-              </ModalBody>
+              <div ref="image">
+                <ModalBody className="backgroundWhite">
+                  <TimeSeriesView
+                    index={this.state.modalAttrIndex}
+                    condition="large"
+                    id={this.props.id}
+                    updateLocation={this.updateLocation}
+                    userSelectedLocations={this.state.userSelectedLocations}
+                    level={this.props.level}
+                  />
+                </ModalBody>
+              </div>
               <ModalFooter>
+                <Button color="secondary" onClick={this.ImageCapture}>
+                  Download
+                </Button>
                 <Button color="secondary" onClick={this.modalToggle}>
                   Cancel
                 </Button>
