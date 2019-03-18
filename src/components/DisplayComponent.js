@@ -38,36 +38,36 @@ class DisplayComponent extends Component {
       populationRange: nextProps.populationRange,
       normalizationKeys: nextProps.normalizationKeys
     });
-    if (this.state.populationRange !== nextProps.populationRange) {
-      let currentRows = _.pickBy(this.state.data, e => {
-        return (
-          e['1'] <=
-            this.state.currentPopulation +
-              (nextProps.populationRange[1] / 100) *
-                this.state.currentPopulation &&
-          e['1'] >=
-            this.state.currentPopulation +
-              (nextProps.populationRange[0] / 100) *
-                this.state.currentPopulation
-        );
-      });
-      this.setState({ selectedData: currentRows });
-      this.setState({ locationIds: _.keys(currentRows) });
-    }
+    let currentRows = _.pickBy(this.state.data, e => {
+      return (
+        e['1'] <=
+          this.state.currentPopulation +
+            (nextProps.populationRange[1] / 100) *
+              this.state.currentPopulation &&
+        e['1'] >=
+          this.state.currentPopulation +
+            (nextProps.populationRange[0] / 100) * this.state.currentPopulation
+      );
+    });
+    this.setState({
+      selectedData: currentRows,
+      locationIds: _.keys(currentRows)
+    });
+    // this.setState({ locationIds: _.keys(currentRows) });
     let attributes = _.flatMap(nextProps.selectedAttributes, elem => {
       return elem[0];
     });
     if (attributes.length > 0) {
-      this.attributeCall(attributes, nextProps);
+      this.attributeCall(_.keys(currentRows), attributes, nextProps);
     }
   }
 
-  attributeCall(attributes, nextProps) {
+  attributeCall(locationIds, attributes, nextProps) {
     let year = nextProps.year ? nextProps.year : 2016;
     axios
       .get(
         '/api/attributes?locationIds=' +
-          this.state.locationIds +
+          locationIds +
           '&attributeIds=' +
           attributes +
           '&normalizationType=' +
@@ -105,11 +105,11 @@ class DisplayComponent extends Component {
     this.populationRangeCall();
   }
 
-  getFormattedName(rowName) {
-    if (rowName.toLowerCase() === this.props.location.replace(/-/g, ' ')) {
-      return <b>{_.capitalize(rowName)}</b>;
+  getFormattedName(cell) {
+    if (cell.toLowerCase() === this.props.location.replace(/-/g, ' ')) {
+      return <b>{_.capitalize(cell)}</b>;
     } else {
-      return _.capitalize(rowName);
+      return _.capitalize(cell);
     }
   }
 
@@ -177,7 +177,7 @@ class DisplayComponent extends Component {
                   return elem[0];
                 }
               );
-              this.attributeCall(attributes, this.state);
+              this.attributeCall(_.keys(currentRows), attributes, this.state);
             }
           })
           .catch(error => {
@@ -190,9 +190,6 @@ class DisplayComponent extends Component {
   }
 
   colFormatter(cell, row) {
-    console.log('here');
-    console.log(row);
-
     let link =
       'https://www.google.com/search?q=' +
       row[0] +
@@ -202,7 +199,7 @@ class DisplayComponent extends Component {
       this.state.selectedAttributes[0][1];
     return (
       <a href={link} target="_blank" rel="noopener noreferrer">
-        {cell}
+        {cell.toLocaleString()}
       </a>
     );
   }
@@ -211,7 +208,8 @@ class DisplayComponent extends Component {
     var columns = [
       {
         dataField: '0',
-        text: 'Name'
+        text: 'Name',
+        formatter: this.getFormattedName
       },
       {
         dataField: '1',
@@ -230,12 +228,10 @@ class DisplayComponent extends Component {
     var data = [];
     _.values(this.state.selectedData).map(row => {
       var currentRow = {};
-      currentRow['0'] = this.getFormattedName(row['name']);
+      currentRow['0'] = _.capitalize(row['name']);
       currentRow['1'] = row['1'].toLocaleString();
       this.state.selectedAttributes.map((column, i) => {
-        var currentValue = row[column[0]]
-          ? row[column[0]].toLocaleString()
-          : '-';
+        var currentValue = row[column[0]] ? row[column[0]] : '-';
         currentRow[(i + 2).toString()] = currentValue;
       });
       data.push(currentRow);
