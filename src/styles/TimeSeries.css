@@ -84,3 +84,7 @@ hr {
 div.Space {
   margin: 10px !important;
 }
+
+.backgroundWhite {
+  background-color: white !important;
+}
