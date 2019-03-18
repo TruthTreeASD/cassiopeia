@@ -92,3 +92,9 @@ button.btn {
 .collapsible {
   color: black;
 }
+
+.LeftSideBarButton {
+  height: 710px;
+  width: 30px;
+  background-color: #343a40 !important;
+}
