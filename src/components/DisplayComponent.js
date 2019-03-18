@@ -4,7 +4,8 @@ import axios from 'axios/index';
 import _ from 'lodash';
 import '../styles/DisplayComponent.css';
 import { TRUTHTREE_URI } from '../constants';
-import { Table } from 'reactstrap';
+import BootstrapTable from 'react-bootstrap-table-next';
+import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit';
 
 import Normalization from './Explore/Normalization';
 import { confirmAlert } from 'react-confirm-alert';
@@ -26,6 +27,7 @@ class DisplayComponent extends Component {
     this.populationRangeCall = this.populationRangeCall.bind(this);
     this.getFormattedName = this.getFormattedName.bind(this);
     this.attributeCall = this.attributeCall.bind(this);
+    this.colFormatter = this.colFormatter.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -36,36 +38,36 @@ class DisplayComponent extends Component {
       populationRange: nextProps.populationRange,
       normalizationKeys: nextProps.normalizationKeys
     });
-    if (this.state.populationRange !== nextProps.populationRange) {
-      let currentRows = _.pickBy(this.state.data, e => {
-        return (
-          e['1'] <=
-            this.state.currentPopulation +
-              (nextProps.populationRange[1] / 100) *
-                this.state.currentPopulation &&
-          e['1'] >=
-            this.state.currentPopulation +
-              (nextProps.populationRange[0] / 100) *
-                this.state.currentPopulation
-        );
-      });
-      this.setState({ selectedData: currentRows });
-      this.setState({ locationIds: _.keys(currentRows) });
-    }
+    let currentRows = _.pickBy(this.state.data, e => {
+      return (
+        e['1'] <=
+          this.state.currentPopulation +
+            (nextProps.populationRange[1] / 100) *
+              this.state.currentPopulation &&
+        e['1'] >=
+          this.state.currentPopulation +
+            (nextProps.populationRange[0] / 100) * this.state.currentPopulation
+      );
+    });
+    this.setState({
+      selectedData: currentRows,
+      locationIds: _.keys(currentRows)
+    });
+    // this.setState({ locationIds: _.keys(currentRows) });
     let attributes = _.flatMap(nextProps.selectedAttributes, elem => {
       return elem[0];
     });
     if (attributes.length > 0) {
-      this.attributeCall(attributes, nextProps);
+      this.attributeCall(_.keys(currentRows), attributes, nextProps);
     }
   }
 
-  attributeCall(attributes, nextProps) {
+  attributeCall(locationIds, attributes, nextProps) {
     let year = nextProps.year ? nextProps.year : 2016;
     axios
       .get(
         '/api/attributes?locationIds=' +
-          this.state.locationIds +
+          locationIds +
           '&attributeIds=' +
           attributes +
           '&normalizationType=' +
@@ -103,11 +105,11 @@ class DisplayComponent extends Component {
     this.populationRangeCall();
   }
 
-  getFormattedName(rowName) {
-    if (rowName.toLowerCase() === this.props.location.replace(/-/g, ' ')) {
-      return <b>{_.capitalize(rowName)}</b>;
+  getFormattedName(cell) {
+    if (cell.toLowerCase() === this.props.location.replace(/-/g, ' ')) {
+      return <b>{_.capitalize(cell)}</b>;
     } else {
-      return _.capitalize(rowName);
+      return _.capitalize(cell);
     }
   }
 
@@ -175,7 +177,7 @@ class DisplayComponent extends Component {
                   return elem[0];
                 }
               );
-              this.attributeCall(attributes, this.state);
+              this.attributeCall(_.keys(currentRows), attributes, this.state);
             }
           })
           .catch(error => {
@@ -187,54 +189,71 @@ class DisplayComponent extends Component {
       });
   }
 
+  colFormatter(cell, row) {
+    let link =
+      'https://www.google.com/search?q=' +
+      row[0] +
+      '+' +
+      this.state.selectedAttributes[0][2] +
+      ' ' +
+      this.state.selectedAttributes[0][1];
+    return (
+      <a href={link} target="_blank" rel="noopener noreferrer">
+        {cell.toLocaleString()}
+      </a>
+    );
+  }
+
   render() {
+    var columns = [
+      {
+        dataField: '0',
+        text: 'Name',
+        formatter: this.getFormattedName
+      },
+      {
+        dataField: '1',
+        text: 'Population',
+        sort: true
+      }
+    ];
+    this.state.selectedAttributes.map((column, index) => {
+      columns.push({
+        dataField: (index + 2).toString(),
+        text: column[1],
+        sort: true,
+        formatter: this.colFormatter
+      });
+    });
+    var data = [];
+    _.values(this.state.selectedData).map(row => {
+      var currentRow = {};
+      currentRow['0'] = _.capitalize(row['name']);
+      currentRow['1'] = row['1'].toLocaleString();
+      this.state.selectedAttributes.map((column, i) => {
+        var currentValue = row[column[0]] ? row[column[0]] : '-';
+        currentRow[(i + 2).toString()] = currentValue;
+      });
+      data.push(currentRow);
+    });
+    const { ExportCSVButton } = CSVExport;
     return (
       <div id="mainDisplay">
         <Normalization />
-        <Table hover striped size="sm">
-          <thead className="table-header">
-            <tr>
-              <th>Name</th>
-              <th>Population</th>
-              {this.state.selectedAttributes.map((column, index) => {
-                return <th key={index}>{column[1]}</th>;
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {_.values(this.state.selectedData).map((row, index) => {
-              return (
-                <tr key={index}>
-                  <td>{this.getFormattedName(row['name'])}</td>
-                  <td>{row['1'].toLocaleString()}</td>
-                  {this.state.selectedAttributes.map((column, i) => {
-                    let url =
-                      'https://www.google.com/search?q=' +
-                      row['name'] +
-                      '+' +
-                      this.state.selectedAttributes[i][2] +
-                      ' ' +
-                      this.state.selectedAttributes[i][1];
-                    return (
-                      <td key={i}>
-                        <a
-                          className="link-value"
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {row[column[0]]
-                            ? row[column[0]].toLocaleString()
-                            : '-'}
-                        </a>
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+        <ToolkitProvider keyField="0" data={data} columns={columns} exportCSV>
+          {props => (
+            <div>
+              <ExportCSVButton
+                className="btn btn-secondary"
+                {...props.csvProps}
+              >
+                Export as Csv
+              </ExportCSVButton>
+              <hr />
+              <BootstrapTable hover striped {...props.baseProps} />
+            </div>
+          )}
+        </ToolkitProvider>
       </div>
     );
   }
