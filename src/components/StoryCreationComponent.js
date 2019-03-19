@@ -20,6 +20,7 @@ class StoryCreationComponent extends Component {
       isLoaded: false,
       selectedAttributes: [],
       authorField: '',
+      titleField: '',
       tagsField: [],
       storyField: ''
     };
@@ -54,6 +55,13 @@ class StoryCreationComponent extends Component {
     author = author.replace('\\', '');
     author = author.replace('*', '');
     this.setState({ authorField: author });
+  };
+
+  handleChangeTitle = event => {
+    let title = event.target.value.toLowerCase();
+    title = title.replace('\\', '');
+    title = title.replace('*', '');
+    this.setState({ titleField: title });
   };
 
   handleChangeTags = event => {
@@ -111,6 +119,15 @@ class StoryCreationComponent extends Component {
           //id="attribute-search-box"
           onChange={this.handleChangeAuthor}
           placeholder="Author Name"
+        />
+        <br />
+        <input
+          className="form-control"
+          data-spy="affix"
+          data-offset-top="197"
+          //id="attribute-search-box"
+          onChange={this.handleChangeTitle}
+          placeholder="Story Title"
         />
         <br />
         <input
