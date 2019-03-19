@@ -99,8 +99,7 @@ class StoryCreationComponent extends Component {
         ]
       });
       return;
-    }
-    if (this.state.titleField.length < 1) {
+    } else if (this.state.titleField.length < 1) {
       confirmAlert({
         title: 'Error!',
         message: 'Please enter a story title.',
@@ -111,6 +110,11 @@ class StoryCreationComponent extends Component {
         ]
       });
       return;
+    } else {
+      /* {
+              storyTitle: this.titleField,
+              
+          }*/
     }
   }
   /*
