@@ -8,6 +8,9 @@ import { confirmAlert } from 'react-confirm-alert';
 import { TRUTHTREE_URI } from '../constants';
 import { withRouter } from 'react-router-dom';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Col, Row } from 'reactstrap';
+
+import '../styles/AttributeDeselector.css';
 
 class StoryCreationComponent extends Component {
   constructor(props) {
@@ -15,7 +18,10 @@ class StoryCreationComponent extends Component {
 
     this.state = {
       isLoaded: false,
-      selectedAttributes: []
+      selectedAttributes: [],
+      authorField: '',
+      tagsField: [],
+      storyField: ''
     };
     // Set initial state of each collection to false
   }
@@ -38,8 +44,59 @@ class StoryCreationComponent extends Component {
            });*/
   }
 
-  componentWillReceiveProps(nextProps) {}
+  componentWillReceiveProps(nextProps) {
+    //    this.setState({ tagsField: nextProps.selectedAttributes });
+    //    console.log(this.state.tagsField)
+  }
 
+  handleChangeAuthor = event => {
+    let author = event.target.value.toLowerCase();
+    author = author.replace('\\', '');
+    author = author.replace('*', '');
+    this.setState({ authorField: author });
+  };
+
+  handleChangeTags = event => {
+    let tag = event.target.value.toLowerCase();
+    tag = tag.replace('\\', '');
+    tag = tag.replace('*', '');
+    if (_.endsWith(tag, ' ')) {
+      let newArr = this.state.tagsField;
+      newArr.push(tag);
+      this.setState({
+        selectedAttributes: newArr
+      });
+      console.log(this.state.tagsField);
+    }
+  };
+
+  handleChangeStory = event => {
+    let story = event.target.value.toLowerCase();
+    story = story.replace('\\', '');
+    story = story.replace('*', '');
+    this.setState({ storyField: story });
+  };
+  /*
+    deselectAttribute(attribute) {
+        let newArr = this.state.selectedAttributes;
+        let id = attribute[0];
+        for (let i = 0; i < newArr.length; i++) {
+            if (newArr[i][0] === id) {
+                _.remove(newArr, elem => {
+                    return elem === newArr[i];
+                });
+                this.setState({
+                    selectedAttributes: newArr
+                });
+                this.props.dispatch({
+                    type: 'CHANGE_ATTRIBUTE',
+                    value: newArr
+                });
+                return;
+            }
+        }
+    }
+    */
   render() {
     var { isLoaded } = this.state;
     var active = false;
@@ -52,7 +109,7 @@ class StoryCreationComponent extends Component {
           data-spy="affix"
           data-offset-top="197"
           //id="attribute-search-box"
-          //onChange={this.handleChangeSearch}
+          onChange={this.handleChangeAuthor}
           placeholder="Author Name"
         />
         <br />
@@ -64,6 +121,26 @@ class StoryCreationComponent extends Component {
           //onChange={this.handleChangeSearch}
           placeholder="Tags"
         />
+        <Row>
+          <Col xs="auto" className="filters">
+            Selected Tags:
+          </Col>
+          <Col>
+            {Object.keys(this.state.tagsField).map((attributes, i) => {
+              return (
+                <button
+                  className="btn btn-light selected-attribute-button"
+                  /* onClick={() =>
+                                    this.deselectAttribute(this.state.selectedAttributes[i])
+                                }*/
+                >
+                  <i className="fa fa-times" style={{ paddingRight: '10px' }} />
+                  {this.state.tagsField[i][2]}-{this.state.tagsField[i][1]}
+                </button>
+              );
+            })}
+          </Col>
+        </Row>
         <br />
         <textarea
           className="form-control"
@@ -71,7 +148,7 @@ class StoryCreationComponent extends Component {
           data-spy="affix"
           data-offset-top="197"
           //id="attribute-search-box"
-          //onChange={this.handleChangeSearch}
+          onChange={this.handleChangeStory}
           placeholder="Story"
         />
         <button
