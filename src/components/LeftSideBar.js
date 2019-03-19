@@ -152,9 +152,12 @@ class LeftSideBar extends Component {
     } else {
       if (this.state.collapsedLeft) {
         return (
-          <button className="btn" onClick={() => this.collapseLeftBar()}>
+          <button
+            className="LeftSideBarButton"
+            onClick={() => this.collapseLeftBar()}
+          >
             <i
-              style={{ color: 'black' }}
+              style={{ color: 'white' }}
               className={
                 'col-md-flex d-md-flex ' + !this.state.collapsedLeft
                   ? 'fa fa-chevron-right'
@@ -174,10 +177,10 @@ class LeftSideBar extends Component {
                   data-offset-top="197" //trying to make search box stay top
                   id="attribute-search-box"
                   onChange={this.handleChangeSearch}
-                  placeholder="Property Lookup"
+                  placeholder="Search Attributes"
                 />
               </div>
-              <button className={'btn'} onClick={() => this.collapseLeftBar()}>
+              <button className="btn" onClick={() => this.collapseLeftBar()}>
                 <i
                   className={
                     'chevron-icon-padding ' + !this.state.collapsedLeft
