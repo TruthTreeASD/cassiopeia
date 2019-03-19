@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Header from './components/Header';
 import About from './components/About';
 import Explore from './components/Explore';
+import Stories from './components/Stories';
 
 import './App.css';
 import './styles/Tab.css';
@@ -16,6 +17,7 @@ class App extends Component {
           <Header />
           <Switch>
             <Route exact path="/" component={Explore} />
+            <Route exact path="/stories" component={Stories} />
             <Route exact path="/about" component={About} />
             <Route exact path="/explore/:level/:name/:id" component={Home} />
           </Switch>
