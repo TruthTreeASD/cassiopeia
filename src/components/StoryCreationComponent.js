@@ -21,8 +21,10 @@ class StoryCreationComponent extends Component {
       selectedAttributes: [],
       authorField: '',
       titleField: '',
+      tagsInputValue: '',
       tagsField: [],
-      storyField: ''
+      storyField: '',
+      storyMaxLength: 1000
     };
     // Set initial state of each collection to false
   }
@@ -84,6 +86,33 @@ class StoryCreationComponent extends Component {
     story = story.replace('*', '');
     this.setState({ storyField: story });
   };
+
+  submitForm() {
+    if (this.state.storyField.length > this.state.storyMaxLength) {
+      confirmAlert({
+        title: 'Error!',
+        message: 'Story text is too long.',
+        buttons: [
+          {
+            label: 'OK'
+          }
+        ]
+      });
+      return;
+    }
+    if (this.state.titleField.length < 1) {
+      confirmAlert({
+        title: 'Error!',
+        message: 'Please enter a story title.',
+        buttons: [
+          {
+            label: 'OK'
+          }
+        ]
+      });
+      return;
+    }
+  }
   /*
     deselectAttribute(attribute) {
         let newArr = this.state.selectedAttributes;
@@ -168,12 +197,12 @@ class StoryCreationComponent extends Component {
           onChange={this.handleChangeStory}
           placeholder="Story"
         />
+        Story length: {this.state.storyField.length} /
+        {this.state.storyMaxLength}
+        <br />
         <button
           className="btn btn-light selected-attribute-button"
-          onClick={
-            () => console.log('Submitted form')
-            //    this.deselectAttribute(this.state.selectedAttributes[i])
-          }
+          onClick={() => this.submitForm()}
         >
           <i className="fa" />
           SUBMIT STORY
