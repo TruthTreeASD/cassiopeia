@@ -30,6 +30,7 @@ class StoryCreationComponent extends Component {
   }
 
   componentDidMount() {
+    this.setState({ isLoaded: true });
     /* axios
            .get(
              `${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
@@ -67,6 +68,7 @@ class StoryCreationComponent extends Component {
   };
 
   handleChangeTags = event => {
+    console.log(this.state.tagsField);
     let tag = event.target.value.toLowerCase();
     tag = tag.replace('\\', '');
     tag = tag.replace('*', '');
@@ -139,80 +141,84 @@ class StoryCreationComponent extends Component {
     }
     */
   render() {
-    var { isLoaded } = this.state;
-    var active = false;
-
-    return (
-      <div>
-        <p>Tell us what you found!</p>
-        <input
-          className="form-control"
-          data-spy="affix"
-          data-offset-top="197"
-          //id="attribute-search-box"
-          onChange={this.handleChangeAuthor}
-          placeholder="Author Name"
-        />
-        <br />
-        <input
-          className="form-control"
-          data-spy="affix"
-          data-offset-top="197"
-          //id="attribute-search-box"
-          onChange={this.handleChangeTitle}
-          placeholder="Story Title"
-        />
-        <br />
-        <input
-          className="form-control"
-          data-spy="affix"
-          data-offset-top="197"
-          // id="attribute-search-box"
-          //onChange={this.handleChangeSearch}
-          placeholder="Tags"
-        />
-        <Row>
-          <Col xs="auto" className="filters">
-            Selected Tags:
-          </Col>
-          <Col>
-            {Object.keys(this.state.tagsField).map((attributes, i) => {
-              return (
-                <button
-                  className="btn btn-light selected-attribute-button"
-                  /* onClick={() =>
-                                    this.deselectAttribute(this.state.selectedAttributes[i])
-                                }*/
-                >
-                  <i className="fa fa-times" style={{ paddingRight: '10px' }} />
-                  {this.state.tagsField[i][2]}-{this.state.tagsField[i][1]}
-                </button>
-              );
-            })}
-          </Col>
-        </Row>
-        <br />
-        <textarea
-          className="form-control"
-          rows="5"
-          data-spy="affix"
-          data-offset-top="197"
-          //id="attribute-search-box"
-          onChange={this.handleChangeStory}
-          placeholder="Story"
-        />
-        Story length: {this.state.storyField.length} /
-        {this.state.storyMaxLength}
-        <br />
-        <button
-          className="btn btn-light selected-attribute-button"
-          onClick={() => this.submitForm()}
-        >
-          <i className="fa" />
-          SUBMIT STORY
-        </button>
-      </div>
-    );
+    if (this.state.isLoaded) {
+      return (
+        <div>
+          <p>Tell us what you found!</p>
+          <input
+            className="form-control"
+            data-spy="affix"
+            data-offset-top="197"
+            //id="attribute-search-box"
+            onChange={this.handleChangeAuthor}
+            placeholder="Author Name"
+          />
+          <br />
+          <input
+            className="form-control"
+            data-spy="affix"
+            data-offset-top="197"
+            //id="attribute-search-box"
+            onChange={this.handleChangeTitle}
+            placeholder="Story Title"
+          />
+          <br />
+          <input
+            className="form-control"
+            data-spy="affix"
+            data-offset-top="197"
+            // id="attribute-search-box"
+            //onChange={this.handleChangeSearch}
+            placeholder="Tags"
+          />
+          <Row>
+            <Col xs="auto" className="filters">
+              Selected Tags:
+            </Col>
+            <Col>
+              {Object.keys(this.state.tagsField).map((attributes, i) => {
+                return (
+                  <button
+                    className="btn btn-light selected-attribute-button"
+                    /* onClick={() =>
+                                                    this.deselectAttribute(this.state.selectedAttributes[i])
+                                                }*/
+                  >
+                    <i
+                      className="fa fa-times"
+                      style={{ paddingRight: '10px' }}
+                    />
+                    {this.state.tagsField[i][2]}-{this.state.tagsField[i][1]}
+                  </button>
+                );
+              })}
+            </Col>
+          </Row>
+          <br />
+          <textarea
+            className="form-control"
+            rows="5"
+            data-spy="affix"
+            data-offset-top="197"
+            //id="attribute-search-box"
+            onChange={this.handleChangeStory}
+            placeholder="Story"
+          />
+          Story length: {this.state.storyField.length} /
+          {this.state.storyMaxLength}
+          <br />
+          <button
+            className="btn btn-light selected-attribute-button"
+            onClick={() => this.submitForm()}
+          >
+            <i className="fa" />
+            SUBMIT STORY
+          </button>
+        </div>
+      );
+    } else {
+      return <div>THIS SECTION HAS BEEN DISABLED</div>;
+    }
   }
 }
 
