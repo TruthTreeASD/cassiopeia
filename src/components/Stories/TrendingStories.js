@@ -19,31 +19,38 @@ class TrendingStories extends Component {
   }
 
   handleDownVoteClick(data) {
-    data.upvotes--;
+    data.downvotes++;
     //api call to change data
   }
 
   getStoryDetails() {
     return (
       <Media body>
-        {_.map(_.sortBy(mockData, 'upvotes').reverse(), data => {
-          return (
-            <div>
-              <Media heading>{data.title}</Media>
-              {_.truncate(data.body)}
-              <br />
-              <i
-                onClick={this.handleUpVoteClick(data)}
-                class="fa fa-thumbs-o-up thumb"
-              />
-              <i
-                onClick={this.handleDownVoteClick(data)}
-                class="fa fa-thumbs-o-down thumb"
-              />
-              <hr />
-            </div>
-          );
-        })}
+        {_.map(
+          _.sortBy(mockData, [
+            function(o) {
+              return o.upvotes - o.downvotes;
+            }
+          ]).reverse(),
+          data => {
+            return (
+              <div>
+                <Media heading>{data.title}</Media>
+                {_.truncate(data.body)}
+                <br />
+                <i
+                  onClick={this.handleUpVoteClick(data)}
+                  class="fa fa-thumbs-o-up thumb"
+                />
+                <i
+                  onClick={this.handleDownVoteClick(data)}
+                  class="fa fa-thumbs-o-down thumb"
+                />
+                <hr />
+              </div>
+            );
+          }
+        )}
       </Media>
     );
   }
