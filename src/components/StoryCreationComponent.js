@@ -11,6 +11,17 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Col, Row } from 'reactstrap';
 
 import '../styles/AttributeDeselector.css';
+// Require Editor JS files.
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+
+// Require Editor CSS files.
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+
+// Require Font Awesome.
+import 'font-awesome/css/font-awesome.css';
+
+import FroalaEditor from 'react-froala-wysiwyg';
 
 class StoryCreationComponent extends Component {
   constructor(props) {
@@ -133,6 +144,7 @@ class StoryCreationComponent extends Component {
     if (this.state.isLoaded) {
       return (
         <div>
+          <FroalaEditor tag="textarea" />
           <p>Tell us what you found!</p>
           <input
             className="form-control"
