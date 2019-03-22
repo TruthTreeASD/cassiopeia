@@ -76,9 +76,11 @@ class StoryCreationComponent extends Component {
       let newArr = this.state.tagsField;
       newArr.push(tag);
       this.setState({
-        selectedAttributes: newArr
+        tagsField: newArr,
+        tagsInputValue: ''
       });
-      console.log(this.state.tagsField);
+
+      document.getElementById('tags-input-field').value = '';
     }
   };
 
@@ -119,27 +121,14 @@ class StoryCreationComponent extends Component {
           }*/
     }
   }
-  /*
-    deselectAttribute(attribute) {
-        let newArr = this.state.selectedAttributes;
-        let id = attribute[0];
-        for (let i = 0; i < newArr.length; i++) {
-            if (newArr[i][0] === id) {
-                _.remove(newArr, elem => {
-                    return elem === newArr[i];
-                });
-                this.setState({
-                    selectedAttributes: newArr
-                });
-                this.props.dispatch({
-                    type: 'CHANGE_ATTRIBUTE',
-                    value: newArr
-                });
-                return;
-            }
-        }
-    }
-    */
+
+  removeTag = tag => {
+    let newArr = this.state.tagsField;
+    newArr.splice(tag, 1);
+    this.setState({
+      tagsField: newArr
+    });
+  };
   render() {
     if (this.state.isLoaded) {
       return (
@@ -167,8 +156,8 @@ class StoryCreationComponent extends Component {
             className="form-control"
             data-spy="affix"
             data-offset-top="197"
-            // id="attribute-search-box"
-            //onChange={this.handleChangeSearch}
+            id="tags-input-field"
+            onChange={this.handleChangeTags}
             placeholder="Tags"
           />
           <Row>
@@ -176,19 +165,19 @@ class StoryCreationComponent extends Component {
               Selected Tags:
             </Col>
             <Col>
-              {Object.keys(this.state.tagsField).map((attributes, i) => {
+              {Object.keys(this.state.tagsField).map((tag, i) => {
                 return (
                   <button
-                    className="btn btn-light selected-attribute-button"
-                    /* onClick={() =>
-                                                    this.deselectAttribute(this.state.selectedAttributes[i])
-                                                }*/
+                    className="btn btn-dark"
+                    onClick={() => {
+                      this.removeTag(tag);
+                    }}
                   >
                     <i
                       className="fa fa-times"
                       style={{ paddingRight: '10px' }}
                     />
-                    {this.state.tagsField[i][2]}-{this.state.tagsField[i][1]}
+                    {this.state.tagsField[i]}
                   </button>
                 );
               })}
