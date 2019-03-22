@@ -83,6 +83,11 @@ class Header extends Component {
               </NavLink>
             </NavItem>
             <NavItem>
+              <NavLink tag={Link} to="/advance">
+                Advance
+              </NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink tag={Link} to="/about">
                 About
               </NavLink>
