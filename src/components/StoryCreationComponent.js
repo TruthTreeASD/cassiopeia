@@ -167,18 +167,20 @@ class StoryCreationComponent extends Component {
             <Col>
               {Object.keys(this.state.tagsField).map((tag, i) => {
                 return (
-                  <button
-                    className="btn btn-dark"
-                    onClick={() => {
-                      this.removeTag(tag);
-                    }}
-                  >
-                    <i
-                      className="fa fa-times"
-                      style={{ paddingRight: '10px' }}
-                    />
-                    {this.state.tagsField[i]}
-                  </button>
+                  <i>
+                    <button
+                      className="btn btn-dark"
+                      onClick={() => {
+                        this.removeTag(tag);
+                      }}
+                    >
+                      <i
+                        className="fa fa-times"
+                        style={{ paddingRight: '10px' }}
+                      />
+                      {this.state.tagsField[i]}
+                    </button>{' '}
+                  </i>
                 );
               })}
             </Col>
