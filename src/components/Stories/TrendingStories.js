@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader } from 'reactstrap';
-import { Media } from 'reactstrap';
+import { Card, CardBody, CardHeader, Media, Badge } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 import { mockData } from '../../mockData/storyData';
@@ -36,6 +35,14 @@ class TrendingStories extends Component {
             return (
               <div>
                 <Media heading>{data.title}</Media>
+                {_.map(data.tags, tag => {
+                  return (
+                    <Badge className="tag" color="secondary">
+                      {tag}
+                    </Badge>
+                  );
+                })}
+                {!_.isEmpty(data.tags) && <br />}
                 {_.truncate(data.body)}
                 <br />
                 <i
@@ -59,7 +66,12 @@ class TrendingStories extends Component {
     return (
       <Card>
         <CardHeader>Trending Stories</CardHeader>
-
+        <input
+          className="form-control searchBar"
+          data-spy="affix"
+          // onChange={this.handleChangeSearch}
+          placeholder="Search stories by title or tag name"
+        />
         <CardBody>
           <Media>{this.getStoryDetails()}</Media>
         </CardBody>

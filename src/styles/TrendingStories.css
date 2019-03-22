@@ -1,3 +1,13 @@
 .thumb {
   padding: 10px;
+  cursor: pointer;
+}
+
+.tag {
+  padding: 5px;
+  margin: 5px;
+}
+.form-control.searchBar {
+  width: 90%;
+  margin: 20px;
 }
