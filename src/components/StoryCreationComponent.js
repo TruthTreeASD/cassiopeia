@@ -12,16 +12,17 @@ import { Col, Row } from 'reactstrap';
 
 import '../styles/AttributeDeselector.css';
 // Require Editor JS files.
-import 'froala-editor/js/froala_editor.pkgd.min.js';
+import '../../node_modules/froala-editor/js/froala_editor.pkgd.min.js';
 
 // Require Editor CSS files.
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
+import '../../node_modules/froala-editor/css/froala_style.min.css';
+import '../../node_modules/froala-editor/css/froala_editor.pkgd.min.css';
+import FroalaEditorImg from '../../node_modules/react-froala-wysiwyg/FroalaEditorImg';
 
 // Require Font Awesome.
 import 'font-awesome/css/font-awesome.css';
 
-import FroalaEditor from 'react-froala-wysiwyg';
+import FroalaEditor from '../../node_modules/react-froala-wysiwyg';
 
 class StoryCreationComponent extends Component {
   constructor(props) {
@@ -144,12 +145,13 @@ class StoryCreationComponent extends Component {
     if (this.state.isLoaded) {
       return (
         <div>
-          {/*<FroalaEditor
-                  tag='textarea'
-                  config={this.config}
-                  model={this.state.model}
-                  onModelChange={this.handleModelChange}
-              />*/}
+          <FroalaEditor
+            tag="textarea"
+            //config={this.config}
+            //model={this.state.model}
+            //onModelChange={this.handleModelChange}
+          />
+          {/**/}
           <p>Tell us what you found!</p>
           <input
             className="form-control"
