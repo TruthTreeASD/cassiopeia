@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader } from 'reactstrap';
-import { Media } from 'reactstrap';
+import { Card, CardBody, CardHeader, Media, Badge } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 import { mockData } from '../../mockData/storyData';
@@ -19,31 +18,46 @@ class TrendingStories extends Component {
   }
 
   handleDownVoteClick(data) {
-    data.upvotes--;
+    data.downvotes++;
     //api call to change data
   }
 
   getStoryDetails() {
     return (
       <Media body>
-        {_.map(_.sortBy(mockData, 'upvotes').reverse(), data => {
-          return (
-            <div>
-              <Media heading>{data.title}</Media>
-              {_.truncate(data.body)}
-              <br />
-              <i
-                onClick={this.handleUpVoteClick(data)}
-                class="fa fa-thumbs-o-up thumb"
-              />
-              <i
-                onClick={this.handleDownVoteClick(data)}
-                class="fa fa-thumbs-o-down thumb"
-              />
-              <hr />
-            </div>
-          );
-        })}
+        {_.map(
+          _.sortBy(mockData, [
+            function(o) {
+              return o.upvotes - o.downvotes;
+            }
+          ]).reverse(),
+          data => {
+            return (
+              <div>
+                <Media heading>{data.title}</Media>
+                {_.map(data.tags, tag => {
+                  return (
+                    <Badge className="tag" color="secondary">
+                      {tag}
+                    </Badge>
+                  );
+                })}
+                {!_.isEmpty(data.tags) && <br />}
+                {_.truncate(data.body)}
+                <br />
+                <i
+                  onClick={this.handleUpVoteClick(data)}
+                  class="fa fa-thumbs-o-up thumb"
+                />
+                <i
+                  onClick={this.handleDownVoteClick(data)}
+                  class="fa fa-thumbs-o-down thumb"
+                />
+                <hr />
+              </div>
+            );
+          }
+        )}
       </Media>
     );
   }
@@ -52,7 +66,12 @@ class TrendingStories extends Component {
     return (
       <Card>
         <CardHeader>Trending Stories</CardHeader>
-
+        <input
+          className="form-control searchBar"
+          data-spy="affix"
+          // onChange={this.handleChangeSearch}
+          placeholder="Search stories by title or tag name"
+        />
         <CardBody>
           <Media>{this.getStoryDetails()}</Media>
         </CardBody>
