@@ -144,7 +144,7 @@ class StoryCreationComponent extends Component {
     if (this.state.isLoaded) {
       return (
         <div>
-          <FroalaEditor tag="textarea" />
+          {/*<FroalaEditor />*/}
           <p>Tell us what you found!</p>
           <input
             className="form-control"
