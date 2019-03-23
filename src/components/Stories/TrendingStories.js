@@ -64,18 +64,17 @@ class TrendingStories extends Component {
 
   render() {
     return (
-      <Card>
-        <CardHeader>Trending Stories</CardHeader>
+      <div>
         <input
           className="form-control searchBar"
           data-spy="affix"
           // onChange={this.handleChangeSearch}
           placeholder="Search stories by title or tag name"
         />
-        <CardBody>
+        <div>
           <Media>{this.getStoryDetails()}</Media>
-        </CardBody>
-      </Card>
+        </div>
+      </div>
     );
   }
 }
