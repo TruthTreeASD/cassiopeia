@@ -174,7 +174,9 @@ class StoryCreationComponent extends Component {
           />
           <Row>
             <Col xs="auto" className="filters">
-              Selected Tags:
+              {this.state.tagsField.length > 0
+                ? 'Selected Tags:'
+                : 'Please add a tag!'}
             </Col>
             <Col>
               {Object.keys(this.state.tagsField).map((tag, i) => {
