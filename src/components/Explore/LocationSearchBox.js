@@ -27,7 +27,7 @@ const renderSuggestionsContainer = ({ containerProps, children }) => {
 
 const renderSuggestion = suggestion => {
   return (
-    <Link to={getSuggestionUrl(suggestion)}>
+    <Link className="text-secondary" to={getSuggestionUrl(suggestion)}>
       {getSuggestionLabel(suggestion)}
     </Link>
   );
