@@ -17,8 +17,8 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { confirmAlert } from 'react-confirm-alert';
 import domtoimage from 'dom-to-image';
-import Image from 'dom-to-image';
 import JSZip from 'jszip';
+import JSZipUtils from 'jszip-utils';
 
 import TimeSeriesView from './TimeSeriesView';
 import Normalization from './Normalization';
@@ -33,7 +33,8 @@ class GridTest extends Component {
       locations: {},
       locationIds: [],
       userSelectedLocations: [],
-      imageUrls: []
+      imageUrls: [],
+      imageRefs: {}
     };
 
     this.modalToggle = this.modalToggle.bind(this);
@@ -41,7 +42,6 @@ class GridTest extends Component {
     this.renderLocationList = this.renderLocationList.bind(this);
     this.selectLocations = this.selectLocations.bind(this);
     this.ImageCapture = this.ImageCapture.bind(this);
-    this.generateUrl = this.generateUrl.bind(this);
     this.downloadAsZip = this.downloadAsZip.bind(this);
   }
 
@@ -61,100 +61,40 @@ class GridTest extends Component {
         console.error('oops, something went wrong!', error);
       });
   };
+
   modalToggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
   }
 
-  generateUrl() {
-    var newRef = this.refs.image;
-    const fileName = this.attrId;
-    console.log(fileName);
-    domtoimage
-      .toJpeg(newRef, { quality: 1 })
-      .then(function(dataUrl) {
-        // var link = document.createElement('a');
-        // link.download = 'TruthTree.jpeg';
-        // link.href = dataUrl;
-        // link.click();
-        const urls = this.state.imageUrls;
-        urls.append(dataUrl);
-        this.setState({ imageUrls: urls });
-      })
-      .catch(function(error) {
-        console.error('oops, something went wrong!', error);
-      });
-  }
-
   downloadAsZip = () => {
-    // const zip = new JSZip();
-    // let count = 0;
-    // const zipFilename = "zipFilename.zip";
-    //
-    // this.state.imageUrls.forEach(function(url){
-    //   const filename = "truthtree";
-    //   // loading a file and add it in a zip file
-    //   JSZipUtils.getBinaryContent(url, function (err, data) {
-    //     if(err) {
-    //       throw err; // or handle the error
-    //     }
-    //     zip.file(filename, data, {binary:true});
-    //     count++;
-    //     if (count === this.state.imageUrls.length) {
-    //       const zipFile = zip.generate({type: "blob"});
-    //       saveAs(zipFile, zipFilename);
-    //     }
-    //   });
-    // });
-    var newRef = this.refs.chart;
-    const fileName = this.attrId;
-    console.log(fileName);
-    domtoimage
-      .toJpeg(newRef, { quality: 1 })
-      .then(function(dataUrl) {
-        let urls = [];
-        let urlinfo = dataUrl.split(',');
-        urls.push(urlinfo[1]);
-        let zip = new JSZip();
-        let imgfold = zip.folder('images');
-        let count = 0;
-
-        // Add an top-level, arbitrary text file with contents
-        zip.file('Hello.txt', 'Hello World\n');
-
-        // Generate a directory within the Zip file structure
-        var img = zip.folder('images');
-
-        // Add a file to the directory, in this case an image with data URI as contents
-        //         img.file("smile.gif", imgData, {base64: true});
-
-        // Generate the zip file asynchronously
-        zip.generateAsync({ type: 'blob' }).then(function(content) {
-          // Force down of the Zip file
-          // saveAs(content, "archive.zip");
-        });
-        urls.map(function(url) {
-          count++;
-          const fileName = count.toString() + '.jpeg';
-          imgfold.file(fileName, url, { base64: true });
-          if (count === urls.length) {
-            zip.loadAsync(url, { base64: true }).then(function(base64) {
-              window.saveAs(base64, 'example.zip');
+    let urls = [];
+    let zip = new JSZip();
+    let refslist = Object.values(this.state.imageRefs);
+    refslist.map(ref => {
+      domtoimage
+        .toJpeg(ref, { quality: 1 })
+        .then(function(dataUrl) {
+          let urlinfo = dataUrl.split(',');
+          urls.push(urlinfo[1]);
+          if (urls.length === refslist.length) {
+            let imgfold = zip.folder('images');
+            urls.map((eachUrl, count) => {
+              imgfold.file(count + '.jpeg', eachUrl, { base64: true });
             });
-            // zip.generateAsync({type:"blob"}).then(function(content) {
-            //   // see FileSaver.js
-            //   var link = document.createElement('a');
-            //   link.download = 'example.zip';
-            //   link.href = content;
-            //   link.click();
-            // });
+            zip.generateAsync({ type: 'blob' }).then(function(content) {
+              let link = document.createElement('a');
+              link.download = 'TruthTree.zip';
+              link.href = URL.createObjectURL(content);
+              link.click();
+            });
           }
+        })
+        .catch(function(error) {
+          console.error('Error downloading', error);
         });
-      })
-      .catch(function(error) {
-        console.error('oops, something went wrong!', error);
-      });
+    });
   };
 
   modalToggle() {
@@ -243,10 +183,15 @@ class GridTest extends Component {
   render() {
     let attributes = this.getAttributeNames('name');
     let len = attributes.length;
-
     let cards = attributes.map((card, index) => {
       return (
-        <div ref="chart">
+        <div
+          ref={index => {
+            if (this.state.imageRefs[card] === undefined) {
+              this.state.imageRefs[card] = index;
+            }
+          }}
+        >
           <Card key={index} id="cards">
             <CardBody className="time-series-card">
               <TimeSeriesView
@@ -295,13 +240,18 @@ class GridTest extends Component {
                   </i>
                   {this.renderLocationList()}
                 </Row>
-                <Row>
-                  <Button color="secondary" onClick={this.downloadAsZip}>
-                    Download as Zip
-                  </Button>
-                </Row>
               </CardBody>
             </Card>
+          </Row>
+          <Row>
+            {' '}
+            <div className="Space" />
+          </Row>
+          <Row>
+            <Button color="secondary" onClick={this.downloadAsZip}>
+              <i className="fa fa-download" />
+              Download All
+            </Button>
           </Row>
           <Row>
             {' '}
