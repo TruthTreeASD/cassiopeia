@@ -11,18 +11,19 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Col, Row } from 'reactstrap';
 
 import '../styles/AttributeDeselector.css';
+
 // Require Editor JS files.
-import '../../node_modules/froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/js/froala_editor.pkgd.min.js';
 
 // Require Editor CSS files.
-import '../../node_modules/froala-editor/css/froala_style.min.css';
-import '../../node_modules/froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorImg from '../../node_modules/react-froala-wysiwyg/FroalaEditorImg';
 
 // Require Font Awesome.
 import 'font-awesome/css/font-awesome.css';
 
-import FroalaEditor from '../../node_modules/react-froala-wysiwyg';
+import FroalaEditor from 'react-froala-wysiwyg';
 
 class StoryCreationComponent extends Component {
   constructor(props) {
@@ -36,28 +37,15 @@ class StoryCreationComponent extends Component {
       tagsInputValue: '',
       tagsField: [],
       storyField: '',
-      storyMaxLength: 1000
+      storyMaxLength: 1000,
+
+      model: 'Example text'
     };
     // Set initial state of each collection to false
   }
 
   componentDidMount() {
     this.setState({ isLoaded: true });
-    /* axios
-           .get(
-             `${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
-               this.props.match.params.id // +&year=2016
-           )
-           .then(response => {
-             //data contains the variables
-             this.setState({
-               sidebarData: response.data,
-               isLoaded: true
-             });
-           })
-           .catch(error => {
-             console.log(error);
-           });*/
   }
 
   componentWillReceiveProps(nextProps) {
@@ -147,11 +135,11 @@ class StoryCreationComponent extends Component {
         <div>
           <FroalaEditor
             tag="textarea"
-            //config={this.config}
-            //model={this.state.model}
-            //onModelChange={this.handleModelChange}
+            // config={this.state.config}
+            model={this.state.model}
+            onModelChange={this.handleChangeStory}
           />
-          {/**/}
+          {/* */}
           <p>Tell us what you found!</p>
           <input
             className="form-control"
