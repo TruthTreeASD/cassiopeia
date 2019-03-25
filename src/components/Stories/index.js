@@ -12,8 +12,24 @@ import {
 import '../../styles/StoriesIndex.css';
 import ViewStories from './ViewStories';
 import TrendingStories from './TrendingStories';
+import { confirmAlert } from 'react-confirm-alert';
+import StoryCreationComponent from '../StoryCreationComponent';
 
 class Stories extends Component {
+  popUpStoryComponent() {
+    confirmAlert({
+      title: 'Story button works!',
+      message: '',
+      buttons: [
+        {
+          label: 'Continue.'
+        }
+      ],
+      childrenElement: () => {
+        return <StoryCreationComponent />;
+      }
+    });
+  }
   render() {
     return (
       <Container className="stories-page">
@@ -23,7 +39,11 @@ class Stories extends Component {
               <Col>Trending Stories </Col>
               <Col>
                 {' '}
-                <Button className="create-story" color="primary">
+                <Button
+                  className="create-story"
+                  color="primary"
+                  onClick={() => this.popUpStoryComponent()}
+                >
                   Create Story
                 </Button>{' '}
               </Col>
