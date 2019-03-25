@@ -1,6 +1,7 @@
 const defaultState = {
   value: '',
-  loading: true
+  loading: false,
+  suggestions: []
 };
 
 export default (state = defaultState, action) => {
@@ -8,7 +9,14 @@ export default (state = defaultState, action) => {
     case 'SEARCHBOX_UPDATE_VALUE':
       return {
         ...state,
-        value: action.payload
+        value: action.payload,
+        suggestions: action.payload === '' ? [] : state.suggestions
+      };
+
+    case 'SEARCHBOX_UPDATE_SUGGESTIONS':
+      return {
+        ...state,
+        suggestions: action.payload
       };
 
     case 'SEARCHBOX_FINISH_LOADING':
