@@ -107,10 +107,20 @@ class StoryCreationComponent extends Component {
       });
       return;
     } else {
-      /* {
-              storyTitle: this.titleField,
-              
-          }*/
+      axios.post(`${TRUTHTREE_URI}/api/stories`, {
+        authorName: this.state.authorField,
+        tags: this.state.tagsField,
+        content: this.state.storyField
+      });
+      confirmAlert({
+        title: 'Story submitted!',
+        message: 'Story is now pending review for obscenity.',
+        buttons: [
+          {
+            label: 'Continue.'
+          }
+        ]
+      });
     }
   }
 
