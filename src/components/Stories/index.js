@@ -16,17 +16,20 @@ import { confirmAlert } from 'react-confirm-alert';
 import StoryCreationComponent from '../StoryCreationComponent';
 
 class Stories extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   popUpStoryComponent() {
     confirmAlert({
-      title: 'Story button works!',
-      message: '',
-      buttons: [
-        {
-          label: 'Continue.'
-        }
-      ],
+      title: 'Tell us what you found!',
       childrenElement: () => {
-        return <StoryCreationComponent />;
+        return (
+          <div>
+            This area works
+            {/*this does not <StoryCreationComponent/>*/}
+          </div>
+        );
       }
     });
   }
