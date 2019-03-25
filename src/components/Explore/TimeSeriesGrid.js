@@ -18,8 +18,6 @@ import _ from 'lodash';
 import { confirmAlert } from 'react-confirm-alert';
 import domtoimage from 'dom-to-image';
 import JSZip from 'jszip';
-import JSZipUtils from 'jszip-utils';
-
 import TimeSeriesView from './TimeSeriesView';
 import Normalization from './Normalization';
 
@@ -69,21 +67,21 @@ class GridTest extends Component {
   }
 
   downloadAsZip = () => {
-    let urls = [];
+    let imageCount = 0;
     let zip = new JSZip();
-    let refslist = Object.values(this.state.imageRefs);
-    refslist.map(ref => {
+    let refs = this.state.imageRefs;
+    let refslist = Object.values(refs);
+    Object.keys(refs).map(key => {
+      let value = refs[key];
       domtoimage
-        .toJpeg(ref, { quality: 1 })
-        .then(function(dataUrl) {
-          let urlinfo = dataUrl.split(',');
-          urls.push(urlinfo[1]);
-          if (urls.length === refslist.length) {
-            let imgfold = zip.folder('images');
-            urls.map((eachUrl, count) => {
-              imgfold.file(count + '.jpeg', eachUrl, { base64: true });
-            });
-            zip.generateAsync({ type: 'blob' }).then(function(content) {
+        .toJpeg(value, { quality: 1 })
+        .then(dataUrl => {
+          let imgfold = zip.folder('images');
+          let eachUrl = dataUrl.split(',')[1];
+          imgfold.file(key + '.jpeg', eachUrl, { base64: true });
+          imageCount++;
+          if (imageCount === refslist.length) {
+            zip.generateAsync({ type: 'blob' }).then(content => {
               let link = document.createElement('a');
               link.download = 'TruthTree.zip';
               link.href = URL.createObjectURL(content);
@@ -92,7 +90,7 @@ class GridTest extends Component {
           }
         })
         .catch(function(error) {
-          console.error('Error downloading', error);
+          console.error('Error downloading zip', error);
         });
     });
   };
@@ -249,7 +247,7 @@ class GridTest extends Component {
           </Row>
           <Row>
             <Button color="secondary" onClick={this.downloadAsZip}>
-              <i className="fa fa-download" />
+              <i className="fa fa-download icon-padding" />
               Download All
             </Button>
           </Row>
