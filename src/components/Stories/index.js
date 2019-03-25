@@ -22,7 +22,7 @@ class Stories extends Component {
 
   popUpStoryComponent() {
     confirmAlert({
-      title: 'Tell us what you found!',
+      buttons: [],
       childrenElement: () => {
         return (
           <div>
