@@ -12,18 +12,9 @@ import { Col, Row } from 'reactstrap';
 
 import '../styles/AttributeDeselector.css';
 
-// Require Editor JS files.
-import 'froala-editor/js/froala_editor.pkgd.min.js';
-
-// Require Editor CSS files.
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
-import FroalaEditorImg from '../../node_modules/react-froala-wysiwyg/FroalaEditorImg';
-
-// Require Font Awesome.
-import 'font-awesome/css/font-awesome.css';
-
-import FroalaEditor from 'react-froala-wysiwyg';
+//React quill
+import * as ReactQuill from 'react-quill'; // Typescript
+import 'react-quill/dist/quill.snow.css'; // ES6
 
 class StoryCreationComponent extends Component {
   constructor(props) {
@@ -37,21 +28,16 @@ class StoryCreationComponent extends Component {
       tagsInputValue: '',
       tagsField: [],
       storyField: '',
-      storyMaxLength: 1000,
-
-      model: 'Example text'
+      storyTextOnly: '',
+      storyMaxLength: 1000
     };
-    // Set initial state of each collection to false
   }
 
   componentDidMount() {
     this.setState({ isLoaded: true });
   }
 
-  componentWillReceiveProps(nextProps) {
-    //    this.setState({ tagsField: nextProps.selectedAttributes });
-    //    console.log(this.state.tagsField)
-  }
+  componentWillReceiveProps(nextProps) {}
 
   handleChangeAuthor = event => {
     let author = event.target.value.toLowerCase();
@@ -85,14 +71,20 @@ class StoryCreationComponent extends Component {
   };
 
   handleChangeStory = event => {
-    let story = event.target.value.toLowerCase();
-    story = story.replace('\\', '');
-    story = story.replace('*', '');
-    this.setState({ storyField: story });
+    //let story = event.target.value.toLowerCase();
+    //story = story.replace('\\', '');
+    // story = story.replace('*', '');
+    //console.log(story);
+    let doc = new DOMParser().parseFromString(event, 'text/html');
+    doc = doc.body.textContent || '';
+    this.setState({
+      storyField: event,
+      storyTextOnly: doc
+    });
   };
 
   submitForm() {
-    if (this.state.storyField.length > this.state.storyMaxLength) {
+    if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
       confirmAlert({
         title: 'Error!',
         message: 'Story text is too long.',
@@ -133,19 +125,11 @@ class StoryCreationComponent extends Component {
     if (this.state.isLoaded) {
       return (
         <div>
-          <FroalaEditor
-            tag="textarea"
-            // config={this.state.config}
-            model={this.state.model}
-            onModelChange={this.handleChangeStory}
-          />
-          {/* */}
           <p>Tell us what you found!</p>
           <input
             className="form-control"
             data-spy="affix"
             data-offset-top="197"
-            //id="attribute-search-box"
             onChange={this.handleChangeAuthor}
             placeholder="Author Name"
           />
@@ -154,7 +138,6 @@ class StoryCreationComponent extends Component {
             className="form-control"
             data-spy="affix"
             data-offset-top="197"
-            //id="attribute-search-box"
             onChange={this.handleChangeTitle}
             placeholder="Story Title"
           />
@@ -195,16 +178,12 @@ class StoryCreationComponent extends Component {
             </Col>
           </Row>
           <br />
-          <textarea
-            className="form-control"
-            rows="5"
-            data-spy="affix"
-            data-offset-top="197"
-            //id="attribute-search-box"
+          <ReactQuill //value={this.state.storyField}
             onChange={this.handleChangeStory}
+            rows="5"
             placeholder="Story"
           />
-          Story length: {this.state.storyField.length} /
+          Story length: {this.state.storyTextOnly.length} /
           {this.state.storyMaxLength}
           <br />
           <button
