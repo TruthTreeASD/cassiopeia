@@ -22,7 +22,6 @@ class StoryCreationComponent extends Component {
 
     this.state = {
       isLoaded: false,
-      selectedAttributes: [],
       authorField: '',
       titleField: '',
       tagsInputValue: '',

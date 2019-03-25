@@ -8,11 +8,15 @@ import {
   CardHeader,
   Button
 } from 'reactstrap';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import '../../styles/StoriesIndex.css';
 import ViewStories from './ViewStories';
 import TrendingStories from './TrendingStories';
 import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 import StoryCreationComponent from '../StoryCreationComponent';
 
 class Stories extends Component {
