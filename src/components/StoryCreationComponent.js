@@ -54,7 +54,6 @@ class StoryCreationComponent extends Component {
   };
 
   handleChangeTags = event => {
-    console.log(this.state.tagsField);
     let tag = event.target.value.toLowerCase();
     tag = tag.replace('\\', '');
     tag = tag.replace('*', '');
@@ -71,10 +70,6 @@ class StoryCreationComponent extends Component {
   };
 
   handleChangeStory = event => {
-    //let story = event.target.value.toLowerCase();
-    //story = story.replace('\\', '');
-    // story = story.replace('*', '');
-    //console.log(story);
     let doc = new DOMParser().parseFromString(event, 'text/html');
     doc = doc.body.textContent || '';
     this.setState({
