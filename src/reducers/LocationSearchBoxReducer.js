@@ -16,7 +16,7 @@ export default (state = defaultState, action) => {
     case 'SEARCHBOX_UPDATE_SUGGESTIONS':
       return {
         ...state,
-        suggestions: action.payload
+        suggestions: state.value === '' ? [] : action.payload
       };
 
     case 'SEARCHBOX_FINISH_LOADING':

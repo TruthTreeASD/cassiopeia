@@ -44,6 +44,7 @@ class TimeSeriesView extends Component {
     if (len !== 0) {
       this.fetchLocations();
     }
+    // this.props.generateUrl();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,6 +55,7 @@ class TimeSeriesView extends Component {
     if (len !== 0) {
       this.fetchLocations();
     }
+    // this.props.generateUrl();
   }
 
   fetchLocations() {

@@ -103,9 +103,6 @@ class LocationSearchBox extends Component {
                 suggestion: 'list-group-item'
               }}
               suggestions={suggestions}
-              onSuggestionsClearRequested={() =>
-                this.setState({ suggestions: [] })
-              }
               onSuggestionsFetchRequested={
                 this.debouncedhandleSuggestionsFetchRequested
               }
