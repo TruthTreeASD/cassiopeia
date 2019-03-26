@@ -108,7 +108,7 @@ class StoryCreationComponent extends Component {
           content: this.state.storyField
         })
         .then(function(response) {
-          console.log('saved successfully');
+          console.log('saved successfully' + response);
         });
       confirmAlert({
         title: 'Story submitted!',

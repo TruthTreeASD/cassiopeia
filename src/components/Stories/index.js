@@ -6,6 +6,10 @@ import {
   Col,
   CardBody,
   CardHeader,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Button
 } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -22,21 +26,19 @@ import StoryCreationComponent from '../StoryCreationComponent';
 class Stories extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      modal: false
+    };
   }
 
-  popUpStoryComponent() {
-    confirmAlert({
-      buttons: [],
-      childrenElement: () => {
-        return (
-          <div>
-            This area works
-            {/*this does not <StoryCreationComponent/>*/}
-          </div>
-        );
-      }
+  componentDidMount() {}
+
+  modalToggle() {
+    this.setState({
+      modal: !this.state.modal
     });
   }
+
   render() {
     return (
       <Container className="stories-page">
@@ -49,10 +51,21 @@ class Stories extends Component {
                 <Button
                   className="create-story"
                   color="primary"
-                  onClick={() => this.popUpStoryComponent()}
+                  onClick={() => this.modalToggle()}
                 >
                   Create Story
                 </Button>{' '}
+                <Modal
+                  isOpen={this.state.modal}
+                  toggle={this.modalToggle}
+                  className="GridModal"
+                >
+                  <div ref="image">
+                    <ModalBody className="backgroundWhite">
+                      <StoryCreationComponent />
+                    </ModalBody>
+                  </div>
+                </Modal>
               </Col>
             </Row>
           </CardHeader>
