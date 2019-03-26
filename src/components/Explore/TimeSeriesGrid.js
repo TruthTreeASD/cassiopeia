@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { confirmAlert } from 'react-confirm-alert';
 import domtoimage from 'dom-to-image';
-import JSZip from 'jszip';
+
 import TimeSeriesView from './TimeSeriesView';
 import Normalization from './Normalization';
 
@@ -30,9 +30,7 @@ class GridTest extends Component {
       modal: false,
       locations: {},
       locationIds: [],
-      userSelectedLocations: [],
-      imageUrls: [],
-      imageRefs: {}
+      userSelectedLocations: []
     };
 
     this.modalToggle = this.modalToggle.bind(this);
@@ -40,7 +38,6 @@ class GridTest extends Component {
     this.renderLocationList = this.renderLocationList.bind(this);
     this.selectLocations = this.selectLocations.bind(this);
     this.ImageCapture = this.ImageCapture.bind(this);
-    this.downloadAsZip = this.downloadAsZip.bind(this);
   }
 
   ImageCapture = () => {
@@ -59,42 +56,6 @@ class GridTest extends Component {
         console.error('oops, something went wrong!', error);
       });
   };
-
-  modalToggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal
-    }));
-  }
-
-  downloadAsZip = () => {
-    let imageCount = 0;
-    let zip = new JSZip();
-    let refs = this.state.imageRefs;
-    let refslist = Object.values(refs);
-    Object.keys(refs).map(key => {
-      let value = refs[key];
-      domtoimage
-        .toJpeg(value, { quality: 1 })
-        .then(dataUrl => {
-          let imgfold = zip.folder('images');
-          let eachUrl = dataUrl.split(',')[1];
-          imgfold.file(key + '.jpeg', eachUrl, { base64: true });
-          imageCount++;
-          if (imageCount === refslist.length) {
-            zip.generateAsync({ type: 'blob' }).then(content => {
-              let link = document.createElement('a');
-              link.download = 'TruthTree.zip';
-              link.href = URL.createObjectURL(content);
-              link.click();
-            });
-          }
-        })
-        .catch(function(error) {
-          console.error('Error downloading zip', error);
-        });
-    });
-  };
-
   modalToggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
@@ -181,36 +142,28 @@ class GridTest extends Component {
   render() {
     let attributes = this.getAttributeNames('name');
     let len = attributes.length;
+
     let cards = attributes.map((card, index) => {
       return (
-        <div
-          ref={index => {
-            if (this.state.imageRefs[card] === undefined) {
-              this.state.imageRefs[card] = index;
-            }
-          }}
-        >
-          <Card key={index} id="cards">
-            <CardBody className="time-series-card">
-              <TimeSeriesView
-                index={index}
-                condition="tiny"
-                id={this.props.id}
-                level={this.props.level}
-                updateLocation={this.updateLocation}
-                userSelectedLocations={this.state.userSelectedLocations}
-                generateUrl={this.generateUrl}
-              />
-              <Button
-                className="button"
-                color="secondary"
-                onClick={() => this.handExpandClick(index)}
-              >
-                <Badge>Expand</Badge>
-              </Button>
-            </CardBody>
-          </Card>
-        </div>
+        <Card key={index}>
+          <CardBody className="time-series-card">
+            <TimeSeriesView
+              index={index}
+              condition="tiny"
+              id={this.props.id}
+              level={this.props.level}
+              updateLocation={this.updateLocation}
+              userSelectedLocations={this.state.userSelectedLocations}
+            />
+            <Button
+              className="button"
+              color="secondary"
+              onClick={() => this.handExpandClick(index)}
+            >
+              <Badge>Expand</Badge>
+            </Button>
+          </CardBody>
+        </Card>
       );
     });
 
@@ -240,16 +193,6 @@ class GridTest extends Component {
                 </Row>
               </CardBody>
             </Card>
-          </Row>
-          <Row>
-            {' '}
-            <div className="Space" />
-          </Row>
-          <Row>
-            <Button color="secondary" onClick={this.downloadAsZip}>
-              <i className="fa fa-download icon-padding" />
-              Download All
-            </Button>
           </Row>
           <Row>
             {' '}

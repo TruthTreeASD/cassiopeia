@@ -2,7 +2,6 @@
   text-transform: lowercase;
   font-size: 14px;
 }
-
 .chartDiv {
   align-items: center;
   padding-left: 5px;
@@ -67,7 +66,6 @@ svg.recharts-surface tspan {
 .padding {
   padding-bottom: 10px;
 }
-
 .location-list-padding {
   padding-left: 40px !important;
   padding-top: 10px;
@@ -89,8 +87,4 @@ div.Space {
 
 .backgroundWhite {
   background-color: white !important;
-}
-
-.icon-padding {
-  padding: 5px;
 }
