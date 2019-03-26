@@ -119,11 +119,7 @@ class StoryCreationComponent extends Component {
           })
           .then(function(response) {
             console.log('saved successfully' + response);
-          }); /*
-        this.props.dispatch({
-            type: 'CLOSE_STORY',
-            value: false
-        });*/
+          });
         confirmAlert({
           title: 'Story submitted!',
           message: 'Story is now pending review.',
@@ -133,6 +129,31 @@ class StoryCreationComponent extends Component {
             }
           ]
         });
+      }
+    } else {
+      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+        alert('Story text is too long.');
+        return;
+      } else if (this.state.titleField.length < 1) {
+        alert('Please enter a story title.');
+        return;
+      } else {
+        axios
+          .post(`${TRUTHTREE_URI}/api/stories`, {
+            author: this.state.authorField,
+            tags: this.state.tagsField,
+            content: this.state.storyField
+          })
+          .then(function(response) {
+            console.log('saved successfully' + response);
+          }); /*
+        this.props.dispatch({
+            type: 'CLOSE_STORY',
+            value: false
+        });*/
+        alert(
+          'Story submitted! Feel free to add a new one, or close the window.'
+        );
       }
     }
   }
