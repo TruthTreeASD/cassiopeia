@@ -56,6 +56,11 @@ class StoryCreationComponent extends Component {
     let tag = event.target.value.toLowerCase();
     tag = tag.replace('\\', '');
     tag = tag.replace('*', '');
+    if (_.endsWith(tag, ' ' && tag.length == 1)) {
+      this.setState({
+        tagsInputValue: ''
+      });
+    }
     if (_.endsWith(tag, ' ')) {
       let newArr = this.state.tagsField;
       newArr.push(tag);
