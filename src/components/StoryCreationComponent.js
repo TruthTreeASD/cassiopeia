@@ -114,7 +114,10 @@ class StoryCreationComponent extends Component {
         axios
           .post(`${TRUTHTREE_URI}/api/stories`, {
             author: this.state.authorField,
-            tags: this.state.tagsField,
+            tags:
+              this.state.tagsField.length > 0
+                ? this.state.tagsField
+                : [this.state.tagsInputValue],
             content: this.state.storyField
           })
           .then(function(response) {
@@ -141,7 +144,10 @@ class StoryCreationComponent extends Component {
         axios
           .post(`${TRUTHTREE_URI}/api/stories`, {
             author: this.state.authorField,
-            tags: this.state.tagsField,
+            tags:
+              this.state.tagsField.length > 0
+                ? this.state.tagsField
+                : [this.state.tagsInputValue],
             content: this.state.storyField
           })
           .then(function(response) {
