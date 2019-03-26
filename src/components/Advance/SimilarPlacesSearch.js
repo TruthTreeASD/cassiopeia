@@ -14,9 +14,12 @@ import {
 import Select from 'react-select';
 
 const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
+  { value: 'Income_Taxes_Total', label: 'Income Taxes - Total' },
+  {
+    value: 'Long_Term_Dept_Outstanding_Total',
+    label: 'Long Term Dept Outstanding - Total'
+  },
+  { value: 'Hospital_Total_Expenditure', label: 'Hospital - Total Expenditure' }
 ];
 
 let allYears = [];
@@ -140,17 +143,9 @@ class SimilarPlacesSearch extends Component {
                   options={allYears}
                 />{' '}
               </Col>
-              <Col xs="auto"> - </Col>
-              <Col xs="1">
-                <Select
-                  value={this.state.yearSelectedMax}
-                  onChange={this.handleChangeYearMax}
-                  options={allYears}
-                />{' '}
-              </Col>
             </FormGroup>
 
-            <Button>Submit</Button>
+            <Button className="float-right">Search</Button>
           </Form>
         </CardBody>
       </Card>
