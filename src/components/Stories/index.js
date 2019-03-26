@@ -29,6 +29,8 @@ class Stories extends Component {
     this.state = {
       modal: false
     };
+
+    this.modalToggle = this.modalToggle.bind(this);
   }
 
   componentDidMount() {}
