@@ -103,16 +103,20 @@ class StoryCreationComponent extends Component {
     } else {
       axios
         .post(`${TRUTHTREE_URI}/api/stories`, {
-          authorName: this.state.authorField,
+          author: this.state.authorField,
           tags: this.state.tagsField,
           content: this.state.storyField
         })
         .then(function(response) {
           console.log('saved successfully' + response);
-        });
+        }); /*
+        this.props.dispatch({
+            type: 'CLOSE_STORY',
+            value: false
+        });*/
       confirmAlert({
         title: 'Story submitted!',
-        message: 'Story is now pending review for obscenity.',
+        message: 'Story is now pending review.',
         buttons: [
           {
             label: 'Continue.'

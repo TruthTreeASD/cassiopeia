@@ -32,6 +32,7 @@ class Stories extends Component {
   }
 
   componentDidMount() {}
+  componentWillReceiveProps(nextProps) {}
 
   modalToggle() {
     this.setState({
@@ -56,13 +57,16 @@ class Stories extends Component {
                   Create Story
                 </Button>{' '}
                 <Modal
-                  isOpen={this.state.modal}
-                  toggle={this.modalToggle}
+                  isOpen={state.modal}
+                  toggle={modalToggle}
                   //className="GridModal"
                 >
                   <ModalBody className="backgroundWhite">
                     <StoryCreationComponent />
                   </ModalBody>
+                  <Button color="secondary" onClick={this.modalToggle}>
+                    Close
+                  </Button>
                 </Modal>
               </Col>
             </Row>
