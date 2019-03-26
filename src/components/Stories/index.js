@@ -58,13 +58,11 @@ class Stories extends Component {
                 <Modal
                   isOpen={this.state.modal}
                   toggle={this.modalToggle}
-                  className="GridModal"
+                  //className="GridModal"
                 >
-                  <div ref="image">
-                    <ModalBody className="backgroundWhite">
-                      <StoryCreationComponent />
-                    </ModalBody>
-                  </div>
+                  <ModalBody className="backgroundWhite">
+                    <StoryCreationComponent />
+                  </ModalBody>
                 </Modal>
               </Col>
             </Row>
