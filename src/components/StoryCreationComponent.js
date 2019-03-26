@@ -12,31 +12,46 @@ import { Col, Row } from 'reactstrap';
 
 import '../styles/AttributeDeselector.css';
 
-//React quill
-import * as ReactQuill from 'react-quill'; // Typescript
-import 'react-quill/dist/quill.snow.css'; // ES6
-
 class StoryCreationComponent extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isLoaded: false,
+      selectedAttributes: [],
       authorField: '',
       titleField: '',
       tagsInputValue: '',
       tagsField: [],
       storyField: '',
-      storyTextOnly: '',
       storyMaxLength: 1000
     };
+    // Set initial state of each collection to false
   }
 
   componentDidMount() {
     this.setState({ isLoaded: true });
+    /* axios
+           .get(
+             `${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
+               this.props.match.params.id // +&year=2016
+           )
+           .then(response => {
+             //data contains the variables
+             this.setState({
+               sidebarData: response.data,
+               isLoaded: true
+             });
+           })
+           .catch(error => {
+             console.log(error);
+           });*/
   }
 
-  componentWillReceiveProps(nextProps) {}
+  componentWillReceiveProps(nextProps) {
+    //    this.setState({ tagsField: nextProps.selectedAttributes });
+    //    console.log(this.state.tagsField)
+  }
 
   handleChangeAuthor = event => {
     let author = event.target.value.toLowerCase();
@@ -53,6 +68,7 @@ class StoryCreationComponent extends Component {
   };
 
   handleChangeTags = event => {
+    console.log(this.state.tagsField);
     let tag = event.target.value.toLowerCase();
     tag = tag.replace('\\', '');
     tag = tag.replace('*', '');
@@ -60,25 +76,21 @@ class StoryCreationComponent extends Component {
       let newArr = this.state.tagsField;
       newArr.push(tag);
       this.setState({
-        tagsField: newArr,
-        tagsInputValue: ''
+        selectedAttributes: newArr
       });
-
-      document.getElementById('tags-input-field').value = '';
+      console.log(this.state.tagsField);
     }
   };
 
   handleChangeStory = event => {
-    let doc = new DOMParser().parseFromString(event, 'text/html');
-    doc = doc.body.textContent || '';
-    this.setState({
-      storyField: event,
-      storyTextOnly: doc
-    });
+    let story = event.target.value.toLowerCase();
+    story = story.replace('\\', '');
+    story = story.replace('*', '');
+    this.setState({ storyField: story });
   };
 
   submitForm() {
-    if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+    if (this.state.storyField.length > this.state.storyMaxLength) {
       confirmAlert({
         title: 'Error!',
         message: 'Story text is too long.',
@@ -125,14 +137,27 @@ class StoryCreationComponent extends Component {
       });
     }
   }
-
-  removeTag = tag => {
-    let newArr = this.state.tagsField;
-    newArr.splice(tag, 1);
-    this.setState({
-      tagsField: newArr
-    });
-  };
+  /*
+    deselectAttribute(attribute) {
+        let newArr = this.state.selectedAttributes;
+        let id = attribute[0];
+        for (let i = 0; i < newArr.length; i++) {
+            if (newArr[i][0] === id) {
+                _.remove(newArr, elem => {
+                    return elem === newArr[i];
+                });
+                this.setState({
+                    selectedAttributes: newArr
+                });
+                this.props.dispatch({
+                    type: 'CHANGE_ATTRIBUTE',
+                    value: newArr
+                });
+                return;
+            }
+        }
+    }
+    */
   render() {
     if (this.state.isLoaded) {
       return (
@@ -142,6 +167,7 @@ class StoryCreationComponent extends Component {
             className="form-control"
             data-spy="affix"
             data-offset-top="197"
+            //id="attribute-search-box"
             onChange={this.handleChangeAuthor}
             placeholder="Author Name"
           />
@@ -150,6 +176,7 @@ class StoryCreationComponent extends Component {
             className="form-control"
             data-spy="affix"
             data-offset-top="197"
+            //id="attribute-search-box"
             onChange={this.handleChangeTitle}
             placeholder="Story Title"
           />
@@ -158,44 +185,44 @@ class StoryCreationComponent extends Component {
             className="form-control"
             data-spy="affix"
             data-offset-top="197"
-            id="tags-input-field"
-            onChange={this.handleChangeTags}
+            // id="attribute-search-box"
+            //onChange={this.handleChangeSearch}
             placeholder="Tags"
           />
           <Row>
             <Col xs="auto" className="filters">
-              {this.state.tagsField.length > 0
-                ? 'Selected Tags:'
-                : 'Please add a tag!'}
+              Selected Tags:
             </Col>
             <Col>
-              {Object.keys(this.state.tagsField).map((tag, i) => {
+              {Object.keys(this.state.tagsField).map((attributes, i) => {
                 return (
-                  <i>
-                    <button
-                      className="btn btn-dark"
-                      onClick={() => {
-                        this.removeTag(tag);
-                      }}
-                    >
-                      <i
-                        className="fa fa-times"
-                        style={{ paddingRight: '10px' }}
-                      />
-                      {this.state.tagsField[i]}
-                    </button>{' '}
-                  </i>
+                  <button
+                    className="btn btn-light selected-attribute-button"
+                    /* onClick={() =>
+                                                    this.deselectAttribute(this.state.selectedAttributes[i])
+                                                }*/
+                  >
+                    <i
+                      className="fa fa-times"
+                      style={{ paddingRight: '10px' }}
+                    />
+                    {this.state.tagsField[i][2]}-{this.state.tagsField[i][1]}
+                  </button>
                 );
               })}
             </Col>
           </Row>
           <br />
-          <ReactQuill //value={this.state.storyField}
-            onChange={this.handleChangeStory}
+          <textarea
+            className="form-control"
             rows="5"
+            data-spy="affix"
+            data-offset-top="197"
+            //id="attribute-search-box"
+            onChange={this.handleChangeStory}
             placeholder="Story"
           />
-          Story length: {this.state.storyTextOnly.length} /
+          Story length: {this.state.storyField.length} /
           {this.state.storyMaxLength}
           <br />
           <button
