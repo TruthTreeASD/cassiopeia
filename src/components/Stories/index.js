@@ -6,39 +6,14 @@ import {
   Col,
   CardBody,
   CardHeader,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
   Button
 } from 'reactstrap';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import '../../styles/StoriesIndex.css';
 import ViewStories from './ViewStories';
 import TrendingStories from './TrendingStories';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
-
-import StoryCreationComponent from '../StoryCreationComponent';
 
 class Stories extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false
-    };
-  }
-
-  componentDidMount() {}
-
-  modalToggle() {
-    this.setState({
-      modal: !this.state.modal
-    });
-  }
-
   render() {
     return (
       <Container className="stories-page">
@@ -48,22 +23,9 @@ class Stories extends Component {
               <Col>Trending Stories </Col>
               <Col>
                 {' '}
-                <Button
-                  className="create-story"
-                  color="primary"
-                  onClick={() => this.modalToggle()}
-                >
+                <Button className="create-story" color="primary">
                   Create Story
                 </Button>{' '}
-                <Modal
-                  isOpen={this.state.modal}
-                  toggle={this.modalToggle}
-                  //className="GridModal"
-                >
-                  <ModalBody className="backgroundWhite">
-                    <StoryCreationComponent />
-                  </ModalBody>
-                </Modal>
               </Col>
             </Row>
           </CardHeader>
