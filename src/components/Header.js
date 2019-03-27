@@ -87,6 +87,11 @@ class Header extends Component {
                 About
               </NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/approve">
+                Admin
+              </NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
