@@ -3,6 +3,8 @@ import { Card, CardBody, CardHeader, Media, Badge } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 import { mockData } from '../../mockData/storyData';
+import axios from 'axios/index';
+import { TRUTHTREE_URI } from '../../constants';
 
 class TrendingStories extends Component {
   constructor(props) {
@@ -10,6 +12,22 @@ class TrendingStories extends Component {
     this.getStoryDetails = this.getStoryDetails.bind(this);
     this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
     this.handleDownVoteClick = this.handleDownVoteClick.bind(this);
+    this.state = {
+      data: []
+    };
+  }
+
+  componentDidMount() {
+    axios
+      .get(`${TRUTHTREE_URI}/api/stories`)
+      .then(response => {
+        this.setState({
+          data: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   handleUpVoteClick(data) {
@@ -26,7 +44,7 @@ class TrendingStories extends Component {
     return (
       <Media body>
         {_.map(
-          _.sortBy(mockData, [
+          _.sortBy(this.state.data, [
             function(o) {
               return o.upvotes - o.downvotes;
             }
@@ -43,7 +61,7 @@ class TrendingStories extends Component {
                   );
                 })}
                 {!_.isEmpty(data.tags) && <br />}
-                {_.truncate(data.body)}
+                {_.truncate(data.content)}
                 <br />
                 <i
                   onClick={this.handleUpVoteClick(data)}
