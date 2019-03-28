@@ -12,12 +12,12 @@ import {
   ModalHeader,
   Button
 } from 'reactstrap';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import '../../styles/StoriesIndex.css';
 import ViewStories from './ViewStories';
 import TrendingStories from './TrendingStories';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -52,11 +52,7 @@ class Stories extends Component {
               <Col>Trending Stories </Col>
               <Col>
                 {' '}
-                <Button
-                  className="create-story"
-                  color="primary"
-                  onClick={() => this.modalToggle()}
-                >
+                <Button className="create-story" color="primary">
                   Create Story
                 </Button>{' '}
                 <Modal
