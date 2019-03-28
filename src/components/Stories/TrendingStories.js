@@ -11,8 +11,11 @@ class TrendingStories extends Component {
     this.getStoryDetails = this.getStoryDetails.bind(this);
     this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
     this.handleDownVoteClick = this.handleDownVoteClick.bind(this);
+    this.selectStory = this.selectStory.bind(this);
     this.state = {
-      data: []
+      data: [],
+      length: 0,
+      bgColor: []
     };
   }
 
@@ -23,7 +26,9 @@ class TrendingStories extends Component {
         this.setState({
           data: response.data
         });
-        console.log(response);
+        this.setState({
+          length: response.data.length
+        });
       })
       .catch(error => {
         console.log(error);
@@ -40,6 +45,20 @@ class TrendingStories extends Component {
     //api call to change data
   }
 
+  selectStory(data, index) {
+    let color = [];
+    for (var i = 0; i < this.state.length; i++) {
+      if (i == index) {
+        color.push('#f2f2f2');
+      } else {
+        color.push('white');
+      }
+    }
+    this.setState({
+      bgColor: color
+    });
+  }
+
   getStoryDetails() {
     return (
       <Media body>
@@ -49,9 +68,13 @@ class TrendingStories extends Component {
               return o.upvotes - o.downvotes;
             }
           ]).reverse(),
-          data => {
+          (data, index) => {
             return (
-              <div>
+              <div
+                className="pointer"
+                onClick={() => this.selectStory(data, index)}
+                style={{ backgroundColor: this.state.bgColor[index] }}
+              >
                 <Media heading>{data.title}</Media>
                 {_.map(data.tags, tag => {
                   return (
