@@ -12,46 +12,31 @@ import { Col, Row } from 'reactstrap';
 
 import '../styles/AttributeDeselector.css';
 
+//React quill
+import * as ReactQuill from 'react-quill'; // Typescript
+import 'react-quill/dist/quill.snow.css'; // ES6
+
 class StoryCreationComponent extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isLoaded: false,
-      selectedAttributes: [],
       authorField: '',
       titleField: '',
       tagsInputValue: '',
       tagsField: [],
       storyField: '',
+      storyTextOnly: '',
       storyMaxLength: 1000
     };
-    // Set initial state of each collection to false
   }
 
   componentDidMount() {
     this.setState({ isLoaded: true });
-    /* axios
-           .get(
-             `${TRUTHTREE_URI}/api/collections?locationId=` + //382026003
-               this.props.match.params.id // +&year=2016
-           )
-           .then(response => {
-             //data contains the variables
-             this.setState({
-               sidebarData: response.data,
-               isLoaded: true
-             });
-           })
-           .catch(error => {
-             console.log(error);
-           });*/
   }
 
-  componentWillReceiveProps(nextProps) {
-    //    this.setState({ tagsField: nextProps.selectedAttributes });
-    //    console.log(this.state.tagsField)
-  }
+  componentWillReceiveProps(nextProps) {}
 
   handleChangeAuthor = event => {
     let author = event.target.value.toLowerCase();
@@ -68,78 +53,124 @@ class StoryCreationComponent extends Component {
   };
 
   handleChangeTags = event => {
-    console.log(this.state.tagsField);
     let tag = event.target.value.toLowerCase();
     tag = tag.replace('\\', '');
     tag = tag.replace('*', '');
+    if (_.endsWith(tag, ' ') && tag.length == 1) {
+      this.setState({
+        tagsInputValue: ''
+      });
+      document.getElementById('tags-input-field').value = '';
+      return;
+    }
     if (_.endsWith(tag, ' ')) {
       let newArr = this.state.tagsField;
       newArr.push(tag);
       this.setState({
-        selectedAttributes: newArr
+        tagsField: newArr,
+        tagsInputValue: ''
       });
-      console.log(this.state.tagsField);
+
+      document.getElementById('tags-input-field').value = '';
     }
   };
 
   handleChangeStory = event => {
-    let story = event.target.value.toLowerCase();
-    story = story.replace('\\', '');
-    story = story.replace('*', '');
-    this.setState({ storyField: story });
+    let doc = new DOMParser().parseFromString(event, 'text/html');
+    doc = doc.body.textContent || '';
+    this.setState({
+      storyField: event,
+      storyTextOnly: doc
+    });
   };
 
   submitForm() {
-    if (this.state.storyField.length > this.state.storyMaxLength) {
-      confirmAlert({
-        title: 'Error!',
-        message: 'Story text is too long.',
-        buttons: [
-          {
-            label: 'OK'
-          }
-        ]
-      });
-      return;
-    } else if (this.state.titleField.length < 1) {
-      confirmAlert({
-        title: 'Error!',
-        message: 'Please enter a story title.',
-        buttons: [
-          {
-            label: 'OK'
-          }
-        ]
-      });
-      return;
+    if (!_.endsWith(window.location.href, 'stories')) {
+      console.log(window.location.href);
+
+      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+        confirmAlert({
+          title: 'Error!',
+          message: 'Story text is too long.',
+          buttons: [
+            {
+              label: 'OK'
+            }
+          ]
+        });
+        return;
+      } else if (this.state.titleField.length < 1) {
+        confirmAlert({
+          title: 'Error!',
+          message: 'Please enter a story title.',
+          buttons: [
+            {
+              label: 'OK'
+            }
+          ]
+        });
+        return;
+      } else {
+        axios
+          .post(`${TRUTHTREE_URI}/api/stories`, {
+            author: this.state.authorField,
+            tags:
+              this.state.tagsField.length > 0
+                ? this.state.tagsField
+                : [this.state.tagsInputValue],
+            content: this.state.storyField
+          })
+          .then(function(response) {
+            console.log('saved successfully' + response);
+          });
+        confirmAlert({
+          title: 'Story submitted!',
+          message: 'Story is now pending review.',
+          buttons: [
+            {
+              label: 'Continue.'
+            }
+          ]
+        });
+      }
     } else {
-      /* {
-              storyTitle: this.titleField,
-              
-          }*/
+      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+        alert('Story text is too long.');
+        return;
+      } else if (this.state.titleField.length < 1) {
+        alert('Please enter a story title.');
+        return;
+      } else {
+        axios
+          .post(`${TRUTHTREE_URI}/api/stories`, {
+            author: this.state.authorField,
+            tags:
+              this.state.tagsField.length > 0
+                ? this.state.tagsField
+                : [this.state.tagsInputValue],
+            content: this.state.storyField
+          })
+          .then(function(response) {
+            console.log('saved successfully' + response);
+          }); /*
+        this.props.dispatch({
+            type: 'CLOSE_STORY',
+            value: false
+        });*/
+        alert(
+          'Story submitted! Feel free to add a new one, or close the window.'
+        );
+      }
     }
   }
-  /*
-    deselectAttribute(attribute) {
-        let newArr = this.state.selectedAttributes;
-        let id = attribute[0];
-        for (let i = 0; i < newArr.length; i++) {
-            if (newArr[i][0] === id) {
-                _.remove(newArr, elem => {
-                    return elem === newArr[i];
-                });
-                this.setState({
-                    selectedAttributes: newArr
-                });
-                this.props.dispatch({
-                    type: 'CHANGE_ATTRIBUTE',
-                    value: newArr
-                });
-                return;
-            }
-        }
-    }
-    */
+
+  removeTag = tag => {
+    let newArr = this.state.tagsField;
+    newArr.splice(tag, 1);
+    this.setState({
+      tagsField: newArr
+    });
+  };
   render() {
     if (this.state.isLoaded) {
       return (
@@ -149,7 +180,6 @@ class StoryCreationComponent extends Component {
             className="form-control"
             data-spy="affix"
             data-offset-top="197"
-            //id="attribute-search-box"
             onChange={this.handleChangeAuthor}
             placeholder="Author Name"
           />
@@ -158,7 +188,6 @@ class StoryCreationComponent extends Component {
             className="form-control"
             data-spy="affix"
             data-offset-top="197"
-            //id="attribute-search-box"
             onChange={this.handleChangeTitle}
             placeholder="Story Title"
           />
@@ -167,44 +196,44 @@ class StoryCreationComponent extends Component {
             className="form-control"
             data-spy="affix"
             data-offset-top="197"
-            // id="attribute-search-box"
-            //onChange={this.handleChangeSearch}
+            id="tags-input-field"
+            onChange={this.handleChangeTags}
             placeholder="Tags"
           />
           <Row>
             <Col xs="auto" className="filters">
-              Selected Tags:
+              {this.state.tagsField.length > 0
+                ? 'Selected Tags:'
+                : 'Please add a tag!'}
             </Col>
             <Col>
-              {Object.keys(this.state.tagsField).map((attributes, i) => {
+              {Object.keys(this.state.tagsField).map((tag, i) => {
                 return (
-                  <button
-                    className="btn btn-light selected-attribute-button"
-                    /* onClick={() =>
-                                                    this.deselectAttribute(this.state.selectedAttributes[i])
-                                                }*/
-                  >
-                    <i
-                      className="fa fa-times"
-                      style={{ paddingRight: '10px' }}
-                    />
-                    {this.state.tagsField[i][2]}-{this.state.tagsField[i][1]}
-                  </button>
+                  <i>
+                    <button
+                      className="btn btn-dark"
+                      onClick={() => {
+                        this.removeTag(tag);
+                      }}
+                    >
+                      <i
+                        className="fa fa-times"
+                        style={{ paddingRight: '10px' }}
+                      />
+                      {this.state.tagsField[i]}
+                    </button>{' '}
+                  </i>
                 );
               })}
             </Col>
           </Row>
           <br />
-          <textarea
-            className="form-control"
-            rows="5"
-            data-spy="affix"
-            data-offset-top="197"
-            //id="attribute-search-box"
+          <ReactQuill //value={this.state.storyField}
             onChange={this.handleChangeStory}
+            rows="5"
             placeholder="Story"
           />
-          Story length: {this.state.storyField.length} /
+          Story length: {this.state.storyTextOnly.length} /
           {this.state.storyMaxLength}
           <br />
           <button
