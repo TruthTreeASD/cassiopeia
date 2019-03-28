@@ -48,13 +48,15 @@ class Stories extends Component {
               <Col>Trending Stories </Col>
               <Col>
                 {' '}
-                <Button
-                  className="create-story"
-                  color="primary"
-                  onClick={() => this.modalToggle()}
-                >
-                  Create Story
-                </Button>{' '}
+                {!this.props.admin && (
+                  <Button
+                    className="create-story"
+                    color="primary"
+                    onClick={() => this.modalToggle()}
+                  >
+                    Create Story
+                  </Button>
+                )}
                 <Modal
                   isOpen={this.state.modal}
                   toggle={this.modalToggle}
@@ -70,7 +72,7 @@ class Stories extends Component {
           <CardBody>
             <Row>
               <Col className="border-right">
-                <TrendingStories />
+                <TrendingStories admin={this.props.admin} />
               </Col>
               <Col>
                 <ViewStories />

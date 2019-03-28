@@ -10,7 +10,7 @@ class ApproveComponent extends Component {
     return (
       <div className="approveContainer">
         <h3>List of stories to approve</h3>
-        <Stories />
+        <Stories admin={true} />
       </div>
     );
   }

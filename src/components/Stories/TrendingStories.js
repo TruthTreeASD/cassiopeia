@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Media, Badge } from 'reactstrap';
+import { Button, Media, Badge } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
-import { mockData } from '../../mockData/storyData';
 import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 
@@ -63,14 +62,28 @@ class TrendingStories extends Component {
                 {!_.isEmpty(data.tags) && <br />}
                 {_.truncate(data.content)}
                 <br />
-                <i
-                  onClick={this.handleUpVoteClick(data)}
-                  class="fa fa-thumbs-o-up thumb"
-                />
-                <i
-                  onClick={this.handleDownVoteClick(data)}
-                  class="fa fa-thumbs-o-down thumb"
-                />
+                {!this.props.admin && (
+                  <div>
+                    <i
+                      onClick={this.handleUpVoteClick(data)}
+                      className="fa fa-thumbs-o-up thumb"
+                    />
+                    <i
+                      onClick={this.handleDownVoteClick(data)}
+                      className="fa fa-thumbs-o-down thumb"
+                    />
+                  </div>
+                )}
+                {this.props.admin && (
+                  <div>
+                    <Button className="myButton" color="info" size="sm">
+                      Approve
+                    </Button>
+                    <Button className="myButton" color="warning" size="sm">
+                      Reject
+                    </Button>
+                  </div>
+                )}
                 <hr />
               </div>
             );
