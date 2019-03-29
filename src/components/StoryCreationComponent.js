@@ -59,22 +59,19 @@ class StoryCreationComponent extends Component {
     tag = tag.replace('\\', '');
     tag = tag.replace('!@#$%', '\n');
     tag = tag.replace('*', '');
-    if (_.endsWith(tag, ' ') && tag.length == 1) {
-      this.setState({
-        tagsInputValue: ''
-      });
-      document.getElementById('tags-input-field').value = '';
-      return;
-    }
     if (_.endsWith(tag, ' ')) {
-      let newArr = this.state.tagsField;
-      newArr.push(tag);
-      this.setState({
-        tagsField: newArr,
-        tagsInputValue: ''
-      });
-
-      document.getElementById('tags-input-field').value = '';
+      if (tag.length > 2) {
+        this.setState({
+          tagsField: [...this.state.tagsField, tag], // This syntax will create new array and add the new tag to that array
+          tagsInputValue: ''
+        });
+      } else {
+        this.setState({
+          tagsInputValue: ''
+        });
+      }
+    } else {
+      this.setState({ tagsInputValue: tag });
     }
   };
 
@@ -198,6 +195,7 @@ class StoryCreationComponent extends Component {
             data-spy="affix"
             data-offset-top="197"
             id="tags-input-field"
+            value={this.state.tagsInputValue}
             onChange={this.handleChangeTags}
             placeholder="Tags"
           />
