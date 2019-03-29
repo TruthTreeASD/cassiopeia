@@ -33,8 +33,6 @@ class Stories extends Component {
     this.modalToggle = this.modalToggle.bind(this);
   }
 
-  componentDidMount() {}
-
   componentWillReceiveProps(nextProps) {}
 
   modalToggle() {

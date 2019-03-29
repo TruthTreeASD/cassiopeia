@@ -36,8 +36,6 @@ class StoryCreationComponent extends Component {
     this.setState({ isLoaded: true });
   }
 
-  componentWillReceiveProps(nextProps) {}
-
   handleChangeAuthor = event => {
     let author = event.target.value.toLowerCase();
     author = author.replace('\\', '');
@@ -207,7 +205,7 @@ class StoryCreationComponent extends Component {
                 : 'Please add a tag!'}
             </Col>
             <Col>
-              {Object.keys(this.state.tagsField).map((tag, i) => {
+              {this.state.tagsField.map((tag, i) => {
                 return (
                   <i>
                     <button
@@ -228,9 +226,9 @@ class StoryCreationComponent extends Component {
             </Col>
           </Row>
           <br />
-          <ReactQuill //value={this.state.storyField}
+          <ReactQuill //value={this.state.storyTextOnly}
             onChange={this.handleChangeStory}
-            rows="5"
+            //rows="5"
             placeholder="Story"
           />
           Story length: {this.state.storyTextOnly.length} /
