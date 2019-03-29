@@ -30,6 +30,7 @@ class StoryCreationComponent extends Component {
       storyTextOnly: '',
       storyMaxLength: 1000
     };
+    // this.setState = this.setState.bind(this)
   }
 
   componentDidMount() {
@@ -73,12 +74,10 @@ class StoryCreationComponent extends Component {
     }
   };
 
-  handleChangeStory = event => {
-    let doc = new DOMParser().parseFromString(event, 'text/html');
-    doc = doc.body.textContent || '';
+  handleChangeStory = (content, delta, source, editor) => {
     this.setState({
-      storyField: event,
-      storyTextOnly: doc
+      storyField: content,
+      storyTextOnly: editor.getText(content)
     });
   };
 
