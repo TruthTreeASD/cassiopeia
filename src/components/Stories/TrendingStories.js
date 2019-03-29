@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Media, Badge } from 'reactstrap';
+import { Card, Media, Badge, Row } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
+import { connect } from 'react-redux';
 
 class TrendingStories extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class TrendingStories extends Component {
         this.setState({
           length: response.data.length
         });
+        console.log(response);
       })
       .catch(error => {
         console.log(error);
@@ -48,7 +50,7 @@ class TrendingStories extends Component {
   selectStory(data, index) {
     let color = [];
     for (var i = 0; i < this.state.length; i++) {
-      if (i == index) {
+      if (i === index) {
         color.push('#f2f2f2');
       } else {
         color.push('white');
@@ -56,6 +58,11 @@ class TrendingStories extends Component {
     }
     this.setState({
       bgColor: color
+    });
+
+    this.props.dispatch({
+      type: 'SELECTED_STORY',
+      storyDetails: data
     });
   }
 
@@ -70,37 +77,42 @@ class TrendingStories extends Component {
           ]).reverse(),
           (data, index) => {
             return (
-              <div
+              <Card
                 className="pointer"
                 onClick={() => this.selectStory(data, index)}
                 style={{ backgroundColor: this.state.bgColor[index] }}
               >
                 <Media heading>{data.title}</Media>
-                {_.map(data.tags, tag => {
-                  return (
-                    <Badge className="tag" color="secondary">
-                      {tag}
-                    </Badge>
-                  );
-                })}
+                <Row className="trending">
+                  {_.map(data.tags, tag => {
+                    return (
+                      <Badge className="tag" color="secondary">
+                        {tag}
+                      </Badge>
+                    );
+                  })}
+                </Row>
                 {!_.isEmpty(data.tags) && <br />}
-                {_.truncate(data.content)}
-                <br />
-                <i
-                  onClick={this.handleUpVoteClick(data)}
-                  class="fa fa-thumbs-o-up thumb"
-                >
-                  {' '}
-                  {_.compact(data.upvotes)}{' '}
-                </i>
-                <i
-                  onClick={this.handleDownVoteClick(data)}
-                  class="fa fa-thumbs-o-down thumb"
-                >
-                  {_.compact(data.downvotes)}
-                </i>
-                <hr />
-              </div>
+                <Row className="trending">
+                  {_.truncate(data.content)}
+                  <br />
+                </Row>
+                <Row className="trending">
+                  <i
+                    onClick={this.handleUpVoteClick(data)}
+                    class="fa fa-thumbs-o-up thumb"
+                  >
+                    {' '}
+                    {_.compact(data.upvotes)}{' '}
+                  </i>
+                  <i
+                    onClick={this.handleDownVoteClick(data)}
+                    class="fa fa-thumbs-o-down thumb"
+                  >
+                    {_.compact(data.downvotes)}
+                  </i>
+                </Row>
+              </Card>
             );
           }
         )}
@@ -124,5 +136,6 @@ class TrendingStories extends Component {
     );
   }
 }
+const mapDispatchToProps = dispatch => ({ dispatch });
 
-export default TrendingStories;
+export default connect(mapDispatchToProps)(TrendingStories);
