@@ -1,3 +1,8 @@
+.trending-height {
+  max-height: 600px;
+  overflow: auto;
+}
+
 .thumb {
   padding: 10px;
   cursor: pointer;

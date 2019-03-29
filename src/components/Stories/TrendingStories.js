@@ -124,7 +124,7 @@ class TrendingStories extends Component {
 
   render() {
     return (
-      <div>
+      <div className="trending-height">
         <input
           className="form-control searchBar"
           data-spy="affix"
