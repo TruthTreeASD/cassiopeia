@@ -55,8 +55,8 @@ class StoryCreationComponent extends Component {
 
   handleChangeTags = event => {
     let tag = event.target.value.toLowerCase();
-    tag = tag.replace('\\n', '!@#$%');
-    tag = tag.replace('\\', '');
+    tag = tag.replace('\\n', '!@#$%'); //I'm not happy about this.
+    tag = tag.replace('\\', ''); // Probably will need to add a way to allow "enter" to make new tag
     tag = tag.replace('!@#$%', '\n');
     tag = tag.replace('*', '');
     if (_.endsWith(tag, ' ')) {
