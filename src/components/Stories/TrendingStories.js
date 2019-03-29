@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Media, Badge } from 'reactstrap';
+import { Spinner, Card, Media, Badge, Row } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
-import { mockData } from '../../mockData/storyData';
+import axios from 'axios/index';
+import { TRUTHTREE_URI } from '../../constants';
+import { connect } from 'react-redux';
 
 class TrendingStories extends Component {
   constructor(props) {
@@ -10,6 +12,28 @@ class TrendingStories extends Component {
     this.getStoryDetails = this.getStoryDetails.bind(this);
     this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
     this.handleDownVoteClick = this.handleDownVoteClick.bind(this);
+    this.selectStory = this.selectStory.bind(this);
+    this.state = {
+      data: [],
+      length: 0,
+      bgColor: [],
+      loading: true
+    };
+  }
+
+  componentDidMount() {
+    axios
+      .get(`${TRUTHTREE_URI}/api/stories`)
+      .then(response => {
+        this.setState({
+          data: response.data,
+          length: response.data.length,
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   handleUpVoteClick(data) {
@@ -22,39 +46,77 @@ class TrendingStories extends Component {
     //api call to change data
   }
 
+  selectStory(data, index) {
+    let color = [];
+    for (var i = 0; i < this.state.length; i++) {
+      if (i === index) {
+        color.push('#f2f2f2');
+      } else {
+        color.push('white');
+      }
+    }
+    this.setState({
+      bgColor: color
+    });
+
+    this.props.dispatch({
+      type: 'SELECTED_STORY',
+      storyDetails: data
+    });
+  }
+
   getStoryDetails() {
     return (
       <Media body>
         {_.map(
-          _.sortBy(mockData, [
+          _.sortBy(this.state.data, [
             function(o) {
-              return o.upvotes - o.downvotes;
+              return o.upvote - o.downvote;
             }
           ]).reverse(),
-          data => {
+          (data, index) => {
             return (
-              <div>
-                <Media heading>{data.title}</Media>
-                {_.map(data.tags, tag => {
-                  return (
-                    <Badge className="tag" color="secondary">
-                      {tag}
-                    </Badge>
-                  );
-                })}
-                {!_.isEmpty(data.tags) && <br />}
-                {_.truncate(data.body)}
-                <br />
-                <i
-                  onClick={this.handleUpVoteClick(data)}
-                  class="fa fa-thumbs-o-up thumb"
-                />
-                <i
-                  onClick={this.handleDownVoteClick(data)}
-                  class="fa fa-thumbs-o-down thumb"
-                />
-                <hr />
-              </div>
+              <Card
+                className="pointer"
+                onClick={() => this.selectStory(data, index)}
+                style={{ backgroundColor: this.state.bgColor[index] }}
+              >
+                <Media heading className="trending">
+                  {data.title}
+                </Media>
+
+                <Row className="trending">
+                  {_.map(data.tags, tag => {
+                    return (
+                      <Badge className="tag" color="secondary">
+                        {tag}
+                      </Badge>
+                    );
+                  })}
+                </Row>
+                <Row className="trending">
+                  <div style={{ padding: '10px' }}>
+                    {_.truncate(data.content)}
+                    <br />
+                  </div>
+                </Row>
+                <Row className="trending">
+                  <i
+                    onClick={this.handleUpVoteClick(data)}
+                    class="fa fa-thumbs-o-up thumb"
+                  >
+                    {' '}
+                    {data.upvote}{' '}
+                  </i>
+                  <i
+                    onClick={this.handleDownVoteClick(data)}
+                    class="fa fa-thumbs-o-down thumb"
+                  >
+                    {' '}
+                    {data.downvote}{' '}
+                  </i>
+                </Row>
+              </Card>
             );
           }
         )}
@@ -63,20 +125,30 @@ class TrendingStories extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <input
-          className="form-control searchBar"
-          data-spy="affix"
-          // onChange={this.handleChangeSearch}
-          placeholder="Search stories by title or tag name"
-        />
-        <div>
-          <Media>{this.getStoryDetails()}</Media>
+    const { loading } = this.state;
+    if (loading) {
+      return (
+        <div className="d-flex justify-content-center">
+          <Spinner className="align-self-center" color="secondary" size="sm" />
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="trending-height">
+          <input
+            className="form-control searchBar"
+            data-spy="affix"
+            // onChange={this.handleChangeSearch}
+            placeholder="Search stories by title or tag name"
+          />
+          <div>
+            <Media>{this.getStoryDetails()}</Media>
+          </div>
+        </div>
+      );
+    }
   }
 }
+const mapDispatchToProps = dispatch => ({ dispatch });
 
-export default TrendingStories;
+export default connect(mapDispatchToProps)(TrendingStories);

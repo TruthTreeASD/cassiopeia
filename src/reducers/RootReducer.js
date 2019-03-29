@@ -5,6 +5,7 @@ import SelectedAttributeReducer from './SelectedAttributeReducer';
 import YearSelectorReducer from './YearSelectorReducer';
 import LocationSearchBoxReducer from './LocationSearchBoxReducer';
 import NormalizationReducer from './NormalizationReducer';
+import TrendingStoriesReducer from './TrendingStoriesReducer';
 
 export default combineReducers({
   FilterByReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   SelectedAttributeReducer,
   YearSelectorReducer,
   LocationSearchBoxReducer,
-  NormalizationReducer
+  NormalizationReducer,
+  TrendingStoriesReducer
 });
