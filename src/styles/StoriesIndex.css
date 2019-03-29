@@ -8,3 +8,13 @@
 .create-story {
   float: right;
 }
+
+.trending-card {
+  background-color: rgb(191, 217, 213) !important;
+}
+
+.trending-label {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 3px;
+}

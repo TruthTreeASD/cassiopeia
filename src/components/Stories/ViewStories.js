@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Media, Row, Badge, Alert } from 'reactstrap';
+import { Media, Row, Badge, Alert, Card } from 'reactstrap';
 import '../../styles/ViewStories.css';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -26,44 +26,44 @@ class ViewStories extends Component {
       );
     } else {
       return (
-        <Media>
-          <Media body>
-            <Media heading className="view">
-              {this.props.storyDetails.title}
+        <Card className="view-story">
+          <Media>
+            <Media body className="view">
+              <Media heading>{this.props.storyDetails.title}</Media>
+              <Row className="view">
+                <i className="font" style={{ marginTop: '5px' }}>
+                  Tags:
+                </i>
+                {_.map(this.props.storyDetails.tags, tag => {
+                  return (
+                    <Badge className="tag view" color="secondary">
+                      {tag}
+                    </Badge>
+                  );
+                })}
+              </Row>
+              <Row className="view">
+                <i>Description:</i>
+                <br />
+                {this.props.storyDetails.content}
+              </Row>
+              <Row className="view">
+                Author:{'     '}
+                {this.props.storyDetails.authorName}
+              </Row>
+              <Row className="view">
+                <i class="fa fa-thumbs-o-up thumb">
+                  {' '}
+                  {this.props.storyDetails.upvote}{' '}
+                </i>
+                <i class="fa fa-thumbs-o-down thumb">
+                  {' '}
+                  {this.props.storyDetails.downvote}{' '}
+                </i>
+              </Row>
             </Media>
-            <Row className="view">
-              Tags:
-              {_.map(this.props.storyDetails.tags, tag => {
-                return (
-                  <Badge className="tag" color="secondary">
-                    {tag}
-                  </Badge>
-                );
-              })}
-            </Row>
-            <Row className="view">
-              Description:
-              <br />
-              {this.props.storyDetails.content}
-            </Row>
-            <Row className="view">
-              Author:{'     '}
-              {this.props.storyDetails.authorName}
-              <br />
-              <br />
-            </Row>
-            <Row className="view">
-              <i class="fa fa-thumbs-o-up thumb">
-                {' '}
-                {this.props.storyDetails.upvote}{' '}
-              </i>
-              <i class="fa fa-thumbs-o-down thumb">
-                {' '}
-                {this.props.storyDetails.downvote}{' '}
-              </i>
-            </Row>
           </Media>
-        </Media>
+        </Card>
       );
     }
   }

@@ -134,7 +134,7 @@ class TrendingStories extends Component {
       );
     } else {
       return (
-        <div className="trending-height">
+        <div>
           <input
             className="form-control searchBar"
             data-spy="affix"
@@ -142,7 +142,7 @@ class TrendingStories extends Component {
             placeholder="Search stories by title or tag name"
           />
           <div>
-            <Media>{this.getStoryDetails()}</Media>
+            <Media className="trending-height">{this.getStoryDetails()}</Media>
           </div>
         </div>
       );
