@@ -28,7 +28,9 @@ class ViewStories extends Component {
       return (
         <Media>
           <Media body>
-            <Media heading>{this.props.storyDetails.title}</Media>
+            <Media heading className="view">
+              {this.props.storyDetails.title}
+            </Media>
             <Row className="view">
               Tags:
               {_.map(this.props.storyDetails.tags, tag => {
@@ -39,9 +41,6 @@ class ViewStories extends Component {
                 );
               })}
             </Row>
-
-            {!_.isEmpty(this.props.storyDetails.tags) && <br />}
-
             <Row className="view">
               Description:
               <br />
@@ -55,10 +54,12 @@ class ViewStories extends Component {
             </Row>
             <Row className="view">
               <i class="fa fa-thumbs-o-up thumb">
-                {_.compact(this.props.storyDetails.upvotes)}
+                {' '}
+                {this.props.storyDetails.upvote}{' '}
               </i>
               <i class="fa fa-thumbs-o-down thumb">
-                {_.compact(this.props.storyDetails.downvotes)}
+                {' '}
+                {this.props.storyDetails.downvote}{' '}
               </i>
             </Row>
           </Media>

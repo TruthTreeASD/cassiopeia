@@ -16,9 +16,9 @@
   cursor: pointer;
 }
 
-.trending.row {
-  margin-left: 10px;
-  margin-right: 10px;
+.trending {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
 }
 
 .pointer.card {

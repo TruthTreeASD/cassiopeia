@@ -25,12 +25,9 @@ class TrendingStories extends Component {
       .get(`${TRUTHTREE_URI}/api/stories`)
       .then(response => {
         this.setState({
-          data: response.data
-        });
-        this.setState({
+          data: response.data,
           length: response.data.length
         });
-        console.log(response);
       })
       .catch(error => {
         console.log(error);
@@ -72,7 +69,7 @@ class TrendingStories extends Component {
         {_.map(
           _.sortBy(this.state.data, [
             function(o) {
-              return o.upvotes - o.downvotes;
+              return o.upvote - o.downvote;
             }
           ]).reverse(),
           (data, index) => {
@@ -82,7 +79,10 @@ class TrendingStories extends Component {
                 onClick={() => this.selectStory(data, index)}
                 style={{ backgroundColor: this.state.bgColor[index] }}
               >
-                <Media heading>{data.title}</Media>
+                <Media heading className="trending">
+                  {data.title}
+                </Media>
+
                 <Row className="trending">
                   {_.map(data.tags, tag => {
                     return (
@@ -92,10 +92,11 @@ class TrendingStories extends Component {
                     );
                   })}
                 </Row>
-                {!_.isEmpty(data.tags) && <br />}
                 <Row className="trending">
-                  {_.truncate(data.content)}
-                  <br />
+                  <div style={{ padding: '10px' }}>
+                    {_.truncate(data.content)}
+                    <br />
+                  </div>
                 </Row>
                 <Row className="trending">
                   <i
@@ -103,13 +104,14 @@ class TrendingStories extends Component {
                     class="fa fa-thumbs-o-up thumb"
                   >
                     {' '}
-                    {_.compact(data.upvotes)}{' '}
+                    {data.upvote}{' '}
                   </i>
                   <i
                     onClick={this.handleDownVoteClick(data)}
                     class="fa fa-thumbs-o-down thumb"
                   >
-                    {_.compact(data.downvotes)}
+                    {' '}
+                    {data.downvote}{' '}
                   </i>
                 </Row>
               </Card>
