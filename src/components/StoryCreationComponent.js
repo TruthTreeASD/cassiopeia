@@ -13,8 +13,10 @@ import { Col, Row } from 'reactstrap';
 import '../styles/AttributeDeselector.css';
 
 //React quill
-import * as ReactQuill from 'react-quill'; // Typescript
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // ES6
+
+const MAX_LENGTH = 1000;
 
 class StoryCreationComponent extends Component {
   constructor(props) {
@@ -28,7 +30,7 @@ class StoryCreationComponent extends Component {
       tagsField: [],
       storyField: '',
       storyTextOnly: '',
-      storyMaxLength: 1000
+      storyMaxLength: MAX_LENGTH
     };
     // this.setState = this.setState.bind(this)
   }
@@ -53,7 +55,9 @@ class StoryCreationComponent extends Component {
 
   handleChangeTags = event => {
     let tag = event.target.value.toLowerCase();
+    tag = tag.replace('\\n', '!@#$%');
     tag = tag.replace('\\', '');
+    tag = tag.replace('!@#$%', '\n');
     tag = tag.replace('*', '');
     if (_.endsWith(tag, ' ') && tag.length == 1) {
       this.setState({
