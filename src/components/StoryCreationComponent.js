@@ -203,7 +203,7 @@ class StoryCreationComponent extends Component {
             <Col xs="auto" className="filters">
               {this.state.tagsField.length > 0
                 ? 'Selected Tags:'
-                : 'Please add a tag!'}
+                : 'Add tags by clicking Spacebar after each tag!'}
             </Col>
             <Col>
               {this.state.tagsField.map((tag, i) => {
