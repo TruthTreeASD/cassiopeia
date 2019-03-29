@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Media, Badge, Row } from 'reactstrap';
+import { Spinner, Card, Media, Badge, Row } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 import axios from 'axios/index';
@@ -16,7 +16,8 @@ class TrendingStories extends Component {
     this.state = {
       data: [],
       length: 0,
-      bgColor: []
+      bgColor: [],
+      loading: true
     };
   }
 
@@ -26,7 +27,8 @@ class TrendingStories extends Component {
       .then(response => {
         this.setState({
           data: response.data,
-          length: response.data.length
+          length: response.data.length,
+          loading: false
         });
       })
       .catch(error => {
@@ -123,19 +125,28 @@ class TrendingStories extends Component {
   }
 
   render() {
-    return (
-      <div className="trending-height">
-        <input
-          className="form-control searchBar"
-          data-spy="affix"
-          // onChange={this.handleChangeSearch}
-          placeholder="Search stories by title or tag name"
-        />
-        <div>
-          <Media>{this.getStoryDetails()}</Media>
+    const { loading } = this.state;
+    if (loading) {
+      return (
+        <div className="d-flex justify-content-center">
+          <Spinner className="align-self-center" color="secondary" size="sm" />
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="trending-height">
+          <input
+            className="form-control searchBar"
+            data-spy="affix"
+            // onChange={this.handleChangeSearch}
+            placeholder="Search stories by title or tag name"
+          />
+          <div>
+            <Media>{this.getStoryDetails()}</Media>
+          </div>
+        </div>
+      );
+    }
   }
 }
 const mapDispatchToProps = dispatch => ({ dispatch });
