@@ -30,6 +30,7 @@ class TrendingStories extends Component {
           length: response.data.length,
           loading: false
         });
+        console.log(response.data);
       })
       .catch(error => {
         console.log(error);
