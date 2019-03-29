@@ -23,7 +23,7 @@ class StoryCreationComponent extends Component {
     super(props);
 
     this.state = {
-      isLoaded: false,
+      featureEnabled: false,
       authorField: '',
       titleField: '',
       tagsInputValue: '',
@@ -36,7 +36,7 @@ class StoryCreationComponent extends Component {
   }
 
   componentDidMount() {
-    this.setState({ isLoaded: true });
+    this.setState({ featureEnabled: true });
   }
 
   handleChangeAuthor = event => {
@@ -170,7 +170,7 @@ class StoryCreationComponent extends Component {
     }); //          tagsField: [...this.state.tagsField, tag]
   };
   render() {
-    if (this.state.isLoaded) {
+    if (this.state.featureEnabled) {
       return (
         <div>
           <p>Tell us what you found!</p>
