@@ -163,11 +163,11 @@ class StoryCreationComponent extends Component {
   }
 
   removeTag = tag => {
-    let newArr = this.state.tagsField;
+    let newArr = [...this.state.tagsField];
     newArr.splice(tag, 1);
     this.setState({
       tagsField: newArr
-    });
+    }); //          tagsField: [...this.state.tagsField, tag]
   };
   render() {
     if (this.state.isLoaded) {
