@@ -1,3 +1,8 @@
+.trending-height {
+  max-height: 600px;
+  overflow: auto;
+}
+
 .thumb {
   padding: 10px;
   cursor: pointer;
@@ -8,6 +13,24 @@
   margin: 5px;
 }
 .form-control.searchBar {
-  width: 90%;
-  margin: 20px;
+  width: 100%;
+  margin: 15px;
+  margin-left: 0px;
+}
+.pointer {
+  cursor: pointer;
+}
+
+.trending {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+}
+
+.pointer.card {
+  margin-bottom: 10px;
+}
+
+.view.row {
+  margin-left: 10px;
+  margin-right: 10px;
 }
