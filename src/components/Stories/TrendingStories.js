@@ -5,6 +5,11 @@ import '../../styles/TrendingStories.css';
 import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 import { connect } from 'react-redux';
+import ReactHtmlParser, {
+  processNodes,
+  convertNodeToElement,
+  htmlparser2
+} from 'react-html-parser';
 
 class TrendingStories extends Component {
   constructor(props) {
@@ -19,6 +24,10 @@ class TrendingStories extends Component {
       bgColor: [],
       loading: true
     };
+  }
+
+  contentHtml(data) {
+    return ReactHtmlParser(data);
   }
 
   componentDidMount() {
@@ -97,8 +106,7 @@ class TrendingStories extends Component {
                 </Row>
                 <Row className="trending">
                   <div style={{ padding: '10px' }}>
-                    {_.truncate(data.content)}
-                    <br />
+                    {this.contentHtml(_.truncate(data.content, { length: 50 }))}
                   </div>
                 </Row>
                 <Row className="trending">

@@ -3,8 +3,17 @@ import { Media, Row, Badge, Alert, Card, Col, CardHeader } from 'reactstrap';
 import '../../styles/ViewStories.css';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import ReactHtmlParser, {
+  processNodes,
+  convertNodeToElement,
+  htmlparser2
+} from 'react-html-parser';
 
 class ViewStories extends Component {
+  contentHtml(data) {
+    return ReactHtmlParser(data);
+  }
+
   render() {
     if (this.props.storyDetails === 'none') {
       return (
@@ -42,9 +51,7 @@ class ViewStories extends Component {
                 <Col xs="auto">
                   <i>Description:</i>
                 </Col>
-                <Col>
-                  <b>{this.props.storyDetails.content}</b>
-                </Col>
+                <Col>{this.contentHtml(this.props.storyDetails.content)}</Col>
               </Row>
 
               <Row className="view">

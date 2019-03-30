@@ -116,7 +116,8 @@ class StoryCreationComponent extends Component {
               this.state.tagsField.length > 0
                 ? this.state.tagsField
                 : [this.state.tagsInputValue],
-            content: this.state.storyField
+            content: this.state.storyField,
+            title: this.state.titleField
           })
           .then(function(response) {
             console.log('saved successfully' + response);
