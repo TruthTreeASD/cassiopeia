@@ -8,7 +8,9 @@
 .create-story {
   float: right;
 }
-
+.create-story.btn.btn-primary {
+  color: rgba(13, 22, 38, 0.8) !important;
+}
 .trending-card {
   background-color: rgb(191, 217, 213) !important;
 }
