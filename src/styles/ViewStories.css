@@ -1,0 +1,8 @@
+.collapse.show {
+  visibility: visible;
+  height: 200px !important;
+}
+
+.height.card-body {
+  height: 100px;
+}

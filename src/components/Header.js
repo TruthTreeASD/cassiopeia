@@ -55,8 +55,8 @@ class Header extends Component {
               className="d-inline-block"
               alt="TruthTree logo"
             />
+            &nbsp;TruthTree
           </Link>
-          &nbsp;TruthTree
         </NavbarBrand>
         <NavbarToggler
           onClick={() =>
@@ -88,7 +88,7 @@ class Header extends Component {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} to="/approve">
+              <NavLink tag={Link} to="/admin">
                 Admin
               </NavLink>
             </NavItem>

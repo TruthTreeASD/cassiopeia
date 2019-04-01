@@ -13,30 +13,31 @@ import { Col, Row } from 'reactstrap';
 import '../styles/AttributeDeselector.css';
 
 //React quill
-import * as ReactQuill from 'react-quill'; // Typescript
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // ES6
+
+const MAX_LENGTH = 1000;
 
 class StoryCreationComponent extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isLoaded: false,
+      featureEnabled: false,
       authorField: '',
       titleField: '',
       tagsInputValue: '',
       tagsField: [],
       storyField: '',
       storyTextOnly: '',
-      storyMaxLength: 1000
+      storyMaxLength: MAX_LENGTH
     };
+    // this.setState = this.setState.bind(this)
   }
 
   componentDidMount() {
-    this.setState({ isLoaded: true });
+    this.setState({ featureEnabled: true });
   }
-
-  componentWillReceiveProps(nextProps) {}
 
   handleChangeAuthor = event => {
     let author = event.target.value.toLowerCase();
@@ -54,83 +55,122 @@ class StoryCreationComponent extends Component {
 
   handleChangeTags = event => {
     let tag = event.target.value.toLowerCase();
-    tag = tag.replace('\\', '');
+    tag = tag.replace('\\n', '!@#$%'); //I'm not happy about this.
+    tag = tag.replace('\\', ''); // Probably will need to add a way to allow "enter" to make new tag
+    tag = tag.replace('!@#$%', '\n');
     tag = tag.replace('*', '');
     if (_.endsWith(tag, ' ')) {
-      let newArr = this.state.tagsField;
-      newArr.push(tag);
-      this.setState({
-        tagsField: newArr,
-        tagsInputValue: ''
-      });
-
-      document.getElementById('tags-input-field').value = '';
+      if (tag.length > 2) {
+        this.setState({
+          tagsField: [...this.state.tagsField, tag], // This syntax will create new array and add the new tag to that array
+          tagsInputValue: ''
+        });
+      } else {
+        this.setState({
+          tagsInputValue: ''
+        });
+      }
+    } else {
+      this.setState({ tagsInputValue: tag });
     }
   };
 
-  handleChangeStory = event => {
-    let doc = new DOMParser().parseFromString(event, 'text/html');
-    doc = doc.body.textContent || '';
+  handleChangeStory = (content, delta, source, editor) => {
     this.setState({
-      storyField: event,
-      storyTextOnly: doc
+      storyField: content,
+      storyTextOnly: editor.getText(content)
     });
   };
 
   submitForm() {
-    if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
-      confirmAlert({
-        title: 'Error!',
-        message: 'Story text is too long.',
-        buttons: [
-          {
-            label: 'OK'
-          }
-        ]
-      });
-      return;
-    } else if (this.state.titleField.length < 1) {
-      confirmAlert({
-        title: 'Error!',
-        message: 'Please enter a story title.',
-        buttons: [
-          {
-            label: 'OK'
-          }
-        ]
-      });
-      return;
-    } else {
-      axios
-        .post(`${TRUTHTREE_URI}/api/stories`, {
-          authorName: this.state.authorField,
-          tags: this.state.tagsField,
-          content: this.state.storyField
-        })
-        .then(function(response) {
-          console.log('saved successfully' + response);
+    if (!_.endsWith(window.location.href, 'stories')) {
+      console.log(window.location.href);
+
+      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+        confirmAlert({
+          title: 'Error!',
+          message: 'Story text is too long.',
+          buttons: [
+            {
+              label: 'OK'
+            }
+          ]
         });
-      confirmAlert({
-        title: 'Story submitted!',
-        message: 'Story is now pending review for obscenity.',
-        buttons: [
-          {
-            label: 'Continue.'
-          }
-        ]
-      });
+        return;
+      } else if (this.state.titleField.length < 1) {
+        confirmAlert({
+          title: 'Error!',
+          message: 'Please enter a story title.',
+          buttons: [
+            {
+              label: 'OK'
+            }
+          ]
+        });
+        return;
+      } else {
+        axios
+          .post(`${TRUTHTREE_URI}/api/stories`, {
+            author: this.state.authorField,
+            tags:
+              this.state.tagsField.length > 0
+                ? this.state.tagsField
+                : [this.state.tagsInputValue],
+            content: this.state.storyField
+          })
+          .then(function(response) {
+            console.log('saved successfully' + response);
+          });
+        confirmAlert({
+          title: 'Story submitted!',
+          message: 'Story is now pending review.',
+          buttons: [
+            {
+              label: 'Continue.'
+            }
+          ]
+        });
+      }
+    } else {
+      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+        alert('Story text is too long.');
+        return;
+      } else if (this.state.titleField.length < 1) {
+        alert('Please enter a story title.');
+        return;
+      } else {
+        axios
+          .post(`${TRUTHTREE_URI}/api/stories`, {
+            author: this.state.authorField,
+            tags:
+              this.state.tagsField.length > 0
+                ? this.state.tagsField
+                : [this.state.tagsInputValue],
+            content: this.state.storyField
+          })
+          .then(function(response) {
+            console.log('saved successfully' + response);
+          }); /*
+        this.props.dispatch({
+            type: 'CLOSE_STORY',
+            value: false
+        });*/
+        alert(
+          'Story submitted! Feel free to add a new one, or close the window.'
+        );
+      }
     }
   }
 
   removeTag = tag => {
-    let newArr = this.state.tagsField;
+    let newArr = [...this.state.tagsField];
     newArr.splice(tag, 1);
     this.setState({
       tagsField: newArr
-    });
+    }); //          tagsField: [...this.state.tagsField, tag]
   };
   render() {
-    if (this.state.isLoaded) {
+    if (this.state.featureEnabled) {
       return (
         <div>
           <p>Tell us what you found!</p>
@@ -155,6 +195,7 @@ class StoryCreationComponent extends Component {
             data-spy="affix"
             data-offset-top="197"
             id="tags-input-field"
+            value={this.state.tagsInputValue}
             onChange={this.handleChangeTags}
             placeholder="Tags"
           />
@@ -162,10 +203,10 @@ class StoryCreationComponent extends Component {
             <Col xs="auto" className="filters">
               {this.state.tagsField.length > 0
                 ? 'Selected Tags:'
-                : 'Please add a tag!'}
+                : 'Add tags by clicking Spacebar after each tag!'}
             </Col>
             <Col>
-              {Object.keys(this.state.tagsField).map((tag, i) => {
+              {this.state.tagsField.map((tag, i) => {
                 return (
                   <i>
                     <button
@@ -186,9 +227,9 @@ class StoryCreationComponent extends Component {
             </Col>
           </Row>
           <br />
-          <ReactQuill //value={this.state.storyField}
+          <ReactQuill //value={this.state.storyTextOnly}
             onChange={this.handleChangeStory}
-            rows="5"
+            //rows="5"
             placeholder="Story"
           />
           Story length: {this.state.storyTextOnly.length} /

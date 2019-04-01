@@ -12,12 +12,12 @@ import {
   ModalHeader,
   Button
 } from 'reactstrap';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import '../../styles/StoriesIndex.css';
 import ViewStories from './ViewStories';
 import TrendingStories from './TrendingStories';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -29,9 +29,11 @@ class Stories extends Component {
     this.state = {
       modal: false
     };
+
+    this.modalToggle = this.modalToggle.bind(this);
   }
 
-  componentDidMount() {}
+  componentWillReceiveProps(nextProps) {}
 
   modalToggle() {
     this.setState({
@@ -48,15 +50,13 @@ class Stories extends Component {
               <Col>Trending Stories </Col>
               <Col>
                 {' '}
-                {!this.props.admin && (
-                  <Button
-                    className="create-story"
-                    color="primary"
-                    onClick={() => this.modalToggle()}
-                  >
-                    Create Story
-                  </Button>
-                )}
+                <Button
+                  className="create-story"
+                  color="primary"
+                  onClick={this.modalToggle}
+                >
+                  Create Story
+                </Button>{' '}
                 <Modal
                   isOpen={this.state.modal}
                   toggle={this.modalToggle}
@@ -65,6 +65,9 @@ class Stories extends Component {
                   <ModalBody className="backgroundWhite">
                     <StoryCreationComponent />
                   </ModalBody>
+                  <Button color="secondary" onClick={this.modalToggle}>
+                    Close
+                  </Button>
                 </Modal>
               </Col>
             </Row>
