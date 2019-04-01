@@ -45,9 +45,9 @@ class Stories extends Component {
     return (
       <Container className="stories-page">
         <Card>
-          <CardHeader>
+          <CardHeader className="trending-card">
             <Row>
-              <Col>Trending Stories </Col>
+              <Col className="trending-label">Trending Stories </Col>
               <Col>
                 {' '}
                 <Button
