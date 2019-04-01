@@ -83,56 +83,56 @@ class StoryCreationComponent extends Component {
   };
 
   submitForm() {
-    if (!_.endsWith(window.location.href, 'stories')) {
-      console.log(window.location.href);
+    //  if (!_.endsWith(window.location.href, 'stories')) {
+    //   console.log(window.location.href);
 
-      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
-        confirmAlert({
-          title: 'Error!',
-          message: 'Story text is too long.',
-          buttons: [
-            {
-              label: 'OK'
-            }
-          ]
-        });
-        return;
-      } else if (this.state.titleField.length < 1) {
-        confirmAlert({
-          title: 'Error!',
-          message: 'Please enter a story title.',
-          buttons: [
-            {
-              label: 'OK'
-            }
-          ]
-        });
-        return;
-      } else {
-        axios
-          .post(`${TRUTHTREE_URI}/api/stories`, {
-            author: this.state.authorField,
-            tags:
-              this.state.tagsField.length > 0
-                ? this.state.tagsField
-                : [this.state.tagsInputValue],
-            content: this.state.storyField,
-            title: this.state.titleField
-          })
-          .then(function(response) {
-            console.log('saved successfully' + response);
-          });
-        confirmAlert({
-          title: 'Story submitted!',
-          message: 'Story is now pending review.',
-          buttons: [
-            {
-              label: 'Continue.'
-            }
-          ]
-        });
-      }
+    if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+      confirmAlert({
+        title: 'Error!',
+        message: 'Story text is too long.',
+        buttons: [
+          {
+            label: 'OK'
+          }
+        ]
+      });
+      return;
+    } else if (this.state.titleField.length < 1) {
+      confirmAlert({
+        title: 'Error!',
+        message: 'Please enter a story title.',
+        buttons: [
+          {
+            label: 'OK'
+          }
+        ]
+      });
+      return;
     } else {
+      axios
+        .post(`${TRUTHTREE_URI}/api/stories`, {
+          author: this.state.authorField,
+          tags:
+            this.state.tagsField.length > 0
+              ? this.state.tagsField
+              : [this.state.tagsInputValue],
+          content: this.state.storyField,
+          title: this.state.titleField
+        })
+        .then(function(response) {
+          console.log('saved successfully' + response);
+        });
+      confirmAlert({
+        title: 'Story submitted!',
+        message: 'Story is now pending review.',
+        buttons: [
+          {
+            label: 'Continue.'
+          }
+        ]
+      });
+    }
+    /* } else {
       if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
         alert('Story text is too long.');
         return;
@@ -151,16 +151,11 @@ class StoryCreationComponent extends Component {
           })
           .then(function(response) {
             console.log('saved successfully' + response);
-          }); /*
-        this.props.dispatch({
-            type: 'CLOSE_STORY',
-            value: false
-        });*/
+          }); 
         alert(
           'Story submitted! Feel free to add a new one, or close the window.'
         );
-      }
-    }
+      }*/
   }
 
   removeTag = tag => {

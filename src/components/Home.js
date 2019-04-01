@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import '../styles/Home.css';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Modal,
+  ModalBody,
+  Button
+} from 'reactstrap';
 
 import DisplayComponent from './DisplayComponent';
 import LeftSideBar from './LeftSideBar';
@@ -17,6 +24,19 @@ const homeStyle = {
 };
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false
+    };
+
+    this.modalToggle = this.modalToggle.bind(this);
+  }
+  modalToggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
   render() {
     return (
       <Container fluid style={homeStyle} className="home">
@@ -25,6 +45,24 @@ class Home extends Component {
 
           <div className="col-12 col-md-10 align-items-center padding">
             <Card className="selected-attributes padding">
+              <Col>
+                {' '}
+                <Button
+                  className="create-story"
+                  color="primary"
+                  onClick={this.modalToggle}
+                >
+                  Create Story
+                </Button>{' '}
+                <Modal isOpen={this.state.modal} toggle={this.modalToggle}>
+                  <ModalBody className="backgroundWhite">
+                    <StoryCreationComponent />
+                  </ModalBody>
+                  <Button color="secondary" onClick={this.modalToggle}>
+                    Close
+                  </Button>
+                </Modal>
+              </Col>
               <AttributeDeselector />
             </Card>
 
@@ -43,10 +81,6 @@ class Home extends Component {
                     id={this.props.match.params.id}
                     level={this.props.match.params.level}
                   />
-                </div>
-
-                <div label="Create a Story">
-                  <StoryCreationComponent />
                 </div>
               </Tabs>
             </Card>
