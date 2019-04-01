@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { Media, Row, Badge, Alert, Card, Col, CardHeader } from 'reactstrap';
+import {
+  Media,
+  Row,
+  Badge,
+  Alert,
+  Card,
+  Col,
+  CardHeader,
+  Button
+} from 'reactstrap';
 import '../../styles/ViewStories.css';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -63,20 +72,36 @@ class ViewStories extends Component {
                   <b>{this.props.storyDetails.author}</b>
                 </Col>
               </Row>
-              <Row className="view float-right">
-                <Col xs="auto">
-                  <i class="fa fa-thumbs-o-up thumb">
-                    {' '}
-                    <b>{this.props.storyDetails.upvote} </b>
-                  </i>
-                </Col>
-                <Col xs="auto">
-                  <i class="fa fa-thumbs-o-down thumb">
-                    {' '}
-                    <b>{this.props.storyDetails.downvote} </b>
-                  </i>
-                </Col>
-              </Row>
+              {!this.props.admin && (
+                <Row className="view float-right">
+                  <Col xs="auto">
+                    <i class="fa fa-thumbs-o-up thumb">
+                      {' '}
+                      <b>{this.props.storyDetails.upvote} </b>
+                    </i>
+                  </Col>
+                  <Col xs="auto">
+                    <i class="fa fa-thumbs-o-down thumb">
+                      {' '}
+                      <b>{this.props.storyDetails.downvote} </b>
+                    </i>
+                  </Col>
+                </Row>
+              )}
+              {this.props.admin && (
+                <Row className="view float-right">
+                  <Col xs="auto">
+                    <Button className="myButton" color="primary" size="sm">
+                      Approve
+                    </Button>
+                  </Col>
+                  <Col xs="auto">
+                    <Button className="myButton" color="secondary" size="sm">
+                      Reject
+                    </Button>
+                  </Col>
+                </Row>
+              )}
             </Media>
           </Media>
         </Card>

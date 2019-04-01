@@ -31,18 +31,40 @@ class TrendingStories extends Component {
   }
 
   componentDidMount() {
-    axios
-      .get(`${TRUTHTREE_URI}/api/stories`)
-      .then(response => {
-        this.setState({
-          data: response.data,
-          length: response.data.length,
-          loading: false
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    //List of approved stories if not admin
+    {
+      !this.props.admin &&
+        axios
+          .get(`${TRUTHTREE_URI}/api/stories`)
+          .then(response => {
+            this.setState({
+              data: response.data,
+              length: response.data.length,
+              loading: false
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    }
+
+    //List of stories to be approved if admin
+    {
+      this.props.admin &&
+        axios
+          .get(`${TRUTHTREE_URI}/api/stories`)
+          //Change the api call to unapproved stories
+          .then(response => {
+            this.setState({
+              data: response.data,
+              length: response.data.length,
+              loading: false
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    }
   }
 
   handleUpVoteClick(data) {
@@ -55,6 +77,7 @@ class TrendingStories extends Component {
     //api call to change data
   }
 
+  //Highlighting the selected story panel & storing its details in redux
   selectStory(data, index) {
     let color = [];
     for (var i = 0; i < this.state.length; i++) {
@@ -74,6 +97,7 @@ class TrendingStories extends Component {
     });
   }
 
+  //Displaying each story
   getStoryDetails() {
     return (
       <Media body>
@@ -108,22 +132,24 @@ class TrendingStories extends Component {
                     {this.contentHtml(_.truncate(data.content, { length: 50 }))}
                   </div>
                 </Row>
-                <Row className="trending">
-                  <i
-                    onClick={this.handleUpVoteClick(data)}
-                    class="fa fa-thumbs-o-up thumb"
-                  >
-                    {' '}
-                    {data.upvote}{' '}
-                  </i>
-                  <i
-                    onClick={this.handleDownVoteClick(data)}
-                    class="fa fa-thumbs-o-down thumb"
-                  >
-                    {' '}
-                    {data.downvote}{' '}
-                  </i>
-                </Row>
+                {!this.props.admin && (
+                  <Row className="trending">
+                    <i
+                      onClick={this.handleUpVoteClick(data)}
+                      class="fa fa-thumbs-o-up thumb"
+                    >
+                      {' '}
+                      {data.upvote}{' '}
+                    </i>
+                    <i
+                      onClick={this.handleDownVoteClick(data)}
+                      class="fa fa-thumbs-o-down thumb"
+                    >
+                      {' '}
+                      {data.downvote}{' '}
+                    </i>
+                  </Row>
+                )}
               </Card>
             );
           }
@@ -134,13 +160,16 @@ class TrendingStories extends Component {
 
   render() {
     const { loading } = this.state;
+    //Displaying spinner untill API fetches the data
     if (loading) {
       return (
         <div className="d-flex justify-content-center">
           <Spinner className="align-self-center" color="secondary" size="sm" />
         </div>
       );
-    } else {
+    }
+    //Dislaying list of stories
+    else {
       return (
         <div>
           <input
