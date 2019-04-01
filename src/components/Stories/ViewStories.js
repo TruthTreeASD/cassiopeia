@@ -1,19 +1,64 @@
 import React, { Component } from 'react';
-import { Media, Row, Badge, Alert, Card, Col, CardHeader } from 'reactstrap';
+import {
+  Media,
+  Row,
+  Badge,
+  Alert,
+  Card,
+  Col,
+  CardHeader,
+  Button,
+  ButtonGroup
+} from 'reactstrap';
 import '../../styles/ViewStories.css';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2
-} from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
+import { TRUTHTREE_URI } from '../../constants';
+import axios from 'axios/index';
 
 class ViewStories extends Component {
+  constructor(props) {
+    super(props);
+    this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
+    this.handleDownVoteClick = this.handleDownVoteClick.bind(this);
+  }
+
   contentHtml(data) {
     return ReactHtmlParser(data);
   }
 
+  handleUpVoteClick(id) {
+    let upvoteUrl = `${TRUTHTREE_URI}/api/stories/` + id + '?type=UPVOTE';
+    console.log(upvoteUrl);
+    axios
+      .put(upvoteUrl)
+      .then(response => {
+        this.props.dispatch({
+          type: 'SELECTED_STORY',
+          storyDetails: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handleDownVoteClick(id) {
+    let downvoteUrl = `${TRUTHTREE_URI}/api/stories/` + id + '?type=DOWNVOTE';
+    console.log(downvoteUrl);
+    axios
+      .put(downvoteUrl)
+      .then(response => {
+        this.props.dispatch({
+          type: 'SELECTED_STORY',
+          storyDetails: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
   render() {
     if (this.props.storyDetails === 'none') {
       return (
@@ -65,16 +110,26 @@ class ViewStories extends Component {
               </Row>
               <Row className="view float-right">
                 <Col xs="auto">
-                  <i class="fa fa-thumbs-o-up thumb">
-                    {' '}
-                    <b>{this.props.storyDetails.upvote} </b>
-                  </i>
+                  <Button
+                    className="fa fa-thumbs-o-up thumb view-story"
+                    color="primary"
+                    onClick={() =>
+                      this.handleUpVoteClick(this.props.storyDetails.id)
+                    }
+                  >
+                    &nbsp;{this.props.storyDetails.upvote}
+                  </Button>
                 </Col>
                 <Col xs="auto">
-                  <i class="fa fa-thumbs-o-down thumb">
-                    {' '}
-                    <b>{this.props.storyDetails.downvote} </b>
-                  </i>
+                  <Button
+                    className="fa fa-thumbs-o-down thumb view-story"
+                    color="secondary"
+                    onClick={() =>
+                      this.handleDownVoteClick(this.props.storyDetails.id)
+                    }
+                  >
+                    &nbsp;{this.props.storyDetails.downvote}
+                  </Button>
                 </Col>
               </Row>
             </Media>
@@ -84,10 +139,15 @@ class ViewStories extends Component {
     }
   }
 }
+const mapDispatchToProps = dispatch => ({ dispatch });
+
 const mapStateToProps = state => {
   return {
     storyDetails: state.TrendingStoriesReducer.storyDetails
   };
 };
 
-export default connect(mapStateToProps)(ViewStories);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewStories);

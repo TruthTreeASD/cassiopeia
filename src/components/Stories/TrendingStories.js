@@ -15,8 +15,6 @@ class TrendingStories extends Component {
   constructor(props) {
     super(props);
     this.getStoryDetails = this.getStoryDetails.bind(this);
-    this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
-    this.handleDownVoteClick = this.handleDownVoteClick.bind(this);
     this.selectStory = this.selectStory.bind(this);
     this.state = {
       data: [],
@@ -32,7 +30,7 @@ class TrendingStories extends Component {
 
   componentDidMount() {
     axios
-      .get(`${TRUTHTREE_URI}/api/stories`)
+      .get(`${TRUTHTREE_URI}/api/stories/approved`)
       .then(response => {
         this.setState({
           data: response.data,
@@ -43,16 +41,6 @@ class TrendingStories extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
-
-  handleUpVoteClick(data) {
-    data.upvotes++;
-    //api call to change data
-  }
-
-  handleDownVoteClick(data) {
-    data.downvotes++;
-    //api call to change data
   }
 
   selectStory(data, index) {
@@ -109,20 +97,8 @@ class TrendingStories extends Component {
                   </div>
                 </Row>
                 <Row className="trending">
-                  <i
-                    onClick={this.handleUpVoteClick(data)}
-                    class="fa fa-thumbs-o-up thumb"
-                  >
-                    {' '}
-                    {data.upvote}{' '}
-                  </i>
-                  <i
-                    onClick={this.handleDownVoteClick(data)}
-                    class="fa fa-thumbs-o-down thumb"
-                  >
-                    {' '}
-                    {data.downvote}{' '}
-                  </i>
+                  <i className="fa fa-thumbs-o-up thumb"> {data.upvote} </i>
+                  <i className="fa fa-thumbs-o-down thumb"> {data.downvote} </i>
                 </Row>
               </Card>
             );
@@ -134,6 +110,7 @@ class TrendingStories extends Component {
 
   render() {
     const { loading } = this.state;
+
     if (loading) {
       return (
         <div className="d-flex justify-content-center">
@@ -157,6 +134,7 @@ class TrendingStories extends Component {
     }
   }
 }
+
 const mapDispatchToProps = dispatch => ({ dispatch });
 
 export default connect(mapDispatchToProps)(TrendingStories);
