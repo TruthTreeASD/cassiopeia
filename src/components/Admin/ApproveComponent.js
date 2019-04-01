@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import StoriesList from '../Stories/TrendingStories';
 import ViewAndApproveStory from '../Stories/ViewStories';
-import { Container, Card, Row, CardHeader, CardBody, Col } from 'reactstrap';
+import { Card, Row, CardHeader, CardBody, Col } from 'reactstrap';
 
 class ApproveComponent extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Card>

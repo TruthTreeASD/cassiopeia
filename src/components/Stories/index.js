@@ -8,17 +8,12 @@ import {
   CardHeader,
   Modal,
   ModalBody,
-  ModalFooter,
-  ModalHeader,
   Button
 } from 'reactstrap';
 
 import '../../styles/StoriesIndex.css';
 import ViewStories from './ViewStories';
 import TrendingStories from './TrendingStories';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import StoryCreationComponent from '../StoryCreationComponent';

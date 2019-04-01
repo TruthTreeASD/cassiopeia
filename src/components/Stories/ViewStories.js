@@ -12,11 +12,7 @@ import {
 import '../../styles/ViewStories.css';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2
-} from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 
 class ViewStories extends Component {
   contentHtml(data) {

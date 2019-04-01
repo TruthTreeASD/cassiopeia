@@ -5,11 +5,7 @@ import '../../styles/TrendingStories.css';
 import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 import { connect } from 'react-redux';
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2
-} from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 
 class TrendingStories extends Component {
   constructor(props) {

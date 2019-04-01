@@ -5,12 +5,8 @@ import {
   Label,
   Alert,
   Button,
-  Card,
   Jumbotron,
-  Row,
-  CardHeader,
-  CardBody,
-  Col
+  Row
 } from 'reactstrap';
 import bcrypt from 'bcryptjs';
 import '../../styles/ApproveIndex.css';
