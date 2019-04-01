@@ -29,3 +29,11 @@
 .pointer.card {
   margin-bottom: 10px;
 }
+
+.search-button {
+  float: right;
+}
+
+.search-button.btn.btn-primary {
+  color: rgba(13, 22, 38, 0.8) !important;
+}

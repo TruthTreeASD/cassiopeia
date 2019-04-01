@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Spinner, Card, Media, Badge, Row } from 'reactstrap';
+import { Spinner, Card, Media, Badge, Row, Button } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
+
 import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 import { connect } from 'react-redux';
@@ -138,20 +139,23 @@ class TrendingStories extends Component {
   };
   handleKeyPressSearch = key => {
     if (key.key == 'Enter') {
-      axios
-        .get(`${TRUTHTREE_URI}/api/stories`) // + this.state.searchBoxText or something
-        .then(response => {
-          this.setState({
-            data: response.data,
-            length: response.data.length,
-            loading: false
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      this.setState({ searchBoxText: '' });
+      this.submitSearch(this.state.data);
     }
+  };
+  submitSearch = event => {
+    axios
+      .get(`${TRUTHTREE_URI}/api/stories`) // + this.state.searchBoxText or something
+      .then(response => {
+        this.setState({
+          data: response.data,
+          length: response.data.length,
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    this.setState({ searchBoxText: '' });
   };
 
   render() {
@@ -172,6 +176,15 @@ class TrendingStories extends Component {
             onKeyPress={this.handleKeyPressSearch}
             placeholder="Search stories by title or tag name"
           />
+          <Button
+            className="search-button"
+            color="primary"
+            onClick={this.submitSearch}
+          >
+            Search
+          </Button>
+          <br />
+          <br />
           <div>
             <Media className="trending-height">{this.getStoryDetails()}</Media>
           </div>
