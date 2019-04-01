@@ -34,3 +34,8 @@
   border-bottom: 4px solid \9;
   content: '';
 }
+
+.react-bootstrap-table {
+  height: 200px;
+  overflow: scroll;
+}

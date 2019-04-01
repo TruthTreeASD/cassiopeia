@@ -42,13 +42,20 @@ class Map extends Component {
           animation: this.maps.Animation.DROP
         });
         const infowindow = new this.maps.InfoWindow({
-          content: `<div>${getSuggestionLabel(suggestion)}</div>`,
+          content: `
+            <div>
+              ${getSuggestionLabel(suggestion)}
+            </div>
+          `,
           maxWidth: 200
         });
         infowindow.open(this.map, marker);
         marker.addListener('click', () => {
           infowindow.open(this.map, marker);
           this.props.history.push(getSuggestionUrl(suggestion));
+        });
+        marker.addListener('mouseover', () => {
+          infowindow.open(this.map, marker);
         });
         return marker;
       });
