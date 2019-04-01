@@ -22,6 +22,7 @@ class TrendingStories extends Component {
       data: [],
       length: 0,
       bgColor: [],
+      searchBoxText: '',
       loading: true
     };
   }
@@ -132,6 +133,27 @@ class TrendingStories extends Component {
     );
   }
 
+  handleChangeSearch = event => {
+    this.setState({ searchBoxText: event });
+  };
+  handleKeyPressSearch = key => {
+    if (key.key == 'Enter') {
+      axios
+        .get(`${TRUTHTREE_URI}/api/stories`) // + this.state.searchBoxText or something
+        .then(response => {
+          this.setState({
+            data: response.data,
+            length: response.data.length,
+            loading: false
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.setState({ searchBoxText: '' });
+    }
+  };
+
   render() {
     const { loading } = this.state;
     if (loading) {
@@ -146,7 +168,8 @@ class TrendingStories extends Component {
           <input
             className="form-control searchBar"
             data-spy="affix"
-            // onChange={this.handleChangeSearch}
+            onChange={this.handleChangeSearch}
+            onKeyPress={this.handleKeyPressSearch}
             placeholder="Search stories by title or tag name"
           />
           <div>
