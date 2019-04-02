@@ -30,15 +30,23 @@ class ViewStories extends Component {
 
   handleUpVoteClick(id) {
     let upvoteUrl = `${TRUTHTREE_URI}/api/stories/` + id + '?type=UPVOTE';
-    console.log(upvoteUrl);
+
     axios
       .put(upvoteUrl)
       .then(response => {
+        //To modify the list of stories
+        var arr = this.props.TrendingStoriesReducer.approvedStories;
+        var indexOfId = _.findIndex(arr, { id: id });
+        arr.splice(indexOfId, 1, response.data);
+
+        var indexOfSelectedStory = _.findIndex(arr, {
+          id: this.props.TrendingStoriesReducer.userSelectedStory.id
+        });
+
         this.props.dispatch({
           type: 'USER_SELECTED_STORY',
-          approvedStories: this.props.TrendingStoriesReducer.approvedStories,
-          approvedStoriesLength: this.props.TrendingStoriesReducer
-            .approvedStoriesLength,
+          approvedStories: arr,
+          approvedStoriesLength: arr.length,
           color: this.props.TrendingStoriesReducer.color,
           userSelectedStory: response.data,
           loading: false
@@ -51,15 +59,17 @@ class ViewStories extends Component {
 
   handleDownVoteClick(id) {
     let downvoteUrl = `${TRUTHTREE_URI}/api/stories/` + id + '?type=DOWNVOTE';
-    console.log(downvoteUrl);
+
     axios
       .put(downvoteUrl)
       .then(response => {
+        var arr = this.props.TrendingStoriesReducer.approvedStories;
+        var indexOfId = _.findIndex(arr, { id: id });
+        arr.splice(indexOfId, 1, response.data);
         this.props.dispatch({
           type: 'USER_SELECTED_STORY',
-          approvedStories: this.props.TrendingStoriesReducer.approvedStories,
-          approvedStoriesLength: this.props.TrendingStoriesReducer
-            .approvedStoriesLength,
+          approvedStories: arr,
+          approvedStoriesLength: arr.length,
           color: this.props.TrendingStoriesReducer.color,
           userSelectedStory: response.data,
           loading: false
@@ -71,7 +81,7 @@ class ViewStories extends Component {
   }
 
   render() {
-    if (this.props.userSelectedStory === 'none') {
+    if (this.props.TrendingStoriesReducer.userSelectedStory === 'none') {
       return (
         <div>
           <Alert color="primary">
@@ -85,7 +95,9 @@ class ViewStories extends Component {
           <Media>
             <Media body>
               <Media heading>
-                <CardHeader>{this.props.userSelectedStory.title}</CardHeader>
+                <CardHeader>
+                  {this.props.TrendingStoriesReducer.userSelectedStory.title}
+                </CardHeader>
               </Media>
 
               <Row className="view">
@@ -93,13 +105,16 @@ class ViewStories extends Component {
                   <i> Tags: </i>
                 </Col>
                 <Col>
-                  {_.map(this.props.userSelectedStory.tags, tag => {
-                    return (
-                      <Badge className="tag view" color="secondary">
-                        {tag}
-                      </Badge>
-                    );
-                  })}
+                  {_.map(
+                    this.props.TrendingStoriesReducer.userSelectedStory.tags,
+                    tag => {
+                      return (
+                        <Badge className="tag view" color="secondary">
+                          {tag}
+                        </Badge>
+                      );
+                    }
+                  )}
                 </Col>
               </Row>
 
@@ -108,7 +123,9 @@ class ViewStories extends Component {
                   <i>Description:</i>
                 </Col>
                 <Col>
-                  {this.contentHtml(this.props.userSelectedStory.content)}
+                  {this.contentHtml(
+                    this.props.TrendingStoriesReducer.userSelectedStory.content
+                  )}
                 </Col>
               </Row>
 
@@ -118,7 +135,9 @@ class ViewStories extends Component {
                   <i>Author:</i>
                 </Col>
                 <Col>
-                  <b>{this.props.userSelectedStory.author}</b>
+                  <b>
+                    {this.props.TrendingStoriesReducer.userSelectedStory.author}
+                  </b>
                 </Col>
               </Row>
 
@@ -128,10 +147,13 @@ class ViewStories extends Component {
                     className="fa fa-thumbs-o-up thumb view-story"
                     color="primary"
                     onClick={() =>
-                      this.handleUpVoteClick(this.props.userSelectedStory.id)
+                      this.handleUpVoteClick(
+                        this.props.TrendingStoriesReducer.userSelectedStory.id
+                      )
                     }
                   >
-                    &nbsp;{this.props.userSelectedStory.upvote}
+                    &nbsp;
+                    {this.props.TrendingStoriesReducer.userSelectedStory.upvote}
                   </Button>
                 </Col>
                 <Col xs="auto">
@@ -139,10 +161,16 @@ class ViewStories extends Component {
                     className="fa fa-thumbs-o-down thumb view-story"
                     color="secondary"
                     onClick={() =>
-                      this.handleDownVoteClick(this.props.userSelectedStory.id)
+                      this.handleDownVoteClick(
+                        this.props.TrendingStoriesReducer.userSelectedStory.id
+                      )
                     }
                   >
-                    &nbsp;{this.props.userSelectedStory.downvote}
+                    &nbsp;
+                    {
+                      this.props.TrendingStoriesReducer.userSelectedStory
+                        .downvote
+                    }
                   </Button>
                 </Col>
               </Row>
@@ -157,8 +185,7 @@ const mapDispatchToProps = dispatch => ({ dispatch });
 
 const mapStateToProps = state => {
   return {
-    userSelectedStory: state.TrendingStoriesReducer.userSelectedStory,
-    approvedStories: state.TrendingStoriesReducer.approvedStories
+    TrendingStoriesReducer: state.TrendingStoriesReducer
   };
 };
 

@@ -31,6 +31,6 @@ export default (state = defaultState, action) => {
     default:
       return state;
   }
-  console.log(action);
+
   return state;
 };
