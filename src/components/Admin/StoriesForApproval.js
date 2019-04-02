@@ -60,6 +60,7 @@ class StoriesForApproval extends Component {
         color.push('white');
       }
     }
+
     this.setState({ bgColor: color });
     this.props.dispatch({
       type: 'ADMIN_SELECTED_STORY',
@@ -87,7 +88,9 @@ class StoriesForApproval extends Component {
               <Card
                 className="pointer"
                 onClick={() => this.selectStory(data, index)}
-                style={{ backgroundColor: this.state.bgColor[index] }}
+                style={{
+                  backgroundColor: this.props.AdminStoriesReducer.bgColor[index]
+                }}
               >
                 <Media heading className="trending">
                   {data.title}
