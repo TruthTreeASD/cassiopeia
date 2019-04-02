@@ -29,3 +29,12 @@
 .pointer.card {
   margin-bottom: 10px;
 }
+
+.view.row {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.myButton {
+  margin: 5px;
+}

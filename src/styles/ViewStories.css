@@ -18,3 +18,11 @@
   max-height: 600px;
   overflow: auto;
 }
+
+button.fa.fa-thumbs-o-up.thumb.view-story.btn.btn-primary {
+  color: black !important;
+}
+
+button.fa.fa-thumbs-o-down.thumb.view-story.btn.btn-secondary {
+  color: black !important;
+}

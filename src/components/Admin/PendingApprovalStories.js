@@ -7,7 +7,7 @@ import { TRUTHTREE_URI } from '../../constants';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
 
-class TrendingStories extends Component {
+class PendingApprovalStories extends Component {
   constructor(props) {
     super(props);
     this.getStoryDetails = this.getStoryDetails.bind(this);
@@ -23,20 +23,21 @@ class TrendingStories extends Component {
   }
 
   componentDidMount() {
-    //List of approved stories if not admin
+    //List of stories to be approved if admin
     axios
-      .get(`${TRUTHTREE_URI}/api/stories/approved`)
+      .get(`${TRUTHTREE_URI}/api/stories/pending`)
+      //Change the api call to unapproved stories
       .then(response => {
         let color = [];
         for (var i = 0; i < response.data.length; i++) {
           color.push('white');
         }
         this.props.dispatch({
-          type: 'APPROVED_STORIES_LIST',
-          approvedStories: response.data,
-          approvedStoriesLength: response.data.length,
-          color: color,
-          userSelectedStory: 'none',
+          type: 'STORIES_LIST',
+          adminStories: response.data,
+          adminStoriesLength: response.data.length,
+          bgColor: color,
+          adminSelectedStory: 'none',
           loading: false
         });
       })
@@ -47,30 +48,29 @@ class TrendingStories extends Component {
 
   //Highlighting the selected story panel & storing its details in redux
   selectStory(data, index) {
-    let bgColor = [];
+    let color = [];
     for (
       var i = 0;
-      i < this.props.TrendingStoriesReducer.approvedStoriesLength;
+      i < this.props.AdminStoriesReducer.adminStoriesLength;
       i++
     ) {
       if (i === index) {
-        bgColor.push('#f2f2f2');
+        color.push('#f2f2f2');
       } else {
-        bgColor.push('white');
+        color.push('white');
       }
     }
 
-    this.setState({ bgColor: bgColor });
+    this.setState({ bgColor: color });
     this.props.dispatch({
-      type: 'USER_SELECTED_STORY',
-      approvedStories: this.props.TrendingStoriesReducer.approvedStories,
-      approvedStoriesLength: this.props.TrendingStoriesReducer
-        .approvedStoriesLength,
-      color: bgColor,
-      userSelectedStory: data,
+      type: 'ADMIN_SELECTED_STORY',
+      adminStories: this.props.AdminStoriesReducer.adminStories,
+      adminStoriesLength: this.props.AdminStoriesReducer.adminStoriesLength,
+      bgColor: color,
+      adminSelectedStory: data,
       loading: false
     });
-    this.setState({ bgColor: this.props.TrendingStoriesReducer.color });
+    this.setState({ bgColor: this.props.AdminStoriesReducer.bgColor });
   }
 
   //Displaying each story
@@ -78,7 +78,7 @@ class TrendingStories extends Component {
     return (
       <Media body>
         {_.map(
-          _.sortBy(this.props.TrendingStoriesReducer.approvedStories, [
+          _.sortBy(this.props.AdminStoriesReducer.adminStories, [
             function(o) {
               return o.upvote - o.downvote;
             }
@@ -89,15 +89,12 @@ class TrendingStories extends Component {
                 className="pointer"
                 onClick={() => this.selectStory(data, index)}
                 style={{
-                  backgroundColor: this.props.TrendingStoriesReducer.color[
-                    index
-                  ]
+                  backgroundColor: this.props.AdminStoriesReducer.bgColor[index]
                 }}
               >
                 <Media heading className="trending">
                   {data.title}
                 </Media>
-
                 <Row className="trending">
                   {_.map(data.tags, tag => {
                     return (
@@ -112,15 +109,6 @@ class TrendingStories extends Component {
                     {this.contentHtml(_.truncate(data.content, { length: 50 }))}
                   </div>
                 </Row>
-                {!this.props.admin && (
-                  <Row className="trending">
-                    <i className="fa fa-thumbs-o-up thumb"> {data.upvote} </i>
-                    <i className="fa fa-thumbs-o-down thumb">
-                      {' '}
-                      {data.downvote}{' '}
-                    </i>
-                  </Row>
-                )}
               </Card>
             );
           }
@@ -131,7 +119,7 @@ class TrendingStories extends Component {
 
   render() {
     //Displaying spinner untill API fetches the data
-    if (this.props.TrendingStoriesReducer.loading) {
+    if (this.props.AdminStoriesReducer.loading) {
       return (
         <div className="d-flex justify-content-center">
           <Spinner className="align-self-center" color="secondary" size="sm" />
@@ -159,11 +147,11 @@ class TrendingStories extends Component {
 const mapDispatchToProps = dispatch => ({ dispatch });
 const mapStateToProps = state => {
   return {
-    TrendingStoriesReducer: state.TrendingStoriesReducer
+    AdminStoriesReducer: state.AdminStoriesReducer
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TrendingStories);
+)(PendingApprovalStories);

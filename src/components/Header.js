@@ -91,6 +91,11 @@ class Header extends Component {
                 About
               </NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/admin">
+                Admin
+              </NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>

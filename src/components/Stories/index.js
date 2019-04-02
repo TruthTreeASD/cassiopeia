@@ -8,17 +8,12 @@ import {
   CardHeader,
   Modal,
   ModalBody,
-  ModalFooter,
-  ModalHeader,
   Button
 } from 'reactstrap';
 
 import '../../styles/StoriesIndex.css';
-import ViewStories from './ViewStories';
+import ViewStories from './TrendingStoryDetail';
 import TrendingStories from './TrendingStories';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import StoryCreationComponent from '../StoryCreationComponent';
@@ -32,8 +27,6 @@ class Stories extends Component {
 
     this.modalToggle = this.modalToggle.bind(this);
   }
-
-  componentWillReceiveProps(nextProps) {}
 
   modalToggle() {
     this.setState({
