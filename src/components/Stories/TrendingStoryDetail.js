@@ -17,7 +17,7 @@ import { TRUTHTREE_URI } from '../../constants';
 import axios from 'axios/index';
 import { confirmAlert } from 'react-confirm-alert';
 
-class ViewStories extends Component {
+class TrendingStoryDetail extends Component {
   constructor(props) {
     super(props);
     this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
@@ -192,4 +192,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ViewStories);
+)(TrendingStoryDetail);

@@ -12,7 +12,7 @@ import {
 } from 'reactstrap';
 
 import '../../styles/StoriesIndex.css';
-import ViewStories from './ViewStories';
+import ViewStories from './TrendingStoryDetail';
 import TrendingStories from './TrendingStories';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
