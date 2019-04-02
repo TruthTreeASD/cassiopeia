@@ -55,9 +55,7 @@ class StoryCreationComponent extends Component {
 
   handleChangeTags = event => {
     let tag = event.target.value.toLowerCase();
-    tag = tag.replace('\\n', '!@#$%'); //I'm not happy about this.
-    tag = tag.replace('\\', ''); // Probably will need to add a way to allow "enter" to make new tag
-    tag = tag.replace('!@#$%', '\n');
+    tag = tag.replace('\\', '');
     tag = tag.replace('*', '');
     if (_.endsWith(tag, ' ')) {
       if (tag.length > 2) {
@@ -72,6 +70,16 @@ class StoryCreationComponent extends Component {
       }
     } else {
       this.setState({ tagsInputValue: tag });
+    }
+  };
+  handleKeyPressTags = key => {
+    if (key.key == 'Enter') {
+      if (this.state.tagsInputValue.length > 2) {
+        this.setState({
+          tagsField: [...this.state.tagsField, this.state.tagsInputValue], // This syntax will create new array and add the new tag to that array
+          tagsInputValue: ''
+        });
+      }
     }
   };
 
@@ -194,6 +202,7 @@ class StoryCreationComponent extends Component {
             id="tags-input-field"
             value={this.state.tagsInputValue}
             onChange={this.handleChangeTags}
+            onKeyPress={this.handleKeyPressTags}
             placeholder="Tags"
           />
           <Row>
