@@ -31,7 +31,7 @@ class TrendingStories extends Component {
     {
       !this.props.admin &&
         axios
-          .get(`${TRUTHTREE_URI}/api/stories`)
+          .get(`${TRUTHTREE_URI}/api/stories/approved`)
           .then(response => {
             this.setState({
               data: response.data,
@@ -48,7 +48,7 @@ class TrendingStories extends Component {
     {
       this.props.admin &&
         axios
-          .get(`${TRUTHTREE_URI}/api/stories`)
+          .get(`${TRUTHTREE_URI}/api/stories/pending`)
           //Change the api call to unapproved stories
           .then(response => {
             this.setState({
@@ -130,17 +130,8 @@ class TrendingStories extends Component {
                 </Row>
                 {!this.props.admin && (
                   <Row className="trending">
-                    <i
-                      onClick={this.handleUpVoteClick(data)}
-                      class="fa fa-thumbs-o-up thumb"
-                    >
-                      {' '}
-                      {data.upvote}{' '}
-                    </i>
-                    <i
-                      onClick={this.handleDownVoteClick(data)}
-                      class="fa fa-thumbs-o-down thumb"
-                    >
+                    <i className="fa fa-thumbs-o-up thumb"> {data.upvote} </i>
+                    <i className="fa fa-thumbs-o-down thumb">
                       {' '}
                       {data.downvote}{' '}
                     </i>

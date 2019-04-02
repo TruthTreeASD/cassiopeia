@@ -13,10 +13,77 @@ import '../../styles/ViewStories.css';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import ReactHtmlParser from 'react-html-parser';
+import { TRUTHTREE_URI } from '../../constants';
+import axios from 'axios/index';
+import { confirmAlert } from 'react-confirm-alert';
 
 class ViewStories extends Component {
+  constructor(props) {
+    super(props);
+    this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
+    this.handleDownVoteClick = this.handleDownVoteClick.bind(this);
+  }
+
   contentHtml(data) {
     return ReactHtmlParser(data);
+  }
+
+  handleUpVoteClick(id) {
+    let upvoteUrl = `${TRUTHTREE_URI}/api/stories/` + id + '?type=UPVOTE';
+    console.log(upvoteUrl);
+    axios
+      .put(upvoteUrl)
+      .then(response => {
+        this.props.dispatch({
+          type: 'SELECTED_STORY',
+          storyDetails: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handleDownVoteClick(id) {
+    let downvoteUrl = `${TRUTHTREE_URI}/api/stories/` + id + '?type=DOWNVOTE';
+    console.log(downvoteUrl);
+    axios
+      .put(downvoteUrl)
+      .then(response => {
+        this.props.dispatch({
+          type: 'SELECTED_STORY',
+          storyDetails: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handleApprove(id) {
+    axios
+      .get(`${TRUTHTREE_URI}/api/stories/approve?id=` + id)
+      .then(response => {
+        if (response.status === 200) {
+          confirmAlert({
+            title: 'Approved!',
+            message: 'The story has been approved',
+            buttons: [
+              {
+                label: 'OK'
+              }
+            ]
+          });
+        }
+      })
+
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handleDecline(id) {
+    //call api for decline
   }
 
   render() {
@@ -71,28 +138,52 @@ class ViewStories extends Component {
               {!this.props.admin && (
                 <Row className="view float-right">
                   <Col xs="auto">
-                    <i class="fa fa-thumbs-o-up thumb">
-                      {' '}
-                      <b>{this.props.storyDetails.upvote} </b>
-                    </i>
+                    <Button
+                      className="fa fa-thumbs-o-up thumb view-story"
+                      color="primary"
+                      onClick={() =>
+                        this.handleUpVoteClick(this.props.storyDetails.id)
+                      }
+                    >
+                      &nbsp;{this.props.storyDetails.upvote}
+                    </Button>
                   </Col>
                   <Col xs="auto">
-                    <i class="fa fa-thumbs-o-down thumb">
-                      {' '}
-                      <b>{this.props.storyDetails.downvote} </b>
-                    </i>
+                    <Button
+                      className="fa fa-thumbs-o-down thumb view-story"
+                      color="secondary"
+                      onClick={() =>
+                        this.handleDownVoteClick(this.props.storyDetails.id)
+                      }
+                    >
+                      &nbsp;{this.props.storyDetails.downvote}
+                    </Button>
                   </Col>
                 </Row>
               )}
               {this.props.admin && (
                 <Row className="view float-right">
                   <Col xs="auto">
-                    <Button className="myButton" color="primary" size="sm">
+                    <Button
+                      className="myButton"
+                      color="primary"
+                      size="sm"
+                      onClick={() =>
+                        this.handleApprove(this.props.storyDetails.id)
+                      }
+                    >
                       Approve
                     </Button>
                   </Col>
                   <Col xs="auto">
-                    <Button className="myButton" color="secondary" size="sm">
+                    <Button
+                      className="myButton"
+                      color="secondary"
+                      size="sm"
+                      onClick={() =>
+                        this.handleDecline(this.props.storyDetails.id)
+                      }
+                    >
                       Reject
                     </Button>
                   </Col>
@@ -105,10 +196,15 @@ class ViewStories extends Component {
     }
   }
 }
+const mapDispatchToProps = dispatch => ({ dispatch });
+
 const mapStateToProps = state => {
   return {
     storyDetails: state.TrendingStoriesReducer.storyDetails
   };
 };
 
-export default connect(mapStateToProps)(ViewStories);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewStories);
