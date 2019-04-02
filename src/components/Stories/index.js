@@ -28,8 +28,6 @@ class Stories extends Component {
     this.modalToggle = this.modalToggle.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {}
-
   modalToggle() {
     this.setState({
       modal: !this.state.modal
@@ -70,7 +68,7 @@ class Stories extends Component {
           <CardBody>
             <Row>
               <Col className="border-right">
-                <TrendingStories admin={this.props.admin} />
+                <TrendingStories />
               </Col>
               <Col>
                 <ViewStories />

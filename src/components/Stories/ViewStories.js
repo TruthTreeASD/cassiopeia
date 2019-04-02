@@ -35,8 +35,13 @@ class ViewStories extends Component {
       .put(upvoteUrl)
       .then(response => {
         this.props.dispatch({
-          type: 'SELECTED_STORY',
-          storyDetails: response.data
+          type: 'USER_SELECTED_STORY',
+          approvedStories: this.props.TrendingStoriesReducer.approvedStories,
+          approvedStoriesLength: this.props.TrendingStoriesReducer
+            .approvedStoriesLength,
+          color: this.props.TrendingStoriesReducer.color,
+          userSelectedStory: response.data,
+          loading: false
         });
       })
       .catch(error => {
@@ -51,8 +56,13 @@ class ViewStories extends Component {
       .put(downvoteUrl)
       .then(response => {
         this.props.dispatch({
-          type: 'SELECTED_STORY',
-          storyDetails: response.data
+          type: 'USER_SELECTED_STORY',
+          approvedStories: this.props.TrendingStoriesReducer.approvedStories,
+          approvedStoriesLength: this.props.TrendingStoriesReducer
+            .approvedStoriesLength,
+          color: this.props.TrendingStoriesReducer.color,
+          userSelectedStory: response.data,
+          loading: false
         });
       })
       .catch(error => {
@@ -60,34 +70,8 @@ class ViewStories extends Component {
       });
   }
 
-  handleApprove(id) {
-    axios
-      .get(`${TRUTHTREE_URI}/api/stories/approve?id=` + id)
-      .then(response => {
-        if (response.status === 200) {
-          confirmAlert({
-            title: 'Approved!',
-            message: 'The story has been approved',
-            buttons: [
-              {
-                label: 'OK'
-              }
-            ]
-          });
-        }
-      })
-
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
-  handleDecline(id) {
-    //call api for decline
-  }
-
   render() {
-    if (this.props.storyDetails === 'none') {
+    if (this.props.userSelectedStory === 'none') {
       return (
         <div>
           <Alert color="primary">
@@ -101,7 +85,7 @@ class ViewStories extends Component {
           <Media>
             <Media body>
               <Media heading>
-                <CardHeader>{this.props.storyDetails.title}</CardHeader>
+                <CardHeader>{this.props.userSelectedStory.title}</CardHeader>
               </Media>
 
               <Row className="view">
@@ -109,7 +93,7 @@ class ViewStories extends Component {
                   <i> Tags: </i>
                 </Col>
                 <Col>
-                  {_.map(this.props.storyDetails.tags, tag => {
+                  {_.map(this.props.userSelectedStory.tags, tag => {
                     return (
                       <Badge className="tag view" color="secondary">
                         {tag}
@@ -123,7 +107,9 @@ class ViewStories extends Component {
                 <Col xs="auto">
                   <i>Description:</i>
                 </Col>
-                <Col>{this.contentHtml(this.props.storyDetails.content)}</Col>
+                <Col>
+                  {this.contentHtml(this.props.userSelectedStory.content)}
+                </Col>
               </Row>
 
               <Row className="view">
@@ -132,63 +118,34 @@ class ViewStories extends Component {
                   <i>Author:</i>
                 </Col>
                 <Col>
-                  <b>{this.props.storyDetails.author}</b>
+                  <b>{this.props.userSelectedStory.author}</b>
                 </Col>
               </Row>
-              {!this.props.admin && (
-                <Row className="view float-right">
-                  <Col xs="auto">
-                    <Button
-                      className="fa fa-thumbs-o-up thumb view-story"
-                      color="primary"
-                      onClick={() =>
-                        this.handleUpVoteClick(this.props.storyDetails.id)
-                      }
-                    >
-                      &nbsp;{this.props.storyDetails.upvote}
-                    </Button>
-                  </Col>
-                  <Col xs="auto">
-                    <Button
-                      className="fa fa-thumbs-o-down thumb view-story"
-                      color="secondary"
-                      onClick={() =>
-                        this.handleDownVoteClick(this.props.storyDetails.id)
-                      }
-                    >
-                      &nbsp;{this.props.storyDetails.downvote}
-                    </Button>
-                  </Col>
-                </Row>
-              )}
-              {this.props.admin && (
-                <Row className="view float-right">
-                  <Col xs="auto">
-                    <Button
-                      className="myButton"
-                      color="primary"
-                      size="sm"
-                      onClick={() =>
-                        this.handleApprove(this.props.storyDetails.id)
-                      }
-                    >
-                      Approve
-                    </Button>
-                  </Col>
-                  <Col xs="auto">
-                    <Button
-                      className="myButton"
-                      color="secondary"
-                      size="sm"
-                      onClick={() =>
-                        this.handleDecline(this.props.storyDetails.id)
-                      }
-                    >
-                      Reject
-                    </Button>
-                  </Col>
-                </Row>
-              )}
+
+              <Row className="view float-right">
+                <Col xs="auto">
+                  <Button
+                    className="fa fa-thumbs-o-up thumb view-story"
+                    color="primary"
+                    onClick={() =>
+                      this.handleUpVoteClick(this.props.userSelectedStory.id)
+                    }
+                  >
+                    &nbsp;{this.props.userSelectedStory.upvote}
+                  </Button>
+                </Col>
+                <Col xs="auto">
+                  <Button
+                    className="fa fa-thumbs-o-down thumb view-story"
+                    color="secondary"
+                    onClick={() =>
+                      this.handleDownVoteClick(this.props.userSelectedStory.id)
+                    }
+                  >
+                    &nbsp;{this.props.userSelectedStory.downvote}
+                  </Button>
+                </Col>
+              </Row>
             </Media>
           </Media>
         </Card>
@@ -200,7 +157,8 @@ const mapDispatchToProps = dispatch => ({ dispatch });
 
 const mapStateToProps = state => {
   return {
-    storyDetails: state.TrendingStoriesReducer.storyDetails
+    userSelectedStory: state.TrendingStoriesReducer.userSelectedStory,
+    approvedStories: state.TrendingStoriesReducer.approvedStories
   };
 };
 

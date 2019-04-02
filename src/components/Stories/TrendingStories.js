@@ -11,14 +11,10 @@ class TrendingStories extends Component {
   constructor(props) {
     super(props);
     this.getStoryDetails = this.getStoryDetails.bind(this);
-    this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
-    this.handleDownVoteClick = this.handleDownVoteClick.bind(this);
     this.selectStory = this.selectStory.bind(this);
     this.state = {
-      data: [],
-      length: 0,
-      bgColor: [],
-      loading: true
+      InitialData: [],
+      bgColor: []
     };
   }
 
@@ -28,69 +24,53 @@ class TrendingStories extends Component {
 
   componentDidMount() {
     //List of approved stories if not admin
-    {
-      !this.props.admin &&
-        axios
-          .get(`${TRUTHTREE_URI}/api/stories/approved`)
-          .then(response => {
-            this.setState({
-              data: response.data,
-              length: response.data.length,
-              loading: false
-            });
-          })
-          .catch(error => {
-            console.log(error);
-          });
-    }
-
-    //List of stories to be approved if admin
-    {
-      this.props.admin &&
-        axios
-          .get(`${TRUTHTREE_URI}/api/stories/pending`)
-          //Change the api call to unapproved stories
-          .then(response => {
-            this.setState({
-              data: response.data,
-              length: response.data.length,
-              loading: false
-            });
-          })
-          .catch(error => {
-            console.log(error);
-          });
-    }
-  }
-
-  handleUpVoteClick(data) {
-    data.upvotes++;
-    //api call to change data
-  }
-
-  handleDownVoteClick(data) {
-    data.downvotes++;
-    //api call to change data
+    axios
+      .get(`${TRUTHTREE_URI}/api/stories/approved`)
+      .then(response => {
+        let color = [];
+        for (var i = 0; i < response.data.length; i++) {
+          color.push('white');
+        }
+        this.props.dispatch({
+          type: 'APPROVED_STORIES_LIST',
+          approvedStories: response.data,
+          approvedStoriesLength: response.data.length,
+          color: color,
+          userSelectedStory: 'none',
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   //Highlighting the selected story panel & storing its details in redux
   selectStory(data, index) {
-    let color = [];
-    for (var i = 0; i < this.state.length; i++) {
+    let bgColor = [];
+    for (
+      var i = 0;
+      i < this.props.TrendingStoriesReducer.approvedStoriesLength;
+      i++
+    ) {
       if (i === index) {
-        color.push('#f2f2f2');
+        bgColor.push('#f2f2f2');
       } else {
-        color.push('white');
+        bgColor.push('white');
       }
     }
-    this.setState({
-      bgColor: color
-    });
-
+    console.log(bgColor);
+    this.setState({ bgColor: bgColor });
     this.props.dispatch({
-      type: 'SELECTED_STORY',
-      storyDetails: data
+      type: 'USER_SELECTED_STORY',
+      approvedStories: this.props.TrendingStoriesReducer.approvedStories,
+      approvedStoriesLength: this.props.TrendingStoriesReducer
+        .approvedStoriesLength,
+      color: bgColor,
+      userSelectedStory: data,
+      loading: false
     });
+    this.setState({ bgColor: this.props.TrendingStoriesReducer.color });
   }
 
   //Displaying each story
@@ -98,7 +78,7 @@ class TrendingStories extends Component {
     return (
       <Media body>
         {_.map(
-          _.sortBy(this.state.data, [
+          _.sortBy(this.props.TrendingStoriesReducer.approvedStories, [
             function(o) {
               return o.upvote - o.downvote;
             }
@@ -108,7 +88,11 @@ class TrendingStories extends Component {
               <Card
                 className="pointer"
                 onClick={() => this.selectStory(data, index)}
-                style={{ backgroundColor: this.state.bgColor[index] }}
+                style={{
+                  backgroundColor: this.props.TrendingStoriesReducer.color[
+                    index
+                  ]
+                }}
               >
                 <Media heading className="trending">
                   {data.title}
@@ -146,9 +130,8 @@ class TrendingStories extends Component {
   }
 
   render() {
-    const { loading } = this.state;
     //Displaying spinner untill API fetches the data
-    if (loading) {
+    if (this.props.TrendingStoriesReducer.loading) {
       return (
         <div className="d-flex justify-content-center">
           <Spinner className="align-self-center" color="secondary" size="sm" />
@@ -174,5 +157,13 @@ class TrendingStories extends Component {
   }
 }
 const mapDispatchToProps = dispatch => ({ dispatch });
+const mapStateToProps = state => {
+  return {
+    TrendingStoriesReducer: state.TrendingStoriesReducer
+  };
+};
 
-export default connect(mapDispatchToProps)(TrendingStories);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TrendingStories);
