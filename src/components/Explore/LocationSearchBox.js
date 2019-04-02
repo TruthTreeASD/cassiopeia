@@ -13,16 +13,9 @@ import {
 import { getSuggestionLabel, getSuggestionUrl } from './common';
 
 const ENDPOINT = '/api/search';
-
-const renderSuggestionsContainer = ({ containerProps, children }) => {
-  const style = {
-    height: '5em'
-  };
-  return (
-    <div style={style} {...containerProps}>
-      {children}
-    </div>
-  );
+const searchBoxStyle = {
+  zIndex: 1,
+  position: 'relative'
 };
 
 const renderSuggestion = suggestion => {
@@ -36,9 +29,6 @@ const renderSuggestion = suggestion => {
 class LocationSearchBox extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      suggestions: []
-    };
     this.debouncedhandleSuggestionsFetchRequested = debounce(
       this.handleSuggestionsFetchRequested,
       250
@@ -50,12 +40,6 @@ class LocationSearchBox extends Component {
       this.inputRef.focus();
     }
   }
-
-  storeInputRef = searchBox => {
-    if (searchBox !== null) {
-      this.input = searchBox.input;
-    }
-  };
 
   handleInputChange = (_, { newValue }) => {
     this.props.dispatch(updateValue(newValue));
@@ -91,31 +75,22 @@ class LocationSearchBox extends Component {
     };
 
     return (
-      <Container>
-        <Row>
-          <Col>
-            <Autosuggest
-              ref={this.storeInputRef}
-              theme={{
-                container: 'position-relative',
-                suggestionsList:
-                  'list-group position-absolute w-100 overflow-y',
-                suggestion: 'list-group-item'
-              }}
-              suggestions={suggestions}
-              onSuggestionsFetchRequested={
-                this.debouncedhandleSuggestionsFetchRequested
-              }
-              onSuggestionSelected={() => dispatch(updateValue(value))}
-              getSuggestionValue={getSuggestionLabel}
-              renderInputComponent={this.renderInputComponent}
-              renderSuggestionsContainer={renderSuggestionsContainer}
-              renderSuggestion={renderSuggestion}
-              inputProps={inputProps}
-            />
-          </Col>
-        </Row>
-      </Container>
+      <Autosuggest
+        theme={{
+          container: searchBoxStyle,
+          suggestionsList: 'list-group position-absolute w-100 overflow-y',
+          suggestion: 'list-group-item'
+        }}
+        suggestions={suggestions}
+        onSuggestionsFetchRequested={
+          this.debouncedhandleSuggestionsFetchRequested
+        }
+        onSuggestionSelected={() => dispatch(updateValue(value))}
+        getSuggestionValue={getSuggestionLabel}
+        renderInputComponent={this.renderInputComponent}
+        renderSuggestion={renderSuggestion}
+        inputProps={inputProps}
+      />
     );
   }
 }
