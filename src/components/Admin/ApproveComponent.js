@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import StoriesList from '../Stories/TrendingStories';
-import ViewAndApproveStory from '../Stories/ViewStories';
+import StoriesList from './StoriesForApproval';
+import ViewAndApproveStory from './ViewStory';
 import { Card, Row, CardHeader, CardBody, Col } from 'reactstrap';
 
 class ApproveComponent extends Component {
@@ -13,10 +13,10 @@ class ApproveComponent extends Component {
         <CardBody>
           <Row>
             <Col className="border-right">
-              <StoriesList admin={true} />
+              <StoriesList />
             </Col>
             <Col className="border-right">
-              <ViewAndApproveStory admin={true} />
+              <ViewAndApproveStory />
             </Col>
           </Row>
         </CardBody>
