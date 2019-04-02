@@ -39,11 +39,15 @@ class Header extends Component {
     collapseOpen: false
   };
 
+  shouldShowSearchBox = () => {
+    const { searchPhrase, location } = this.props;
+    return location.pathname !== '/advance' && searchPhrase !== '';
+  };
+
   render() {
-    const { searchPhrase } = this.props;
     const searchBoxContainerClasses = classNames({
       'justify-content-center': true,
-      'd-none': searchPhrase === ''
+      'd-none': !this.shouldShowSearchBox()
     });
     return (
       <Navbar style={navbarStyle} expand="md" className="fixed-top">
