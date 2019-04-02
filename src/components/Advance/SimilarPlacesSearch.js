@@ -14,6 +14,7 @@ import {
 } from 'reactstrap';
 import Select from 'react-select';
 import LocationSearchBox from '../Explore/LocationSearchBox';
+import CommonAttributes from './CommonAttributes';
 
 const options = [
   { value: 'Income_Taxes_Total', label: 'Income Taxes - Total' },
@@ -113,12 +114,13 @@ class SimilarPlacesSearch extends Component {
                 </Label>
               </Col>
               <Col lg="4" sm="12" md="4">
-                <Select
-                  value={this.state.selectedOption}
-                  onChange={this.handleChangeAttribute}
-                  options={options}
-                  isMulti="true"
-                />
+                {/*<Select*/}
+                {/*value={this.state.selectedOption}*/}
+                {/*onChange={this.handleChangeAttribute}*/}
+                {/*options={options}*/}
+                {/*isMulti="true"*/}
+                {/*/>*/}
+                <CommonAttributes />
               </Col>
               <Col lg="2" sm="12" md="2">
                 <Label for="year">
