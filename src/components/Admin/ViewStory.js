@@ -72,7 +72,7 @@ class ViewStory extends Component {
   }
 
   render() {
-    if (this.props.adminSelectedStory == 'none') {
+    if (this.props.adminSelectedStory === 'none') {
       return (
         <div>
           <Alert color="primary">

@@ -17,7 +17,7 @@ export default (state = defaultState, action) => {
         adminSelectedStory: action.adminSelectedStory,
         loading: action.loading
       };
-
+      break;
     case 'ADMIN_SELECTED_STORY':
       state = {
         ...state,

@@ -43,7 +43,7 @@ class Approve extends Component {
   render() {
     return (
       <Container className="stories-page">
-        {this.state.isFirstLoad && (
+        {!this.state.isAuthenticated && (
           <Jumbotron className="float-center">
             <FormGroup className="mb-2 mr-sm-2 mb-sm-0 ">
               {!this.state.isFirstLoad && !this.state.isAuthenticated && (

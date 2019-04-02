@@ -74,7 +74,6 @@ class StoriesForApproval extends Component {
 
   //Displaying each story
   getStoryDetails() {
-    let color = this.props.AdminStoriesReducer.bgColor;
     return (
       <Media body>
         {_.map(
