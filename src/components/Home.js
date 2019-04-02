@@ -27,14 +27,15 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      openStory: false
     };
 
     this.modalToggle = this.modalToggle.bind(this);
   }
+
   modalToggle() {
     this.setState({
-      modal: !this.state.modal
+      openStory: !this.state.openStory
     });
   }
   render() {
@@ -54,7 +55,7 @@ class Home extends Component {
                 >
                   Create Story
                 </Button>{' '}
-                <Modal isOpen={this.state.modal} toggle={this.modalToggle}>
+                <Modal isOpen={this.state.openStory} toggle={this.modalToggle}>
                   <ModalBody className="backgroundWhite">
                     <StoryCreationComponent />
                   </ModalBody>

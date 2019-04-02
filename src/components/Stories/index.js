@@ -27,17 +27,20 @@ class Stories extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      openStory: false
     };
 
     this.modalToggle = this.modalToggle.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {}
+  componentWillReceiveProps(nextProps) {
+    console.log('it worked');
+    this.setState({ openStory: nextProps.openStory });
+  }
 
   modalToggle() {
     this.setState({
-      modal: !this.state.modal
+      openStory: !this.state.openStory
     });
   }
 
@@ -57,7 +60,7 @@ class Stories extends Component {
                 >
                   Create Story
                 </Button>{' '}
-                <Modal isOpen={this.state.modal} toggle={this.modalToggle}>
+                <Modal isOpen={this.state.openStory} toggle={this.modalToggle}>
                   <ModalBody className="backgroundWhite">
                     <StoryCreationComponent />
                   </ModalBody>

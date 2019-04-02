@@ -83,8 +83,7 @@ class StoryCreationComponent extends Component {
   };
 
   submitForm() {
-    //  if (!_.endsWith(window.location.href, 'stories')) {
-    //   console.log(window.location.href);
+    /*
 
     if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
       confirmAlert({
@@ -132,30 +131,32 @@ class StoryCreationComponent extends Component {
         ]
       });
     }
-    /* } else {
-      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
-        alert('Story text is too long.');
-        return;
-      } else if (this.state.titleField.length < 1) {
-        alert('Please enter a story title.');
-        return;
-      } else {
-        axios
-          .post(`${TRUTHTREE_URI}/api/stories`, {
-            author: this.state.authorField,
-            tags:
-              this.state.tagsField.length > 0
-                ? this.state.tagsField
-                : [this.state.tagsInputValue],
-            content: this.state.storyField
-          })
-          .then(function(response) {
-            console.log('saved successfully' + response);
-          }); 
-        alert(
-          'Story submitted! Feel free to add a new one, or close the window.'
-        );
-      }*/
+     } else {*/
+    if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+      alert('Story text is too long.');
+      return;
+    } else if (this.state.titleField.length < 1) {
+      alert('Please enter a story title.');
+      return;
+    } else {
+      axios
+        .post(`${TRUTHTREE_URI}/api/stories`, {
+          author: this.state.authorField,
+          tags:
+            this.state.tagsField.length > 0
+              ? this.state.tagsField
+              : [this.state.tagsInputValue],
+          content: this.state.storyField
+        })
+        .then(function(response) {
+          console.log('saved successfully' + response);
+        });
+      alert('Story submitted!');
+      this.props.dispatch({
+        type: 'STORY_CLOSED',
+        openStory: false
+      });
+    }
   }
 
   removeTag = tag => {
@@ -246,11 +247,6 @@ class StoryCreationComponent extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
-
 const mapDispatchToProps = dispatch => ({ dispatch });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(StoryCreationComponent));
+export default connect(mapDispatchToProps)(StoryCreationComponent);

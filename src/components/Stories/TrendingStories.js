@@ -34,7 +34,7 @@ class TrendingStories extends Component {
 
   componentDidMount() {
     axios
-      .get(`${TRUTHTREE_URI}/api/stories`)
+      .get(`${TRUTHTREE_URI}/api/stories/approved`)
       .then(response => {
         this.setState({
           data: response.data,
