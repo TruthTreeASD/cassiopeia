@@ -134,17 +134,17 @@ class TrendingStories extends Component {
       </Media>
     );
   }
+  filterOutLocalStories = stories => {};
 
   handleChangeSearch = event => {
     let search = event.target.value.toLowerCase();
     search = search.replace('\\', '');
     search = search.replace('*', '');
-    console.log(search + '\n');
-    console.log(_.split(search, ' ', 9999));
     this.setState({
       searchBoxText: search,
       searchedTags: _.split(search, ' ', 9999)
     });
+    //api call for tags filterred by searchedTags here
   };
   handleKeyPressSearch = key => {
     if (key.key == 'Enter') {
