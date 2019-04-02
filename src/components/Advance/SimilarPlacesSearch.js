@@ -9,9 +9,11 @@ import {
   Col,
   CardBody,
   CardHeader,
+  CardSubtitle,
   Button
 } from 'reactstrap';
 import Select from 'react-select';
+import LocationSearchBox from '../Explore/LocationSearchBox';
 
 const options = [
   { value: 'Income_Taxes_Total', label: 'Income Taxes - Total' },
@@ -29,19 +31,6 @@ for (let i = 2016; i > 1966; i--) {
     label: i
   });
 }
-
-let numberOfLocationsList = [
-  { value: '1', label: '1' },
-  { value: '2', label: '2' },
-  { value: '3', label: '3' },
-  { value: '4', label: '4' },
-  { value: '5', label: '5' },
-  { value: '6', label: '6' },
-  { value: '7', label: '7' },
-  { value: '8', label: '8' },
-  { value: '9', label: '9' },
-  { value: '10', label: '1' }
-];
 
 const normalizationList = [
   { value: 'Gross', label: 'Gross' },
@@ -84,25 +73,50 @@ class SimilarPlacesSearch extends Component {
     this.setState({ yearSelectedMax });
   };
 
+  componentDidMount() {}
+
   render() {
     return (
       <Card>
-        <CardHeader>Search for locations with similar trend</CardHeader>
+        <CardHeader>
+          <h5>Find Similar locations</h5>
+        </CardHeader>
         <CardBody>
+          {/*<div style={{"padding": "20px"}}>*/}
+          {/*<CardSubtitle>Search for the peer locations of the selected location having similar trends*/}
+          {/*for popular attributes over the years.</CardSubtitle>*/}
+          {/*</div>*/}
           <Form>
             <FormGroup row>
-              <Label for="locationOfInterest">Location of Interest:</Label>
-              <Col>
-                <Input
-                  id="locationOfInterest"
-                  placeholder="Search for location"
+              <Col lg="2" sm="12" md="2">
+                <Label for="locationOfInterest">
+                  <strong>Location of Interest</strong>
+                </Label>
+              </Col>
+              <Col lg="4" sm="12" md="4">
+                <LocationSearchBox />
+              </Col>
+              <Col lg="2" sm="12" md="2">
+                <Label for="normalizationType">
+                  <strong>Normalization</strong>
+                </Label>
+              </Col>
+              <Col lg="4" sm="12" md="4">
+                <Select
+                  value={this.state.normalization}
+                  onChange={this.handleChangeNormalization}
+                  options={normalizationList}
                 />
               </Col>
             </FormGroup>
 
             <FormGroup row>
-              <Label for="selectedAttribues">Selected attributes :</Label>
-              <Col>
+              <Col lg="2" sm="12" md="2">
+                <Label for="selectedAttribues">
+                  <strong>Selected attributes</strong>
+                </Label>
+              </Col>
+              <Col lg="4" sm="12" md="4">
                 <Select
                   value={this.state.selectedOption}
                   onChange={this.handleChangeAttribute}
@@ -110,42 +124,28 @@ class SimilarPlacesSearch extends Component {
                   isMulti="true"
                 />
               </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Label for="numberOfLocations">
-                {' '}
-                Number of similar locations:
-              </Label>
-              <Col xs="1">
-                <Select
-                  value={this.state.numberOfLocations}
-                  onChange={this.handleChangeNumber}
-                  options={numberOfLocationsList}
-                />
+              <Col lg="2" sm="12" md="2">
+                <Label for="year">
+                  <strong>Year</strong>
+                </Label>
               </Col>
-
-              <Label for="normalizationType"> Normalization :</Label>
-              <Col xs="2">
-                <Select
-                  value={this.state.normalization}
-                  onChange={this.handleChangeNormalization}
-                  options={normalizationList}
-                />
-              </Col>
-
-              <Label for="year">Year:</Label>
-              <Col xs="1">
-                {' '}
+              <Col lg="4" sm="12" md="4">
                 <Select
                   value={this.state.yearSelectedMin}
                   onChange={this.handleChangeYearMin}
                   options={allYears}
-                />{' '}
+                />
               </Col>
             </FormGroup>
 
-            <Button className="float-right">Search</Button>
+            <div style={{ paddingTop: '10px' }}>
+              <FormGroup row className="justify-content-center">
+                <Button className="float-right">
+                  <i className="fa fa-search" style={{ padding: '5px' }} />
+                  Search
+                </Button>
+              </FormGroup>
+            </div>
           </Form>
         </CardBody>
       </Card>
