@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { Media, Row, Badge, Alert } from 'reactstrap';
+import { Media, Row, Badge, Alert, Card, Col, CardHeader } from 'reactstrap';
 import '../../styles/ViewStories.css';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import ReactHtmlParser, {
+  processNodes,
+  convertNodeToElement,
+  htmlparser2
+} from 'react-html-parser';
 
 class ViewStories extends Component {
-  constructor(props) {
-    super(props);
-    this.toggle = this.toggle.bind(this);
-    this.state = { collapse: false };
-  }
-
-  toggle() {
-    this.setState(state => ({ collapse: !state.collapse }));
+  contentHtml(data) {
+    return ReactHtmlParser(data);
   }
 
   render() {
@@ -26,44 +25,61 @@ class ViewStories extends Component {
       );
     } else {
       return (
-        <Media>
-          <Media body>
-            <Media heading className="view">
-              {this.props.storyDetails.title}
+        <Card className="view-story">
+          <Media>
+            <Media body>
+              <Media heading>
+                <CardHeader>{this.props.storyDetails.title}</CardHeader>
+              </Media>
+
+              <Row className="view">
+                <Col xs="auto" style={{ marginTop: '5px' }}>
+                  <i> Tags: </i>
+                </Col>
+                <Col>
+                  {_.map(this.props.storyDetails.tags, tag => {
+                    return (
+                      <Badge className="tag view" color="secondary">
+                        {tag}
+                      </Badge>
+                    );
+                  })}
+                </Col>
+              </Row>
+
+              <Row className="view">
+                <Col xs="auto">
+                  <i>Description:</i>
+                </Col>
+                <Col>{this.contentHtml(this.props.storyDetails.content)}</Col>
+              </Row>
+
+              <Row className="view">
+                <Col xs="auto">
+                  {' '}
+                  <i>Author:</i>
+                </Col>
+                <Col>
+                  <b>{this.props.storyDetails.author}</b>
+                </Col>
+              </Row>
+              <Row className="view float-right">
+                <Col xs="auto">
+                  <i class="fa fa-thumbs-o-up thumb">
+                    {' '}
+                    <b>{this.props.storyDetails.upvote} </b>
+                  </i>
+                </Col>
+                <Col xs="auto">
+                  <i class="fa fa-thumbs-o-down thumb">
+                    {' '}
+                    <b>{this.props.storyDetails.downvote} </b>
+                  </i>
+                </Col>
+              </Row>
             </Media>
-            <Row className="view">
-              Tags:
-              {_.map(this.props.storyDetails.tags, tag => {
-                return (
-                  <Badge className="tag" color="secondary">
-                    {tag}
-                  </Badge>
-                );
-              })}
-            </Row>
-            <Row className="view">
-              Description:
-              <br />
-              {this.props.storyDetails.content}
-            </Row>
-            <Row className="view">
-              Author:{'     '}
-              {this.props.storyDetails.authorName}
-              <br />
-              <br />
-            </Row>
-            <Row className="view">
-              <i class="fa fa-thumbs-o-up thumb">
-                {' '}
-                {this.props.storyDetails.upvote}{' '}
-              </i>
-              <i class="fa fa-thumbs-o-down thumb">
-                {' '}
-                {this.props.storyDetails.downvote}{' '}
-              </i>
-            </Row>
           </Media>
-        </Media>
+        </Card>
       );
     }
   }

@@ -79,13 +79,9 @@ class SimilarPlacesSearch extends Component {
     return (
       <Card>
         <CardHeader>
-          <h5>Find Similar locations</h5>
+          <h5>Similar locations Search</h5>
         </CardHeader>
         <CardBody>
-          {/*<div style={{"padding": "20px"}}>*/}
-          {/*<CardSubtitle>Search for the peer locations of the selected location having similar trends*/}
-          {/*for popular attributes over the years.</CardSubtitle>*/}
-          {/*</div>*/}
           <Form>
             <FormGroup row>
               <Col lg="2" sm="12" md="2">
