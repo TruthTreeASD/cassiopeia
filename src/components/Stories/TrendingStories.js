@@ -59,7 +59,7 @@ class TrendingStories extends Component {
         bgColor.push('white');
       }
     }
-    console.log(bgColor);
+
     this.setState({ bgColor: bgColor });
     this.props.dispatch({
       type: 'USER_SELECTED_STORY',
