@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import StoriesList from './StoriesForApproval';
-import ViewAndApproveStory from './ViewStory';
+import StoriesList from './PendingApprovalStories';
+import ViewAndApproveStory from './StoryDetails';
 import { Card, Row, CardHeader, CardBody, Col } from 'reactstrap';
 
-class ApproveComponent extends Component {
+class AdminHome extends Component {
   render() {
     return (
       <Card>
@@ -25,4 +25,4 @@ class ApproveComponent extends Component {
   }
 }
 
-export default ApproveComponent;
+export default AdminHome;

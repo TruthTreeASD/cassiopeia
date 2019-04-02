@@ -17,7 +17,7 @@ import { TRUTHTREE_URI } from '../../constants';
 import axios from 'axios/index';
 import { confirmAlert } from 'react-confirm-alert';
 
-class ViewStory extends Component {
+class StoryDetails extends Component {
   constructor(props) {
     super(props);
     this.handleApprove = this.handleApprove.bind(this);
@@ -168,4 +168,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ViewStory);
+)(StoryDetails);

@@ -10,7 +10,7 @@ import {
 } from 'reactstrap';
 import bcrypt from 'bcryptjs';
 import '../../styles/ApproveIndex.css';
-import ApproveComponent from './ApproveComponent';
+import AdminHome from './AdminHome';
 
 class Approve extends Component {
   constructor(props) {
@@ -80,7 +80,7 @@ class Approve extends Component {
             </FormGroup>
           </Jumbotron>
         )}
-        {this.state.isAuthenticated && <ApproveComponent />}
+        {this.state.isAuthenticated && <AdminHome />}
       </Container>
     );
   }

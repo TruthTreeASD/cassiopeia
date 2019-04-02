@@ -7,7 +7,7 @@ import { TRUTHTREE_URI } from '../../constants';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
 
-class StoriesForApproval extends Component {
+class PendingApprovalStories extends Component {
   constructor(props) {
     super(props);
     this.getStoryDetails = this.getStoryDetails.bind(this);
@@ -154,4 +154,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(StoriesForApproval);
+)(PendingApprovalStories);
