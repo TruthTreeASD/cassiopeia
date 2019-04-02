@@ -134,7 +134,7 @@ class TrendingStories extends Component {
       </Media>
     );
   }
-  filterOutLocalStories = stories => {};
+  filterOutStories = stories => {};
 
   handleChangeSearch = event => {
     let search = event.target.value.toLowerCase();
@@ -144,14 +144,16 @@ class TrendingStories extends Component {
       searchBoxText: search,
       searchedTags: _.split(search, ' ', 9999)
     });
-    //api call for tags filterred by searchedTags here
+    this.submitSearch(this.state.data);
   };
   handleKeyPressSearch = key => {
     if (key.key == 'Enter') {
-      this.submitSearch(this.state.data);
+      this.submitSearch(...this.state.searchedTags, this.state.searchBoxText);
     }
   };
   submitSearch = event => {
+    //api call for tags filterred by searchedTags here
+
     axios
       .get(`${TRUTHTREE_URI}/api/stories`) // + this.state.searchBoxText or something
       .then(response => {
