@@ -24,6 +24,7 @@ class TrendingStories extends Component {
       length: 0,
       bgColor: [],
       searchBoxText: '',
+      searchedTags: [],
       loading: true
     };
   }
@@ -135,7 +136,15 @@ class TrendingStories extends Component {
   }
 
   handleChangeSearch = event => {
-    this.setState({ searchBoxText: event });
+    let search = event.target.value.toLowerCase();
+    search = search.replace('\\', '');
+    search = search.replace('*', '');
+    console.log(search + '\n');
+    console.log(_.split(search, ' ', 9999));
+    this.setState({
+      searchBoxText: search,
+      searchedTags: _.split(search, ' ', 9999)
+    });
   };
   handleKeyPressSearch = key => {
     if (key.key == 'Enter') {
@@ -176,7 +185,8 @@ class TrendingStories extends Component {
             onKeyPress={this.handleKeyPressSearch}
             placeholder="Search stories by title or tag name"
           />
-          <Button
+          {/* this is a working button in case we want a search button
+               <Button
             className="search-button"
             color="primary"
             onClick={this.submitSearch}
@@ -184,7 +194,7 @@ class TrendingStories extends Component {
             Search
           </Button>
           <br />
-          <br />
+          <br />*/}
           <div>
             <Media className="trending-height">{this.getStoryDetails()}</Media>
           </div>
