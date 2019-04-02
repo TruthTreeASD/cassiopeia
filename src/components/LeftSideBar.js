@@ -117,6 +117,7 @@ class LeftSideBar extends Component {
   handleChangeSearch = event => {
     let searchString = event.target.value.toLowerCase();
     searchString = searchString.replace('\\', '');
+    searchString = searchString.replace('/', '');
     searchString = searchString.replace('*', '');
 
     this.setState({ searchedString: searchString });

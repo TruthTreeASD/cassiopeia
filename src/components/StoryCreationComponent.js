@@ -40,14 +40,14 @@ class StoryCreationComponent extends Component {
   }
 
   handleChangeAuthor = event => {
-    let author = event.target.value.toLowerCase();
+    let author = event.target.value;
     author = author.replace('\\', '');
     author = author.replace('*', '');
     this.setState({ authorField: author });
   };
 
   handleChangeTitle = event => {
-    let title = event.target.value.toLowerCase();
+    let title = event.target.value;
     title = title.replace('\\', '');
     title = title.replace('*', '');
     this.setState({ titleField: title });
