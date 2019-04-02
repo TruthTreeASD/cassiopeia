@@ -6,7 +6,8 @@ import {
   Alert,
   Button,
   Jumbotron,
-  Row
+  Row,
+  Input
 } from 'reactstrap';
 import bcrypt from 'bcryptjs';
 import '../../styles/ApproveIndex.css';
@@ -63,8 +64,8 @@ class Approve extends Component {
                     </Label>
                   </Row>
                   <Row style={{ paddingLeft: '25px' }}>
-                    <input
-                      ref={this.password}
+                    <Input
+                      innerRef={this.password}
                       type="password"
                       name="password"
                       id="adminPassword"
