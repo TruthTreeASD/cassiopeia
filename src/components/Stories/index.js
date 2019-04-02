@@ -33,9 +33,11 @@ class Stories extends Component {
     this.modalToggle = this.modalToggle.bind(this);
   }
 
+  //Here is the issue: I'd like to update the openStory to "false" when a person submits
+  //a story from the StorCreationComponent.
   componentWillReceiveProps(nextProps) {
     console.log('it worked');
-    this.setState({ openStory: nextProps.openStory });
+    //this.setState({ openStory: nextProps.openStory });
   }
 
   modalToggle() {
