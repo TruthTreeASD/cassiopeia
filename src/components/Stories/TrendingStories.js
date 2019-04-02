@@ -176,7 +176,7 @@ class TrendingStories extends Component {
         </div>
       );
     }
-    //Dislaying list of stories
+    //Dislaying list of stories + search box
     else {
       return (
         <div>
@@ -187,7 +187,8 @@ class TrendingStories extends Component {
             onKeyPress={this.handleKeyPressSearch}
             placeholder="Search stories by title or tag name"
           />
-          {/* this is a working button in case we want a search button
+          {/* this is a working button in case we want a search button. I removed the css though
+          but i can add it back pretty quickly if we wanted it.
                <Button
             className="search-button"
             color="primary"

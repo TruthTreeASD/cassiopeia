@@ -116,8 +116,8 @@ class StoryCreationComponent extends Component {
             console.log('saved successfully' + response);
           });
         this.props.dispatch({
-          type: 'STORY_CLOSED',
-          openStory: false
+          type: 'STORY_CLOSED'
+          //openStory: false
         });
         alert('Story submitted!');
       }
@@ -215,4 +215,8 @@ class StoryCreationComponent extends Component {
 
 const mapDispatchToProps = dispatch => ({ dispatch });
 
-export default connect(mapDispatchToProps)(StoryCreationComponent);
+export default connect(
+  //
+  //mapStateToProps,
+  mapDispatchToProps
+)(StoryCreationComponent);
