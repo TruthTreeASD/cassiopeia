@@ -1,0 +1,11 @@
+#adminPassword {
+  width: 50%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.admin-panel-header.card-header {
+  background-color: rgb(191, 217, 213) !important;
+  font-weight: 600;
+  font-size: 20px;
+}

@@ -91,55 +91,6 @@ class StoryCreationComponent extends Component {
   };
 
   submitForm() {
-    /*
-
-    if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
-      confirmAlert({
-        title: 'Error!',
-        message: 'Story text is too long.',
-        buttons: [
-          {
-            label: 'OK'
-          }
-        ]
-      });
-      return;
-    } else if (this.state.titleField.length < 1) {
-      confirmAlert({
-        title: 'Error!',
-        message: 'Please enter a story title.',
-        buttons: [
-          {
-            label: 'OK'
-          }
-        ]
-      });
-      return;
-    } else {
-      axios
-        .post(`${TRUTHTREE_URI}/api/stories`, {
-          author: this.state.authorField,
-          tags:
-            this.state.tagsField.length > 0
-              ? this.state.tagsField
-              : [this.state.tagsInputValue],
-          content: this.state.storyField,
-          title: this.state.titleField
-        })
-        .then(function(response) {
-          console.log('saved successfully' + response);
-        });
-      confirmAlert({
-        title: 'Story submitted!',
-        message: 'Story is now pending review.',
-        buttons: [
-          {
-            label: 'Continue.'
-          }
-        ]
-      });
-    }
-     } else {*/
     if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
       alert('Story text is too long.');
       return;
@@ -147,23 +98,29 @@ class StoryCreationComponent extends Component {
       alert('Please enter a story title.');
       return;
     } else {
-      axios
-        .post(`${TRUTHTREE_URI}/api/stories`, {
-          author: this.state.authorField,
-          tags:
-            this.state.tagsField.length > 0
-              ? this.state.tagsField
-              : [this.state.tagsInputValue],
-          content: this.state.storyField
-        })
-        .then(function(response) {
-          console.log('saved successfully' + response);
+      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+        alert('Story text is too long.');
+        return;
+      } else {
+        axios
+          .post(`${TRUTHTREE_URI}/api/stories`, {
+            author: this.state.authorField,
+            tags:
+              this.state.tagsField.length > 0
+                ? this.state.tagsField
+                : [this.state.tagsInputValue],
+            content: this.state.storyField,
+            title: this.state.titleField
+          })
+          .then(function(response) {
+            console.log('saved successfully' + response);
+          });
+        this.props.dispatch({
+          type: 'STORY_CLOSED',
+          openStory: false
         });
-      alert('Story submitted!');
-      this.props.dispatch({
-        type: 'STORY_CLOSED',
-        openStory: false
-      });
+        alert('Story submitted!');
+      }
     }
   }
 

@@ -30,10 +30,11 @@
   margin-bottom: 10px;
 }
 
-.search-button {
-  float: right;
+.view.row {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-.search-button.btn.btn-primary {
-  color: rgba(13, 22, 38, 0.8) !important;
+.myButton {
+  margin: 5px;
 }

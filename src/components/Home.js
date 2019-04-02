@@ -14,10 +14,11 @@ import DisplayComponent from './DisplayComponent';
 import LeftSideBar from './LeftSideBar';
 import YearSelector from './YearSelector';
 import AttributeDeselector from './AttributeDeselector';
-import Filters from './AttributeRange';
+import AttributeRange from './AttributeRange';
 import Tabs from './Explore/Tabs';
 import TimeSeriesGrid from './Explore/TimeSeriesGrid';
 import StoryCreationComponent from './StoryCreationComponent';
+import { connect } from 'react-redux';
 
 const homeStyle = {
   paddingTop: 75
@@ -38,6 +39,30 @@ class Home extends Component {
       openStory: !this.state.openStory
     });
   }
+  componentDidMount() {
+    // reset year
+    this.props.dispatch({
+      type: 'CHANGE_YEAR',
+      yearSelected: 2016
+    });
+    // reset normalization
+    this.props.dispatch({
+      type: 'CHANGE_NORMALIZATION',
+      selectedNormalizationName: 'GROSS',
+      selectedNormalizationDisplayName: 'Gross'
+    });
+    // reset selected attributes
+    this.props.dispatch({
+      type: 'CHANGE_ATTRIBUTE',
+      value: []
+    });
+    // reset range
+    this.props.dispatch({
+      type: 'RANGE_SELECTION',
+      populationRange: [-25, 25]
+    });
+  }
+
   render() {
     return (
       <Container fluid style={homeStyle} className="home">
@@ -95,7 +120,7 @@ class Home extends Component {
               <CardBody>
                 <Row>
                   <Col className="border-right">
-                    <Filters
+                    <AttributeRange
                       level={this.props.match.params.level}
                       location={this.props.match.params.name}
                       locationId={this.props.match.params.id}
@@ -114,4 +139,6 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const mapDispatchToProps = dispatch => ({ dispatch });
+
+export default connect(mapDispatchToProps)(Home);
