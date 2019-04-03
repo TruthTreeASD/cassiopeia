@@ -41,7 +41,7 @@ class Header extends Component {
 
   shouldShowSearchBox = () => {
     const { searchPhrase, location } = this.props;
-    return location.pathname !== '/advance' && searchPhrase !== '';
+    return location.pathname == '/' && searchPhrase !== '';
   };
 
   render() {
