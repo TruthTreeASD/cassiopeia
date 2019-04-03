@@ -20,9 +20,7 @@ const searchBoxStyle = {
 
 const renderSuggestion = (suggestion, clickable) => {
   if (clickable === false) {
-    return (
-      <span className="text-secondary">{getSuggestionLabel(suggestion)}</span>
-    );
+    return <a className="text-secondary">{getSuggestionLabel(suggestion)}</a>;
   } else {
     return (
       <Link className="text-secondary" to={getSuggestionUrl(suggestion)}>
@@ -74,7 +72,7 @@ class LocationSearchBox extends Component {
   );
 
   render() {
-    const { value, suggestions, dispatch } = this.props;
+    const { value, suggestions, dispatch, clickable } = this.props;
     const inputProps = {
       value,
       onChange: this.handleInputChange
@@ -94,7 +92,7 @@ class LocationSearchBox extends Component {
         onSuggestionSelected={() => dispatch(updateValue(value))}
         getSuggestionValue={getSuggestionLabel}
         renderInputComponent={this.renderInputComponent}
-        renderSuggestion={() => (suggestions, true)}
+        renderSuggestion={suggestion => renderSuggestion(suggestion, clickable)}
         inputProps={inputProps}
       />
     );

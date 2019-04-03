@@ -91,7 +91,7 @@ class SimilarPlacesSearch extends Component {
                 </Label>
               </Col>
               <Col lg="4" sm="12" md="4">
-                <LocationSearchBox />
+                <LocationSearchBox clickable={false} />
               </Col>
               <Col lg="2" sm="12" md="2">
                 <Label for="normalizationType">
