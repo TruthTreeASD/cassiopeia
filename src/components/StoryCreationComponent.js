@@ -4,6 +4,7 @@ import _ from 'lodash';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert';
+import Recaptcha from 'react-recaptcha';
 
 import { TRUTHTREE_URI } from '../constants';
 import { withRouter } from 'react-router-dom';
@@ -30,9 +31,11 @@ class StoryCreationComponent extends Component {
       tagsField: [],
       storyField: '',
       storyTextOnly: '',
-      storyMaxLength: MAX_LENGTH
+      storyMaxLength: MAX_LENGTH,
+      isVerified: false
     };
-    // this.setState = this.setState.bind(this)
+    this.recaptchaLoaded = this.recaptchaLoaded.bind(this);
+    this.verifyCallback = this.verifyCallback.bind(this);
   }
 
   componentDidMount() {
@@ -83,84 +86,89 @@ class StoryCreationComponent extends Component {
   };
 
   submitForm() {
-    if (!_.endsWith(window.location.href, 'stories')) {
-      console.log(window.location.href);
+    if (this.state.isVerified === true) {
+      if (!_.endsWith(window.location.href, 'stories')) {
+        console.log(window.location.href);
 
-      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
-        confirmAlert({
-          title: 'Error!',
-          message: 'Story text is too long.',
-          buttons: [
-            {
-              label: 'OK'
-            }
-          ]
-        });
-        return;
-      } else if (this.state.titleField.length < 1) {
-        confirmAlert({
-          title: 'Error!',
-          message: 'Please enter a story title.',
-          buttons: [
-            {
-              label: 'OK'
-            }
-          ]
-        });
-        return;
-      } else {
-        axios
-          .post(`${TRUTHTREE_URI}/api/stories`, {
-            author: this.state.authorField,
-            tags:
-              this.state.tagsField.length > 0
-                ? this.state.tagsField
-                : [this.state.tagsInputValue],
-            content: this.state.storyField,
-            title: this.state.titleField
-          })
-          .then(function(response) {
-            console.log('saved successfully' + response);
+        if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+          confirmAlert({
+            title: 'Error!',
+            message: 'Story text is too long.',
+            buttons: [
+              {
+                label: 'OK'
+              }
+            ]
           });
-        confirmAlert({
-          title: 'Story submitted!',
-          message: 'Story is now pending review.',
-          buttons: [
-            {
-              label: 'Continue.'
-            }
-          ]
-        });
-      }
-    } else {
-      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
-        alert('Story text is too long.');
-        return;
-      } else if (this.state.titleField.length < 1) {
-        alert('Please enter a story title.');
-        return;
+          return;
+        } else if (this.state.titleField.length < 1) {
+          confirmAlert({
+            title: 'Error!',
+            message: 'Please enter a story title.',
+            buttons: [
+              {
+                label: 'OK'
+              }
+            ]
+          });
+          return;
+        } else {
+          axios
+            .post(`${TRUTHTREE_URI}/api/stories`, {
+              author: this.state.authorField,
+              tags:
+                this.state.tagsField.length > 0
+                  ? this.state.tagsField
+                  : [this.state.tagsInputValue],
+              content: this.state.storyField,
+              title: this.state.titleField
+            })
+            .then(function(response) {
+              console.log('saved successfully' + response);
+            });
+          confirmAlert({
+            title: 'Story submitted!',
+            message: 'Story is now pending review.',
+            buttons: [
+              {
+                label: 'Continue.'
+              }
+            ]
+          });
+        }
       } else {
-        axios
-          .post(`${TRUTHTREE_URI}/api/stories`, {
-            author: this.state.authorField,
-            tags:
-              this.state.tagsField.length > 0
-                ? this.state.tagsField
-                : [this.state.tagsInputValue],
-            content: this.state.storyField,
-            title: this.state.titleField
-          })
-          .then(function(response) {
-            console.log('saved successfully' + response);
-          }); /*
+        if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+          alert('Story text is too long.');
+          return;
+        } else if (this.state.titleField.length < 1) {
+          alert('Please enter a story title.');
+          return;
+        } else {
+          axios
+            .post(`${TRUTHTREE_URI}/api/stories`, {
+              author: this.state.authorField,
+              tags:
+                this.state.tagsField.length > 0
+                  ? this.state.tagsField
+                  : [this.state.tagsInputValue],
+              content: this.state.storyField,
+              title: this.state.titleField
+            })
+            .then(function(response) {
+              console.log('saved successfully' + response);
+            }); /*
         this.props.dispatch({
             type: 'CLOSE_STORY',
             value: false
         });*/
-        alert(
-          'Story submitted! Feel free to add a new one, or close the window.'
-        );
+          alert(
+            'Story submitted! Feel free to add a new one, or close the window.'
+          );
+        }
       }
+    } else {
+      alert('Please verify reCAPTCHA');
+      return;
     }
   }
 
@@ -171,6 +179,15 @@ class StoryCreationComponent extends Component {
       tagsField: newArr
     }); //          tagsField: [...this.state.tagsField, tag]
   };
+
+  verifyCallback() {
+    this.setState({ isVerified: true });
+  }
+
+  recaptchaLoaded() {
+    //console.log("recaptcha  loaded");
+  }
+
   render() {
     if (this.state.featureEnabled) {
       return (
@@ -236,6 +253,14 @@ class StoryCreationComponent extends Component {
           />
           Story length: {this.state.storyTextOnly.length} /
           {this.state.storyMaxLength}
+          <br />
+          <br />
+          <Recaptcha
+            sitekey="6Ldb85sUAAAAAKe6zdfI6jMm2SBDTzvmJ8iOP9kV"
+            render="explicit"
+            onloadCallback={() => this.recaptchaLoaded()}
+            verifyCallback={() => this.verifyCallback()}
+          />
           <br />
           <button
             className="btn btn-light selected-attribute-button"
