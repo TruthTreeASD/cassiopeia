@@ -18,7 +18,11 @@ import AttributeRange from './AttributeRange';
 import Tabs from './Explore/Tabs';
 import TimeSeriesGrid from './Explore/TimeSeriesGrid';
 import StoryCreationComponent from './StoryCreationComponent';
+import { TRUTHTREE_URI } from '../constants';
+import axios from 'axios';
+
 import { connect } from 'react-redux';
+import { Popper } from 'react-popper';
 
 const homeStyle = {
   paddingTop: 75
@@ -28,7 +32,8 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openStory: false
+      openStory: false,
+      locationPopulation: null
     };
 
     this.modalToggle = this.modalToggle.bind(this);
@@ -61,6 +66,21 @@ class Home extends Component {
       type: 'RANGE_SELECTION',
       populationRange: [-25, 25]
     });
+
+    //console.log(this.props)
+    //let year = this.props.yearSelected ? this.props.yearSelected : 2016;
+
+    axios
+      .get(
+        `${TRUTHTREE_URI}/api/population?locationId=` +
+          this.props.match.params.id +
+          '&year=' +
+          2016
+      )
+      .then(res => {
+        this.setState({ locationPopulation: res.data.population });
+      })
+      .catch(err => console.log(err + 'ugh somethong'));
   }
 
   render() {
@@ -70,25 +90,24 @@ class Home extends Component {
           <LeftSideBar />
 
           <div className="col-12 col-md-10 align-items-center padding">
+            <div>
+              <Button
+                className="create-story"
+                color="primary"
+                onClick={this.modalToggle}
+              >
+                Create Story
+              </Button>{' '}
+              <Modal isOpen={this.state.openStory} toggle={this.modalToggle}>
+                <ModalBody className="backgroundWhite">
+                  <StoryCreationComponent />
+                </ModalBody>
+                <Button color="secondary" onClick={this.modalToggle}>
+                  Close
+                </Button>
+              </Modal>
+            </div>
             <Card className="selected-attributes padding">
-              <Col>
-                {' '}
-                <Button
-                  className="create-story"
-                  color="primary"
-                  onClick={this.modalToggle}
-                >
-                  Create Story
-                </Button>{' '}
-                <Modal isOpen={this.state.openStory} toggle={this.modalToggle}>
-                  <ModalBody className="backgroundWhite">
-                    <StoryCreationComponent />
-                  </ModalBody>
-                  <Button color="secondary" onClick={this.modalToggle}>
-                    Close
-                  </Button>
-                </Modal>
-              </Col>
               <AttributeDeselector />
             </Card>
 
@@ -115,6 +134,8 @@ class Home extends Component {
               <CardHeader className="bottom-panel-header">
                 <div>
                   Selected Location: <b>{this.props.match.params.name}</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Population :
+                  <b>{this.state.locationPopulation}</b>
                 </div>
               </CardHeader>
               <CardBody>
