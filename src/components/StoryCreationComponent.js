@@ -40,14 +40,14 @@ class StoryCreationComponent extends Component {
   }
 
   handleChangeAuthor = event => {
-    let author = event.target.value;
+    let author = event.target.value.toLowerCase();
     author = author.replace('\\', '');
     author = author.replace('*', '');
     this.setState({ authorField: author });
   };
 
   handleChangeTitle = event => {
-    let title = event.target.value;
+    let title = event.target.value.toLowerCase();
     title = title.replace('\\', '');
     title = title.replace('*', '');
     this.setState({ titleField: title });
@@ -55,7 +55,9 @@ class StoryCreationComponent extends Component {
 
   handleChangeTags = event => {
     let tag = event.target.value.toLowerCase();
-    tag = tag.replace('\\', '');
+    tag = tag.replace('\\n', '!@#$%'); //I'm not happy about this.
+    tag = tag.replace('\\', ''); // Probably will need to add a way to allow "enter" to make new tag
+    tag = tag.replace('!@#$%', '\n');
     tag = tag.replace('*', '');
     if (_.endsWith(tag, ' ')) {
       if (tag.length > 2) {
@@ -72,16 +74,6 @@ class StoryCreationComponent extends Component {
       this.setState({ tagsInputValue: tag });
     }
   };
-  handleKeyPressTags = key => {
-    if (key.key == 'Enter') {
-      if (this.state.tagsInputValue.length > 2) {
-        this.setState({
-          tagsField: [...this.state.tagsField, this.state.tagsInputValue], // This syntax will create new array and add the new tag to that array
-          tagsInputValue: ''
-        });
-      }
-    }
-  };
 
   handleChangeStory = (content, delta, source, editor) => {
     this.setState({
@@ -91,15 +83,30 @@ class StoryCreationComponent extends Component {
   };
 
   submitForm() {
-    if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
-      alert('Story text is too long.');
-      return;
-    } else if (this.state.titleField.length < 1) {
-      alert('Please enter a story title.');
-      return;
-    } else {
+    if (!_.endsWith(window.location.href, 'stories')) {
+      console.log(window.location.href);
+
       if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
-        alert('Story text is too long.');
+        confirmAlert({
+          title: 'Error!',
+          message: 'Story text is too long.',
+          buttons: [
+            {
+              label: 'OK'
+            }
+          ]
+        });
+        return;
+      } else if (this.state.titleField.length < 1) {
+        confirmAlert({
+          title: 'Error!',
+          message: 'Please enter a story title.',
+          buttons: [
+            {
+              label: 'OK'
+            }
+          ]
+        });
         return;
       } else {
         axios
@@ -115,11 +122,44 @@ class StoryCreationComponent extends Component {
           .then(function(response) {
             console.log('saved successfully' + response);
           });
-        this.props.dispatch({
-          type: 'STORY_CLOSED'
-          //openStory: false
+        confirmAlert({
+          title: 'Story submitted!',
+          message: 'Story is now pending review.',
+          buttons: [
+            {
+              label: 'Continue.'
+            }
+          ]
         });
-        alert('Story submitted!');
+      }
+    } else {
+      if (this.state.storyTextOnly.length > this.state.storyMaxLength) {
+        alert('Story text is too long.');
+        return;
+      } else if (this.state.titleField.length < 1) {
+        alert('Please enter a story title.');
+        return;
+      } else {
+        axios
+          .post(`${TRUTHTREE_URI}/api/stories`, {
+            author: this.state.authorField,
+            tags:
+              this.state.tagsField.length > 0
+                ? this.state.tagsField
+                : [this.state.tagsInputValue],
+            content: this.state.storyField,
+            title: this.state.titleField
+          })
+          .then(function(response) {
+            console.log('saved successfully' + response);
+          }); /*
+        this.props.dispatch({
+            type: 'CLOSE_STORY',
+            value: false
+        });*/
+        alert(
+          'Story submitted! Feel free to add a new one, or close the window.'
+        );
       }
     }
   }
@@ -159,7 +199,6 @@ class StoryCreationComponent extends Component {
             id="tags-input-field"
             value={this.state.tagsInputValue}
             onChange={this.handleChangeTags}
-            onKeyPress={this.handleKeyPressTags}
             placeholder="Tags"
           />
           <Row>
@@ -213,10 +252,11 @@ class StoryCreationComponent extends Component {
   }
 }
 
+const mapStateToProps = state => ({});
+
 const mapDispatchToProps = dispatch => ({ dispatch });
 
 export default connect(
-  //
-  //mapStateToProps,
+  mapStateToProps,
   mapDispatchToProps
-)(StoryCreationComponent);
+)(withRouter(StoryCreationComponent));
