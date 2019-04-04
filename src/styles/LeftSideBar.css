@@ -38,7 +38,7 @@ nav.scrollLeftBar.col-md-2.d-none.d-md-block.bg-light.sidebar {
 }
 
 .scrollLeftBar {
-  max-height: 800px;
+  max-height: 750px;
   overflow-y: auto;
 }
 
