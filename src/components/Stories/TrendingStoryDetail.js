@@ -30,54 +30,85 @@ class TrendingStoryDetail extends Component {
 
   handleUpVoteClick(id) {
     let upvoteUrl = `${TRUTHTREE_URI}/api/stories/` + id + '?type=UPVOTE';
+    let checkCondition = id + 'up';
+    if (!localStorage.getItem(checkCondition)) {
+      axios
+        .put(upvoteUrl)
+        .then(response => {
+          //To modify the list of stories
+          var arr = this.props.TrendingStoriesReducer.approvedStories;
+          var indexOfId = _.findIndex(arr, { id: id });
+          arr.splice(indexOfId, 1, response.data);
 
-    axios
-      .put(upvoteUrl)
-      .then(response => {
-        //To modify the list of stories
-        var arr = this.props.TrendingStoriesReducer.approvedStories;
-        var indexOfId = _.findIndex(arr, { id: id });
-        arr.splice(indexOfId, 1, response.data);
+          var indexOfSelectedStory = _.findIndex(arr, {
+            id: this.props.TrendingStoriesReducer.userSelectedStory.id
+          });
 
-        var indexOfSelectedStory = _.findIndex(arr, {
-          id: this.props.TrendingStoriesReducer.userSelectedStory.id
+          let keyUp = id + 'up';
+          localStorage.setItem(keyUp, 'true');
+
+          this.props.dispatch({
+            type: 'USER_SELECTED_STORY',
+            approvedStories: arr,
+            approvedStoriesLength: arr.length,
+            color: this.props.TrendingStoriesReducer.color,
+            userSelectedStory: response.data,
+            loading: false
+          });
+        })
+        .catch(error => {
+          console.log(error);
         });
-
-        this.props.dispatch({
-          type: 'USER_SELECTED_STORY',
-          approvedStories: arr,
-          approvedStoriesLength: arr.length,
-          color: this.props.TrendingStoriesReducer.color,
-          userSelectedStory: response.data,
-          loading: false
-        });
-      })
-      .catch(error => {
-        console.log(error);
+    } else {
+      confirmAlert({
+        title: 'Thank You!',
+        message: 'You have upvoted the story previously.',
+        buttons: [
+          {
+            label: 'OK'
+          }
+        ]
       });
+    }
   }
 
   handleDownVoteClick(id) {
     let downvoteUrl = `${TRUTHTREE_URI}/api/stories/` + id + '?type=DOWNVOTE';
+    let checkCondition = id + 'down';
+    if (!localStorage.getItem(checkCondition)) {
+      axios
+        .put(downvoteUrl)
+        .then(response => {
+          var arr = this.props.TrendingStoriesReducer.approvedStories;
+          var indexOfId = _.findIndex(arr, { id: id });
+          arr.splice(indexOfId, 1, response.data);
 
-    axios
-      .put(downvoteUrl)
-      .then(response => {
-        var arr = this.props.TrendingStoriesReducer.approvedStories;
-        var indexOfId = _.findIndex(arr, { id: id });
-        arr.splice(indexOfId, 1, response.data);
-        this.props.dispatch({
-          type: 'USER_SELECTED_STORY',
-          approvedStories: arr,
-          approvedStoriesLength: arr.length,
-          color: this.props.TrendingStoriesReducer.color,
-          userSelectedStory: response.data,
-          loading: false
+          let keyDown = id + 'down';
+          localStorage.setItem(keyDown, 'true');
+
+          this.props.dispatch({
+            type: 'USER_SELECTED_STORY',
+            approvedStories: arr,
+            approvedStoriesLength: arr.length,
+            color: this.props.TrendingStoriesReducer.color,
+            userSelectedStory: response.data,
+            loading: false
+          });
+        })
+        .catch(error => {
+          console.log(error);
         });
-      })
-      .catch(error => {
-        console.log(error);
+    } else {
+      confirmAlert({
+        title: 'Thank You!',
+        message: 'You have downvoted the story previously.',
+        buttons: [
+          {
+            label: 'OK'
+          }
+        ]
       });
+    }
   }
 
   render() {
