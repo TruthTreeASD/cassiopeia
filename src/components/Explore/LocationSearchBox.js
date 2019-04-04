@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Input } from 'reactstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Input,
+  DropdownItem,
+  DropdownMenu,
+  Dropdown,
+  DropdownToggle
+} from 'reactstrap';
 import { post } from 'axios';
 import Autosuggest from 'react-autosuggest';
 import { Link, withRouter } from 'react-router-dom';
@@ -20,7 +29,14 @@ const searchBoxStyle = {
 
 const renderSuggestion = (suggestion, clickable) => {
   if (clickable === false) {
-    return <a className="text-secondary">{getSuggestionLabel(suggestion)}</a>;
+    return (
+      <DropdownItem
+        className="text-secondary"
+        onClick={() => console.log(suggestion)}
+      >
+        {getSuggestionLabel(suggestion)}
+      </DropdownItem>
+    );
   } else {
     return (
       <Link className="text-secondary" to={getSuggestionUrl(suggestion)}>
@@ -37,8 +53,18 @@ class LocationSearchBox extends Component {
       this.handleSuggestionsFetchRequested,
       250
     );
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      dropdownOpen: false,
+      selectedLocation: null
+    };
   }
 
+  toggle() {
+    this.setState(prevState => ({
+      dropdownOpen: !prevState.dropdownOpen
+    }));
+  }
   componentDidUpdate(prevProps) {
     if (this.props.value !== prevProps.value) {
       this.inputRef.focus();
@@ -78,24 +104,63 @@ class LocationSearchBox extends Component {
       onChange: this.handleInputChange
     };
 
-    return (
-      <Autosuggest
-        theme={{
-          container: searchBoxStyle,
-          suggestionsList: 'list-group position-absolute w-100 overflow-y',
-          suggestion: 'list-group-item'
-        }}
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={
-          this.debouncedhandleSuggestionsFetchRequested
-        }
-        onSuggestionSelected={() => dispatch(updateValue(value))}
-        getSuggestionValue={getSuggestionLabel}
-        renderInputComponent={this.renderInputComponent}
-        renderSuggestion={suggestion => renderSuggestion(suggestion, clickable)}
-        inputProps={inputProps}
-      />
-    );
+    if (clickable === false) {
+      return (
+        <Dropdown
+          lg="2"
+          sm="12"
+          md="2"
+          isOpen={this.state.dropdownOpen}
+          toggle={this.toggle}
+        >
+          <DropdownToggle className="DT" caret>
+            Select a location....
+          </DropdownToggle>
+          <DropdownMenu className="DM">
+            <Autosuggest
+              theme={{
+                container: searchBoxStyle,
+                suggestionsList:
+                  'list-group position-absolute w-100 overflow-y',
+                suggestion: 'list-group-item'
+              }}
+              suggestions={suggestions}
+              onSuggestionsFetchRequested={
+                this.debouncedhandleSuggestionsFetchRequested
+              }
+              onSuggestionSelected={() => dispatch(updateValue(value))}
+              getSuggestionValue={getSuggestionLabel}
+              renderInputComponent={this.renderInputComponent}
+              renderSuggestion={suggestion =>
+                renderSuggestion(suggestion, clickable)
+              }
+              inputProps={inputProps}
+            />
+          </DropdownMenu>
+        </Dropdown>
+      );
+    } else {
+      return (
+        <Autosuggest
+          theme={{
+            container: searchBoxStyle,
+            suggestionsList: 'list-group position-absolute w-100 overflow-y',
+            suggestion: 'list-group-item'
+          }}
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={
+            this.debouncedhandleSuggestionsFetchRequested
+          }
+          onSuggestionSelected={() => dispatch(updateValue(value))}
+          getSuggestionValue={getSuggestionLabel}
+          renderInputComponent={this.renderInputComponent}
+          renderSuggestion={suggestion =>
+            renderSuggestion(suggestion, clickable)
+          }
+          inputProps={inputProps}
+        />
+      );
+    }
   }
 }
 
