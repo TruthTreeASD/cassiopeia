@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Spinner, Card, Media, Badge, Row } from 'reactstrap';
+import { Spinner, Card, Media, Badge, Row, Button } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
+
 import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 import { connect } from 'react-redux';
@@ -13,8 +14,13 @@ class TrendingStories extends Component {
     this.getStoryDetails = this.getStoryDetails.bind(this);
     this.selectStory = this.selectStory.bind(this);
     this.state = {
-      InitialData: [],
-      bgColor: []
+      data: [],
+      length: 0,
+      bgColor: [],
+      searchBoxText: '',
+      searchedTags: [],
+      loading: true,
+      InitialData: []
     };
   }
 
@@ -128,6 +134,40 @@ class TrendingStories extends Component {
       </Media>
     );
   }
+  filterOutStories = stories => {};
+
+  handleChangeSearch = event => {
+    let search = event.target.value.toLowerCase();
+    search = search.replace('\\', '');
+    search = search.replace('*', '');
+    this.setState({
+      searchBoxText: search,
+      searchedTags: _.split(search, ' ', 9999)
+    });
+    this.submitSearch(this.state.data);
+  };
+  handleKeyPressSearch = key => {
+    if (key.key == 'Enter') {
+      this.submitSearch(...this.state.searchedTags, this.state.searchBoxText);
+    }
+  };
+  submitSearch = event => {
+    //api call for tags filterred by searchedTags here
+
+    axios
+      .get(`${TRUTHTREE_URI}/api/stories`) // + this.state.searchBoxText or something
+      .then(response => {
+        this.setState({
+          data: response.data,
+          length: response.data.length,
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    this.setState({ searchBoxText: '' });
+  };
 
   render() {
     //Displaying spinner untill API fetches the data
@@ -138,16 +178,28 @@ class TrendingStories extends Component {
         </div>
       );
     }
-    //Dislaying list of stories
+    //Dislaying list of stories + search box
     else {
       return (
         <div>
           <input
             className="form-control searchBar"
             data-spy="affix"
-            // onChange={this.handleChangeSearch}
+            onChange={this.handleChangeSearch}
+            onKeyPress={this.handleKeyPressSearch}
             placeholder="Search stories by title or tag name"
           />
+          {/* this is a working button in case we want a search button. I removed the css though
+          but i can add it back pretty quickly if we wanted it.
+               <Button
+            className="search-button"
+            color="primary"
+            onClick={this.submitSearch}
+          >
+            Search
+          </Button>
+          <br />
+          <br />*/}
           <div>
             <Media className="trending-height">{this.getStoryDetails()}</Media>
           </div>
