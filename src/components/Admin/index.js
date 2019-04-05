@@ -10,6 +10,9 @@ import {
   Input
 } from 'reactstrap';
 import bcrypt from 'bcryptjs';
+import axios from 'axios/index';
+import { TRUTHTREE_URI } from '../../constants';
+
 import '../../styles/ApproveIndex.css';
 import AdminHome from './AdminHome';
 
@@ -27,18 +30,22 @@ class Approve extends Component {
   validatePassword() {
     this.setState({ isFirstLoad: false });
     var self = this;
-    bcrypt.compare(
-      this.password.current.value,
-      '$2a$10$O4SrNipdI3ChGKfxyTTpougsxZ85nTzyDcvhpCzL4hHAFV1UalHy2',
-      function(err, result) {
-        if (err) {
-          throw err;
-        }
-        if (result) {
+    let compareValue = this.password.current.value;
+
+    axios({
+      method: 'post',
+      url: `${TRUTHTREE_URI}/api/login`,
+      headers: { 'Content-Type': 'text/plain' },
+      data: this.password.current.value
+    })
+      .then(function(response) {
+        if (response.data === true) {
           self.setState({ isAuthenticated: true });
         }
-      }
-    );
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
