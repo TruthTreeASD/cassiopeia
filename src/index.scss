@@ -1,3 +1,6 @@
+@import 'custom-variables';
+@import '~bootstrap/scss/bootstrap';
+
 html,
 body,
 #root,
@@ -23,6 +26,3 @@ code {
 .overflow-y {
   overflow-y: auto !important;
 }
-
-@import 'custom-variables';
-@import '~bootstrap/scss/bootstrap';
