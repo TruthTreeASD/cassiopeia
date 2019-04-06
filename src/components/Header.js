@@ -54,8 +54,13 @@ class Header extends Component {
       'flex-grow-1': true,
       'd-none': !this.shouldShowSearchBox()
     });
+    const { collapseOpen } = this.state;
     return (
-      <Navbar style={navbarStyle} expand="md" className="fixed-top">
+      <Navbar
+        style={navbarStyle}
+        expand="md"
+        className="fixed-top space-between"
+      >
         <NavbarBrand className="text-primary" style={navBrandStyle}>
           <Link to="/">
             <img
@@ -69,11 +74,9 @@ class Header extends Component {
         </NavbarBrand>
         <NavbarToggler
           className="navbar-dark"
-          onClick={() =>
-            this.setState({ collapseOpen: !this.state.collapseOpen })
-          }
+          onClick={() => this.setState({ collapseOpen: !collapseOpen })}
         />
-        <Collapse isOpen={this.state.collapseOpen} navbar>
+        <Collapse isOpen navbar>
           <div className="d-flex flex-grow-1 justify-content-center">
             <div
               style={searchBoxContainerStyle}
@@ -82,6 +85,8 @@ class Header extends Component {
               <LocationSearchBox />
             </div>
           </div>
+        </Collapse>
+        <Collapse isOpen={collapseOpen} navbar className="flex-grow-0">
           <Nav className="ml-auto px-md-3" navbar>
             <NavItem>
               <NavLink tag={Link} to="/">
