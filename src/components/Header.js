@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Button,
   Container,
   Row,
   Col,
@@ -34,6 +35,10 @@ const logoStyle = {
   width: 50
 };
 
+const searchBoxContainerStyle = {
+  maxWidth: 800
+};
+
 class Header extends Component {
   state = {
     collapseOpen: false
@@ -46,11 +51,16 @@ class Header extends Component {
 
   render() {
     const searchBoxContainerClasses = classNames({
-      'justify-content-center': true,
+      'flex-grow-1': true,
       'd-none': !this.shouldShowSearchBox()
     });
+    const { collapseOpen } = this.state;
     return (
-      <Navbar style={navbarStyle} expand="md" className="fixed-top">
+      <Navbar
+        style={navbarStyle}
+        expand="md"
+        className="fixed-top space-between"
+      >
         <NavbarBrand className="text-primary" style={navBrandStyle}>
           <Link to="/">
             <img
@@ -59,23 +69,25 @@ class Header extends Component {
               className="d-inline-block"
               alt="TruthTree logo"
             />
-            &nbsp;TruthTree
+            <span>&nbsp;TruthTree</span>
           </Link>
         </NavbarBrand>
         <NavbarToggler
-          onClick={() =>
-            this.setState({ collapseOpen: !this.state.collapseOpen })
-          }
+          className="navbar-dark"
+          onClick={() => this.setState({ collapseOpen: !collapseOpen })}
         />
-        <Collapse isOpen={this.state.collapseOpen} navbar>
-          <Container>
-            <Row className={searchBoxContainerClasses}>
-              <Col md={10} lg={7}>
-                <LocationSearchBox />
-              </Col>
-            </Row>
-          </Container>
-          <Nav className="ml-auto" navbar>
+        <Collapse isOpen navbar>
+          <div className="d-flex flex-grow-1 justify-content-center">
+            <div
+              style={searchBoxContainerStyle}
+              className={searchBoxContainerClasses}
+            >
+              <LocationSearchBox />
+            </div>
+          </div>
+        </Collapse>
+        <Collapse isOpen={collapseOpen} navbar className="flex-grow-0">
+          <Nav className="ml-auto px-md-3" navbar>
             <NavItem>
               <NavLink tag={Link} to="/">
                 Explore
@@ -91,12 +103,12 @@ class Header extends Component {
                 About
               </NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink tag={Link} to="/admin">
-                Admin
-              </NavLink>
-            </NavItem>
           </Nav>
+          <div>
+            <Button color="outline-primary" block>
+              Create a story
+            </Button>
+          </div>
         </Collapse>
       </Navbar>
     );

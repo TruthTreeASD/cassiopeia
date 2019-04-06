@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Input } from 'reactstrap';
+import { Button, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 import { post } from 'axios';
 import Autosuggest from 'react-autosuggest';
 import { Link, withRouter } from 'react-router-dom';
@@ -55,15 +55,22 @@ class LocationSearchBox extends Component {
 
   renderInputComponent = inputProps => (
     <div>
-      <Input
-        {...inputProps}
-        id="location-search-box"
-        name="location-search-box"
-        placeholder="Try something like Seattle or Boston"
-        innerRef={input => {
-          this.inputRef = input;
-        }}
-      />
+      <InputGroup>
+        <Input
+          {...inputProps}
+          id="location-search-box"
+          name="location-search-box"
+          placeholder="Try something like Seattle or Boston"
+          innerRef={input => {
+            this.inputRef = input;
+          }}
+        />
+        <InputGroupAddon addonType="append">
+          <label className="btn btn-light mb-0">
+            <i className="fa fa-chevron-up" />
+          </label>
+        </InputGroupAddon>
+      </InputGroup>
     </div>
   );
 
@@ -86,6 +93,7 @@ class LocationSearchBox extends Component {
           this.debouncedhandleSuggestionsFetchRequested
         }
         onSuggestionSelected={() => dispatch(updateValue(value))}
+        onSuggestionsClearRequested={() => null}
         getSuggestionValue={getSuggestionLabel}
         renderInputComponent={this.renderInputComponent}
         renderSuggestion={renderSuggestion}

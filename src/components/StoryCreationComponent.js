@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../styles/LeftSideBar.css';
 import _ from 'lodash';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -12,6 +11,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Col, Row } from 'reactstrap';
 
 import '../styles/AttributeDeselector.css';
+import '../styles/LeftSideBar.scss';
 
 //React quill
 import ReactQuill from 'react-quill';
