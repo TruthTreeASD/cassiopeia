@@ -4,6 +4,11 @@ import { connect } from 'react-redux';
 import { updateValue } from '../../actions/LocationSearchBoxActions';
 
 class DummySearchBox extends Component {
+  componentDidUpdate() {
+    if (this.props.value === '') {
+      this.inputRef.focus();
+    }
+  }
   handleInputChange = event => {
     event.target.blur();
     this.props.dispatch(updateValue(event.target.value));
@@ -27,6 +32,9 @@ class DummySearchBox extends Component {
                 Search for a U.S location:
               </Label>
               <Input
+                innerRef={input => {
+                  this.inputRef = input;
+                }}
                 id="dummy-search-box"
                 value={value}
                 onChange={this.handleInputChange}
