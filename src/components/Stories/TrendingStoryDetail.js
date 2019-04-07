@@ -28,24 +28,23 @@ class TrendingStoryDetail extends Component {
     return ReactHtmlParser(data);
   }
 
-  handleUpVoteClick(id) {
-    let upvoteUrl = `${TRUTHTREE_URI}/api/stories/` + id + '?type=UPVOTE';
-    let checkCondition = id + 'up';
+  handleUpVoteClick(story) {
+    let checkCondition = story.id + 'up';
     if (!localStorage.getItem(checkCondition)) {
-      axios
-        .put(upvoteUrl)
+      console.log(JSON.stringify(story));
+      axios({
+        method: 'put',
+        url: `${TRUTHTREE_URI}/api/stories?type=UPVOTE`,
+        data: JSON.stringify(story),
+        headers: { 'Content-Type': 'application/json' }
+      })
         .then(response => {
-          //To modify the list of stories
           var arr = this.props.TrendingStoriesReducer.approvedStories;
-          var indexOfId = _.findIndex(arr, { id: id });
+          var indexOfId = _.findIndex(arr, { id: story.id });
           arr.splice(indexOfId, 1, response.data);
 
-          var indexOfSelectedStory = _.findIndex(arr, {
-            id: this.props.TrendingStoriesReducer.userSelectedStory.id
-          });
-
-          let keyUp = id + 'up';
-          localStorage.setItem(keyUp, 'true');
+          let keyDown = story.id + 'up';
+          localStorage.setItem(keyDown, 'true');
 
           this.props.dispatch({
             type: 'USER_SELECTED_STORY',
@@ -72,18 +71,22 @@ class TrendingStoryDetail extends Component {
     }
   }
 
-  handleDownVoteClick(id) {
-    let downvoteUrl = `${TRUTHTREE_URI}/api/stories/` + id + '?type=DOWNVOTE';
-    let checkCondition = id + 'down';
+  handleDownVoteClick(story) {
+    let checkCondition = story.id + 'down';
     if (!localStorage.getItem(checkCondition)) {
-      axios
-        .put(downvoteUrl)
+      console.log(JSON.stringify(story));
+      axios({
+        method: 'put',
+        url: `${TRUTHTREE_URI}/api/stories?type=DOWNVOTE`,
+        data: JSON.stringify(story),
+        headers: { 'Content-Type': 'application/json' }
+      })
         .then(response => {
           var arr = this.props.TrendingStoriesReducer.approvedStories;
-          var indexOfId = _.findIndex(arr, { id: id });
+          var indexOfId = _.findIndex(arr, { id: story.id });
           arr.splice(indexOfId, 1, response.data);
 
-          let keyDown = id + 'down';
+          let keyDown = story.id + 'down';
           localStorage.setItem(keyDown, 'true');
 
           this.props.dispatch({
@@ -94,6 +97,7 @@ class TrendingStoryDetail extends Component {
             userSelectedStory: response.data,
             loading: false
           });
+          //console.log(response);
         })
         .catch(error => {
           console.log(error);
@@ -112,6 +116,7 @@ class TrendingStoryDetail extends Component {
   }
 
   render() {
+    console.log(this.props.TrendingStoriesReducer.userSelectedStory);
     if (this.props.TrendingStoriesReducer.userSelectedStory === 'none') {
       return (
         <div>
@@ -179,7 +184,7 @@ class TrendingStoryDetail extends Component {
                     color="primary"
                     onClick={() =>
                       this.handleUpVoteClick(
-                        this.props.TrendingStoriesReducer.userSelectedStory.id
+                        this.props.TrendingStoriesReducer.userSelectedStory
                       )
                     }
                   >
@@ -193,7 +198,7 @@ class TrendingStoryDetail extends Component {
                     color="primary"
                     onClick={() =>
                       this.handleDownVoteClick(
-                        this.props.TrendingStoriesReducer.userSelectedStory.id
+                        this.props.TrendingStoriesReducer.userSelectedStory
                       )
                     }
                   >
