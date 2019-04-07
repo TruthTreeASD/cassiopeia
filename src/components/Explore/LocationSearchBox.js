@@ -48,7 +48,6 @@ class LocationSearchBox extends Component {
 
   handleSuggestionSelected = (_, { suggestion }) => {
     const { dispatch, selectable, value } = this.props;
-    console.log(value);
     if (selectable) {
       dispatch(selectSuggestion(suggestion));
     } else {
