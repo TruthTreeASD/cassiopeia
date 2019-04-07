@@ -149,19 +149,22 @@ class TrendingStories extends Component {
 
   submitSearch = event => {
     //api call for tags filterred by searchedTags here
-    /*  axios
-        .get(`${TRUTHTREE_URI}/api/stories/story/serch/page` + event.target.value.toLowerCase()) // + this.state.searchBoxText or something api/stories/story/search/page/{keyword}
+    axios
+      .get(
+        `${TRUTHTREE_URI}/api/stories/story/serch/page` +
+          event.target.value.toLowerCase()
+      ) // + this.state.searchBoxText or something api/stories/story/search/page/{keyword}
       .then(response => {
         this.setState({
           data: response.data,
           length: response.data.length,
           loading: false
         });
-          console.log(response);
+        console.log(response);
       })
       .catch(error => {
         console.log(error);
-      });*/
+      });
   };
 
   render() {
