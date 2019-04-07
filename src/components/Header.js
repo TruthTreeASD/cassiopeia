@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import LocationSearchBox from './Explore/LocationSearchBox';
+import { openSideMenu } from '../actions/SideMenuActions';
 
 import '../styles/Header.css';
 import logo from '../truthtree-logo.png';
@@ -87,25 +88,48 @@ class Header extends Component {
           </div>
         </Collapse>
         <Collapse isOpen={collapseOpen} navbar className="flex-grow-0">
-          <Nav className="ml-auto px-md-3" navbar>
+          <Nav
+            className="ml-auto px-md-3"
+            navbar
+            onClick={() => this.setState({ collapseOpen: false })}
+          >
             <NavItem>
-              <NavLink tag={Link} to="/">
+              <NavLink
+                className="d-flex justify-content-center"
+                tag={Link}
+                to="/"
+              >
                 Explore
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} to="/stories">
+              <NavLink
+                className="d-flex justify-content-center"
+                tag={Link}
+                to="/stories"
+              >
                 Stories
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} to="/about">
+              <NavLink
+                className="d-flex justify-content-center"
+                tag={Link}
+                to="/about"
+              >
                 About
               </NavLink>
             </NavItem>
           </Nav>
           <div>
-            <Button color="outline-primary" block>
+            <Button
+              color="outline-primary"
+              block
+              onClick={() => {
+                this.setState({ collapseOpen: false });
+                this.props.dispatch(openSideMenu());
+              }}
+            >
               Create a story
             </Button>
           </div>

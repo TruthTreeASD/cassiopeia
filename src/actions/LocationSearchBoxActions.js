@@ -12,6 +12,13 @@ export const updateSuggestions = suggestions => {
   };
 };
 
+export const selectSuggestion = suggestion => {
+  return {
+    type: 'SEARCHBOX_SELECT_SUGGESTION',
+    payload: suggestion
+  };
+};
+
 export const finishLoading = () => {
   return {
     type: 'SEARCHBOX_FINISH_LOADING'
