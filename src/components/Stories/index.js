@@ -31,7 +31,7 @@ class Stories extends Component {
               <Col className="border-right">
                 <TrendingStories />
               </Col>
-              <Col>
+              <Col className="trending-stories-overflow">
                 <ViewStories />
               </Col>
             </Row>

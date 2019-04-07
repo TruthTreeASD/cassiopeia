@@ -30,7 +30,7 @@ class StoryDetails extends Component {
 
   handleApprove(idNow) {
     axios
-      .get(`${TRUTHTREE_URI}/api/stories/approve?id=` + idNow)
+      .put(`${TRUTHTREE_URI}/api/stories/story/APPROVED/` + idNow)
       .then(response => {
         let result = [];
         if (response.status === 200) {
@@ -67,8 +67,82 @@ class StoryDetails extends Component {
       });
   }
 
-  handleDecline(id) {
-    //call api for decline
+  handleDecline(idNow) {
+    axios
+      .put(`${TRUTHTREE_URI}/api/stories/story/DISAPPROVED/` + idNow)
+      .then(response => {
+        let result = [];
+        if (response.status === 200) {
+          result = _.filter(this.props.adminStories, function(story) {
+            return story.id !== idNow;
+          });
+
+          let color = [];
+          for (var i = 0; i < result.length; i++) {
+            color.push('white');
+          }
+
+          this.props.dispatch({
+            type: 'STORIES_LIST',
+            adminStories: result,
+            adminStoriesLength: result.length,
+            bgColor: color,
+            adminSelectedStory: 'none',
+            loading: false
+          });
+          confirmAlert({
+            title: 'Declined!',
+            message: 'The story has been declined',
+            buttons: [
+              {
+                label: 'OK'
+              }
+            ]
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handleDelete(idNow) {
+    axios
+      .delete(`${TRUTHTREE_URI}/api/stories/` + idNow)
+      .then(response => {
+        let result = [];
+        if (response.status === 200) {
+          result = _.filter(this.props.adminStories, function(story) {
+            return story.id !== idNow;
+          });
+
+          let color = [];
+          for (var i = 0; i < result.length; i++) {
+            color.push('white');
+          }
+
+          this.props.dispatch({
+            type: 'STORIES_LIST',
+            adminStories: result,
+            adminStoriesLength: result.length,
+            bgColor: color,
+            adminSelectedStory: 'none',
+            loading: false
+          });
+          confirmAlert({
+            title: 'Deleted!',
+            message: 'The story has been deleted',
+            buttons: [
+              {
+                label: 'OK'
+              }
+            ]
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -123,7 +197,7 @@ class StoryDetails extends Component {
                 </Col>
               </Row>
 
-              <Row className="view float-right">
+              <Row className="view">
                 <Col xs="auto">
                   <Button
                     className="myButton"
@@ -145,7 +219,19 @@ class StoryDetails extends Component {
                       this.handleDecline(this.props.adminSelectedStory.id)
                     }
                   >
-                    Reject
+                    Decline
+                  </Button>
+                </Col>
+                <Col xs="auto">
+                  <Button
+                    className="myButton"
+                    color="danger"
+                    size="sm"
+                    onClick={() =>
+                      this.handleDelete(this.props.adminSelectedStory.id)
+                    }
+                  >
+                    Delete
                   </Button>
                 </Col>
               </Row>

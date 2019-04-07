@@ -31,7 +31,7 @@ class TrendingStories extends Component {
   componentDidMount() {
     //List of approved stories if not admin
     axios
-      .get(`${TRUTHTREE_URI}/api/stories/approved`)
+      .get(`${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED`)
       .then(response => {
         let color = [];
         for (var i = 0; i < response.data.length; i++) {
