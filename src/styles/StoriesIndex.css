@@ -20,3 +20,7 @@
   font-weight: 600;
   margin-top: 3px;
 }
+
+.trending-stories-overflow {
+  overflow-x: scroll;
+}

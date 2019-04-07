@@ -1,7 +1,8 @@
 const defaultState = {
   value: '',
   loading: false,
-  suggestions: []
+  suggestions: [],
+  selected: null
 };
 
 export default (state = defaultState, action) => {
@@ -17,6 +18,12 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         suggestions: state.value === '' ? [] : action.payload
+      };
+
+    case 'SEARCHBOX_SELECT_SUGGESTION':
+      return {
+        ...state,
+        selected: action.payload
       };
 
     case 'SEARCHBOX_FINISH_LOADING':

@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Container,
-  Card,
-  Row,
-  Col,
-  CardBody,
-  CardHeader,
-  Modal,
-  ModalBody,
-  Button
-} from 'reactstrap';
+import { Container, Card, Row, Col, CardBody, CardHeader } from 'reactstrap';
 
 import '../../styles/StoriesIndex.css';
 import ViewStories from './TrendingStoryDetail';
@@ -31,7 +21,7 @@ class Stories extends Component {
               <Col className="border-right">
                 <TrendingStories />
               </Col>
-              <Col>
+              <Col className="trending-stories-overflow">
                 <ViewStories />
               </Col>
             </Row>
