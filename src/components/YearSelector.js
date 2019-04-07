@@ -56,7 +56,7 @@ class YearSelector extends Component {
         {window.innerWidth > mobileStyle ? (
           <p>Select Year of Data to be displayed:</p>
         ) : (
-          <p />
+          {}
         )}
 
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>

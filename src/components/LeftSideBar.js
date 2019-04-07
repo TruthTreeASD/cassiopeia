@@ -158,8 +158,8 @@ class LeftSideBar extends Component {
           <button
             className={
               window.innerWidth > mobileStyle
-                ? 'LeftSideBarButton'
-                : 'TopSideBarButton'
+                ? 'left-sidebar-button'
+                : 'top-sidebar-button'
             }
             onClick={() => this.collapseLeftBar()}
           >
@@ -175,7 +175,7 @@ class LeftSideBar extends Component {
         );
       } else {
         return (
-          <nav className="fixed-left scrollLeftBar col-md-2 d-md-block bg-dark sidebar ">
+          <nav className="scrollLeftBar col-md-2 d-md-block bg-dark sidebar ">
             <div className="row">
               <div className="col-10">
                 <input
