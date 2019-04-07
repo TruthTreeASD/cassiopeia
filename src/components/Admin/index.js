@@ -9,7 +9,6 @@ import {
   Row,
   Input
 } from 'reactstrap';
-import bcrypt from 'bcryptjs';
 import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 
@@ -30,7 +29,6 @@ class Approve extends Component {
   validatePassword() {
     this.setState({ isFirstLoad: false });
     var self = this;
-    let compareValue = this.password.current.value;
 
     axios({
       method: 'post',

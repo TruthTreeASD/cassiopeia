@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spinner, Card, Media, Badge, Row, Button } from 'reactstrap';
+import { Spinner, Card, Media, Badge, Row } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 
@@ -31,7 +31,7 @@ class TrendingStories extends Component {
   componentDidMount() {
     //List of approved stories if not admin
     axios
-      .get(`${TRUTHTREE_URI}/api/stories/approved`)
+      .get(`${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED`)
       .then(response => {
         let color = [];
         for (var i = 0; i < response.data.length; i++) {
@@ -147,7 +147,7 @@ class TrendingStories extends Component {
     this.submitSearch(this.state.data);
   };
   handleKeyPressSearch = key => {
-    if (key.key == 'Enter') {
+    if (key.key === 'Enter') {
       this.submitSearch(...this.state.searchedTags, this.state.searchBoxText);
     }
   };
