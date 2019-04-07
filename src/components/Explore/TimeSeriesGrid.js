@@ -5,12 +5,10 @@ import {
   Col,
   Card,
   CardBody,
-  CardHeader,
   Button,
   Modal,
   ModalBody,
   ModalFooter,
-  ModalHeader,
   Badge
 } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -94,12 +92,6 @@ class GridTest extends Component {
         });
     });
   };
-
-  modalToggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal
-    }));
-  }
 
   getAttributeNames(type) {
     return _.flatMap(this.props.selectedAttributes, elem => {

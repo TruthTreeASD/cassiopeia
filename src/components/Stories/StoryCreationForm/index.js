@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert';
