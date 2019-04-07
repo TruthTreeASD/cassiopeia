@@ -7,6 +7,7 @@ import LocationSearchBoxReducer from './LocationSearchBoxReducer';
 import NormalizationReducer from './NormalizationReducer';
 import TrendingStoriesReducer from './TrendingStoriesReducer';
 import AdminStoriesReducer from './AdminStoriesReducer';
+import SideMenuReducer from './SideMenuReducer';
 
 export default combineReducers({
   FilterByReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
   LocationSearchBoxReducer,
   NormalizationReducer,
   TrendingStoriesReducer,
-  AdminStoriesReducer
+  AdminStoriesReducer,
+  SideMenuReducer
 });
