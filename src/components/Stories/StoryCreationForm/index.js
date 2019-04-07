@@ -25,11 +25,17 @@ const initialState = {
   authorFieldValue: '',
   titleFieldValue: '',
   shouldShowTitleFieldError: false,
-  tags: [],
+  tagsWithLabels: [],
+  tagFieldValue: '',
   bodyFieldValue: '',
   bodyFieldTextOnly: '',
   shouldShowBodyFieldError: false
 };
+
+const createOption = label => ({
+  label,
+  value: label
+});
 
 class StoryCreationForm extends Component {
   constructor(props) {
@@ -71,6 +77,40 @@ class StoryCreationForm extends Component {
     });
   };
 
+  handleTagFieldInputChange = tagFieldValue => {
+    this.setState({ tagFieldValue });
+  };
+
+  handleTagsChange = tagsWithLabels => {
+    this.setState({
+      tagsWithLabels
+    });
+  };
+
+  handleTagFieldKeyDown = event => {
+    const { tagFieldValue, tagsWithLabels } = this.state;
+    if (!tagFieldValue) return;
+    switch (event.key) {
+      case 'Enter':
+      case 'Tab':
+        if (!tagsWithLabels.some(tag => tag.value === tagFieldValue)) {
+          const newTagsWithLabels = [
+            ...tagsWithLabels,
+            createOption(tagFieldValue)
+          ];
+          this.setState({
+            tagFieldValue: '',
+            tagsWithLabels: newTagsWithLabels
+          });
+        } else {
+          this.setState({ tagFieldValue: '' });
+        }
+        event.preventDefault();
+        break;
+      default:
+    }
+  };
+
   handleChangeStory = (content, delta, source, editor) => {
     const text = editor.getText();
     this.setState({
@@ -93,7 +133,7 @@ class StoryCreationForm extends Component {
       isHuman,
       authorFieldValue,
       titleFieldValue,
-      tags,
+      tagsWithLabels,
       bodyFieldValue,
       bodyFieldTextOnly
     } = this.state;
@@ -115,7 +155,7 @@ class StoryCreationForm extends Component {
           .post(`${TRUTHTREE_URI}/api/stories`, {
             author: authorFieldValue,
             title: titleFieldValue,
-            tags: tags,
+            tags: tagsWithLabels.map(tag => tag.value),
             content: bodyFieldValue
           })
           .then(() => {
@@ -144,6 +184,8 @@ class StoryCreationForm extends Component {
       shouldShowAuthorFieldError,
       titleFieldValue,
       shouldShowTitleFieldError,
+      tagFieldValue,
+      tagsWithLabels,
       bodyFieldValue,
       bodyFieldTextOnly,
       shouldShowBodyFieldError
@@ -171,7 +213,13 @@ class StoryCreationForm extends Component {
             <FormFeedback>Title can't be blank</FormFeedback>
           </FormGroup>
           <FormGroup className="position-relative">
-            <TagInput onNewTag={tags => this.setState({ tags })} />
+            <TagInput
+              inputValue={tagFieldValue}
+              tagsWithLabels={tagsWithLabels}
+              onChange={this.handleTagsChange}
+              onInputChange={this.handleTagFieldInputChange}
+              onKeyDown={this.handleTagFieldKeyDown}
+            />
           </FormGroup>
           <FormGroup>
             <ReactQuill //value={this.state.storyTextOnly}
