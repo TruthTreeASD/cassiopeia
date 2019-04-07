@@ -146,27 +146,22 @@ class TrendingStories extends Component {
     });
     this.submitSearch(this.state.data);
   };
-  handleKeyPressSearch = key => {
-    if (key.key == 'Enter') {
-      this.submitSearch(...this.state.searchedTags, this.state.searchBoxText);
-    }
-  };
+
   submitSearch = event => {
     //api call for tags filterred by searchedTags here
-
-    axios
-      .get(`${TRUTHTREE_URI}/api/stories`) // + this.state.searchBoxText or something
+    /*  axios
+        .get(`${TRUTHTREE_URI}/api/stories/story/serch/page` + event.target.value.toLowerCase()) // + this.state.searchBoxText or something api/stories/story/search/page/{keyword}
       .then(response => {
         this.setState({
           data: response.data,
           length: response.data.length,
           loading: false
         });
+          console.log(response);
       })
       .catch(error => {
         console.log(error);
-      });
-    this.setState({ searchBoxText: '' });
+      });*/
   };
 
   render() {
@@ -186,7 +181,7 @@ class TrendingStories extends Component {
             className="form-control searchBar"
             data-spy="affix"
             onChange={this.handleChangeSearch}
-            onKeyPress={this.handleKeyPressSearch}
+            // onKeyPress={this.handleKeyPressSearch}
             placeholder="Search stories by title or tag name"
           />
           {/* this is a working button in case we want a search button. I removed the css though
