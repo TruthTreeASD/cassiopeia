@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spinner, Card, Media, Badge, Row, Button } from 'reactstrap';
+import { Spinner, Card, Media, Badge, Row } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 
@@ -147,7 +147,7 @@ class TrendingStories extends Component {
     this.submitSearch(this.state.data);
   };
   handleKeyPressSearch = key => {
-    if (key.key == 'Enter') {
+    if (key.key === 'Enter') {
       this.submitSearch(...this.state.searchedTags, this.state.searchBoxText);
     }
   };

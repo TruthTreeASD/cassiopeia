@@ -213,7 +213,7 @@ class StoryDetails extends Component {
                 <Col xs="auto">
                   <Button
                     className="myButton"
-                    color="secondary"
+                    color="primary"
                     size="sm"
                     onClick={() =>
                       this.handleDecline(this.props.adminSelectedStory.id)

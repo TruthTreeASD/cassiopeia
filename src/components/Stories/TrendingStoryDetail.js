@@ -190,7 +190,7 @@ class TrendingStoryDetail extends Component {
                 <Col xs="auto">
                   <Button
                     className="fa fa-thumbs-o-down thumb view-story"
-                    color="secondary"
+                    color="primary"
                     onClick={() =>
                       this.handleDownVoteClick(
                         this.props.TrendingStoriesReducer.userSelectedStory.id
