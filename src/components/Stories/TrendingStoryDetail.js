@@ -116,7 +116,6 @@ class TrendingStoryDetail extends Component {
   }
 
   render() {
-    console.log(this.props.TrendingStoriesReducer.userSelectedStory);
     if (this.props.TrendingStoriesReducer.userSelectedStory === 'none') {
       return (
         <div>
