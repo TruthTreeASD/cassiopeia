@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import LocationSearchBox from './Explore/LocationSearchBox';
+import { openSideMenu } from '../actions/SideMenuActions';
 
 import '../styles/Header.css';
 import logo from '../truthtree-logo.png';
@@ -105,7 +106,11 @@ class Header extends Component {
             </NavItem>
           </Nav>
           <div>
-            <Button color="outline-primary" block>
+            <Button
+              color="outline-primary"
+              block
+              onClick={() => this.props.dispatch(openSideMenu())}
+            >
               Create a story
             </Button>
           </div>
