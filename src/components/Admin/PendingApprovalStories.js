@@ -25,7 +25,7 @@ class PendingApprovalStories extends Component {
   componentDidMount() {
     //List of stories to be approved if admin
     axios
-      .get(`${TRUTHTREE_URI}/api/stories/pending`)
+      .get(`${TRUTHTREE_URI}/api/stories?storyStatus=PENDING`)
       //Change the api call to unapproved stories
       .then(response => {
         let color = [];
