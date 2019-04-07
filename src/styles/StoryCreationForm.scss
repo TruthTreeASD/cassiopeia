@@ -1,0 +1,38 @@
+@import '../custom-variables';
+
+$modal-content-bg: #023e58;
+
+.story-creation-form {
+  color: $white;
+
+  .modal-header {
+    border-bottom: 1px solid $secondary;
+
+    .close {
+      color: $white;
+    }
+  }
+
+  .modal-content {
+    background-color: $modal-content-bg;
+  }
+
+  .modal-footer {
+    border-top: 1px solid $secondary;
+  }
+
+  .quill {
+    color: #000;
+    background-color: $white;
+    border-radius: 0.25rem;
+    .ql-toolbar {
+      border-top-left-radius: 0.25rem;
+      border-top-right-radius: 0.25rem;
+    }
+    .ql-container {
+      min-height: 300px;
+      border-bottom-left-radius: 0.25rem;
+      border-bottom-right-radius: 0.25rem;
+    }
+  }
+}
