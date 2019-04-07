@@ -88,19 +88,35 @@ class Header extends Component {
           </div>
         </Collapse>
         <Collapse isOpen={collapseOpen} navbar className="flex-grow-0">
-          <Nav className="ml-auto px-md-3" navbar>
+          <Nav
+            className="ml-auto px-md-3"
+            navbar
+            onClick={() => this.setState({ collapseOpen: false })}
+          >
             <NavItem>
-              <NavLink tag={Link} to="/">
+              <NavLink
+                className="d-flex justify-content-center"
+                tag={Link}
+                to="/"
+              >
                 Explore
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} to="/stories">
+              <NavLink
+                className="d-flex justify-content-center"
+                tag={Link}
+                to="/stories"
+              >
                 Stories
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} to="/about">
+              <NavLink
+                className="d-flex justify-content-center"
+                tag={Link}
+                to="/about"
+              >
                 About
               </NavLink>
             </NavItem>
@@ -109,7 +125,10 @@ class Header extends Component {
             <Button
               color="outline-primary"
               block
-              onClick={() => this.props.dispatch(openSideMenu())}
+              onClick={() => {
+                this.setState({ collapseOpen: false });
+                this.props.dispatch(openSideMenu());
+              }}
             >
               Create a story
             </Button>
