@@ -17,7 +17,6 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import LocationSearchBox from './Explore/LocationSearchBox';
-import LeftSideBar from './LeftSideBar';
 
 import '../styles/Header.css';
 import logo from '../truthtree-logo.png';

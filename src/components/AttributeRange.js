@@ -66,25 +66,20 @@ class AttributeRange extends Component {
     const createSliders = this.props.attribute.attributeName.map(
       (currentAttribute, i) => (
         <div className="outer" key={i}>
-          {window.innerWidth > mobileStyle ? (
-            <p className="no-margin">
-              Select range of {currentAttribute} for filtering other{' '}
-              {this.props.level}:{' '}
-              <b>
-                {this.props.attribute.populationRange[0]}% to{' '}
-                {this.props.attribute.populationRange[1]}%
-              </b>
-            </p>
-          ) : (
-            <p className="no-margin">
-              Filter {this.props.level}:{' '}
-              <b>
-                {this.props.attribute.populationRange[0]}% to{' '}
-                {this.props.attribute.populationRange[1]}%
-              </b>
-            </p>
-          )}
-
+          <p className="no-margin">
+            {window.innerWidth > mobileStyle ? (
+              <div>
+                Select range of {currentAttribute} for filtering other{' '}
+                {this.props.level}:{' '}
+              </div>
+            ) : (
+              <div>Filter {this.props.level}: </div>
+            )}
+            <b>
+              {this.props.attribute.populationRange[0]}% to{' '}
+              {this.props.attribute.populationRange[1]}%
+            </b>
+          </p>
           <br />
 
           <Range
