@@ -9,6 +9,8 @@ import { withRouter } from 'react-router-dom';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import '../styles/LeftSideBar.scss';
 
+const mobileStyle = 800;
+
 class LeftSideBar extends Component {
   constructor(props) {
     super(props);
@@ -154,7 +156,11 @@ class LeftSideBar extends Component {
       if (this.state.collapsedLeft) {
         return (
           <button
-            className="LeftSideBarButton"
+            className={
+              window.innerWidth > mobileStyle
+                ? 'LeftSideBarButton'
+                : 'TopSideBarButton'
+            }
             onClick={() => this.collapseLeftBar()}
           >
             <i
@@ -169,7 +175,7 @@ class LeftSideBar extends Component {
         );
       } else {
         return (
-          <nav className="scrollLeftBar col-md-2 d-none d-md-block bg-dark sidebar">
+          <nav className="fixed-left scrollLeftBar col-md-2 d-md-block bg-dark sidebar ">
             <div className="row">
               <div className="col-10">
                 <input
