@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 
 import {
   updateValue,
-  updateSuggestions
+  updateSuggestions,
+  selectSuggestion
 } from '../../actions/LocationSearchBoxActions';
 import { getSuggestionLabel, getSuggestionUrl } from './common';
 
@@ -45,6 +46,15 @@ class LocationSearchBox extends Component {
     this.props.dispatch(updateValue(newValue));
   };
 
+  handleSuggestionSelected = (_, { suggestion }) => {
+    const { dispatch, selectable, value } = this.props;
+    if (selectable) {
+      dispatch(selectSuggestion(suggestion));
+    } else {
+      dispatch(updateValue(value));
+    }
+  };
+
   handleSuggestionsFetchRequested = ({ value }) => {
     post(ENDPOINT, {
       text: value
@@ -75,7 +85,7 @@ class LocationSearchBox extends Component {
   );
 
   render() {
-    const { value, suggestions, dispatch } = this.props;
+    const { value, suggestions } = this.props;
     const inputProps = {
       value,
       onChange: this.handleInputChange
@@ -92,7 +102,7 @@ class LocationSearchBox extends Component {
         onSuggestionsFetchRequested={
           this.debouncedhandleSuggestionsFetchRequested
         }
-        onSuggestionSelected={() => dispatch(updateValue(value))}
+        onSuggestionSelected={this.handleSuggestionSelected}
         onSuggestionsClearRequested={() => null}
         getSuggestionValue={getSuggestionLabel}
         renderInputComponent={this.renderInputComponent}
