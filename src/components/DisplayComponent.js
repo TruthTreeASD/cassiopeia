@@ -207,6 +207,11 @@ class DisplayComponent extends Component {
   render() {
     var columns = [
       {
+        dataField: 'id',
+        text: 'Id',
+        hidden: true
+      },
+      {
         dataField: '0',
         text: 'Name',
         formatter: this.getFormattedName
@@ -226,8 +231,9 @@ class DisplayComponent extends Component {
       });
     });
     var data = [];
-    _.values(this.state.selectedData).map(row => {
+    _.values(this.state.selectedData).map((row, i) => {
       var currentRow = {};
+      currentRow['id'] = this.state.locationIds[i];
       currentRow['0'] = _.capitalize(row['name']);
       currentRow['1'] = row['1'].toLocaleString();
       this.state.selectedAttributes.map((column, i) => {
@@ -240,7 +246,7 @@ class DisplayComponent extends Component {
     return (
       <div id="mainDisplay">
         <Normalization />
-        <ToolkitProvider keyField="0" data={data} columns={columns} exportCSV>
+        <ToolkitProvider keyField="id" data={data} columns={columns} exportCSV>
           {props => (
             <div>
               <ExportCSVButton
