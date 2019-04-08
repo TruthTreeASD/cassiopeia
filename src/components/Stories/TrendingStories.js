@@ -152,8 +152,10 @@ class TrendingStories extends Component {
     axios
       .get(
         `${TRUTHTREE_URI}/api/stories/story/serch/page` +
-          event.target.value.toLowerCase()
-      ) // + this.state.searchBoxText or something api/stories/story/search/page/{keyword}
+          event.toLowerCase() +
+          '&pageSize=' +
+          999
+      )
       .then(response => {
         this.setState({
           data: response.data,
