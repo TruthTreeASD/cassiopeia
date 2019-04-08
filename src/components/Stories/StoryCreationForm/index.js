@@ -156,7 +156,8 @@ class StoryCreationForm extends Component {
             author: authorFieldValue,
             title: titleFieldValue,
             tags: tagsWithLabels.map(tag => tag.value),
-            content: bodyFieldValue
+            content: bodyFieldValue,
+            rawContent: bodyFieldTextOnly
           })
           .then(() => {
             this.handleDiscard();
