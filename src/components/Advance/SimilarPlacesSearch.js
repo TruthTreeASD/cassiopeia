@@ -16,6 +16,9 @@ import Select from 'react-select';
 import { connect } from 'react-redux';
 import LocationSearchBox from '../Explore/LocationSearchBox';
 import CommonAttributes from './CommonAttributes';
+import store from '../../reducers/RootReducer';
+import axios from 'axios/index';
+import { TRUTHTREE_URI } from '../../constants';
 
 const options = [
   { value: 'Income_Taxes_Total', label: 'Income Taxes - Total' },
@@ -35,9 +38,9 @@ for (let i = 2016; i > 1966; i--) {
 }
 
 const normalizationList = [
-  { value: 'Gross', label: 'Gross' },
-  { value: 'ByPopulation', label: 'By Population' },
-  { value: 'ByRevenue', label: 'By Revenue' }
+  // { value: "GROSS", label: "Gross" },
+  { value: 'PER_CAPITA', label: 'By Population' },
+  { value: 'BY_REVENUE', label: 'By Revenue' }
 ];
 
 class SimilarPlacesSearch extends Component {
@@ -46,14 +49,17 @@ class SimilarPlacesSearch extends Component {
     this.state = {
       selectedAttributes: null,
       numberOfLocations: { value: '1', label: '1' },
-      normalization: { value: 'Gross', label: 'Gross' },
-      yearSelectedMin: { value: '2016', label: '2016' },
-      yearSelectedMax: { value: '2016', label: '2016' }
+      normalization: { value: null, label: 'Please Select' },
+      yearSelectedMin: { value: null, label: 'Start Year' },
+      yearSelectedMax: { value: null, label: 'End Year' },
+      similarLocations: []
     };
     this.handleChangeAttribute = this.handleChangeAttribute.bind(this);
     this.handleChangeNumber = this.handleChangeNumber.bind(this);
     this.handleChangeYearMin = this.handleChangeYearMin.bind(this);
     this.handleChangeYearMax = this.handleChangeYearMax.bind(this);
+    this.findSimilarLocations = this.findSimilarLocations.bind(this);
+    this.validateInputs = this.validateInputs.bind(this);
   }
 
   handleChangeAttribute = selectedAttributes => {
@@ -74,6 +80,73 @@ class SimilarPlacesSearch extends Component {
   handleChangeYearMax = yearSelectedMax => {
     this.setState({ yearSelectedMax });
   };
+
+  findSimilarLocations() {
+    if (!this.validateInputs()) {
+      return;
+    }
+    let locationId = this.props.selected.id;
+    let place_type = this.props.selected.typeCode;
+    let normalizationType = this.state.normalization.value;
+    let attributes = this.props.selectedAttributes[0].value;
+    let year = this.state.yearSelectedMin.value;
+    if (this.props.selectedAttributes.length > 1) {
+      for (let i = 1; i < this.props.selectedAttributes.length; i++) {
+        attributes = attributes + ',' + this.props.selectedAttributes[i].value;
+      }
+    } else {
+      year = year + ',' + this.state.yearSelectedMax.value;
+    }
+    axios
+      .get(
+        `${TRUTHTREE_URI}/api/similarlocations?` +
+          `locationId=` +
+          locationId +
+          `&place_type=` +
+          place_type +
+          `&attribute=` +
+          attributes +
+          `&year=` +
+          year +
+          `&normalize_by=` +
+          normalizationType
+      )
+      .then(response => {
+        this.setState({ allValues: response.data });
+        let values = this.state.allValues.map((value, i) => ({
+          value: value.id,
+          label: value.display_name
+        }));
+        this.setState({ values: values });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  validateInputs() {
+    if (
+      this.props.selected === undefined ||
+      this.props.selected.id === undefined ||
+      this.state.normalization.value === undefined ||
+      this.state.yearSelectedMin.value === null ||
+      this.props.selectedAttributes.length < 2
+    ) {
+      console.log(
+        this.props.selectedAttributes.length === 1 &&
+          this.state.yearSelectedMax.value === null
+      );
+      if (
+        (this.props.selectedAttributes.length === 1 &&
+          this.state.yearSelectedMax.value === null) ||
+        this.props.selectedAttributes.length < 1
+      ) {
+        alert('Please select all values');
+        return false;
+      }
+    }
+    return true;
+  }
 
   componentDidMount() {}
 
@@ -108,6 +181,7 @@ class SimilarPlacesSearch extends Component {
       );
     }
   }
+
   render() {
     console.log(this.props.selectedAttributes.length);
     let length = this.props.selectedAttributes.length;
@@ -149,12 +223,6 @@ class SimilarPlacesSearch extends Component {
                 </Label>
               </Col>
               <Col lg="4" sm="12" md="4">
-                {/*<Select*/}
-                {/*value={this.state.selectedOption}*/}
-                {/*onChange={this.handleChangeAttribute}*/}
-                {/*options={options}*/}
-                {/*isMulti="true"*/}
-                {/*/>*/}
                 <CommonAttributes />
               </Col>
               <Col lg="2" sm="12" md="2">
@@ -169,7 +237,10 @@ class SimilarPlacesSearch extends Component {
 
             <div style={{ paddingTop: '10px' }}>
               <FormGroup row className="justify-content-center">
-                <Button className="float-right">
+                <Button
+                  className="float-right"
+                  onClick={this.findSimilarLocations}
+                >
                   <i className="fa fa-search" style={{ padding: '5px' }} />
                   Search
                 </Button>
@@ -184,7 +255,8 @@ class SimilarPlacesSearch extends Component {
 
 const mapStateToProps = state => {
   return {
-    selectedAttributes: state.CommonAttributesReducer.selectedAttributes
+    selectedAttributes: state.CommonAttributesReducer.selectedAttributes,
+    selected: state.LocationSearchBoxReducer.selected
   };
 };
 

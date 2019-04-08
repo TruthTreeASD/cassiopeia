@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert';
@@ -156,7 +155,8 @@ class StoryCreationForm extends Component {
             author: authorFieldValue,
             title: titleFieldValue,
             tags: tagsWithLabels.map(tag => tag.value),
-            content: bodyFieldValue
+            content: bodyFieldValue,
+            rawContent: bodyFieldTextOnly
           })
           .then(() => {
             this.handleDiscard();

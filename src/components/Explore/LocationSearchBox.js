@@ -12,7 +12,6 @@ import {
   InputGroup,
   InputGroupAddon
 } from 'reactstrap';
-
 import { post } from 'axios';
 import Autosuggest from 'react-autosuggest';
 import { Link, withRouter } from 'react-router-dom';
