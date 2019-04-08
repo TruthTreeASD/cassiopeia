@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spinner, Button } from 'reactstrap';
+import { Spinner } from 'reactstrap';
 import axios from 'axios/index';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -62,7 +62,6 @@ class TimeSeriesView extends Component {
     let minPopulation = 0;
     let maxPopulation = 0;
     let year = this.props.yearSelected ? this.props.yearSelected : 2016;
-    let locationIds = [];
     let data = {};
     let population = 0;
     // Calculate min and max population
