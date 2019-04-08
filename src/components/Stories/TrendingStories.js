@@ -187,7 +187,7 @@ class TrendingStories extends Component {
           color.push('white');
         }
         this.props.dispatch({
-          type: 'APPROVED_STORIES_LIST',
+          type: 'APPROVED_STORIES_LIST', //could change, but works well now.
           approvedStories: response.data,
           approvedStoriesLength: response.data.length,
           color: color,
