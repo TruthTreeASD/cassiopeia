@@ -34,9 +34,7 @@ class TrendingStoryDetail extends Component {
     var indexOfId = _.findIndex(arr, { id: story.id });
     arr.splice(indexOfId, 1, response.data);
 
-    let keyDown = story.id + 'up';
-    localStorage.setItem(keyDown, 'true');
-    keyDown = story.id + 'down';
+    let keyDown = story.id;
     localStorage.setItem(keyDown, 'true');
 
     this.props.dispatch({
@@ -50,7 +48,7 @@ class TrendingStoryDetail extends Component {
   }
 
   handleUpVoteClick(story) {
-    let checkCondition = story.id + 'up';
+    let checkCondition = story.id;
     if (!localStorage.getItem(checkCondition)) {
       console.log(JSON.stringify(story));
       axios({
@@ -79,7 +77,7 @@ class TrendingStoryDetail extends Component {
   }
 
   handleDownVoteClick(story) {
-    let checkCondition = story.id + 'down';
+    let checkCondition = story.id;
     if (!localStorage.getItem(checkCondition)) {
       console.log(JSON.stringify(story));
       axios({
