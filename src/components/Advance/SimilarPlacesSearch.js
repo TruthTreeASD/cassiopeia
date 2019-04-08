@@ -183,9 +183,6 @@ class SimilarPlacesSearch extends Component {
   }
 
   render() {
-    console.log(this.props.selectedAttributes.length);
-    let length = this.props.selectedAttributes.length;
-
     return (
       <Card>
         <CardHeader>
