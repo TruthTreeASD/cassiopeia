@@ -151,7 +151,7 @@ class TrendingStories extends Component {
     //api call for tags filterred by searchedTags here
     axios
       .get(
-        `${TRUTHTREE_URI}/api/stories/story/serch/page` +
+        `${TRUTHTREE_URI}/api/stories/story/serch?keyword=` +
           event.toLowerCase() +
           '&pageSize=' +
           999
