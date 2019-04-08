@@ -144,6 +144,7 @@ class TrendingStories extends Component {
       searchBoxText: search //,
       //searchedTags: _.split(search, ' ', 9999)
     });
+    console.log(this.state.searchBoxText);
     this.submitSearch(this.state.searchBoxText);
   };
 
@@ -155,7 +156,7 @@ class TrendingStories extends Component {
           event +
           '&pageSize=' +
           999 +
-          'pageNumber=' +
+          '&pageNumber=' +
           1
       )
       .then(response => {
