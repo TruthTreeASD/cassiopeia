@@ -11,6 +11,7 @@ const dropdownMenuStyle = {
   height: '200px',
   overflow: 'auto'
 };
+const mobileStyle = 800;
 
 let allYears = [];
 for (let i = 1966; i < 2016; i++) {
@@ -52,7 +53,12 @@ class YearSelector extends Component {
 
     return (
       <div>
-        <p> Select year of data to be displayed: </p>
+
+        {window.innerWidth > mobileStyle && (
+          <p>Select year of data to be displayed:</p>
+        )}
+
+
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{this.props.yearSelected}</DropdownToggle>
           <DropdownMenu style={dropdownMenuStyle}>{yearArray}</DropdownMenu>
