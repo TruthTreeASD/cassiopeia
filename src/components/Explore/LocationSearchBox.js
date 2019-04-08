@@ -25,6 +25,7 @@ import {
   selectSuggestion
 } from '../../actions/LocationSearchBoxActions';
 import { getSuggestionLabel, getSuggestionUrl } from './common';
+import '../../styles/LocationSearchBox.css';
 
 const ENDPOINT = '/api/search';
 const searchBoxStyle = {
@@ -143,7 +144,7 @@ class LocationSearchBox extends Component {
       return (
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{this.state.displayTextValue}</DropdownToggle>
-          <DropdownMenu>
+          <DropdownMenu className="dropdown-width-advance">
             <Autosuggest
               theme={{
                 container: searchBoxStyle,
