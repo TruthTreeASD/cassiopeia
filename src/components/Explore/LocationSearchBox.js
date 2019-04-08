@@ -7,8 +7,12 @@ import {
   DropdownItem,
   DropdownMenu,
   Dropdown,
-  DropdownToggle
+  DropdownToggle,
+  Button,
+  InputGroup,
+  InputGroupAddon
 } from 'reactstrap';
+
 import { post } from 'axios';
 import Autosuggest from 'react-autosuggest';
 import { Link, withRouter } from 'react-router-dom';
@@ -17,7 +21,8 @@ import { connect } from 'react-redux';
 
 import {
   updateValue,
-  updateSuggestions
+  updateSuggestions,
+  selectSuggestion
 } from '../../actions/LocationSearchBoxActions';
 import { getSuggestionLabel, getSuggestionUrl } from './common';
 
@@ -75,6 +80,15 @@ class LocationSearchBox extends Component {
     this.props.dispatch(updateValue(newValue));
   };
 
+  handleSuggestionSelected = (_, { suggestion }) => {
+    const { dispatch, selectable, value } = this.props;
+    if (selectable) {
+      dispatch(selectSuggestion(suggestion));
+    } else {
+      dispatch(updateValue(value));
+    }
+  };
+
   handleSuggestionsFetchRequested = ({ value }) => {
     post(ENDPOINT, {
       text: value
@@ -85,15 +99,22 @@ class LocationSearchBox extends Component {
 
   renderInputComponent = inputProps => (
     <div>
-      <Input
-        {...inputProps}
-        id="location-search-box"
-        name="location-search-box"
-        placeholder="Try something like Seattle or Boston"
-        innerRef={input => {
-          this.inputRef = input;
-        }}
-      />
+      <InputGroup>
+        <Input
+          {...inputProps}
+          id="location-search-box"
+          name="location-search-box"
+          placeholder="Try something like Seattle or Boston"
+          innerRef={input => {
+            this.inputRef = input;
+          }}
+        />
+        <InputGroupAddon addonType="append">
+          <label className="btn btn-light mb-0">
+            <i className="fa fa-chevron-up" />
+          </label>
+        </InputGroupAddon>
+      </InputGroup>
     </div>
   );
 
@@ -104,63 +125,25 @@ class LocationSearchBox extends Component {
       onChange: this.handleInputChange
     };
 
-    if (clickable === false) {
-      return (
-        <Dropdown
-          lg="2"
-          sm="12"
-          md="2"
-          isOpen={this.state.dropdownOpen}
-          toggle={this.toggle}
-        >
-          <DropdownToggle className="DT" caret>
-            Select a location....
-          </DropdownToggle>
-          <DropdownMenu className="DM">
-            <Autosuggest
-              theme={{
-                container: searchBoxStyle,
-                suggestionsList:
-                  'list-group position-absolute w-100 overflow-y',
-                suggestion: 'list-group-item'
-              }}
-              suggestions={suggestions}
-              onSuggestionsFetchRequested={
-                this.debouncedhandleSuggestionsFetchRequested
-              }
-              onSuggestionSelected={() => dispatch(updateValue(value))}
-              getSuggestionValue={getSuggestionLabel}
-              renderInputComponent={this.renderInputComponent}
-              renderSuggestion={suggestion =>
-                renderSuggestion(suggestion, clickable)
-              }
-              inputProps={inputProps}
-            />
-          </DropdownMenu>
-        </Dropdown>
-      );
-    } else {
-      return (
-        <Autosuggest
-          theme={{
-            container: searchBoxStyle,
-            suggestionsList: 'list-group position-absolute w-100 overflow-y',
-            suggestion: 'list-group-item'
-          }}
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={
-            this.debouncedhandleSuggestionsFetchRequested
-          }
-          onSuggestionSelected={() => dispatch(updateValue(value))}
-          getSuggestionValue={getSuggestionLabel}
-          renderInputComponent={this.renderInputComponent}
-          renderSuggestion={suggestion =>
-            renderSuggestion(suggestion, clickable)
-          }
-          inputProps={inputProps}
-        />
-      );
-    }
+    return (
+      <Autosuggest
+        theme={{
+          container: searchBoxStyle,
+          suggestionsList: 'list-group position-absolute w-100 overflow-y',
+          suggestion: 'list-group-item'
+        }}
+        suggestions={suggestions}
+        onSuggestionsFetchRequested={
+          this.debouncedhandleSuggestionsFetchRequested
+        }
+        onSuggestionSelected={this.handleSuggestionSelected}
+        onSuggestionsClearRequested={() => null}
+        getSuggestionValue={getSuggestionLabel}
+        renderInputComponent={this.renderInputComponent}
+        renderSuggestion={renderSuggestion}
+        inputProps={inputProps}
+      />
+    );
   }
 }
 

@@ -1,5 +1,5 @@
 .accordion {
-  background-color: rgb(35, 49, 62, 0);
+  background-color: rgba(35, 49, 62, 0);
   color: white;
   cursor: pointer;
   padding: 8px;
@@ -14,7 +14,7 @@
 }
 
 nav.scrollLeftBar.col-md-2.d-none.d-md-block.bg-light.sidebar {
-  background-color: rgb(35, 49, 62, 0.8) !important;
+  background-color: rgba(35, 49, 62, 0.8) !important;
   height: 100%;
   overflow: auto;
 }
@@ -38,12 +38,16 @@ nav.scrollLeftBar.col-md-2.d-none.d-md-block.bg-light.sidebar {
 }
 
 .scrollLeftBar {
+  button.btn {
+    color: white !important;
+  }
+
+  .collapse {
+    display: none;
+  }
+
   max-height: 800px;
   overflow-y: auto;
-}
-
-.collapse {
-  display: none;
 }
 
 .collapse.in {
@@ -66,10 +70,6 @@ nav.scrollLeftBar.col-md-2.d-none.d-md-block.bg-light.sidebar {
   padding-right: 5px;
   padding-top: 5px;
   padding-bottom: 10px;
-}
-
-button.btn {
-  color: white !important;
 }
 
 .react-confirm-alert-body {

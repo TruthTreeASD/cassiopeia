@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../styles/LeftSideBar.css';
 import _ from 'lodash';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -8,6 +7,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import { TRUTHTREE_URI } from '../constants';
 import { withRouter } from 'react-router-dom';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import '../styles/LeftSideBar.scss';
 
 class LeftSideBar extends Component {
   constructor(props) {
@@ -117,6 +117,7 @@ class LeftSideBar extends Component {
   handleChangeSearch = event => {
     let searchString = event.target.value.toLowerCase();
     searchString = searchString.replace('\\', '');
+    searchString = searchString.replace('/', '');
     searchString = searchString.replace('*', '');
 
     this.setState({ searchedString: searchString });
