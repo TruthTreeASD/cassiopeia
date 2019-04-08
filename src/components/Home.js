@@ -79,7 +79,6 @@ class Home extends Component {
       <Container fluid style={homeStyle} className="home">
         <Row>
           <LeftSideBar />
-
           <div className="col-12 col-md-10 align-items-center padding">
             <Card className="selected-attributes padding">
               <AttributeDeselector />

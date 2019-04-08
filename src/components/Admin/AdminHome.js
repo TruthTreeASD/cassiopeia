@@ -17,7 +17,7 @@ class AdminHome extends Component {
             <Col className="border-right">
               <StoriesList />
             </Col>
-            <Col className="border-right">
+            <Col className="border-right overflow">
               <ViewAndApproveStory />
             </Col>
           </Row>

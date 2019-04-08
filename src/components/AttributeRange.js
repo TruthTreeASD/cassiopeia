@@ -23,6 +23,7 @@ const marks = {
   '40': '+40%',
   '50': '+50%'
 };
+const mobileStyle = 800;
 
 class AttributeRange extends Component {
   constructor(props) {
@@ -66,8 +67,14 @@ class AttributeRange extends Component {
       (currentAttribute, i) => (
         <div className="outer" key={i}>
           <p className="no-margin">
-            Select range of {currentAttribute} for filtering other{' '}
-            {this.props.level}:{' '}
+            {window.innerWidth > mobileStyle ? (
+              <div>
+                Select range of {currentAttribute} for filtering other{' '}
+                {this.props.level}:{' '}
+              </div>
+            ) : (
+              <div>Filter {this.props.level}: </div>
+            )}
             <b>
               {this.props.attribute.populationRange[0]}% to{' '}
               {this.props.attribute.populationRange[1]}%
