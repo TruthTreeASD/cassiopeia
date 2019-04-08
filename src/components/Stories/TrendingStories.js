@@ -141,10 +141,10 @@ class TrendingStories extends Component {
     search = search.replace('\\', '');
     search = search.replace('*', '');
     this.setState({
-      searchBoxText: search,
-      searchedTags: _.split(search, ' ', 9999)
+      searchBoxText: search //,
+      //searchedTags: _.split(search, ' ', 9999)
     });
-    this.submitSearch(this.state.data);
+    this.submitSearch(this.state.searchBoxText);
   };
 
   submitSearch = event => {
