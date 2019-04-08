@@ -134,39 +134,70 @@ class TrendingStories extends Component {
       </Media>
     );
   }
-  filterOutStories = stories => {};
 
   handleChangeSearch = event => {
     let search = event.target.value.toLowerCase();
     search = search.replace('\\', '');
     search = search.replace('*', '');
     this.setState({
-      searchBoxText: search,
-      searchedTags: _.split(search, ' ', 9999)
+      searchBoxText: search //,
+      //searchedTags: _.split(search, ' ', 9999)
     });
-    this.submitSearch(this.state.data);
-  };
-  handleKeyPressSearch = key => {
-    if (key.key === 'Enter') {
-      this.submitSearch(...this.state.searchedTags, this.state.searchBoxText);
+    console.log(search);
+    if (search == '') {
+      axios
+        .get(`${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED`)
+        .then(response => {
+          let color = [];
+          for (var i = 0; i < response.data.length; i++) {
+            color.push('white');
+          }
+          this.props.dispatch({
+            type: 'APPROVED_STORIES_LIST',
+            approvedStories: response.data,
+            approvedStoriesLength: response.data.length,
+            color: color,
+            userSelectedStory: 'none',
+            loading: false
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      this.submitSearch(search);
     }
   };
-  submitSearch = event => {
+
+  submitSearch = search => {
     //api call for tags filterred by searchedTags here
 
-    axios
-      .get(`${TRUTHTREE_URI}/api/stories`) // + this.state.searchBoxText or something
+    axios //api/stories/search?keyword=colorado&pageSize=10&pageNumber=1
+      .get(
+        `${TRUTHTREE_URI}/api/stories/search?keyword=` +
+          search +
+          '&pageSize=' +
+          999 +
+          '&pageNumber=' +
+          1
+      )
       .then(response => {
-        this.setState({
-          data: response.data,
-          length: response.data.length,
+        let color = [];
+        for (var i = 0; i < response.data.length; i++) {
+          color.push('white');
+        }
+        this.props.dispatch({
+          type: 'APPROVED_STORIES_LIST', //could change, but works well now.
+          approvedStories: response.data,
+          approvedStoriesLength: response.data.length,
+          color: color,
+          userSelectedStory: 'none',
           loading: false
         });
       })
       .catch(error => {
         console.log(error);
       });
-    this.setState({ searchBoxText: '' });
   };
 
   render() {
@@ -186,7 +217,7 @@ class TrendingStories extends Component {
             className="form-control searchBar"
             data-spy="affix"
             onChange={this.handleChangeSearch}
-            onKeyPress={this.handleKeyPressSearch}
+            // onKeyPress={this.handleKeyPressSearch}
             placeholder="Search stories by title or tag name"
           />
           {/* this is a working button in case we want a search button. I removed the css though
