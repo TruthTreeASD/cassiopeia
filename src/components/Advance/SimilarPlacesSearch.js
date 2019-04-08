@@ -13,6 +13,7 @@ import {
   Button
 } from 'reactstrap';
 import Select from 'react-select';
+import { connect } from 'react-redux';
 import LocationSearchBox from '../Explore/LocationSearchBox';
 import CommonAttributes from './CommonAttributes';
 
@@ -76,7 +77,41 @@ class SimilarPlacesSearch extends Component {
 
   componentDidMount() {}
 
+  renderYearInput() {
+    if (this.props.selectedAttributes.length < 2) {
+      return (
+        <Row>
+          <Col>
+            <Select
+              value={this.state.yearSelectedMin}
+              onChange={this.handleChangeYearMin}
+              options={allYears}
+            />
+          </Col>
+          {' - '}
+          <Col>
+            <Select
+              value={this.state.yearSelectedMax}
+              onChange={this.handleChangeYearMax}
+              options={allYears}
+            />
+          </Col>
+        </Row>
+      );
+    } else {
+      return (
+        <Select
+          value={this.state.yearSelectedMin}
+          onChange={this.handleChangeYearMin}
+          options={allYears}
+        />
+      );
+    }
+  }
   render() {
+    console.log(this.props.selectedAttributes.length);
+    let length = this.props.selectedAttributes.length;
+
     return (
       <Card>
         <CardHeader>
@@ -128,11 +163,7 @@ class SimilarPlacesSearch extends Component {
                 </Label>
               </Col>
               <Col lg="4" sm="12" md="4">
-                <Select
-                  value={this.state.yearSelectedMin}
-                  onChange={this.handleChangeYearMin}
-                  options={allYears}
-                />
+                {this.renderYearInput()}
               </Col>
             </FormGroup>
 
@@ -151,4 +182,10 @@ class SimilarPlacesSearch extends Component {
   }
 }
 
-export default SimilarPlacesSearch;
+const mapStateToProps = state => {
+  return {
+    selectedAttributes: state.CommonAttributesReducer.selectedAttributes
+  };
+};
+
+export default connect(mapStateToProps)(SimilarPlacesSearch);

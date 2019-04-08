@@ -19,7 +19,8 @@ class CommonAttributes extends Component {
     this.state = {
       dropdownOpen: false,
       selectedAttributes: [],
-      allValues: []
+      allValues: [],
+      values: []
     };
     this.getAttributes = this.getAttributes.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -49,7 +50,6 @@ class CommonAttributes extends Component {
   }
 
   handleChangeAttribute = selectedAttributes => {
-    console.log(selectedAttributes);
     this.props.dispatch({
       type: 'ADD_ATTRIBUTES',
       selectedAttribute: selectedAttributes
@@ -61,6 +61,11 @@ class CommonAttributes extends Component {
       .get(`${TRUTHTREE_URI}/api/similarlocations/attributes`)
       .then(response => {
         this.setState({ allValues: response.data });
+        let values = this.state.allValues.map((value, i) => ({
+          value: value.id,
+          label: value.display_name
+        }));
+        this.setState({ values: values });
       })
       .catch(error => {
         console.log(error);
@@ -68,16 +73,12 @@ class CommonAttributes extends Component {
   }
 
   render() {
-    let values = this.state.allValues.map((value, i) => ({
-      value: value.id,
-      label: value.display_name
-    }));
     return (
       <div id="normalisation">
         <Select
           value={this.props.selectedAttributes}
           onChange={this.handleChangeAttribute}
-          options={values}
+          options={this.state.values}
           isMulti="true"
         />
       </div>
