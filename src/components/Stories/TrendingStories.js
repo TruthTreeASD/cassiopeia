@@ -154,7 +154,9 @@ class TrendingStories extends Component {
         `${TRUTHTREE_URI}/api/stories/story/serch?keyword=` +
           event +
           '&pageSize=' +
-          999
+          999 +
+          'pageNumber=' +
+          1
       )
       .then(response => {
         this.setState({
