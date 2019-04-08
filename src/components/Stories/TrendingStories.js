@@ -152,7 +152,7 @@ class TrendingStories extends Component {
     axios
       .get(
         `${TRUTHTREE_URI}/api/stories/story/serch?keyword=` +
-          event.toLowerCase() +
+          event +
           '&pageSize=' +
           999
       )
