@@ -134,7 +134,6 @@ class TrendingStories extends Component {
       </Media>
     );
   }
-  filterOutStories = stories => {};
 
   handleChangeSearch = event => {
     let search = event.target.value.toLowerCase();
@@ -144,28 +143,57 @@ class TrendingStories extends Component {
       searchBoxText: search //,
       //searchedTags: _.split(search, ' ', 9999)
     });
-    console.log(this.state.searchBoxText);
-    this.submitSearch(this.state.searchBoxText);
+    console.log(search);
+    if (search == '') {
+      axios
+        .get(`${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED`)
+        .then(response => {
+          let color = [];
+          for (var i = 0; i < response.data.length; i++) {
+            color.push('white');
+          }
+          this.props.dispatch({
+            type: 'APPROVED_STORIES_LIST',
+            approvedStories: response.data,
+            approvedStoriesLength: response.data.length,
+            color: color,
+            userSelectedStory: 'none',
+            loading: false
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      this.submitSearch(search);
+    }
   };
 
-  submitSearch = event => {
+  submitSearch = search => {
     //api call for tags filterred by searchedTags here
-    axios
+
+    axios //api/stories/search?keyword=colorado&pageSize=10&pageNumber=1
       .get(
-        `${TRUTHTREE_URI}/api/stories/story/search?keyword=` +
-          event +
+        `${TRUTHTREE_URI}/api/stories/search?keyword=` +
+          search +
           '&pageSize=' +
           999 +
           '&pageNumber=' +
           1
       )
       .then(response => {
-        this.setState({
-          data: response.data,
-          length: response.data.length,
+        let color = [];
+        for (var i = 0; i < response.data.length; i++) {
+          color.push('white');
+        }
+        this.props.dispatch({
+          type: 'APPROVED_STORIES_LIST',
+          approvedStories: response.data,
+          approvedStoriesLength: response.data.length,
+          color: color,
+          userSelectedStory: 'none',
           loading: false
         });
-        console.log(response);
       })
       .catch(error => {
         console.log(error);
