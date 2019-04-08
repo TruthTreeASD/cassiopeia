@@ -8,6 +8,7 @@ import {
   DropdownToggle
 } from 'reactstrap';
 import axios from 'axios/index';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
@@ -65,7 +66,8 @@ class CommonAttributes extends Component {
           value: value.id,
           label: value.display_name
         }));
-        this.setState({ values: values });
+        var valuesSorted = _.sortBy(values, ['label']);
+        this.setState({ values: valuesSorted });
       })
       .catch(error => {
         console.log(error);
