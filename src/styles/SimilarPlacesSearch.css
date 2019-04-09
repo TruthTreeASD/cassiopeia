@@ -1,0 +1,21 @@
+.w-100 {
+  z-index: 999;
+}
+
+.map-code {
+  width: 5px;
+  height: 5px;
+  border: 1px solid black;
+  padding: 5px;
+  margin: 1px;
+}
+
+.similar-places-card-header {
+  background-color: rgb(191, 217, 213) !important;
+}
+
+.similar-places-label {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 10px;
+}
