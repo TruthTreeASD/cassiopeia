@@ -13,6 +13,11 @@ export default (
         selectedAttributes: newAttributes
       };
       break;
+    case 'EMPTY_ATTRIBUTES_LIST':
+      state = {
+        selectedAttributes: []
+      };
+      break;
     default:
       return state;
   }

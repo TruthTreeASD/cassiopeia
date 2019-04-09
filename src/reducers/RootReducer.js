@@ -9,6 +9,7 @@ import TrendingStoriesReducer from './TrendingStoriesReducer';
 import CommonAttributesReducer from './CommonAttributesReducer';
 import AdminStoriesReducer from './AdminStoriesReducer';
 import SideMenuReducer from './SideMenuReducer';
+import SimilarLocationsReducer from './SimilarLocationsReducer';
 
 export default combineReducers({
   FilterByReducer,
@@ -20,5 +21,6 @@ export default combineReducers({
   TrendingStoriesReducer,
   CommonAttributesReducer,
   AdminStoriesReducer,
-  SideMenuReducer
+  SideMenuReducer,
+  SimilarLocationsReducer
 });

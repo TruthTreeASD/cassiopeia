@@ -16,9 +16,12 @@ import Select from 'react-select';
 import { connect } from 'react-redux';
 import LocationSearchBox from '../Explore/LocationSearchBox';
 import CommonAttributes from './CommonAttributes';
+import SimilarPlacesResponse from './SimilarPlacesResponse';
 import store from '../../reducers/RootReducer';
 import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
+import { updateLocations } from '../../actions/SimilarLocationsActions';
+import { emptyAttributesList } from '../../actions/CommonAttributesActions';
 
 const options = [
   { value: 'Income_Taxes_Total', label: 'Income Taxes - Total' },
@@ -43,23 +46,26 @@ const normalizationList = [
   { value: 'BY_REVENUE', label: 'By Revenue' }
 ];
 
+const initialValues = {
+  selectedAttributes: null,
+  numberOfLocations: { value: '1', label: '1' },
+  normalization: { value: null, label: 'Please Select' },
+  yearSelectedMin: { value: null, label: 'Start Year' },
+  yearSelectedMax: { value: null, label: 'End Year' },
+  similarLocations: []
+};
+
 class SimilarPlacesSearch extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedAttributes: null,
-      numberOfLocations: { value: '1', label: '1' },
-      normalization: { value: null, label: 'Please Select' },
-      yearSelectedMin: { value: null, label: 'Start Year' },
-      yearSelectedMax: { value: null, label: 'End Year' },
-      similarLocations: []
-    };
+    this.state = initialValues;
     this.handleChangeAttribute = this.handleChangeAttribute.bind(this);
     this.handleChangeNumber = this.handleChangeNumber.bind(this);
     this.handleChangeYearMin = this.handleChangeYearMin.bind(this);
     this.handleChangeYearMax = this.handleChangeYearMax.bind(this);
     this.findSimilarLocations = this.findSimilarLocations.bind(this);
     this.validateInputs = this.validateInputs.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   handleChangeAttribute = selectedAttributes => {
@@ -112,12 +118,10 @@ class SimilarPlacesSearch extends Component {
           normalizationType
       )
       .then(response => {
-        this.setState({ allValues: response.data });
-        let values = this.state.allValues.map((value, i) => ({
-          value: value.id,
-          label: value.display_name
-        }));
-        this.setState({ values: values });
+        this.setState({ similarLocations: response.data });
+        console.log(response.data);
+        this.props.dispatch(updateLocations(response.data));
+        //call this response to plot map
       })
       .catch(error => {
         console.log(error);
@@ -132,10 +136,6 @@ class SimilarPlacesSearch extends Component {
       this.state.yearSelectedMin.value === null ||
       this.props.selectedAttributes.length < 2
     ) {
-      console.log(
-        this.props.selectedAttributes.length === 1 &&
-          this.state.yearSelectedMax.value === null
-      );
       if (
         (this.props.selectedAttributes.length === 1 &&
           this.state.yearSelectedMax.value === null) ||
@@ -146,6 +146,11 @@ class SimilarPlacesSearch extends Component {
       }
     }
     return true;
+  }
+
+  reset() {
+    this.setState(initialValues);
+    this.props.dispatch(emptyAttributesList());
   }
 
   componentDidMount() {}
@@ -184,68 +189,81 @@ class SimilarPlacesSearch extends Component {
 
   render() {
     return (
-      <Card>
-        <CardHeader>
-          <h5>Similar locations Search</h5>
-        </CardHeader>
-        <CardBody>
-          <Form>
-            <FormGroup row>
-              <Col lg="2" sm="12" md="2">
-                <Label for="locationOfInterest">
-                  <strong>Location of Interest</strong>
-                </Label>
-              </Col>
-              <Col lg="4" sm="12" md="4">
-                <LocationSearchBox clickable={false} />
-              </Col>
-              <Col lg="2" sm="12" md="2">
-                <Label for="normalizationType">
-                  <strong>Normalization</strong>
-                </Label>
-              </Col>
-              <Col lg="4" sm="12" md="4">
-                <Select
-                  value={this.state.normalization}
-                  onChange={this.handleChangeNormalization}
-                  options={normalizationList}
-                />
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col lg="2" sm="12" md="2">
-                <Label for="selectedAttribues">
-                  <strong>Selected attributes</strong>
-                </Label>
-              </Col>
-              <Col lg="4" sm="12" md="4">
-                <CommonAttributes />
-              </Col>
-              <Col lg="2" sm="12" md="2">
-                <Label for="year">
-                  <strong>Year</strong>
-                </Label>
-              </Col>
-              <Col lg="4" sm="12" md="4">
-                {this.renderYearInput()}
-              </Col>
-            </FormGroup>
-
-            <div style={{ paddingTop: '10px' }}>
-              <FormGroup row className="justify-content-center">
-                <Button
-                  className="float-right"
-                  onClick={this.findSimilarLocations}
-                >
-                  <i className="fa fa-search" style={{ padding: '5px' }} />
-                  Search
-                </Button>
+      <div>
+        <Card>
+          <CardHeader>
+            <h5>Similar locations Search</h5>
+          </CardHeader>
+          <CardBody>
+            <Form>
+              <FormGroup row>
+                <Col lg="2" sm="12" md="2">
+                  <Label for="locationOfInterest">
+                    <strong>Location of Interest</strong>
+                  </Label>
+                </Col>
+                <Col lg="4" sm="12" md="4">
+                  <LocationSearchBox clickable={false} />
+                </Col>
+                <Col lg="2" sm="12" md="2">
+                  <Label for="normalizationType">
+                    <strong>Normalization</strong>
+                  </Label>
+                </Col>
+                <Col lg="4" sm="12" md="4">
+                  <Select
+                    value={this.state.normalization}
+                    onChange={this.handleChangeNormalization}
+                    options={normalizationList}
+                  />
+                </Col>
               </FormGroup>
-            </div>
-          </Form>
-        </CardBody>
-      </Card>
+
+              <FormGroup row>
+                <Col lg="2" sm="12" md="2">
+                  <Label for="selectedAttribues">
+                    <strong>Selected attributes</strong>
+                  </Label>
+                </Col>
+                <Col lg="4" sm="12" md="4">
+                  <CommonAttributes />
+                </Col>
+                <Col lg="2" sm="12" md="2">
+                  <Label for="year">
+                    <strong>Year</strong>
+                  </Label>
+                </Col>
+                <Col lg="4" sm="12" md="4">
+                  {this.renderYearInput()}
+                </Col>
+              </FormGroup>
+
+              <div style={{ paddingTop: '10px' }}>
+                <Row className="justify-content-center">
+                  <Button
+                    className="float-right"
+                    onClick={this.findSimilarLocations}
+                  >
+                    <i className="fa fa-search" style={{ padding: '5px' }} />
+                    Search
+                  </Button>
+                  <div style={{ padding: '2px' }} />
+
+                  <Button className="float-right" onClick={this.reset}>
+                    <i className="fa fa-refresh" style={{ padding: '5px' }} />
+                    Reset
+                  </Button>
+                </Row>
+              </div>
+            </Form>
+          </CardBody>
+        </Card>
+        <br />
+        <SimilarPlacesResponse />
+        <br />
+        <br />
+        <br />
+      </div>
     );
   }
 }
