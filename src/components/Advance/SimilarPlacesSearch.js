@@ -20,6 +20,7 @@ import { TRUTHTREE_URI } from '../../constants';
 import { updateLocations } from '../../actions/SimilarLocationsActions';
 import { emptyAttributesList } from '../../actions/CommonAttributesActions';
 import { emptyLocationsList } from '../../actions/LocationSearchBoxActions';
+import '../../styles/SimilarPlacesSearch.css';
 
 let allYears = [];
 for (let i = 2016; i > 1966; i--) {
@@ -53,7 +54,13 @@ const initialValues = {
   normalization: { value: null, label: 'Please Select' },
   yearSelectedMin: { value: null, label: 'Start Year' },
   yearSelectedMax: { value: null, label: 'End Year' },
-  similarLocations: []
+  similarLocations: [],
+  shouldShowLocationError: false,
+  shouldShowNormalizationError: false,
+  shouldShowSelectedAttributesError: false,
+  shouldShowYearMinError: false,
+  shouldShowYearMaxError: false,
+  shouldShowYearRangeError: false
 };
 
 class SimilarPlacesSearch extends Component {
@@ -132,22 +139,52 @@ class SimilarPlacesSearch extends Component {
   }
 
   validateInputs() {
-    if (
-      this.props.selected === undefined ||
-      this.props.selected.id === undefined ||
-      this.state.normalization.value === undefined ||
-      this.state.yearSelectedMin.value === null ||
-      this.props.selectedAttributes.length < 2
-    ) {
+    if (this.props.selectedAttributes.length > 1) {
       if (
-        (this.props.selectedAttributes.length === 1 &&
-          this.state.yearSelectedMax.value === null) ||
-        this.props.selectedAttributes.length < 1
+        this.state.normalization.value === null ||
+        this.props.selectedAttributes.length === 0 ||
+        this.state.yearSelectedMin.value === null ||
+        this.props.selected === null
       ) {
-        alert('Please select all values');
+        this.setState({
+          shouldShowNormalizationError: true,
+          shouldShowSelectedAttributesError: true,
+          shouldShowYearMinError: true,
+          shouldShowLocationError: true
+        });
+
+        return false;
+      }
+    } else {
+      if (
+        this.state.normalization.value === null ||
+        this.props.selectedAttributes.length === 0 ||
+        this.state.yearSelectedMin.value === null ||
+        this.state.yearSelectedMax.value === null ||
+        this.props.selected === null
+      ) {
+        this.setState({
+          shouldShowNormalizationError: true,
+          shouldShowSelectedAttributesError: true,
+          shouldShowYearMinError: true,
+          shouldShowYearMaxError: true,
+          shouldShowLocationError: true
+        });
+
         return false;
       }
     }
+
+    if (
+      this.state.yearSelectedMin.value !== null &&
+      this.state.yearSelectedMax.value !== null
+    ) {
+      if (this.state.yearSelectedMin.value > this.state.yearSelectedMax.value) {
+        this.setState({ shouldShowYearRangeError: true });
+        return false;
+      }
+    }
+
     return true;
   }
 
@@ -169,7 +206,29 @@ class SimilarPlacesSearch extends Component {
               onChange={this.handleChangeYearMin}
               options={allYears}
             />
+            <small
+              className={`${
+                this.state.yearSelectedMin.value === null &&
+                this.state.shouldShowYearMinError
+                  ? ''
+                  : 'd-none'
+              } text-danger`}
+            >
+              Year can't be blank
+            </small>
+            <small
+              className={`${
+                this.state.yearSelectedMin.value !== null &&
+                this.state.shouldShowYearRangeError &&
+                this.state.yearSelectedMax.value !== null
+                  ? ''
+                  : 'd-none'
+              } text-danger`}
+            >
+              Start year greater than end year
+            </small>
           </Col>
+
           {' - '}
           <Col>
             <Select
@@ -177,16 +236,39 @@ class SimilarPlacesSearch extends Component {
               onChange={this.handleChangeYearMax}
               options={allYears}
             />
+
+            <small
+              className={`${
+                this.state.yearSelectedMax.value === null &&
+                this.state.shouldShowYearMaxError
+                  ? ''
+                  : 'd-none'
+              } text-danger`}
+            >
+              Year can't be blank
+            </small>
           </Col>
         </Row>
       );
     } else {
       return (
-        <Select
-          value={this.state.yearSelectedMin}
-          onChange={this.handleChangeYearMin}
-          options={allYears}
-        />
+        <div>
+          <Select
+            value={this.state.yearSelectedMin}
+            onChange={this.handleChangeYearMin}
+            options={allYears}
+          />
+          <small
+            className={`${
+              this.state.yearSelectedMin.value === null &&
+              this.state.shouldShowYearMinError
+                ? ''
+                : 'd-none'
+            } text-danger`}
+          >
+            Year can't be blank
+          </small>
+        </div>
       );
     }
   }
@@ -195,8 +277,8 @@ class SimilarPlacesSearch extends Component {
     return (
       <div className="container-fluid">
         <Card>
-          <CardHeader>
-            <h5>Similar Places Search</h5>
+          <CardHeader className="similar-places-card-header">
+            <h5 className="similar-places-label">Similar Places Search</h5>
           </CardHeader>
           <CardBody>
             <Form>
@@ -208,6 +290,16 @@ class SimilarPlacesSearch extends Component {
                 </Col>
                 <Col lg="4" sm="12" md="4">
                   <LocationSearchBox clickable={false} />
+                  <small
+                    className={`${
+                      this.props.selected === null &&
+                      this.state.shouldShowLocationError
+                        ? ''
+                        : 'd-none'
+                    } text-danger`}
+                  >
+                    Location can't be blank
+                  </small>
                 </Col>
                 <Col lg="2" sm="12" md="2">
                   <Label for="normalizationType">
@@ -219,7 +311,22 @@ class SimilarPlacesSearch extends Component {
                     value={this.state.normalization}
                     onChange={this.handleChangeNormalization}
                     options={normalizationList}
+                    invalid={
+                      this.state.shouldShowNormalizationError &&
+                      !this.state.normalization
+                    }
                   />
+
+                  <small
+                    className={`${
+                      !this.state.normalization.value &&
+                      this.state.shouldShowNormalizationError
+                        ? ''
+                        : 'd-none'
+                    } text-danger`}
+                  >
+                    Normalization can't be blank
+                  </small>
                 </Col>
               </FormGroup>
 
@@ -231,6 +338,16 @@ class SimilarPlacesSearch extends Component {
                 </Col>
                 <Col lg="4" sm="12" md="4">
                   <CommonAttributes />
+                  <small
+                    className={`${
+                      this.props.selectedAttributes.length === 0 &&
+                      this.state.shouldShowSelectedAttributesError
+                        ? ''
+                        : 'd-none'
+                    } text-danger`}
+                  >
+                    Attributes can't be blank
+                  </small>
                 </Col>
                 <Col lg="2" sm="12" md="2">
                   <Label for="year">
@@ -243,7 +360,7 @@ class SimilarPlacesSearch extends Component {
               </FormGroup>
 
               <div style={{ paddingTop: '10px' }}>
-                <Row className="justify-content-center">
+                <Row className="float-right">
                   <Button
                     className="float-right"
                     onClick={this.findSimilarLocations}
@@ -251,7 +368,7 @@ class SimilarPlacesSearch extends Component {
                     <i className="fa fa-search" style={{ padding: '5px' }} />
                     Search
                   </Button>
-                  <div style={{ padding: '2px' }} />
+                  <div style={{ padding: '5px' }} />
 
                   <Button className="float-right" onClick={this.reset}>
                     <i className="fa fa-refresh" style={{ padding: '5px' }} />
@@ -260,10 +377,13 @@ class SimilarPlacesSearch extends Component {
                 </Row>
               </div>
             </Form>
+            <br />
+            <SimilarPlacesResponse />
+            <br />
           </CardBody>
         </Card>
         <br />
-        <SimilarPlacesResponse />
+
         <br />
         <br />
       </div>

@@ -9,3 +9,13 @@
   padding: 5px;
   margin: 1px;
 }
+
+.similar-places-card-header {
+  background-color: rgb(191, 217, 213) !important;
+}
+
+.similar-places-label {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 10px;
+}

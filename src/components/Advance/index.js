@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Card, Row, Col, CardBody, CardHeader } from 'reactstrap';
+import { Container } from 'reactstrap';
 import SimilarPlacesSearch from './SimilarPlacesSearch';
 const paddingTop = {
   paddingTop: '90px'

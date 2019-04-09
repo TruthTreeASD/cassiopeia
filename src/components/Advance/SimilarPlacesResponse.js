@@ -22,7 +22,8 @@ class SimilarPlacesResponse extends Component {
     return (
       <Container fluid>
         {this.props.locations.length !== 0 && (
-          <div>
+          <div style={{ paddingTop: '25px' }}>
+            <hr />
             <Row>
               <h4 className="text-secondary py-3">
                 We have found these locations which are similar to your location

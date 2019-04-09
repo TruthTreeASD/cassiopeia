@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import {
-  Container,
-  Row,
-  Col,
   Input,
   DropdownItem,
   DropdownMenu,
   Dropdown,
   DropdownToggle,
-  Button,
   InputGroup,
   InputGroupAddon
 } from 'reactstrap';
@@ -126,14 +122,7 @@ class LocationSearchBox extends Component {
   );
 
   render() {
-    const {
-      value,
-      suggestions,
-      dispatch,
-      clickable,
-      selected,
-      selectedName
-    } = this.props;
+    const { value, suggestions, dispatch, clickable, selected } = this.props;
     const inputProps = {
       value,
       onChange: this.handleInputChange
