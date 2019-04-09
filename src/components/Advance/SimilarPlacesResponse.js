@@ -1,50 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import store from '../../reducers/RootReducer';
 import USAMap from './USAMap';
-import { Row, Col } from 'reactstrap';
+import { ListGroup, ListGroupItem, Container, Row, Col } from 'reactstrap';
+
+const SimilarLocationsList = ({ locations }) => (
+  <ListGroup>
+    {locations.map((location, idx) => (
+      <ListGroupItem key={idx} className="text-truncate">
+        {location.name}
+      </ListGroupItem>
+    ))}
+  </ListGroup>
+);
 
 class SimilarPlacesResponse extends Component {
-  constructor(props) {
-    super(props);
-    this.renderResponse = this.renderResponse.bind(this);
-  }
-
-  renderResponse() {
-    return this.props.locations.map(location => (
-      <div className="list-group-item">{location.name}</div>
-    ));
-  }
-
   render() {
     return (
-      <div className="container-fluid">
-        {this.props.locations.length != 0 && (
+      <Container fluid>
+        {this.props.locations.length !== 0 && (
           <div>
             <Row>
-              <span
-                className="text-secondary"
-                style={{
-                  paddingLeft: '20px',
-                  paddingBottom: '20px',
-                  fontSize: '20px'
-                }}
-              >
+              <h4 className="text-secondary py-2">
                 We have found these locations which are similar to your location
                 of interest!
-              </span>
+              </h4>
             </Row>
             <Row>
-              <Col sm={12} lg={10} md={10}>
-                <USAMap />
+              <Col md={3} sm={12} className="pl-md-0">
+                <SimilarLocationsList locations={this.props.locations} />
               </Col>
-              <Col sm={12} lg={2} md={2}>
-                <div className="list-group">{this.renderResponse()}</div>
+              <Col md={9} sm={12} className="pr-md-0">
+                <USAMap />
               </Col>
             </Row>
           </div>
         )}
-      </div>
+      </Container>
     );
   }
 }
