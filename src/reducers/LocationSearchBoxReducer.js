@@ -32,6 +32,14 @@ export default (state = defaultState, action) => {
         loading: false
       };
 
+    case 'EMPTY_LOCATIONS':
+      return {
+        value: '',
+        loading: false,
+        suggestions: [],
+        selected: null
+      };
+
     default:
       return state;
   }

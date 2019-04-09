@@ -24,3 +24,8 @@ export const finishLoading = () => {
     type: 'SEARCHBOX_FINISH_LOADING'
   };
 };
+export const emptyLocationsList = () => {
+  return {
+    type: 'EMPTY_LOCATIONS'
+  };
+};
