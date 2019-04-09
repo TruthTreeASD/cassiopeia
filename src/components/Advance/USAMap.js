@@ -7,8 +7,7 @@ import isEqual from 'lodash/isEqual';
 import mapStyles from '../Explore/mapStyles';
 
 const mapContainerStyle = {
-  height: '100%',
-  width: '95%'
+  height: 500
 };
 
 class USAMap extends Component {
@@ -79,20 +78,16 @@ class USAMap extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
-        <div style={mapContainerStyle} className="position-absolute">
-          <GoogleMapReact
-            bootstrapURLKeys={{
-              key: 'AIzaSyD6S0fXIE22l64bV3nhv-EB-7K1gh39nqs'
-            }}
-            defaultCenter={this.state.center}
-            defaultZoom={4.5}
-            yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map, maps }) =>
-              this.handleApiLoaded(map, maps)
-            }
-          />
-        </div>
+      <div style={mapContainerStyle}>
+        <GoogleMapReact
+          bootstrapURLKeys={{
+            key: 'AIzaSyD6S0fXIE22l64bV3nhv-EB-7K1gh39nqs'
+          }}
+          defaultCenter={this.state.center}
+          defaultZoom={4.5}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
+        />
       </div>
     );
   }
