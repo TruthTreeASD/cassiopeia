@@ -6,8 +6,10 @@ import YearSelectorReducer from './YearSelectorReducer';
 import LocationSearchBoxReducer from './LocationSearchBoxReducer';
 import NormalizationReducer from './NormalizationReducer';
 import TrendingStoriesReducer from './TrendingStoriesReducer';
+import CommonAttributesReducer from './CommonAttributesReducer';
 import AdminStoriesReducer from './AdminStoriesReducer';
 import SideMenuReducer from './SideMenuReducer';
+import SimilarLocationsReducer from './SimilarLocationsReducer';
 
 export default combineReducers({
   FilterByReducer,
@@ -17,6 +19,8 @@ export default combineReducers({
   LocationSearchBoxReducer,
   NormalizationReducer,
   TrendingStoriesReducer,
+  CommonAttributesReducer,
   AdminStoriesReducer,
-  SideMenuReducer
+  SideMenuReducer,
+  SimilarLocationsReducer
 });
