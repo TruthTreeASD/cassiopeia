@@ -22,14 +22,33 @@ class TrendingStoryDetail extends Component {
     super(props);
     this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
     this.handleDownVoteClick = this.handleDownVoteClick.bind(this);
+    this.approveVote = this.approveVote.bind(this);
   }
 
   contentHtml(data) {
     return ReactHtmlParser(data);
   }
 
+  approveVote(response, story) {
+    var arr = this.props.TrendingStoriesReducer.approvedStories;
+    var indexOfId = _.findIndex(arr, { id: story.id });
+    arr.splice(indexOfId, 1, response.data);
+
+    let keyDown = story.id;
+    localStorage.setItem(keyDown, 'true');
+
+    this.props.dispatch({
+      type: 'USER_SELECTED_STORY',
+      approvedStories: arr,
+      approvedStoriesLength: arr.length,
+      color: this.props.TrendingStoriesReducer.color,
+      userSelectedStory: response.data,
+      loading: false
+    });
+  }
+
   handleUpVoteClick(story) {
-    let checkCondition = story.id + 'up';
+    let checkCondition = story.id;
     if (!localStorage.getItem(checkCondition)) {
       console.log(JSON.stringify(story));
       axios({
@@ -39,21 +58,7 @@ class TrendingStoryDetail extends Component {
         headers: { 'Content-Type': 'application/json' }
       })
         .then(response => {
-          var arr = this.props.TrendingStoriesReducer.approvedStories;
-          var indexOfId = _.findIndex(arr, { id: story.id });
-          arr.splice(indexOfId, 1, response.data);
-
-          let keyDown = story.id + 'up';
-          localStorage.setItem(keyDown, 'true');
-
-          this.props.dispatch({
-            type: 'USER_SELECTED_STORY',
-            approvedStories: arr,
-            approvedStoriesLength: arr.length,
-            color: this.props.TrendingStoriesReducer.color,
-            userSelectedStory: response.data,
-            loading: false
-          });
+          this.approveVote(response, story);
         })
         .catch(error => {
           console.log(error);
@@ -61,7 +66,7 @@ class TrendingStoryDetail extends Component {
     } else {
       confirmAlert({
         title: 'Thank You!',
-        message: 'You have upvoted the story previously.',
+        message: 'You have voted on the story previously.',
         buttons: [
           {
             label: 'OK'
@@ -72,7 +77,7 @@ class TrendingStoryDetail extends Component {
   }
 
   handleDownVoteClick(story) {
-    let checkCondition = story.id + 'down';
+    let checkCondition = story.id;
     if (!localStorage.getItem(checkCondition)) {
       console.log(JSON.stringify(story));
       axios({
@@ -82,22 +87,7 @@ class TrendingStoryDetail extends Component {
         headers: { 'Content-Type': 'application/json' }
       })
         .then(response => {
-          var arr = this.props.TrendingStoriesReducer.approvedStories;
-          var indexOfId = _.findIndex(arr, { id: story.id });
-          arr.splice(indexOfId, 1, response.data);
-
-          let keyDown = story.id + 'down';
-          localStorage.setItem(keyDown, 'true');
-
-          this.props.dispatch({
-            type: 'USER_SELECTED_STORY',
-            approvedStories: arr,
-            approvedStoriesLength: arr.length,
-            color: this.props.TrendingStoriesReducer.color,
-            userSelectedStory: response.data,
-            loading: false
-          });
-          //console.log(response);
+          this.approveVote(response, story);
         })
         .catch(error => {
           console.log(error);
@@ -105,7 +95,7 @@ class TrendingStoryDetail extends Component {
     } else {
       confirmAlert({
         title: 'Thank You!',
-        message: 'You have downvoted the story previously.',
+        message: 'You have voted on the story previously.',
         buttons: [
           {
             label: 'OK'
