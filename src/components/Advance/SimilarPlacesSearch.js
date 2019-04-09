@@ -3,13 +3,11 @@ import {
   FormGroup,
   Form,
   Label,
-  Input,
   Card,
   Row,
   Col,
   CardBody,
   CardHeader,
-  CardSubtitle,
   Button
 } from 'reactstrap';
 import Select from 'react-select';
@@ -17,7 +15,6 @@ import { connect } from 'react-redux';
 import LocationSearchBox from '../Explore/LocationSearchBox';
 import CommonAttributes from './CommonAttributes';
 import SimilarPlacesResponse from './SimilarPlacesResponse';
-import store from '../../reducers/RootReducer';
 import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 import { updateLocations } from '../../actions/SimilarLocationsActions';
