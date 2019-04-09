@@ -19,15 +19,7 @@ import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 import { updateLocations } from '../../actions/SimilarLocationsActions';
 import { emptyAttributesList } from '../../actions/CommonAttributesActions';
-
-const options = [
-  { value: 'Income_Taxes_Total', label: 'Income Taxes - Total' },
-  {
-    value: 'Long_Term_Dept_Outstanding_Total',
-    label: 'Long Term Dept Outstanding - Total'
-  },
-  { value: 'Hospital_Total_Expenditure', label: 'Hospital - Total Expenditure' }
-];
+import { emptyLocationsList } from '../../actions/LocationSearchBoxActions';
 
 let allYears = [];
 for (let i = 2016; i > 1966; i--) {
@@ -38,9 +30,21 @@ for (let i = 2016; i > 1966; i--) {
 }
 
 const normalizationList = [
-  // { value: "GROSS", label: "Gross" },
   { value: 'PER_CAPITA', label: 'By Population' },
   { value: 'BY_REVENUE', label: 'By Revenue' }
+];
+
+const colors = [
+  'red',
+  'purple',
+  'green',
+  'blue',
+  'deeppink',
+  'orange',
+  'navy',
+  'slategray',
+  'indianred',
+  'dimgrey'
 ];
 
 const initialValues = {
@@ -115,10 +119,12 @@ class SimilarPlacesSearch extends Component {
           normalizationType
       )
       .then(response => {
-        this.setState({ similarLocations: response.data });
-        console.log(response.data);
-        this.props.dispatch(updateLocations(response.data));
-        //call this response to plot map
+        let similarLocations = response.data;
+        similarLocations.map((resp, i) => {
+          similarLocations[i].color = colors[i];
+        });
+        this.setState({ similarLocations: similarLocations });
+        this.props.dispatch(updateLocations(similarLocations));
       })
       .catch(error => {
         console.log(error);
@@ -148,6 +154,7 @@ class SimilarPlacesSearch extends Component {
   reset() {
     this.setState(initialValues);
     this.props.dispatch(emptyAttributesList());
+    this.props.dispatch(emptyLocationsList());
   }
 
   componentDidMount() {}
@@ -186,10 +193,10 @@ class SimilarPlacesSearch extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container-fluid">
         <Card>
           <CardHeader>
-            <h5>Similar locations Search</h5>
+            <h5>Similar Places Search</h5>
           </CardHeader>
           <CardBody>
             <Form>

@@ -1,3 +1,11 @@
 .w-100 {
   z-index: 999;
 }
+
+.map-code {
+  width: 5px;
+  height: 5px;
+  border: 1px solid black;
+  padding: 5px;
+  margin: 1px;
+}

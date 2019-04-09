@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 
 import '../../styles/Header.css';
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle
-} from 'reactstrap';
 import axios from 'axios/index';
 import _ from 'lodash';
 import { connect } from 'react-redux';
@@ -30,6 +24,10 @@ class CommonAttributes extends Component {
   }
 
   componentDidMount() {
+    this.getAttributes();
+  }
+
+  componentWillReceiveProps() {
     this.getAttributes();
   }
 

@@ -16,6 +16,7 @@ class USAMap extends Component {
       lat: 37.09024,
       lng: -95.712891
     },
+    markerClicked: false,
     zoom: 0,
     markers: []
   };
@@ -46,11 +47,7 @@ class USAMap extends Component {
           `,
           maxWidth: 200
         });
-        infowindow.open(this.map, marker);
-        // marker.addListener('click', () => {
-        //   infowindow.open(this.map, marker);
-        //   this.props.history.push(getSuggestionUrl(suggestion));
-        // });
+        // infowindow.open(this.map, marker);
         marker.addListener('mouseover', () => {
           infowindow.open(this.map, marker);
         });
