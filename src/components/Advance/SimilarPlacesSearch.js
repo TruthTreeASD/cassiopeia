@@ -262,7 +262,6 @@ class SimilarPlacesSearch extends Component {
         <SimilarPlacesResponse />
         <br />
         <br />
-        <br />
       </div>
     );
   }
