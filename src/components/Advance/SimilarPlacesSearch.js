@@ -8,7 +8,8 @@ import {
   Col,
   CardBody,
   CardHeader,
-  Button
+  Button,
+  Container
 } from 'reactstrap';
 import Select from 'react-select';
 import { connect } from 'react-redux';
@@ -288,7 +289,7 @@ class SimilarPlacesSearch extends Component {
   }
   render() {
     return (
-      <div className="container-fluid">
+      <Container fluid>
         <Card>
           <CardHeader className="similar-places-card-header">
             <Row>
@@ -407,7 +408,7 @@ class SimilarPlacesSearch extends Component {
 
         <br />
         <br />
-      </div>
+      </Container>
     );
   }
 }
