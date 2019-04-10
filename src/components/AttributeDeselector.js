@@ -65,7 +65,7 @@ class AttributeDeselector extends Component {
                   }
                 >
                   <i className="fa fa-times" style={{ paddingRight: '10px' }} />
-                  {this.state.selectedAttributes[i][2]}-
+                  {this.state.selectedAttributes[i][2]} -{' '}
                   {this.state.selectedAttributes[i][1]}
                 </button>
               );
