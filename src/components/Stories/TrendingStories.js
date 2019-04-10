@@ -144,7 +144,7 @@ class TrendingStories extends Component {
       //searchedTags: _.split(search, ' ', 9999)
     });
     console.log(search);
-    if (search == '') {
+    if (search === '') {
       axios
         .get(`${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED`)
         .then(response => {

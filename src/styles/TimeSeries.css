@@ -9,9 +9,8 @@
   margin: 5px;
 }
 
-.button {
-  background-color: white !important;
-  border-color: white !important;
+.button.fa.fa-expand {
+  float: right !important;
 }
 
 .chartDivTiny {

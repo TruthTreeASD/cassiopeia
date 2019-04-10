@@ -8,9 +8,6 @@ const SimilarLocationsList = ({ locations }) => (
   <ListGroup>
     {locations.map((location, idx) => (
       <ListGroupItem key={idx} className="text-truncate">
-        {/*<div style={{paddingTop: "12px", paddingLeft: "5px", paddingRight:"5px"}}>*/}
-        {/*<MapCode color={location.color}/>*/}
-        {/*</div>*/}
         <span className="text-secondary py-2">{location.name}</span>
       </ListGroupItem>
     ))}
