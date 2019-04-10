@@ -194,12 +194,10 @@ class GridTest extends Component {
                 generateUrl={this.generateUrl}
               />
               <Button
-                className="button"
+                className="fa fa-expand button"
                 color="secondary"
                 onClick={() => this.handExpandClick(index)}
-              >
-                <Badge>Expand</Badge>
-              </Button>
+              />
             </CardBody>
           </Card>
         </div>
