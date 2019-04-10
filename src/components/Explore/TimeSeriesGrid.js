@@ -266,10 +266,10 @@ class GridTest extends Component {
               </div>
               <ModalFooter>
                 <Button color="secondary" onClick={this.ImageCapture}>
-                  Download
+                  <i className="fa fa-download icon-padding" />
                 </Button>
                 <Button color="secondary" onClick={this.modalToggle}>
-                  Cancel
+                  <i className="fa fa-compress icon-padding" />
                 </Button>
               </ModalFooter>
             </Modal>
