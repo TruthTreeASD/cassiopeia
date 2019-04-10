@@ -194,12 +194,10 @@ class GridTest extends Component {
                 generateUrl={this.generateUrl}
               />
               <Button
-                className="button"
+                className="fa fa-expand button"
                 color="secondary"
                 onClick={() => this.handExpandClick(index)}
-              >
-                <Badge>Expand</Badge>
-              </Button>
+              />
             </CardBody>
           </Card>
         </div>
@@ -268,10 +266,10 @@ class GridTest extends Component {
               </div>
               <ModalFooter>
                 <Button color="secondary" onClick={this.ImageCapture}>
-                  Download
+                  <i className="fa fa-download icon-padding" />
                 </Button>
                 <Button color="secondary" onClick={this.modalToggle}>
-                  Cancel
+                  <i className="fa fa-compress icon-padding" />
                 </Button>
               </ModalFooter>
             </Modal>

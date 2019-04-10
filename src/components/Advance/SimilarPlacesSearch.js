@@ -8,7 +8,8 @@ import {
   Col,
   CardBody,
   CardHeader,
-  Button
+  Button,
+  Container
 } from 'reactstrap';
 import Select from 'react-select';
 import { connect } from 'react-redux';
@@ -20,6 +21,7 @@ import { TRUTHTREE_URI } from '../../constants';
 import { updateLocations } from '../../actions/SimilarLocationsActions';
 import { emptyAttributesList } from '../../actions/CommonAttributesActions';
 import { emptyLocationsList } from '../../actions/LocationSearchBoxActions';
+import { confirmAlert } from 'react-confirm-alert';
 import '../../styles/SimilarPlacesSearch.css';
 
 let allYears = [];
@@ -99,6 +101,7 @@ class SimilarPlacesSearch extends Component {
     if (!this.validateInputs()) {
       return;
     }
+
     let locationId = this.props.selected.id;
     let place_type = this.props.selected.typeCode;
     let normalizationType = this.state.normalization.value;
@@ -174,7 +177,6 @@ class SimilarPlacesSearch extends Component {
         return false;
       }
     }
-
     if (
       this.state.yearSelectedMin.value !== null &&
       this.state.yearSelectedMax.value !== null
@@ -182,9 +184,10 @@ class SimilarPlacesSearch extends Component {
       if (this.state.yearSelectedMin.value > this.state.yearSelectedMax.value) {
         this.setState({ shouldShowYearRangeError: true });
         return false;
+      } else {
+        this.setState({ shouldShowYearRangeError: false });
       }
     }
-
     return true;
   }
 
@@ -272,13 +275,32 @@ class SimilarPlacesSearch extends Component {
       );
     }
   }
-
+  displayInfo() {
+    confirmAlert({
+      title: 'Information!',
+      message:
+        'Similar Locations Search Information Place Holder.Similar Locations Search Information Place Holder',
+      buttons: [
+        {
+          label: 'OK'
+        }
+      ]
+    });
+  }
   render() {
     return (
-      <div className="container-fluid">
+      <Container fluid>
         <Card>
           <CardHeader className="similar-places-card-header">
-            <h5 className="similar-places-label">Similar Places Search</h5>
+            <Row>
+              <Col className="similar-places-label">Similar Places Search</Col>
+              <Col
+                className="fa fa-info-circle similar-places-info"
+                onClick={() => this.displayInfo()}
+              >
+                {' '}
+              </Col>
+            </Row>
           </CardHeader>
           <CardBody>
             <Form>
@@ -386,7 +408,7 @@ class SimilarPlacesSearch extends Component {
 
         <br />
         <br />
-      </div>
+      </Container>
     );
   }
 }
