@@ -20,6 +20,7 @@ import { TRUTHTREE_URI } from '../../constants';
 import { updateLocations } from '../../actions/SimilarLocationsActions';
 import { emptyAttributesList } from '../../actions/CommonAttributesActions';
 import { emptyLocationsList } from '../../actions/LocationSearchBoxActions';
+import { confirmAlert } from 'react-confirm-alert';
 import '../../styles/SimilarPlacesSearch.css';
 
 let allYears = [];
@@ -273,13 +274,32 @@ class SimilarPlacesSearch extends Component {
       );
     }
   }
-
+  displayInfo() {
+    confirmAlert({
+      title: 'Information!',
+      message:
+        'Similar Locations Search Information Place Holder.Similar Locations Search Information Place Holder',
+      buttons: [
+        {
+          label: 'OK'
+        }
+      ]
+    });
+  }
   render() {
     return (
       <div className="container-fluid">
         <Card>
           <CardHeader className="similar-places-card-header">
-            <h5 className="similar-places-label">Similar Places Search</h5>
+            <Row>
+              <Col className="similar-places-label">Similar Places Search</Col>
+              <Col
+                className="fa fa-info-circle similar-places-info"
+                onClick={() => this.displayInfo()}
+              >
+                {' '}
+              </Col>
+            </Row>
           </CardHeader>
           <CardBody>
             <Form>

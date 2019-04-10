@@ -19,3 +19,10 @@
   font-weight: 600;
   margin-top: 10px;
 }
+
+.fa-info-circle.similar-places-info.col::before {
+  font-size: 25px !important;
+  float: right !important;
+  padding-top: 7px;
+  color: #023e58 !important;
+}
