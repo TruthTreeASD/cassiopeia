@@ -99,6 +99,7 @@ class SimilarPlacesSearch extends Component {
     if (!this.validateInputs()) {
       return;
     }
+
     let locationId = this.props.selected.id;
     let place_type = this.props.selected.typeCode;
     let normalizationType = this.state.normalization.value;
@@ -174,7 +175,6 @@ class SimilarPlacesSearch extends Component {
         return false;
       }
     }
-
     if (
       this.state.yearSelectedMin.value !== null &&
       this.state.yearSelectedMax.value !== null
@@ -182,9 +182,10 @@ class SimilarPlacesSearch extends Component {
       if (this.state.yearSelectedMin.value > this.state.yearSelectedMax.value) {
         this.setState({ shouldShowYearRangeError: true });
         return false;
+      } else {
+        this.setState({ shouldShowYearRangeError: false });
       }
     }
-
     return true;
   }
 
