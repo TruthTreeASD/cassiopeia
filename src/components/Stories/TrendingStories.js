@@ -7,12 +7,14 @@ import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
+import Pagination from 'react-js-pagination';
 
 class TrendingStories extends Component {
   constructor(props) {
     super(props);
     this.getStoryDetails = this.getStoryDetails.bind(this);
     this.selectStory = this.selectStory.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
     this.state = {
       data: [],
       length: 0,
@@ -20,7 +22,9 @@ class TrendingStories extends Component {
       searchBoxText: '',
       searchedTags: [],
       loading: true,
-      InitialData: []
+      InitialData: [],
+      activePage: 1,
+      totalItemsCount: 5
     };
   }
 
@@ -31,9 +35,12 @@ class TrendingStories extends Component {
   componentDidMount() {
     //List of approved stories if not admin
     axios
-      .get(`${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED`)
+      .get(
+        `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=5&currentPage=1`
+      )
       .then(response => {
         let color = [];
+        console.log(response);
         for (var i = 0; i < response.data.length; i++) {
           color.push('white');
         }
@@ -200,6 +207,33 @@ class TrendingStories extends Component {
       });
   };
 
+  handlePageChange(pageNumber) {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({ activePage: pageNumber });
+    axios
+      .get(
+        `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=5&currentPage=` +
+          pageNumber
+      )
+      .then(response => {
+        let color = [];
+        for (var i = 0; i < response.data.length; i++) {
+          color.push('white');
+        }
+        this.props.dispatch({
+          type: 'APPROVED_STORIES_LIST',
+          approvedStories: response.data,
+          approvedStoriesLength: response.data.length,
+          color: color,
+          userSelectedStory: 'none',
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   render() {
     //Displaying spinner untill API fetches the data
     if (this.props.TrendingStoriesReducer.loading) {
@@ -233,6 +267,18 @@ class TrendingStories extends Component {
           <br />*/}
           <div>
             <Media className="trending-height">{this.getStoryDetails()}</Media>
+          </div>
+          <br />
+          <div className="d-flex justify-content-center">
+            <Pagination
+              activePage={this.state.activePage}
+              itemsCountPerPage={10}
+              totalItemsCount={this.state.totalItemsCount}
+              pageRangeDisplayed={5}
+              onChange={this.handlePageChange}
+              itemClass="page-item"
+              linkClass="page-link"
+            />
           </div>
         </div>
       );

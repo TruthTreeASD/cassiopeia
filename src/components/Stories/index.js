@@ -4,7 +4,6 @@ import { Container, Card, Row, Col, CardBody, CardHeader } from 'reactstrap';
 import '../../styles/StoriesIndex.css';
 import ViewStories from './TrendingStoryDetail';
 import TrendingStories from './TrendingStories';
-import Pagination from './Pagination.js';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 class Stories extends Component {
@@ -23,7 +22,7 @@ class Stories extends Component {
                 <TrendingStories />
               </Col>
               <Col className="trending-stories-overflow">
-                <Pagination />
+                <ViewStories />
               </Col>
             </Row>
           </CardBody>
