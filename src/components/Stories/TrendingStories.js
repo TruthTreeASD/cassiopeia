@@ -24,7 +24,8 @@ class TrendingStories extends Component {
       loading: true,
       InitialData: [],
       activePage: 1,
-      totalItemsCount: 5
+      totalItemsCount: 50,
+      pageSize: 3
     };
   }
 
@@ -36,11 +37,14 @@ class TrendingStories extends Component {
     //List of approved stories if not admin
     axios
       .get(
-        `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=5&currentPage=1`
+        `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=` +
+          this.state.pageSize +
+          '&currentPage=1'
       )
       .then(response => {
         let color = [];
-        console.log(response);
+        //console.log(response);
+        //this.setState({totalItemsCount: response.})
         for (var i = 0; i < response.data.length; i++) {
           color.push('white');
         }
@@ -147,13 +151,18 @@ class TrendingStories extends Component {
     search = search.replace('\\', '');
     search = search.replace('*', '');
     this.setState({
-      searchBoxText: search //,
-      //searchedTags: _.split(search, ' ', 9999)
+      searchBoxText: search
     });
-    console.log(search);
+
+    console.log('in handle change search');
     if (search === '') {
       axios
-        .get(`${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED`)
+        .get(
+          `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=` +
+            this.state.pageSize +
+            '&currentPage=' +
+            this.state.activePage
+        )
         .then(response => {
           let color = [];
           for (var i = 0; i < response.data.length; i++) {
@@ -178,15 +187,15 @@ class TrendingStories extends Component {
 
   submitSearch = search => {
     //api call for tags filterred by searchedTags here
-
-    axios //api/stories/search?keyword=colorado&pageSize=10&pageNumber=1
+    console.log('in submit search');
+    axios
       .get(
         `${TRUTHTREE_URI}/api/stories/search?keyword=` +
           search +
           '&pageSize=' +
-          999 +
+          this.state.pageSize +
           '&pageNumber=' +
-          1
+          this.state.activePage
       )
       .then(response => {
         let color = [];
@@ -210,28 +219,35 @@ class TrendingStories extends Component {
   handlePageChange(pageNumber) {
     console.log(`active page is ${pageNumber}`);
     this.setState({ activePage: pageNumber });
-    axios
-      .get(
-        `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=5&currentPage=` +
-          pageNumber
-      )
-      .then(response => {
-        let color = [];
-        for (var i = 0; i < response.data.length; i++) {
-          color.push('white');
-        }
-        this.props.dispatch({
-          type: 'APPROVED_STORIES_LIST',
-          approvedStories: response.data,
-          approvedStoriesLength: response.data.length,
-          color: color,
-          userSelectedStory: 'none',
-          loading: false
+    console.log(this.state.searchBoxText);
+    if (this.state.searchBoxText === '' || this.state.searchBoxText === null) {
+      axios
+        .get(
+          `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=` +
+            this.state.pageSize +
+            '&currentPage=' +
+            pageNumber
+        )
+        .then(response => {
+          let color = [];
+          //this.setState({totalItemsCount: response.})
+          console.log('if condition');
+          for (var i = 0; i < response.data.length; i++) {
+            color.push('white');
+          }
+          this.props.dispatch({
+            type: 'APPROVED_STORIES_LIST',
+            approvedStories: response.data,
+            approvedStoriesLength: response.data.length,
+            color: color,
+            userSelectedStory: 'none',
+            loading: false
+          });
+        })
+        .catch(error => {
+          console.log(error);
         });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    }
   }
 
   render() {
@@ -254,17 +270,6 @@ class TrendingStories extends Component {
             // onKeyPress={this.handleKeyPressSearch}
             placeholder="Search stories by title or tag name"
           />
-          {/* this is a working button in case we want a search button. I removed the css though
-          but i can add it back pretty quickly if we wanted it.
-               <Button
-            className="search-button"
-            color="primary"
-            onClick={this.submitSearch}
-          >
-            Search
-          </Button>
-          <br />
-          <br />*/}
           <div>
             <Media className="trending-height">{this.getStoryDetails()}</Media>
           </div>
@@ -272,7 +277,7 @@ class TrendingStories extends Component {
           <div className="d-flex justify-content-center">
             <Pagination
               activePage={this.state.activePage}
-              itemsCountPerPage={10}
+              itemsCountPerPage={this.state.pageSize}
               totalItemsCount={this.state.totalItemsCount}
               pageRangeDisplayed={5}
               onChange={this.handlePageChange}
