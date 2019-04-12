@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { Spinner, Card, Media, Badge, Row } from 'reactstrap';
+import {
+  Spinner,
+  Card,
+  Media,
+  Badge,
+  Row,
+  FormGroup,
+  Label,
+  Input,
+  Col
+} from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 
@@ -7,12 +17,15 @@ import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
+import Pagination from 'react-js-pagination';
 
 class TrendingStories extends Component {
   constructor(props) {
     super(props);
     this.getStoryDetails = this.getStoryDetails.bind(this);
     this.selectStory = this.selectStory.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleSortChange = this.handleSortChange.bind(this);
     this.state = {
       data: [],
       length: 0,
@@ -20,7 +33,11 @@ class TrendingStories extends Component {
       searchBoxText: '',
       searchedTags: [],
       loading: true,
-      InitialData: []
+      InitialData: [],
+      activePage: 1,
+      totalItemsCount: 1,
+      pageSize: 15,
+      selectedSort: 'MOST_UPVOTES'
     };
   }
 
@@ -31,16 +48,23 @@ class TrendingStories extends Component {
   componentDidMount() {
     //List of approved stories if not admin
     axios
-      .get(`${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED`)
+      .get(
+        `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=` +
+          this.state.pageSize +
+          '&currentPage=1' +
+          '&orderType=' +
+          this.state.selectedSort
+      )
       .then(response => {
         let color = [];
-        for (var i = 0; i < response.data.length; i++) {
+        this.setState({ totalItemsCount: response.data.total });
+        for (var i = 0; i < response.data.data.length; i++) {
           color.push('white');
         }
         this.props.dispatch({
           type: 'APPROVED_STORIES_LIST',
-          approvedStories: response.data,
-          approvedStoriesLength: response.data.length,
+          approvedStories: response.data.data,
+          approvedStoriesLength: response.data.data.length,
           color: color,
           userSelectedStory: 'none',
           loading: false
@@ -84,11 +108,7 @@ class TrendingStories extends Component {
     return (
       <Media body>
         {_.map(
-          _.sortBy(this.props.TrendingStoriesReducer.approvedStories, [
-            function(o) {
-              return o.upvote - o.downvote;
-            }
-          ]).reverse(),
+          this.props.TrendingStoriesReducer.approvedStories,
           (data, index) => {
             return (
               <Card
@@ -139,23 +159,44 @@ class TrendingStories extends Component {
     let search = event.target.value.toLowerCase();
     search = search.replace('\\', '');
     search = search.replace('*', '');
-    this.setState({
-      searchBoxText: search //,
-      //searchedTags: _.split(search, ' ', 9999)
-    });
-    console.log(search);
-    if (search === '') {
+    this.setState(
+      {
+        searchBoxText: search
+      },
+      this.apiCall
+    );
+  };
+
+  handlePageChange(pageNumber) {
+    this.setState({ activePage: pageNumber }, this.apiCall);
+  }
+
+  handleSortChange = changeEvent => {
+    this.setState({ selectedSort: changeEvent.target.value }, this.apiCall);
+  };
+
+  apiCall() {
+    if (this.state.searchBoxText === '' || this.state.searchBoxText === null) {
       axios
-        .get(`${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED`)
+        .get(
+          `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=` +
+            this.state.pageSize +
+            '&currentPage=' +
+            this.state.activePage +
+            '&orderType=' +
+            this.state.selectedSort
+        )
         .then(response => {
           let color = [];
-          for (var i = 0; i < response.data.length; i++) {
+          this.setState({ totalItemsCount: response.data.total });
+
+          for (var i = 0; i < response.data.data.length; i++) {
             color.push('white');
           }
           this.props.dispatch({
             type: 'APPROVED_STORIES_LIST',
-            approvedStories: response.data,
-            approvedStoriesLength: response.data.length,
+            approvedStories: response.data.data,
+            approvedStoriesLength: response.data.data.length,
             color: color,
             userSelectedStory: 'none',
             loading: false
@@ -165,40 +206,38 @@ class TrendingStories extends Component {
           console.log(error);
         });
     } else {
-      this.submitSearch(search);
-    }
-  };
+      axios //api/stories/search?keyword=colorado&pageSize=10&pageNumber=1
+        .get(
+          `${TRUTHTREE_URI}/api/stories/search?keyword=` +
+            this.state.searchBoxText +
+            '&pageSize=' +
+            this.state.pageSize +
+            '&pageNumber=' +
+            this.state.activePage +
+            '&orderBy=' +
+            this.state.selectedSort
+        )
+        .then(response => {
+          let color = [];
+          this.setState({ totalItemsCount: response.data.total });
 
-  submitSearch = search => {
-    //api call for tags filterred by searchedTags here
-
-    axios //api/stories/search?keyword=colorado&pageSize=10&pageNumber=1
-      .get(
-        `${TRUTHTREE_URI}/api/stories/search?keyword=` +
-          search +
-          '&pageSize=' +
-          999 +
-          '&pageNumber=' +
-          1
-      )
-      .then(response => {
-        let color = [];
-        for (var i = 0; i < response.data.length; i++) {
-          color.push('white');
-        }
-        this.props.dispatch({
-          type: 'APPROVED_STORIES_LIST', //could change, but works well now.
-          approvedStories: response.data,
-          approvedStoriesLength: response.data.length,
-          color: color,
-          userSelectedStory: 'none',
-          loading: false
+          for (var i = 0; i < response.data.data.length; i++) {
+            color.push('white');
+          }
+          this.props.dispatch({
+            type: 'APPROVED_STORIES_LIST',
+            approvedStories: response.data.data,
+            approvedStoriesLength: response.data.data.length,
+            color: color,
+            userSelectedStory: 'none',
+            loading: false
+          });
+        })
+        .catch(error => {
+          console.log(error);
         });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+    }
+  }
 
   render() {
     //Displaying spinner untill API fetches the data
@@ -213,6 +252,39 @@ class TrendingStories extends Component {
     else {
       return (
         <div>
+          <form>
+            <Row className="float-right sorting">
+              <Col className="sort-label">{'Sort By: '}</Col>
+              <Col className="form-check">
+                <label>
+                  <input
+                    type="radio"
+                    name="SORT"
+                    value="RECENT"
+                    checked={this.state.selectedSort === 'RECENT'}
+                    onChange={this.handleSortChange}
+                    className="form-check-input"
+                  />
+                  Recent
+                </label>
+              </Col>
+
+              <Col className="form-check">
+                <label>
+                  <input
+                    type="radio"
+                    name="SORT"
+                    value="MOST_UPVOTES"
+                    checked={this.state.selectedSort === 'MOST_UPVOTES'}
+                    onChange={this.handleSortChange}
+                    className="form-check-input"
+                  />
+                  Upvotes
+                </label>
+              </Col>
+            </Row>
+          </form>
+
           <input
             className="form-control searchBar"
             data-spy="affix"
@@ -233,6 +305,18 @@ class TrendingStories extends Component {
           <br />*/}
           <div>
             <Media className="trending-height">{this.getStoryDetails()}</Media>
+          </div>
+          <br />
+          <div className="d-flex justify-content-center">
+            <Pagination
+              activePage={this.state.activePage}
+              itemsCountPerPage={this.state.pageSize}
+              totalItemsCount={this.state.totalItemsCount}
+              pageRangeDisplayed={5}
+              onChange={this.handlePageChange}
+              itemClass="page-item"
+              linkClass="page-link"
+            />
           </div>
         </div>
       );

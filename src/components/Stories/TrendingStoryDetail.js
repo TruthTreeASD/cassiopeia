@@ -22,35 +22,15 @@ class TrendingStoryDetail extends Component {
     super(props);
     this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
     this.handleDownVoteClick = this.handleDownVoteClick.bind(this);
-    this.approveVote = this.approveVote.bind(this);
   }
 
   contentHtml(data) {
     return ReactHtmlParser(data);
   }
 
-  approveVote(response, story) {
-    var arr = this.props.TrendingStoriesReducer.approvedStories;
-    var indexOfId = _.findIndex(arr, { id: story.id });
-    arr.splice(indexOfId, 1, response.data);
-
-    let keyDown = story.id;
-    localStorage.setItem(keyDown, 'true');
-
-    this.props.dispatch({
-      type: 'USER_SELECTED_STORY',
-      approvedStories: arr,
-      approvedStoriesLength: arr.length,
-      color: this.props.TrendingStoriesReducer.color,
-      userSelectedStory: response.data,
-      loading: false
-    });
-  }
-
   handleUpVoteClick(story) {
     let checkCondition = story.id;
     if (!localStorage.getItem(checkCondition)) {
-      console.log(JSON.stringify(story));
       axios({
         method: 'put',
         url: `${TRUTHTREE_URI}/api/stories?type=UPVOTE`,
@@ -58,7 +38,21 @@ class TrendingStoryDetail extends Component {
         headers: { 'Content-Type': 'application/json' }
       })
         .then(response => {
-          this.approveVote(response, story);
+          var arr = this.props.TrendingStoriesReducer.approvedStories;
+          var indexOfId = _.findIndex(arr, { id: story.id });
+          arr.splice(indexOfId, 1, response.data);
+
+          let key = story.id;
+          localStorage.setItem(key, 'true');
+
+          this.props.dispatch({
+            type: 'USER_SELECTED_STORY',
+            approvedStories: arr,
+            approvedStoriesLength: arr.length,
+            color: this.props.TrendingStoriesReducer.color,
+            userSelectedStory: response.data,
+            loading: false
+          });
         })
         .catch(error => {
           console.log(error);
@@ -79,7 +73,6 @@ class TrendingStoryDetail extends Component {
   handleDownVoteClick(story) {
     let checkCondition = story.id;
     if (!localStorage.getItem(checkCondition)) {
-      console.log(JSON.stringify(story));
       axios({
         method: 'put',
         url: `${TRUTHTREE_URI}/api/stories?type=DOWNVOTE`,
@@ -87,7 +80,21 @@ class TrendingStoryDetail extends Component {
         headers: { 'Content-Type': 'application/json' }
       })
         .then(response => {
-          this.approveVote(response, story);
+          var arr = this.props.TrendingStoriesReducer.approvedStories;
+          var indexOfId = _.findIndex(arr, { id: story.id });
+          arr.splice(indexOfId, 1, response.data);
+
+          let key = story.id;
+          localStorage.setItem(key, 'true');
+
+          this.props.dispatch({
+            type: 'USER_SELECTED_STORY',
+            approvedStories: arr,
+            approvedStoriesLength: arr.length,
+            color: this.props.TrendingStoriesReducer.color,
+            userSelectedStory: response.data,
+            loading: false
+          });
         })
         .catch(error => {
           console.log(error);
