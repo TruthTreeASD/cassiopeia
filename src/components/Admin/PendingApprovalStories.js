@@ -19,7 +19,8 @@ class PendingApprovalStories extends Component {
       bgColor: [],
       activePage: 1,
       totalItemsCount: 1,
-      pageSize: 2
+      pageSize: 10,
+      pageRangeDisplayed: 5
     };
   }
 
@@ -182,7 +183,7 @@ class PendingApprovalStories extends Component {
               activePage={this.state.activePage}
               itemsCountPerPage={this.state.pageSize}
               totalItemsCount={this.state.totalItemsCount}
-              pageRangeDisplayed={5}
+              pageRangeDisplayed={this.state.pageRangeDisplayed}
               onChange={this.handlePageChange}
               itemClass="page-item"
               linkClass="page-link"

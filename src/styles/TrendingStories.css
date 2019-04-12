@@ -38,3 +38,12 @@
 .myButton {
   margin: 5px;
 }
+
+.float-right.sorting.row {
+  font-size: 13px !important;
+}
+
+.sort-label.col {
+  font-size: 10px !important;
+  padding-top: 3px;
+}

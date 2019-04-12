@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { Spinner, Card, Media, Badge, Row } from 'reactstrap';
+import {
+  Spinner,
+  Card,
+  Media,
+  Badge,
+  Row,
+  FormGroup,
+  Label,
+  Input,
+  Col
+} from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 
@@ -15,6 +25,7 @@ class TrendingStories extends Component {
     this.getStoryDetails = this.getStoryDetails.bind(this);
     this.selectStory = this.selectStory.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleSortChange = this.handleSortChange.bind(this);
     this.state = {
       data: [],
       length: 0,
@@ -25,7 +36,8 @@ class TrendingStories extends Component {
       InitialData: [],
       activePage: 1,
       totalItemsCount: 1,
-      pageSize: 10
+      pageSize: 10,
+      selectedSort: 'MOST_UPVOTES'
     };
   }
 
@@ -39,7 +51,9 @@ class TrendingStories extends Component {
       .get(
         `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=` +
           this.state.pageSize +
-          '&currentPage=1'
+          '&currentPage=1' +
+          '&orderType=' +
+          this.state.selectedSort
       )
       .then(response => {
         let color = [];
@@ -94,11 +108,7 @@ class TrendingStories extends Component {
     return (
       <Media body>
         {_.map(
-          _.sortBy(this.props.TrendingStoriesReducer.approvedStories, [
-            function(o) {
-              return o.upvote - o.downvote;
-            }
-          ]).reverse(),
+          this.props.TrendingStoriesReducer.approvedStories,
           (data, index) => {
             return (
               <Card
@@ -218,15 +228,28 @@ class TrendingStories extends Component {
 
   handlePageChange(pageNumber) {
     console.log(`active page is ${pageNumber}`);
-    this.setState({ activePage: pageNumber });
+    this.setState({ activePage: pageNumber }, this.apiCall);
     console.log(this.state.searchBoxText);
+  }
+
+  handleSortChange = changeEvent => {
+    console.log(changeEvent.target.value);
+    this.setState({ selectedSort: changeEvent.target.value }, this.apiCall);
+  };
+
+  apiCall() {
+    console.log('in api');
+    console.log(this.state.activePage);
+    console.log(this.state.selectedSort);
     if (this.state.searchBoxText === '' || this.state.searchBoxText === null) {
       axios
         .get(
           `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=` +
             this.state.pageSize +
             '&currentPage=' +
-            pageNumber
+            this.state.activePage +
+            '&orderType=' +
+            this.state.selectedSort
         )
         .then(response => {
           let color = [];
@@ -290,6 +313,39 @@ class TrendingStories extends Component {
     else {
       return (
         <div>
+          <form>
+            <Row className="float-right sorting">
+              <Col className="sort-label">{'Sort By: '}</Col>
+              <Col className="form-check">
+                <label>
+                  <input
+                    type="radio"
+                    name="SORT"
+                    value="RECENT"
+                    checked={this.state.selectedSort === 'RECENT'}
+                    onChange={this.handleSortChange}
+                    className="form-check-input"
+                  />
+                  Recent
+                </label>
+              </Col>
+
+              <Col className="form-check">
+                <label>
+                  <input
+                    type="radio"
+                    name="SORT"
+                    value="MOST_UPVOTES"
+                    checked={this.state.selectedSort === 'MOST_UPVOTES'}
+                    onChange={this.handleSortChange}
+                    className="form-check-input"
+                  />
+                  Upvote
+                </label>
+              </Col>
+            </Row>
+          </form>
+
           <input
             className="form-control searchBar"
             data-spy="affix"
