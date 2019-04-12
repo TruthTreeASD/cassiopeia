@@ -19,7 +19,7 @@ class PendingApprovalStories extends Component {
       bgColor: [],
       activePage: 1,
       totalItemsCount: 1,
-      pageSize: 10,
+      pageSize: 15,
       pageRangeDisplayed: 5
     };
   }
