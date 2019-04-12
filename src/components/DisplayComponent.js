@@ -17,6 +17,8 @@ class DisplayComponent extends Component {
       currentPopulation: 0,
       currentLevel: null,
       data: {},
+      curPage: 1,
+      pageSizeMax: 10, //0,
       selectedData: {},
       locationIds: [],
       selectedAttributes: [],
@@ -28,6 +30,8 @@ class DisplayComponent extends Component {
     this.getFormattedName = this.getFormattedName.bind(this);
     this.attributeCall = this.attributeCall.bind(this);
     this.colFormatter = this.colFormatter.bind(this);
+    this.nextPageClick = this.nextPageClick.bind(this);
+    this.prevPageClick = this.prevPageClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -144,12 +148,13 @@ class DisplayComponent extends Component {
         this.setState({ currentPopulation: population });
         maxPopulation = Math.floor(population + 0.5 * population);
         minPopulation = Math.floor(population - 0.5 * population);
+        //Putting pagation here.
         return axios
           .get(
             `${TRUTHTREE_URI}/api/${this.props.level}?populationRange=` +
               minPopulation +
               ',' +
-              maxPopulation
+              maxPopulation //+'currentPage='+curPage+pageSize+'pageSize='+pageSize
           )
           .then(response => {
             _.map(response.data, obj => {
@@ -204,6 +209,17 @@ class DisplayComponent extends Component {
     );
   }
 
+  nextPageClick() {
+    this.setState({
+      curPage: this.state.curPage + 1
+    });
+  }
+  prevPageClick() {
+    this.setState({
+      curPage: this.state.curPage - 1
+    });
+  }
+
   render() {
     var columns = [
       {
@@ -255,6 +271,28 @@ class DisplayComponent extends Component {
               >
                 Export as Csv
               </ExportCSVButton>
+              {this.state.curPage > 1 && (
+                <button className="btn" onClick={this.prevPageClick}>
+                  Previous Page
+                </button>
+              )}
+              <container className="">
+                {' '}
+                Page{' '}
+                {
+                  this.state.curPage
+                  /*for some reason this
+                   * appears as a little above the rest of the text...text*/
+                }{' '}
+              </container>
+              {this.state.curPage < 5 && (
+                <button className="btn" onClick={this.nextPageClick}>
+                  Next Page
+                </button>
+              )}
+              {console.log(this.state.curPage)}
+              {console.log(this.state.locationIds)}
+              {console.log(this.state.data)}
               <hr />
               <BootstrapTable hover striped {...props.baseProps} />
             </div>
