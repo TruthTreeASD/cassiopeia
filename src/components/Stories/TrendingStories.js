@@ -36,7 +36,7 @@ class TrendingStories extends Component {
       InitialData: [],
       activePage: 1,
       totalItemsCount: 1,
-      pageSize: 10,
+      pageSize: 15,
       selectedSort: 'MOST_UPVOTES'
     };
   }
@@ -159,88 +159,23 @@ class TrendingStories extends Component {
     let search = event.target.value.toLowerCase();
     search = search.replace('\\', '');
     search = search.replace('*', '');
-    this.setState({
-      searchBoxText: search //,
-      //searchedTags: _.split(search, ' ', 9999)
-    });
-
-    console.log('in handle change search');
-    if (search === '') {
-      axios
-        .get(
-          `${TRUTHTREE_URI}/api/stories?storyStatus=APPROVED&pageSize=` +
-            this.state.pageSize +
-            '&currentPage=' +
-            this.state.activePage
-        )
-        .then(response => {
-          let color = [];
-          for (var i = 0; i < response.data.data.length; i++) {
-            color.push('white');
-          }
-          this.props.dispatch({
-            type: 'APPROVED_STORIES_LIST',
-            approvedStories: response.data.data,
-            approvedStoriesLength: response.data.data.length,
-            color: color,
-            userSelectedStory: 'none',
-            loading: false
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      this.submitSearch(search);
-    }
-  };
-
-  submitSearch = search => {
-    //api call for tags filterred by searchedTags here
-    console.log('in submit search');
-    axios //api/stories/search?keyword=colorado&pageSize=10&pageNumber=1
-      .get(
-        `${TRUTHTREE_URI}/api/stories/search?keyword=` +
-          search +
-          '&pageSize=' +
-          this.state.pageSize +
-          '&pageNumber=' +
-          this.state.activePage
-      )
-      .then(response => {
-        let color = [];
-        for (var i = 0; i < response.data.length; i++) {
-          color.push('white');
-        }
-        this.props.dispatch({
-          type: 'APPROVED_STORIES_LIST', //could change, but works well now.
-          approvedStories: response.data,
-          approvedStoriesLength: response.data.length,
-          color: color,
-          userSelectedStory: 'none',
-          loading: false
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.setState(
+      {
+        searchBoxText: search
+      },
+      this.apiCall
+    );
   };
 
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
     this.setState({ activePage: pageNumber }, this.apiCall);
-    console.log(this.state.searchBoxText);
   }
 
   handleSortChange = changeEvent => {
-    console.log(changeEvent.target.value);
     this.setState({ selectedSort: changeEvent.target.value }, this.apiCall);
   };
 
   apiCall() {
-    console.log('in api');
-    console.log(this.state.activePage);
-    console.log(this.state.selectedSort);
     if (this.state.searchBoxText === '' || this.state.searchBoxText === null) {
       axios
         .get(
@@ -253,8 +188,8 @@ class TrendingStories extends Component {
         )
         .then(response => {
           let color = [];
-          //this.setState({totalItemsCount: response.})
-          console.log('if condition');
+          this.setState({ totalItemsCount: response.data.total });
+
           for (var i = 0; i < response.data.data.length; i++) {
             color.push('white');
           }
@@ -278,17 +213,21 @@ class TrendingStories extends Component {
             '&pageSize=' +
             this.state.pageSize +
             '&pageNumber=' +
-            this.state.activePage
+            this.state.activePage +
+            '&orderBy=' +
+            this.state.selectedSort
         )
         .then(response => {
           let color = [];
-          for (var i = 0; i < response.data.length; i++) {
+          this.setState({ totalItemsCount: response.data.total });
+
+          for (var i = 0; i < response.data.data.length; i++) {
             color.push('white');
           }
           this.props.dispatch({
-            type: 'APPROVED_STORIES_LIST', //could change, but works well now.
-            approvedStories: response.data,
-            approvedStoriesLength: response.data.length,
+            type: 'APPROVED_STORIES_LIST',
+            approvedStories: response.data.data,
+            approvedStoriesLength: response.data.data.length,
             color: color,
             userSelectedStory: 'none',
             loading: false
@@ -340,7 +279,7 @@ class TrendingStories extends Component {
                     onChange={this.handleSortChange}
                     className="form-check-input"
                   />
-                  Upvote
+                  Upvotes
                 </label>
               </Col>
             </Row>
