@@ -24,8 +24,8 @@ class TrendingStories extends Component {
       loading: true,
       InitialData: [],
       activePage: 1,
-      totalItemsCount: 50,
-      pageSize: 3
+      totalItemsCount: 1,
+      pageSize: 10
     };
   }
 
@@ -43,15 +43,14 @@ class TrendingStories extends Component {
       )
       .then(response => {
         let color = [];
-        //console.log(response);
-        //this.setState({totalItemsCount: response.})
-        for (var i = 0; i < response.data.length; i++) {
+        this.setState({ totalItemsCount: response.data.total });
+        for (var i = 0; i < response.data.data.length; i++) {
           color.push('white');
         }
         this.props.dispatch({
           type: 'APPROVED_STORIES_LIST',
-          approvedStories: response.data,
-          approvedStoriesLength: response.data.length,
+          approvedStories: response.data.data,
+          approvedStoriesLength: response.data.data.length,
           color: color,
           userSelectedStory: 'none',
           loading: false
@@ -151,7 +150,8 @@ class TrendingStories extends Component {
     search = search.replace('\\', '');
     search = search.replace('*', '');
     this.setState({
-      searchBoxText: search
+      searchBoxText: search //,
+      //searchedTags: _.split(search, ' ', 9999)
     });
 
     console.log('in handle change search');
@@ -165,13 +165,13 @@ class TrendingStories extends Component {
         )
         .then(response => {
           let color = [];
-          for (var i = 0; i < response.data.length; i++) {
+          for (var i = 0; i < response.data.data.length; i++) {
             color.push('white');
           }
           this.props.dispatch({
             type: 'APPROVED_STORIES_LIST',
-            approvedStories: response.data,
-            approvedStoriesLength: response.data.length,
+            approvedStories: response.data.data,
+            approvedStoriesLength: response.data.data.length,
             color: color,
             userSelectedStory: 'none',
             loading: false
@@ -188,7 +188,7 @@ class TrendingStories extends Component {
   submitSearch = search => {
     //api call for tags filterred by searchedTags here
     console.log('in submit search');
-    axios
+    axios //api/stories/search?keyword=colorado&pageSize=10&pageNumber=1
       .get(
         `${TRUTHTREE_URI}/api/stories/search?keyword=` +
           search +
@@ -232,11 +232,38 @@ class TrendingStories extends Component {
           let color = [];
           //this.setState({totalItemsCount: response.})
           console.log('if condition');
-          for (var i = 0; i < response.data.length; i++) {
+          for (var i = 0; i < response.data.data.length; i++) {
             color.push('white');
           }
           this.props.dispatch({
             type: 'APPROVED_STORIES_LIST',
+            approvedStories: response.data.data,
+            approvedStoriesLength: response.data.data.length,
+            color: color,
+            userSelectedStory: 'none',
+            loading: false
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      axios //api/stories/search?keyword=colorado&pageSize=10&pageNumber=1
+        .get(
+          `${TRUTHTREE_URI}/api/stories/search?keyword=` +
+            this.state.searchBoxText +
+            '&pageSize=' +
+            this.state.pageSize +
+            '&pageNumber=' +
+            this.state.activePage
+        )
+        .then(response => {
+          let color = [];
+          for (var i = 0; i < response.data.length; i++) {
+            color.push('white');
+          }
+          this.props.dispatch({
+            type: 'APPROVED_STORIES_LIST', //could change, but works well now.
             approvedStories: response.data,
             approvedStoriesLength: response.data.length,
             color: color,
@@ -270,6 +297,17 @@ class TrendingStories extends Component {
             // onKeyPress={this.handleKeyPressSearch}
             placeholder="Search stories by title or tag name"
           />
+          {/* this is a working button in case we want a search button. I removed the css though
+          but i can add it back pretty quickly if we wanted it.
+               <Button
+            className="search-button"
+            color="primary"
+            onClick={this.submitSearch}
+          >
+            Search
+          </Button>
+          <br />
+          <br />*/}
           <div>
             <Media className="trending-height">{this.getStoryDetails()}</Media>
           </div>
