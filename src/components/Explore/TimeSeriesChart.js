@@ -24,7 +24,7 @@ class TimeSeries extends Component {
       return (
         <div className="chartDiv">
           <div style={{ padding: '10px' }}>
-            <Badge color="info" className="popupHeader">
+            <Badge className="popupHeader">
               {this.props.collectionName} - {this.props.attributeName}
             </Badge>
           </div>
@@ -73,7 +73,10 @@ class TimeSeries extends Component {
       return (
         <div className="chartDiv">
           <div style={{ padding: '10px' }}>
-            <Badge color="info"> {this.props.collectionName} - {this.props.attributeName} </Badge>
+            <Badge>
+              {' '}
+              {this.props.collectionName} - {this.props.attributeName}{' '}
+            </Badge>
           </div>
           <LineChart
             width={495}

@@ -26,3 +26,11 @@
   padding-top: 7px;
   color: #023e58 !important;
 }
+
+.advanced-loaction-box.col-sm-12.col-md-4.col-lg-4 {
+  padding-left: 26px !important;
+}
+
+.advanced-search {
+  margin-right: 5px !important;
+}

@@ -8,7 +8,8 @@ import {
   FormGroup,
   Label,
   Input,
-  Col
+  Col,
+  CardHeader
 } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';

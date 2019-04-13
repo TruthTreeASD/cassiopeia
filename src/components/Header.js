@@ -110,7 +110,7 @@ class Header extends Component {
             </NavItem>
             <NavItem>
               <NavLink tag={Link} to="/advance">
-                Advance
+                Advanced
               </NavLink>
             </NavItem>
             <NavItem>

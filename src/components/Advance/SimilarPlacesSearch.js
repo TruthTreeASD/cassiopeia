@@ -279,7 +279,7 @@ class SimilarPlacesSearch extends Component {
     confirmAlert({
       title: 'Information!',
       message:
-        'Similar Locations Search Information Place Holder.Similar Locations Search Information Place Holder',
+        "Based on the filter selections such as attributes, normalization & year, locations with similar trend with that of 'Location Of Interest' will be displayed ",
       buttons: [
         {
           label: 'OK'
@@ -310,7 +310,7 @@ class SimilarPlacesSearch extends Component {
                     <strong>Location of Interest</strong>
                   </Label>
                 </Col>
-                <Col lg="4" sm="12" md="4">
+                <Col lg="4" sm="12" md="4" className="advanced-loaction-box">
                   <LocationSearchBox clickable={false} />
                   <small
                     className={`${
@@ -384,18 +384,13 @@ class SimilarPlacesSearch extends Component {
               <div style={{ paddingTop: '10px' }}>
                 <Row className="float-right">
                   <Button
-                    className="float-right"
+                    className="float-right advanced-search"
                     onClick={this.findSimilarLocations}
                   >
                     <i className="fa fa-search" style={{ padding: '5px' }} />
                     Search
                   </Button>
                   <div style={{ padding: '5px' }} />
-
-                  <Button className="float-right" onClick={this.reset}>
-                    <i className="fa fa-refresh" style={{ padding: '5px' }} />
-                    Reset
-                  </Button>
                 </Row>
               </div>
             </Form>
