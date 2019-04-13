@@ -3,6 +3,10 @@
   overflow: auto;
 }
 
+.trending-card-header {
+  font-size: 20px;
+  font-weight: bold;
+}
 .thumb {
   padding: 10px;
   cursor: pointer;
