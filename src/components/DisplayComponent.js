@@ -203,7 +203,13 @@ class DisplayComponent extends Component {
       ' ' +
       this.state.selectedAttributes[0][1];
     return (
-      <a href={link} target="_blank" rel="noopener noreferrer">
+      <a
+        className="table-link"
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#023e58' }}
+      >
         {cell.toLocaleString()}
       </a>
     );
@@ -269,7 +275,7 @@ class DisplayComponent extends Component {
                 className="btn btn-secondary"
                 {...props.csvProps}
               >
-                Export as Csv
+                Export as csv
               </ExportCSVButton>
               {this.state.curPage > 1 && (
                 <button className="btn" onClick={this.prevPageClick}>

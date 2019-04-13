@@ -19,7 +19,7 @@
   margin: 20px;
 }
 
-span.popupHeader.badge.badge-info {
+span.popupHeader.badge {
   font-size: 15px !important;
   line-height: 2 !important;
   margin-bottom: 20px !important;
