@@ -6,15 +6,21 @@ import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
+import Pagination from 'react-js-pagination';
 
 class PendingApprovalStories extends Component {
   constructor(props) {
     super(props);
     this.getStoryDetails = this.getStoryDetails.bind(this);
     this.selectStory = this.selectStory.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
     this.state = {
       InitialData: [],
-      bgColor: []
+      bgColor: [],
+      activePage: 1,
+      totalItemsCount: 1,
+      pageSize: 15,
+      pageRangeDisplayed: 5
     };
   }
 
@@ -25,17 +31,55 @@ class PendingApprovalStories extends Component {
   componentDidMount() {
     //List of stories to be approved if admin
     axios
-      .get(`${TRUTHTREE_URI}/api/stories?storyStatus=PENDING`)
+      .get(
+        `${TRUTHTREE_URI}/api/stories?storyStatus=PENDING&pageSize=` +
+          this.state.pageSize +
+          '&currentPage=' +
+          1
+      )
       //Change the api call to unapproved stories
       .then(response => {
         let color = [];
-        for (var i = 0; i < response.data.length; i++) {
+        this.setState({ totalItemsCount: response.data.total });
+        for (var i = 0; i < response.data.data.length; i++) {
           color.push('white');
         }
         this.props.dispatch({
           type: 'STORIES_LIST',
-          adminStories: response.data,
-          adminStoriesLength: response.data.length,
+          adminStories: response.data.data,
+          adminStoriesLength: response.data.data.length,
+          bgColor: color,
+          adminSelectedStory: 'none',
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handlePageChange(pageNumber) {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({ activePage: pageNumber });
+    console.log(this.state.searchBoxText);
+    axios
+      .get(
+        `${TRUTHTREE_URI}/api/stories?storyStatus=PENDING&pageSize=` +
+          this.state.pageSize +
+          '&currentPage=' +
+          pageNumber
+      )
+      .then(response => {
+        let color = [];
+        //this.setState({totalItemsCount: response.})
+        console.log('if condition');
+        for (var i = 0; i < response.data.data.length; i++) {
+          color.push('white');
+        }
+        this.props.dispatch({
+          type: 'STORIES_LIST',
+          adminStories: response.data.data,
+          adminStoriesLength: response.data.data.length,
           bgColor: color,
           adminSelectedStory: 'none',
           loading: false
@@ -130,14 +174,20 @@ class PendingApprovalStories extends Component {
     else {
       return (
         <div>
-          <input
-            className="form-control searchBar"
-            data-spy="affix"
-            // onChange={this.handleChangeSearch}
-            placeholder="Search stories by title or tag name"
-          />
           <div>
             <Media className="trending-height">{this.getStoryDetails()}</Media>
+          </div>
+          <br />
+          <div className="d-flex justify-content-center">
+            <Pagination
+              activePage={this.state.activePage}
+              itemsCountPerPage={this.state.pageSize}
+              totalItemsCount={this.state.totalItemsCount}
+              pageRangeDisplayed={this.state.pageRangeDisplayed}
+              onChange={this.handlePageChange}
+              itemClass="page-item"
+              linkClass="page-link"
+            />
           </div>
         </div>
       );
