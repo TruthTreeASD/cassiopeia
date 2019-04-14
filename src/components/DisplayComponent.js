@@ -9,6 +9,7 @@ import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit';
 
 import Normalization from './Explore/Normalization';
 import { confirmAlert } from 'react-confirm-alert';
+import Pagination from 'react-js-pagination';
 
 class DisplayComponent extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class DisplayComponent extends Component {
       data: {},
       curPage: 1,
       pageSizeMax: 10, //0,
+      totalItemsCount: 100,
       selectedData: {},
       locationIds: [],
       selectedAttributes: [],
@@ -32,6 +34,7 @@ class DisplayComponent extends Component {
     this.colFormatter = this.colFormatter.bind(this);
     this.nextPageClick = this.nextPageClick.bind(this);
     this.prevPageClick = this.prevPageClick.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -117,6 +120,23 @@ class DisplayComponent extends Component {
     }
   }
 
+  handleChangeSearch = event => {
+    let search = event.target.value.toLowerCase();
+    search = search.replace('\\', '');
+    search = search.replace('*', '');
+    this.setState(
+      {
+        searchBoxText: search
+      },
+      this.apiCall
+    );
+  };
+
+  handlePageChange(pageNumber) {
+    this.setState({ curPage: pageNumber }); //, this.populationRangeCall);
+    console.log(this.state.curPage);
+  }
+
   populationRangeCall() {
     let minPopulation = 0;
     let maxPopulation = 0;
@@ -171,8 +191,8 @@ class DisplayComponent extends Component {
                     (this.state.populationRange[0] / 100) * population
               );
             });
-            this.setState({ selectedData: currentRows });
             this.setState({
+              selectedData: currentRows,
               locationIds: _.keys(currentRows)
             });
             if (this.props.selectedAttributes) {
@@ -270,14 +290,24 @@ class DisplayComponent extends Component {
         <Normalization />
         <ToolkitProvider keyField="id" data={data} columns={columns} exportCSV>
           {props => (
-            <div>
+            <div className="">
               <ExportCSVButton
                 className="btn btn-secondary"
                 {...props.csvProps}
               >
                 Export as csv
               </ExportCSVButton>
-              {this.state.curPage > 1 && (
+              <Pagination
+                className="justify-content-center"
+                activePage={this.state.curPage}
+                itemsCountPerPage={this.state.pageSize}
+                totalItemsCount={this.state.totalItemsCount}
+                pageRangeDisplayed={5}
+                onChange={this.handlePageChange}
+                itemClass="page-item"
+                linkClass="page-link"
+              />
+              {/*this.state.curPage > 1 && (
                 <button className="btn" onClick={this.prevPageClick}>
                   Previous Page
                 </button>
@@ -288,17 +318,15 @@ class DisplayComponent extends Component {
                 {
                   this.state.curPage
                   /*for some reason this
-                   * appears as a little above the rest of the text...text*/
+                   * appears as a little above the rest of the text...text*
                 }{' '}
               </container>
               {this.state.curPage < 5 && (
                 <button className="btn" onClick={this.nextPageClick}>
                   Next Page
                 </button>
-              )}
-              {console.log(this.state.curPage)}
-              {console.log(this.state.locationIds)}
-              {console.log(this.state.data)}
+              )*/}
+
               <hr />
               <BootstrapTable hover striped {...props.baseProps} />
             </div>
