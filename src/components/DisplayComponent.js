@@ -32,8 +32,8 @@ class DisplayComponent extends Component {
     this.getFormattedName = this.getFormattedName.bind(this);
     this.attributeCall = this.attributeCall.bind(this);
     this.colFormatter = this.colFormatter.bind(this);
-    this.nextPageClick = this.nextPageClick.bind(this);
-    this.prevPageClick = this.prevPageClick.bind(this);
+    //this.nextPageClick = this.nextPageClick.bind(this);
+    //this.prevPageClick = this.prevPageClick.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
@@ -174,10 +174,13 @@ class DisplayComponent extends Component {
             `${TRUTHTREE_URI}/api/${this.props.level}?populationRange=` +
               minPopulation +
               ',' +
-              maxPopulation //+'currentPage='+curPage+pageSize+'pageSize='+pageSize
+              maxPopulation +
+              '&pageNumber=' +
+              this.state.curPage //+pageSize+'pageSize='+pageSize
           )
           .then(response => {
-            _.map(response.data, obj => {
+            console.log(response.data.items);
+            _.map(response.data.items, obj => {
               data[obj.id] = { name: obj.name, '1': obj.population };
             });
             this.setState({ data: data });
@@ -234,7 +237,7 @@ class DisplayComponent extends Component {
       </a>
     );
   }
-
+  /*
   nextPageClick() {
     this.setState({
       curPage: this.state.curPage + 1
@@ -244,7 +247,7 @@ class DisplayComponent extends Component {
     this.setState({
       curPage: this.state.curPage - 1
     });
-  }
+  }*/
 
   render() {
     var columns = [
