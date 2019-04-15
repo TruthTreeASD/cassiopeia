@@ -19,7 +19,7 @@ class DisplayComponent extends Component {
       currentLevel: null,
       data: {},
       curPage: 1,
-      numPages: 10, //0,
+      totalPageNumber: 10, //0,
       pageSize: 50,
       totalItemsCount: 100,
       selectedData: {},
@@ -188,7 +188,7 @@ class DisplayComponent extends Component {
             this.setState({
               data: data,
               totalItemsCount: response.data.totalItemCount,
-              numPages: response.data.totalPageCount
+              totalPageNumber: response.data.totalPageCount
             });
             let currentRows = _.pickBy(this.state.data, e => {
               return (
@@ -312,7 +312,9 @@ class DisplayComponent extends Component {
                 itemsCountPerPage={this.state.pageSize}
                 totalItemsCount={this.state.totalItemsCount}
                 pageRangeDisplayed={
-                  this.state.numPages > 4 ? 5 : this.state.numPages
+                  this.state.totalPageNumber > 4
+                    ? 5
+                    : this.state.totalPageNumber
                 }
                 onChange={this.handlePageChange}
                 itemClass="page-item"
