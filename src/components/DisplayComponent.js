@@ -220,6 +220,7 @@ class DisplayComponent extends Component {
       {
         dataField: '0',
         text: 'Name',
+        sort: true,
         formatter: this.getFormattedName
       },
       {
@@ -250,13 +251,13 @@ class DisplayComponent extends Component {
     });
     const { ExportCSVButton } = CSVExport;
     return (
-      <span id="mainDisplay">
+      <div id="mainDisplay">
         <Normalization />
         <ToolkitProvider keyField="id" data={data} columns={columns} exportCSV>
           {props => (
             <span>
               <ExportCSVButton
-                className="btn btn-secondary"
+                className="btn btn-secondary float-right buttonPadding"
                 {...props.csvProps}
               >
                 Export as csv
@@ -266,7 +267,7 @@ class DisplayComponent extends Component {
             </span>
           )}
         </ToolkitProvider>
-      </span>
+      </div>
     );
   }
 }
