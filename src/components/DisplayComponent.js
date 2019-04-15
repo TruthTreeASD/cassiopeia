@@ -9,6 +9,7 @@ import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit';
 
 import Normalization from './Explore/Normalization';
 import { confirmAlert } from 'react-confirm-alert';
+import Pagination from 'react-js-pagination';
 
 class DisplayComponent extends Component {
   constructor(props) {
@@ -17,6 +18,10 @@ class DisplayComponent extends Component {
       currentPopulation: 0,
       currentLevel: null,
       data: {},
+      curPage: 1,
+      totalPageNumber: 0,
+      pageSize: 50,
+      totalItemsCount: 0,
       selectedData: {},
       locationIds: [],
       selectedAttributes: [],
@@ -28,6 +33,9 @@ class DisplayComponent extends Component {
     this.getFormattedName = this.getFormattedName.bind(this);
     this.attributeCall = this.attributeCall.bind(this);
     this.colFormatter = this.colFormatter.bind(this);
+    //this.nextPageClick = this.nextPageClick.bind(this);
+    //this.prevPageClick = this.prevPageClick.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -113,6 +121,21 @@ class DisplayComponent extends Component {
     }
   }
 
+  handleChangeSearch = event => {
+    let search = event.target.value.toLowerCase();
+    search = search.replace('\\', '');
+    search = search.replace('*', '');
+    this.setState({
+      searchBoxText: search
+    });
+  };
+
+  handlePageChange(pageNumber) {
+    this.setState({ curPage: pageNumber });
+    this.populationRangeCall();
+    console.log(this.state.curPage);
+  }
+
   populationRangeCall() {
     let minPopulation = 0;
     let maxPopulation = 0;
@@ -144,18 +167,26 @@ class DisplayComponent extends Component {
         this.setState({ currentPopulation: population });
         maxPopulation = Math.floor(population + 0.5 * population);
         minPopulation = Math.floor(population - 0.5 * population);
+        //Putting pagation here.
         return axios
           .get(
             `${TRUTHTREE_URI}/api/${this.props.level}?populationRange=` +
               minPopulation +
               ',' +
-              maxPopulation
+              maxPopulation +
+              '&pageNumber=' +
+              this.state.curPage //+pageSize+'pageSize='+pageSize
           )
           .then(response => {
-            _.map(response.data, obj => {
+            console.log(response);
+            _.map(response.data.items, obj => {
               data[obj.id] = { name: obj.name, '1': obj.population };
             });
-            this.setState({ data: data });
+            this.setState({
+              data: data,
+              totalItemsCount: response.data.totalItemCount,
+              totalPageNumber: response.data.totalPageCount
+            });
             let currentRows = _.pickBy(this.state.data, e => {
               return (
                 e['1'] <=
@@ -166,8 +197,8 @@ class DisplayComponent extends Component {
                     (this.state.populationRange[0] / 100) * population
               );
             });
-            this.setState({ selectedData: currentRows });
             this.setState({
+              selectedData: currentRows,
               locationIds: _.keys(currentRows)
             });
             if (this.props.selectedAttributes) {
@@ -262,6 +293,21 @@ class DisplayComponent extends Component {
               >
                 Export as csv
               </ExportCSVButton>
+              <Pagination
+                className="justify-content-center"
+                activePage={this.state.curPage}
+                itemsCountPerPage={this.state.pageSize}
+                totalItemsCount={this.state.totalItemsCount}
+                pageRangeDisplayed={
+                  this.state.totalPageNumber > 4
+                    ? 5
+                    : this.state.totalPageNumber
+                }
+                onChange={this.handlePageChange}
+                itemClass="page-item"
+                linkClass="page-link"
+              />
+
               <hr />
               <BootstrapTable hover striped {...props.baseProps} />
             </span>
