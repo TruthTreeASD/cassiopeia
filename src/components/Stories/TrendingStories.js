@@ -121,9 +121,7 @@ class TrendingStories extends Component {
                   ]
                 }}
               >
-                <CardHeader className="stories-cardheader">
-                  {data.title}
-                </CardHeader>
+                <CardHeader className="h5">{data.title}</CardHeader>
 
                 <Row className="trending">
                   {_.map(data.tags, tag => {

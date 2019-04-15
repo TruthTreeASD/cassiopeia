@@ -25,7 +25,7 @@ class App extends Component {
             <Route exact path="/stories" component={Stories} />
             <Route exact path="/about" component={About} />
             <Route exact path="/admin" component={Admin} />
-            <Route exact path="/advance" component={Advance} />
+            <Route exact path="/advanced" component={Advance} />
             <Route exact path="/explore/:level/:name/:id" component={Home} />
           </Switch>
         </div>
