@@ -71,7 +71,7 @@ class Normalization extends Component {
     ));
 
     return (
-      <div id="normalisation">
+      <span id="normalisation">
         Normalization attribute:
         <Dropdown
           id="dropdown"
@@ -84,7 +84,7 @@ class Normalization extends Component {
           </DropdownToggle>
           <DropdownMenu>{values}</DropdownMenu>
         </Dropdown>
-      </div>
+      </span>
     );
   }
 }

@@ -250,11 +250,11 @@ class DisplayComponent extends Component {
     });
     const { ExportCSVButton } = CSVExport;
     return (
-      <div id="mainDisplay">
+      <span id="mainDisplay">
         <Normalization />
         <ToolkitProvider keyField="id" data={data} columns={columns} exportCSV>
           {props => (
-            <div>
+            <span>
               <ExportCSVButton
                 className="btn btn-secondary"
                 {...props.csvProps}
@@ -263,10 +263,10 @@ class DisplayComponent extends Component {
               </ExportCSVButton>
               <hr />
               <BootstrapTable hover striped {...props.baseProps} />
-            </div>
+            </span>
           )}
         </ToolkitProvider>
-      </div>
+      </span>
     );
   }
 }
