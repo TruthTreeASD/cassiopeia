@@ -33,6 +33,10 @@ class SimilarPlacesResponse extends Component {
               </Col>
               <Col md={3} sm={12} className="pr-md-0">
                 <SimilarLocationsList locations={this.props.locations} />
+                <small className="float-right text-secondary">
+                  {' '}
+                  * In descending order of similarity{' '}
+                </small>
               </Col>
             </Row>
           </div>
