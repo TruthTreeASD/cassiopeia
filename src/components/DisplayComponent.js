@@ -19,7 +19,8 @@ class DisplayComponent extends Component {
       currentLevel: null,
       data: {},
       curPage: 1,
-      pageSizeMax: 10, //0,
+      numPages: 10, //0,
+      pageSize: 50,
       totalItemsCount: 100,
       selectedData: {},
       locationIds: [],
@@ -133,7 +134,8 @@ class DisplayComponent extends Component {
   };
 
   handlePageChange(pageNumber) {
-    this.setState({ curPage: pageNumber }); //, this.populationRangeCall);
+    this.setState({ curPage: pageNumber });
+    this.populationRangeCall();
     console.log(this.state.curPage);
   }
 
@@ -179,11 +181,15 @@ class DisplayComponent extends Component {
               this.state.curPage //+pageSize+'pageSize='+pageSize
           )
           .then(response => {
-            console.log(response.data.items);
+            console.log(response);
             _.map(response.data.items, obj => {
               data[obj.id] = { name: obj.name, '1': obj.population };
             });
-            this.setState({ data: data });
+            this.setState({
+              data: data,
+              totalItemsCount: response.data.totalItemCount,
+              numPages: response.data.totalPageCount
+            });
             let currentRows = _.pickBy(this.state.data, e => {
               return (
                 e['1'] <=
@@ -305,7 +311,9 @@ class DisplayComponent extends Component {
                 activePage={this.state.curPage}
                 itemsCountPerPage={this.state.pageSize}
                 totalItemsCount={this.state.totalItemsCount}
-                pageRangeDisplayed={5}
+                pageRangeDisplayed={
+                  this.state.numPages > 4 ? 5 : this.state.numPages
+                }
                 onChange={this.handlePageChange}
                 itemClass="page-item"
                 linkClass="page-link"
