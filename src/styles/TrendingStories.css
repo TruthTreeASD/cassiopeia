@@ -15,6 +15,7 @@
 .tag {
   padding: 5px;
   margin: 5px;
+  margin-top: 10px !important;
 }
 .form-control.searchBar {
   width: 100%;
@@ -50,4 +51,9 @@
 .sort-label.col {
   font-size: 10px !important;
   padding-top: 3px;
+}
+
+.stories-cardheader {
+  font-size: 20px !important;
+  font-weight: 600;
 }

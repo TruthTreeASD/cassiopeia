@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spinner, Card, Media, Badge, Row } from 'reactstrap';
+import { Spinner, Card, Media, Badge, Row, CardHeader } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 import axios from 'axios/index';
@@ -136,9 +136,9 @@ class PendingApprovalStories extends Component {
                   backgroundColor: this.props.AdminStoriesReducer.bgColor[index]
                 }}
               >
-                <Media heading className="trending">
+                <CardHeader className="stories-cardheader">
                   {data.title}
-                </Media>
+                </CardHeader>
                 <Row className="trending">
                   {_.map(data.tags, tag => {
                     return (
