@@ -15,6 +15,7 @@
 .tag {
   padding: 5px;
   margin: 5px;
+  margin-top: 10px !important;
 }
 .form-control.searchBar {
   width: 100%;

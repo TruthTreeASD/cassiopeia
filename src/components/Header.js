@@ -109,7 +109,11 @@ class Header extends Component {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} to="/advance">
+              <NavLink
+                className="d-flex justify-content-center"
+                tag={Link}
+                to="/advanced"
+              >
                 Advanced
               </NavLink>
             </NavItem>
