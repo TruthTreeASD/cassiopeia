@@ -19,9 +19,9 @@ class DisplayComponent extends Component {
       currentLevel: null,
       data: {},
       curPage: 1,
-      totalPageNumber: 10, //0,
+      totalPageNumber: 1,
       pageSize: 50,
-      totalItemsCount: 100,
+      totalItemsCount: 1,
       selectedData: {},
       locationIds: [],
       selectedAttributes: [],
@@ -125,12 +125,9 @@ class DisplayComponent extends Component {
     let search = event.target.value.toLowerCase();
     search = search.replace('\\', '');
     search = search.replace('*', '');
-    this.setState(
-      {
-        searchBoxText: search
-      },
-      this.apiCall
-    );
+    this.setState({
+      searchBoxText: search
+    });
   };
 
   handlePageChange(pageNumber) {
@@ -243,17 +240,6 @@ class DisplayComponent extends Component {
       </a>
     );
   }
-  /*
-  nextPageClick() {
-    this.setState({
-      curPage: this.state.curPage + 1
-    });
-  }
-  prevPageClick() {
-    this.setState({
-      curPage: this.state.curPage - 1
-    });
-  }*/
 
   render() {
     var columns = [
@@ -320,25 +306,6 @@ class DisplayComponent extends Component {
                 itemClass="page-item"
                 linkClass="page-link"
               />
-              {/*this.state.curPage > 1 && (
-                <button className="btn" onClick={this.prevPageClick}>
-                  Previous Page
-                </button>
-              )}
-              <container className="">
-                {' '}
-                Page{' '}
-                {
-                  this.state.curPage
-                  /*for some reason this
-                   * appears as a little above the rest of the text...text*
-                }{' '}
-              </container>
-              {this.state.curPage < 5 && (
-                <button className="btn" onClick={this.nextPageClick}>
-                  Next Page
-                </button>
-              )*/}
 
               <hr />
               <BootstrapTable hover striped {...props.baseProps} />
