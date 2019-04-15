@@ -220,6 +220,7 @@ class DisplayComponent extends Component {
       {
         dataField: '0',
         text: 'Name',
+        sort: true,
         formatter: this.getFormattedName
       },
       {
