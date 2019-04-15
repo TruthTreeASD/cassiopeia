@@ -285,7 +285,7 @@ class DisplayComponent extends Component {
         <Normalization />
         <ToolkitProvider keyField="id" data={data} columns={columns} exportCSV>
           {props => (
-            <div className="">
+            <div>
               <ExportCSVButton
                 className="btn btn-secondary"
                 {...props.csvProps}
