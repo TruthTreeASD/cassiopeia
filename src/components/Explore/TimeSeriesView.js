@@ -82,10 +82,12 @@ class TimeSeriesView extends Component {
             `${TRUTHTREE_URI}/api/${this.props.level}?populationRange=` +
               minPopulation +
               ',' +
-              maxPopulation
+              maxPopulation +
+              '&pageNumber=' +
+              this.props.currPage
           )
           .then(response => {
-            _.map(response.data, obj => {
+            _.map(response.data.items, obj => {
               data[obj.id] = { name: obj.name, '1': obj.population };
             });
             this.setState({ locationData: data });
@@ -237,6 +239,7 @@ const mapState = state => ({
   selectedAttributes: state.SelectedAttributeReducer.selectedAttributes,
   year: state.YearSelectorReducer.yearSelected,
   populationRange: state.AttributeRangeReducer.populationRange,
-  selectedNormalization: state.NormalizationReducer.selectedNormalizationName
+  selectedNormalization: state.NormalizationReducer.selectedNormalizationName,
+  currPage: state.TablePaginationReducer.curPage
 });
 export default connect(mapState)(TimeSeriesView);
