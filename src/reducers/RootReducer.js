@@ -10,7 +10,7 @@ import CommonAttributesReducer from './CommonAttributesReducer';
 import AdminStoriesReducer from './AdminStoriesReducer';
 import SideMenuReducer from './SideMenuReducer';
 import SimilarLocationsReducer from './SimilarLocationsReducer';
-
+import TablePaginationReducer from './TablePaginationReducer';
 export default combineReducers({
   FilterByReducer,
   AttributeRangeReducer,
@@ -22,5 +22,6 @@ export default combineReducers({
   CommonAttributesReducer,
   AdminStoriesReducer,
   SideMenuReducer,
-  SimilarLocationsReducer
+  SimilarLocationsReducer,
+  TablePaginationReducer
 });

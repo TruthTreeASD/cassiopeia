@@ -33,8 +33,6 @@ class DisplayComponent extends Component {
     this.getFormattedName = this.getFormattedName.bind(this);
     this.attributeCall = this.attributeCall.bind(this);
     this.colFormatter = this.colFormatter.bind(this);
-    //this.nextPageClick = this.nextPageClick.bind(this);
-    //this.prevPageClick = this.prevPageClick.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
@@ -131,9 +129,7 @@ class DisplayComponent extends Component {
   };
 
   handlePageChange(pageNumber) {
-    this.setState({ curPage: pageNumber });
-    this.populationRangeCall();
-    console.log(this.state.curPage);
+    this.setState({ curPage: pageNumber }, this.populationRangeCall());
   }
 
   populationRangeCall() {
@@ -175,10 +171,9 @@ class DisplayComponent extends Component {
               ',' +
               maxPopulation +
               '&pageNumber=' +
-              this.state.curPage //+pageSize+'pageSize='+pageSize
+              this.state.curPage
           )
           .then(response => {
-            console.log(response);
             _.map(response.data.items, obj => {
               data[obj.id] = { name: obj.name, '1': obj.population };
             });
@@ -187,6 +182,15 @@ class DisplayComponent extends Component {
               totalItemsCount: response.data.totalItemCount,
               totalPageNumber: response.data.totalPageCount
             });
+
+            this.props.dispatch({
+              type: 'TABLE_PAGINATION',
+              curPage: this.state.curPage,
+              totalPageNumber: response.data.totalPageCount,
+              pageSize: 50,
+              totalItemsCount: response.data.totalItemCount
+            });
+
             let currentRows = _.pickBy(this.state.data, e => {
               return (
                 e['1'] <=
@@ -293,26 +297,28 @@ class DisplayComponent extends Component {
               >
                 Export as csv
               </ExportCSVButton>
-              <Pagination
-                className="justify-content-center"
-                activePage={this.state.curPage}
-                itemsCountPerPage={this.state.pageSize}
-                totalItemsCount={this.state.totalItemsCount}
-                pageRangeDisplayed={
-                  this.state.totalPageNumber > 4
-                    ? 5
-                    : this.state.totalPageNumber
-                }
-                onChange={this.handlePageChange}
-                itemClass="page-item"
-                linkClass="page-link"
-              />
 
               <hr />
               <BootstrapTable hover striped {...props.baseProps} />
             </span>
           )}
         </ToolkitProvider>
+        <div
+          className="d-flex justify-content-center"
+          style={{ marginTop: '15px' }}
+        >
+          <Pagination
+            activePage={this.state.curPage}
+            itemsCountPerPage={this.state.pageSize}
+            totalItemsCount={this.state.totalItemsCount}
+            pageRangeDisplayed={
+              this.state.totalPageNumber > 4 ? 5 : this.state.totalPageNumber
+            }
+            onChange={this.handlePageChange}
+            itemClass="page-item"
+            linkClass="page-link"
+          />
+        </div>
       </div>
     );
   }
@@ -326,4 +332,9 @@ const mapState = state => ({
     state.NormalizationReducer.selectedNormalizationName
 });
 
-export default connect(mapState)(DisplayComponent);
+const mapDispatchToProps = dispatch => ({ dispatch });
+
+export default connect(
+  mapState,
+  mapDispatchToProps
+)(DisplayComponent);
