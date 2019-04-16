@@ -74,7 +74,6 @@ class TimeSeriesView extends Component {
       )
       .then(response => {
         population = response.data.population;
-        console.log(population);
         this.setState({ currentPopulation: population });
         maxPopulation = Math.floor(population + 0.5 * population);
         minPopulation = Math.floor(population - 0.5 * population);
