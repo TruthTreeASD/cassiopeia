@@ -44,13 +44,6 @@ class LeftSideBar extends Component {
       });
   }
 
-  componentWillReceiveProps(nextProps) {
-    // if (this.state.selectedAttributes != nextProps.selectedAttributes) {
-    // this.setState({ selectedAttributes: nextProps.selectedAttributes });
-    //  }
-    //console.log('got prop');
-  }
-
   isAttributeSelected = attribute_id => {
     for (let i = 0; i < this.props.selectedAttributes.length; i++) {
       if (this.props.selectedAttributes[i][0] === attribute_id) {
@@ -167,8 +160,12 @@ class LeftSideBar extends Component {
               style={{ color: 'white' }}
               className={
                 'col-md-flex d-md-flex ' + !this.state.collapsedLeft
-                  ? 'fa fa-chevron-right'
-                  : 'fa fa-chevron-left'
+                  ? window.innerWidth > mobileStyle
+                    ? 'fa fa-chevron-right'
+                    : 'fa fa-chevron-down'
+                  : window.innerWidth > mobileStyle
+                  ? 'fa fa-chevron-left'
+                  : 'fa fa-chevron-up'
               }
             />
           </button>
@@ -191,8 +188,12 @@ class LeftSideBar extends Component {
                 <i
                   className={
                     'chevron-icon-padding ' + !this.state.collapsedLeft
+                      ? window.innerWidth > mobileStyle
+                        ? 'fa fa-chevron-left'
+                        : 'fa fa-chevron-up'
+                      : window.innerWidth > mobileStyle
                       ? 'fa fa-chevron-left'
-                      : 'fa fa-chevron-right'
+                      : 'fa fa-chevron-up'
                   }
                 />
               </button>
