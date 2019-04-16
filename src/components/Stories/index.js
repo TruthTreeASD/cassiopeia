@@ -6,6 +6,8 @@ import ViewStories from './TrendingStoryDetail';
 import TrendingStories from './TrendingStories';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
+const mobileStyle = 800;
+
 class Stories extends Component {
   render() {
     return (
@@ -17,13 +19,20 @@ class Stories extends Component {
             </Row>
           </CardHeader>
           <CardBody>
+            {window.innerWidth <= mobileStyle && (
+              <Col className="trending-stories-overflow">
+                <ViewStories />
+              </Col>
+            )}
             <Row>
               <Col className="border-right">
                 <TrendingStories />
               </Col>
-              <Col className="trending-stories-overflow">
-                <ViewStories />
-              </Col>
+              {window.innerWidth > mobileStyle && (
+                <Col className="trending-stories-overflow">
+                  <ViewStories />
+                </Col>
+              )}
             </Row>
           </CardBody>
         </Card>
