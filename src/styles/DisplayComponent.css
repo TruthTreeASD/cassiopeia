@@ -39,3 +39,7 @@
   height: 320px;
   overflow: scroll;
 }
+
+.buttonPadding {
+  margin-right: 40px;
+}

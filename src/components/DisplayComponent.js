@@ -251,6 +251,7 @@ class DisplayComponent extends Component {
       {
         dataField: '0',
         text: 'Name',
+        sort: true,
         formatter: this.getFormattedName
       },
       {
@@ -285,9 +286,9 @@ class DisplayComponent extends Component {
         <Normalization />
         <ToolkitProvider keyField="id" data={data} columns={columns} exportCSV>
           {props => (
-            <div>
+            <span>
               <ExportCSVButton
-                className="btn btn-secondary"
+                className="btn btn-secondary float-right buttonPadding"
                 {...props.csvProps}
               >
                 Export as csv
@@ -309,7 +310,7 @@ class DisplayComponent extends Component {
 
               <hr />
               <BootstrapTable hover striped {...props.baseProps} />
-            </div>
+            </span>
           )}
         </ToolkitProvider>
       </div>
