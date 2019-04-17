@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Col, Row } from 'reactstrap';
 
-import '../styles/AttributeDeselector.css';
+import '../../styles/AttributeDeselector.css';
 
 class AttributeDeselector extends Component {
   constructor(props) {

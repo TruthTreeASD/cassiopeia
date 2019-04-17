@@ -5,8 +5,8 @@ import axios from 'axios';
 
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-import '../styles/AttributeRange.css';
-import { TRUTHTREE_URI } from '../constants';
+import '../../styles/AttributeRange.css';
+import { TRUTHTREE_URI } from '../../constants';
 
 const Range = Slider.Range;
 

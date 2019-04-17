@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import YearSelector from '../../components/YearSelector';
+import YearSelector from '../../components/Explore/YearSelector';
 
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
