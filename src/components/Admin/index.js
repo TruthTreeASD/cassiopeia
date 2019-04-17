@@ -40,13 +40,11 @@ class Approve extends Component {
     })
       .then(function(response) {
         console.log(response);
-        console.log('here11111');
         if (response.status === 200) {
           self.setState({ isAuthenticated: true });
         }
       })
       .catch(error => {
-        console.log('here222222');
         console.log(error);
       });
   }
