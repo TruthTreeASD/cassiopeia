@@ -2,11 +2,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Container, Row, Col, Navbar } from 'reactstrap';
 import { Card, CardBody, CardHeader } from 'reactstrap';
-import Home from '../../components/Home';
-import LeftSideBar from '../../components/LeftSideBar';
-import DisplayComponent from '../../components/DisplayComponent';
-import Filters from '../../components/AttributeRange';
-import YearSelector from '../../components/YearSelector';
+import Home from '../../components/Explore/Home';
+import LeftSideBar from '../../components/Explore/LeftSideBar';
+import DisplayComponent from '../../components/Explore/DisplayComponent';
+import Filters from '../../components/Explore/AttributeRange';
+import YearSelector from '../../components/Explore/YearSelector';
 
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
