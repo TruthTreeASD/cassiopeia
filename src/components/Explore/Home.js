@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import '../styles/Home.css';
+import '../../styles/Home.css';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 import DisplayComponent from './DisplayComponent';
@@ -8,9 +8,9 @@ import LeftSideBar from './LeftSideBar';
 import YearSelector from './YearSelector';
 import AttributeDeselector from './AttributeDeselector';
 import AttributeRange from './AttributeRange';
-import Tabs from './Explore/Tabs';
-import TimeSeriesGrid from './Explore/TimeSeriesGrid';
-import { TRUTHTREE_URI } from '../constants';
+import Tabs from './Tabs';
+import TimeSeriesGrid from './TimeSeriesGrid';
+import { TRUTHTREE_URI } from '../../constants';
 import axios from 'axios';
 
 import { connect } from 'react-redux';

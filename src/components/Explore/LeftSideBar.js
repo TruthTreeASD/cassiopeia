@@ -4,10 +4,10 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert';
 
-import { TRUTHTREE_URI } from '../constants';
+import { TRUTHTREE_URI } from '../../constants';
 import { withRouter } from 'react-router-dom';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import '../styles/LeftSideBar.scss';
+import '../../styles/LeftSideBar.scss';
 
 const mobileStyle = 800;
 
