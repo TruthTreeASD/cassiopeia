@@ -17,11 +17,14 @@ import { TRUTHTREE_URI } from '../../constants';
 import axios from 'axios/index';
 import { confirmAlert } from 'react-confirm-alert';
 
+const mobileStyle = 800;
+
 class TrendingStoryDetail extends Component {
   constructor(props) {
     super(props);
     this.handleUpVoteClick = this.handleUpVoteClick.bind(this);
     this.handleDownVoteClick = this.handleDownVoteClick.bind(this);
+    this.closeStory = this.closeStory.bind(this);
   }
 
   contentHtml(data) {
@@ -112,6 +115,18 @@ class TrendingStoryDetail extends Component {
     }
   }
 
+  closeStory() {
+    this.props.dispatch({
+      type: 'USER_SELECTED_STORY',
+      approvedStories: this.props.TrendingStoriesReducer.approvedStories,
+      approvedStoriesLength: this.props.TrendingStoriesReducer
+        .approvedStoriesLength,
+      color: 'white',
+      userSelectedStory: 'none',
+      loading: false
+    });
+  }
+
   render() {
     if (this.props.TrendingStoriesReducer.userSelectedStory === 'none') {
       return (
@@ -124,6 +139,11 @@ class TrendingStoryDetail extends Component {
     } else {
       return (
         <Card className="view-story">
+          {window.innerWidth <= mobileStyle && (
+            <button className="text-secondary tag" onClick={this.closeStory}>
+              Close
+            </button>
+          )}
           <Media>
             <Media body>
               <Media heading>
@@ -151,14 +171,32 @@ class TrendingStoryDetail extends Component {
               </Row>
 
               <Row className="view">
-                <Col xs="auto">
-                  <i>Description:</i>
-                </Col>
-                <Col>
-                  {this.contentHtml(
-                    this.props.TrendingStoriesReducer.userSelectedStory.content
-                  )}
-                </Col>
+                {window.innerWidth > mobileStyle && (
+                  <div>
+                    <Col xs="auto">
+                      <i>Description:</i>
+                    </Col>
+                    <Col>
+                      {this.contentHtml(
+                        this.props.TrendingStoriesReducer.userSelectedStory
+                          .content
+                      )}
+                    </Col>
+                  </div>
+                )}
+
+                {window.innerWidth <= mobileStyle && (
+                  <div>
+                    <i>Description:</i>
+
+                    <div>
+                      {this.contentHtml(
+                        this.props.TrendingStoriesReducer.userSelectedStory
+                          .content
+                      )}
+                    </div>
+                  </div>
+                )}
               </Row>
 
               <Row className="view">
