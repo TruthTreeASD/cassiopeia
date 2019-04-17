@@ -35,8 +35,26 @@ class PendingApprovalStories extends Component {
         `${TRUTHTREE_URI}/api/stories?storyStatus=PENDING&pageSize=` +
           this.state.pageSize +
           '&currentPage=' +
-          1
+          1,
+        { withCredentials: true }
       )
+      // axios({
+      //     method: 'get',
+      //     url: `${TRUTHTREE_URI}/api/stories?storyStatus=PENDING&pageSize=` +
+      //     this.state.pageSize +
+      //     '&currentPage=' +
+      //     1,
+      //     headers: {
+      //         "Content-Type": "application/json"
+      //         // "Authorization": "Bearer 700e9323-0140-4d49-b574-e8652fa433ad"
+      //     },
+      //     withCredentials: true,
+      //     mode: "cors",
+      //     //credentials: "include",
+      //     crossDomain: true,
+      //     xDomain: true,
+      //     xDomainRequest: true
+      // })
       //Change the api call to unapproved stories
       .then(response => {
         let color = [];

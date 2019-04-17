@@ -33,15 +33,20 @@ class Approve extends Component {
     axios({
       method: 'post',
       url: `${TRUTHTREE_URI}/api/login`,
+      mode: 'cors',
+      credentials: 'include',
       headers: { 'Content-Type': 'text/plain' },
       data: this.password.current.value
     })
       .then(function(response) {
-        if (response.data === true) {
+        console.log(response);
+        console.log('here11111');
+        if (response.status === 200) {
           self.setState({ isAuthenticated: true });
         }
       })
       .catch(error => {
+        console.log('here222222');
         console.log(error);
       });
   }
