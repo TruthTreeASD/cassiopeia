@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Container, Card, Row, Col, CardBody, CardHeader } from 'reactstrap';
+import { Container } from 'reactstrap';
+import { connect } from 'react-redux';
 
 import '../../styles/StoriesIndex.css';
-import ViewStories from './TrendingStoryDetail';
+import TrendingStoryDetail from './TrendingStoryDetail';
 import TrendingStories from './TrendingStories';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -10,35 +11,21 @@ const mobileStyle = 800;
 
 class Stories extends Component {
   render() {
+    const { selectedStory } = this.props;
+    console.log(this.props);
+    const shouldShowStories = selectedStory === 'none';
+    const trendingStoriesClassName = selectedStory ? 'd-none' : '';
     return (
       <Container className="stories-page">
-        <Card>
-          <CardHeader className="trending-card">
-            <Row>
-              <Col className="trending-label">Trending Stories </Col>
-            </Row>
-          </CardHeader>
-          <CardBody>
-            {window.innerWidth <= mobileStyle && (
-              <Col className="trending-stories-overflow">
-                <ViewStories />
-              </Col>
-            )}
-            <Row>
-              <Col className="border-right">
-                <TrendingStories />
-              </Col>
-              {window.innerWidth > mobileStyle && (
-                <Col className="trending-stories-overflow">
-                  <ViewStories />
-                </Col>
-              )}
-            </Row>
-          </CardBody>
-        </Card>
+        <TrendingStories className={trendingStoriesClassName} />
+        <TrendingStoryDetail />
       </Container>
     );
   }
 }
 
-export default Stories;
+const mapStateToProps = store => ({
+  selectedStory: store.TrendingStoriesReducer.userSelectedStory
+});
+
+export default connect(mapStateToProps)(Stories);
