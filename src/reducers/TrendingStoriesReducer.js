@@ -3,13 +3,13 @@ const defaultState = {
   approvedStoriesLength: 0,
   color: [],
   loading: true,
-  userSelectedStory: 'none'
+  userSelectedStory: null
 };
 
 export default (state = defaultState, action) => {
   switch (action.type) {
     case 'APPROVED_STORIES_LIST':
-      state = {
+      return {
         ...state,
         approvedStories: action.approvedStories,
         approvedStoriesLength: action.approvedStoriesLength,
@@ -17,9 +17,9 @@ export default (state = defaultState, action) => {
         userSelectedStory: action.userSelectedStory,
         loading: action.loading
       };
-      break;
+
     case 'USER_SELECTED_STORY':
-      state = {
+      return {
         ...state,
         approvedStories: action.approvedStories,
         approvedStoriesLength: action.approvedStoriesLength,
@@ -27,7 +27,12 @@ export default (state = defaultState, action) => {
         userSelectedStory: action.userSelectedStory,
         loading: action.loading
       };
-      break;
+
+    case 'TRENDING_STORIES_CLEAR_SELECTION':
+      return {
+        ...state,
+        userSelectedStory: null
+      };
     default:
       return state;
   }
