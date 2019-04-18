@@ -9,14 +9,14 @@ import {
   NavLink,
   NavbarToggler
 } from 'reactstrap';
-import { Link, withRouter } from 'react-router-dom';
+import { NavLink as RNavLink, Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import LocationSearchBox from './Explore/LocationSearchBox';
 import { openSideMenu } from '../actions/SideMenuActions';
 
-import '../styles/Header.css';
+import '../styles/Header.scss';
 import logo from '../truthtree-logo.png';
 
 const navbarStyle = {
@@ -36,6 +36,13 @@ const logoStyle = {
 const searchBoxContainerStyle = {
   maxWidth: 800
 };
+
+const navItems = [
+  { label: 'Explore', url: '/', exact: true },
+  { label: 'Stories', url: '/stories', exact: true },
+  { label: 'Advanced', url: '/advanced', exact: true },
+  { label: 'About', url: '/about', exact: true }
+];
 
 class Header extends Component {
   state = {
@@ -90,42 +97,21 @@ class Header extends Component {
             navbar
             onClick={() => this.setState({ collapseOpen: false })}
           >
-            <NavItem>
-              <NavLink
-                className="d-flex justify-content-center"
-                tag={Link}
-                to="/"
-              >
-                Explore
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                className="d-flex justify-content-center"
-                tag={Link}
-                to="/stories"
-              >
-                Stories
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                className="d-flex justify-content-center"
-                tag={Link}
-                to="/advanced"
-              >
-                Advanced
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                className="d-flex justify-content-center"
-                tag={Link}
-                to="/about"
-              >
-                About
-              </NavLink>
-            </NavItem>
+            {navItems.map((item, indx) => {
+              return (
+                <NavItem key={indx}>
+                  <NavLink
+                    className="d-flex justify-content-center position-relative"
+                    tag={RNavLink}
+                    to={item.url}
+                    exact={item.exact}
+                    activeClassName="link-active"
+                  >
+                    {item.label}
+                  </NavLink>
+                </NavItem>
+              );
+            })}
           </Nav>
           <div>
             <Button
