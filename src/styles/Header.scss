@@ -1,0 +1,26 @@
+@import '../custom-variables.scss';
+.header {
+  text-align: left;
+  background: black;
+  color: white;
+  font-size: 40px;
+  font-family: Apple Chancery, cursive;
+  font-weight: bold;
+}
+nav {
+  .link-active {
+    &:before {
+      content: '';
+      position: absolute;
+      width: 56%;
+      height: 1px;
+      bottom: 0px;
+      left: 22%;
+      border-bottom: $primary 2px solid;
+    }
+  }
+}
+
+.border-right {
+  border-right: 1px solid black;
+}
