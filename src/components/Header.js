@@ -99,7 +99,7 @@ class Header extends Component {
           >
             {navItems.map((item, indx) => {
               return (
-                <NavItem>
+                <NavItem key={indx}>
                   <NavLink
                     className="d-flex justify-content-center position-relative"
                     tag={RNavLink}
@@ -107,7 +107,7 @@ class Header extends Component {
                     exact={item.exact}
                     activeClassName="link-active"
                   >
-                    <span className="link-label">{item.label}</span>
+                    {item.label}
                   </NavLink>
                 </NavItem>
               );
