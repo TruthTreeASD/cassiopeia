@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import '../../styles/Header.css';
 import axios from 'axios/index';
 import _ from 'lodash';
 import { connect } from 'react-redux';
