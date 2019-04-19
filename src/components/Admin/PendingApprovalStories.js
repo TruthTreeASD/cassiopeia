@@ -37,17 +37,7 @@ class PendingApprovalStories extends Component {
         this.state.pageSize +
         '&currentPage=' +
         1,
-      headers: {
-        // "Content-Type": "application/json",
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true
-      },
-      withCredentials: true,
-      mode: 'cors',
-      credentials: 'include',
-      crossDomain: true,
-      xDomain: true,
-      xDomainRequest: true
+      withCredentials: true
     })
       //Change the api call to unapproved stories
       .then(response => {
@@ -74,13 +64,15 @@ class PendingApprovalStories extends Component {
     console.log(`active page is ${pageNumber}`);
     this.setState({ activePage: pageNumber });
     console.log(this.state.searchBoxText);
-    axios
-      .get(
+    axios({
+      method: 'get',
+      url:
         `${TRUTHTREE_URI}/api/stories?storyStatus=PENDING&pageSize=` +
-          this.state.pageSize +
-          '&currentPage=' +
-          pageNumber
-      )
+        this.state.pageSize +
+        '&currentPage=' +
+        pageNumber,
+      withCredentials: true
+    })
       .then(response => {
         let color = [];
         //this.setState({totalItemsCount: response.})
@@ -204,6 +196,7 @@ class PendingApprovalStories extends Component {
     }
   }
 }
+
 const mapDispatchToProps = dispatch => ({ dispatch });
 const mapStateToProps = state => {
   return {
