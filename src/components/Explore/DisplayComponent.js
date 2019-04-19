@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios/index';
 import _ from 'lodash';
-import '../styles/DisplayComponent.css';
-import { TRUTHTREE_URI } from '../constants';
+import '../../styles/DisplayComponent.css';
+import { TRUTHTREE_URI } from '../../constants';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit';
 
-import Normalization from './Explore/Normalization';
+import Normalization from './Normalization';
 import { confirmAlert } from 'react-confirm-alert';
 import Pagination from 'react-js-pagination';
 
@@ -66,6 +66,7 @@ class DisplayComponent extends Component {
     if (attributes.length > 0) {
       this.attributeCall(_.keys(currentRows), attributes, nextProps);
     }
+    this.populationRangeCall();
   }
 
   attributeCall(locationIds, attributes, nextProps) {
@@ -161,8 +162,14 @@ class DisplayComponent extends Component {
           });
         }
         this.setState({ currentPopulation: population });
-        maxPopulation = Math.floor(population + 0.5 * population);
-        minPopulation = Math.floor(population - 0.5 * population);
+        //maxPopulation = Math.floor(population + 0.5 * population);
+        //minPopulation = Math.floor(population - 0.5 * population);
+        maxPopulation = Math.floor(
+          population + (this.props.populationRange[1] * population) / 100
+        );
+        minPopulation = Math.floor(
+          population + (this.props.populationRange[0] * population) / 100
+        );
         //Putting pagation here.
         return axios
           .get(

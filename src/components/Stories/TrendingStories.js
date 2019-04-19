@@ -1,16 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Spinner,
-  Card,
-  Media,
-  Badge,
-  Row,
-  FormGroup,
-  Label,
-  Input,
-  Col,
-  CardHeader
-} from 'reactstrap';
+import { Spinner, Card, Media, Badge, Row, Col, CardHeader } from 'reactstrap';
 import _ from 'lodash';
 import '../../styles/TrendingStories.css';
 

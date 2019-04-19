@@ -4,10 +4,10 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert';
 
-import { TRUTHTREE_URI } from '../constants';
+import { TRUTHTREE_URI } from '../../constants';
 import { withRouter } from 'react-router-dom';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import '../styles/LeftSideBar.scss';
+import '../../styles/LeftSideBar.scss';
 
 const mobileStyle = 800;
 
@@ -42,13 +42,6 @@ class LeftSideBar extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // if (this.state.selectedAttributes != nextProps.selectedAttributes) {
-    // this.setState({ selectedAttributes: nextProps.selectedAttributes });
-    //  }
-    //console.log('got prop');
   }
 
   isAttributeSelected = attribute_id => {
@@ -167,8 +160,12 @@ class LeftSideBar extends Component {
               style={{ color: 'white' }}
               className={
                 'col-md-flex d-md-flex ' + !this.state.collapsedLeft
-                  ? 'fa fa-chevron-right'
-                  : 'fa fa-chevron-left'
+                  ? window.innerWidth > mobileStyle
+                    ? 'fa fa-chevron-right'
+                    : 'fa fa-chevron-down'
+                  : window.innerWidth > mobileStyle
+                  ? 'fa fa-chevron-left'
+                  : 'fa fa-chevron-up'
               }
             />
           </button>
@@ -191,8 +188,12 @@ class LeftSideBar extends Component {
                 <i
                   className={
                     'chevron-icon-padding ' + !this.state.collapsedLeft
+                      ? window.innerWidth > mobileStyle
+                        ? 'fa fa-chevron-left'
+                        : 'fa fa-chevron-up'
+                      : window.innerWidth > mobileStyle
                       ? 'fa fa-chevron-left'
-                      : 'fa fa-chevron-right'
+                      : 'fa fa-chevron-up'
                   }
                 />
               </button>

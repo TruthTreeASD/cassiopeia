@@ -8,8 +8,7 @@ import {
   Button,
   Modal,
   ModalBody,
-  ModalFooter,
-  Badge
+  ModalFooter
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
