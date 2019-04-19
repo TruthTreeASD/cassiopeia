@@ -34,7 +34,7 @@ class Approve extends Component {
       method: 'post',
       url: `${TRUTHTREE_URI}/api/login`,
       mode: 'cors',
-      credentials: 'include',
+      withCredentials: true,
       headers: { 'Content-Type': 'text/plain' },
       data: this.password.current.value
     })
