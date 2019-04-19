@@ -30,13 +30,15 @@ class PendingApprovalStories extends Component {
 
   componentDidMount() {
     //List of stories to be approved if admin
-    axios
-      .get(
+    axios({
+      method: 'get',
+      url:
         `${TRUTHTREE_URI}/api/stories?storyStatus=PENDING&pageSize=` +
-          this.state.pageSize +
-          '&currentPage=' +
-          1
-      )
+        this.state.pageSize +
+        '&currentPage=' +
+        1,
+      withCredentials: true
+    })
       //Change the api call to unapproved stories
       .then(response => {
         let color = [];
@@ -59,20 +61,19 @@ class PendingApprovalStories extends Component {
   }
 
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
     this.setState({ activePage: pageNumber });
-    console.log(this.state.searchBoxText);
-    axios
-      .get(
+    axios({
+      method: 'get',
+      url:
         `${TRUTHTREE_URI}/api/stories?storyStatus=PENDING&pageSize=` +
-          this.state.pageSize +
-          '&currentPage=' +
-          pageNumber
-      )
+        this.state.pageSize +
+        '&currentPage=' +
+        pageNumber,
+      withCredentials: true
+    })
       .then(response => {
         let color = [];
         //this.setState({totalItemsCount: response.})
-        console.log('if condition');
         for (var i = 0; i < response.data.data.length; i++) {
           color.push('white');
         }
@@ -192,6 +193,7 @@ class PendingApprovalStories extends Component {
     }
   }
 }
+
 const mapDispatchToProps = dispatch => ({ dispatch });
 const mapStateToProps = state => {
   return {
