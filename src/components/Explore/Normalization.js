@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import '../../styles/Header.css';
 import {
   Dropdown,
   DropdownItem,
