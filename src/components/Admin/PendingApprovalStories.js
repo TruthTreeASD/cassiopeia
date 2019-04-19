@@ -61,9 +61,7 @@ class PendingApprovalStories extends Component {
   }
 
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
     this.setState({ activePage: pageNumber });
-    console.log(this.state.searchBoxText);
     axios({
       method: 'get',
       url:
@@ -76,7 +74,6 @@ class PendingApprovalStories extends Component {
       .then(response => {
         let color = [];
         //this.setState({totalItemsCount: response.})
-        console.log('if condition');
         for (var i = 0; i < response.data.data.length; i++) {
           color.push('white');
         }
