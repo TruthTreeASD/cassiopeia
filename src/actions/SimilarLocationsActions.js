@@ -4,3 +4,10 @@ export const updateLocations = locations => {
     locations: locations
   };
 };
+
+export const emptySimilarLocations = () => {
+  return {
+    type: 'UPDATE_SIMILAR_LOCATIONS',
+    locations: []
+  };
+};
