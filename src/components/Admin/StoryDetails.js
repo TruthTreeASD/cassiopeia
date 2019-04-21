@@ -29,8 +29,11 @@ class StoryDetails extends Component {
   }
 
   handleApprove(idNow) {
-    axios
-      .put(`${TRUTHTREE_URI}/api/stories/story/APPROVED/` + idNow)
+    axios({
+      method: 'put',
+      url: `${TRUTHTREE_URI}/api/stories/story/APPROVED/` + idNow,
+      withCredentials: true
+    })
       .then(response => {
         let result = [];
         if (response.status === 200) {
@@ -68,8 +71,11 @@ class StoryDetails extends Component {
   }
 
   handleDecline(idNow) {
-    axios
-      .put(`${TRUTHTREE_URI}/api/stories/story/DISAPPROVED/` + idNow)
+    axios({
+      method: 'put',
+      url: `${TRUTHTREE_URI}/api/stories/story/DISAPPROVED/` + idNow,
+      withCredentials: true
+    })
       .then(response => {
         let result = [];
         if (response.status === 200) {
@@ -107,8 +113,11 @@ class StoryDetails extends Component {
   }
 
   handleDelete(idNow) {
-    axios
-      .delete(`${TRUTHTREE_URI}/api/stories/` + idNow)
+    axios({
+      method: 'delete',
+      url: `${TRUTHTREE_URI}/api/stories/` + idNow,
+      withCredentials: true
+    })
       .then(response => {
         let result = [];
         if (response.status === 200) {
