@@ -138,7 +138,7 @@ class DisplayComponent extends Component {
     let maxPopulation = 0;
     let data = {};
     let population = 0;
-    let year = this.state.year ? this.state.year : 2016;
+    let year = this.props.year; // ? this.state.year : 2016;
     // Calculate min and max population
     axios
       .get(
