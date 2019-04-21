@@ -6,10 +6,13 @@ import '../../styles/DisplayComponent.css';
 import { TRUTHTREE_URI } from '../../constants';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit';
+import { Col, Row } from 'reactstrap';
 
 import Normalization from './Normalization';
 import { confirmAlert } from 'react-confirm-alert';
 import Pagination from 'react-js-pagination';
+
+const mobileStyle = 800;
 
 class DisplayComponent extends Component {
   constructor(props) {
@@ -27,7 +30,8 @@ class DisplayComponent extends Component {
       selectedAttributes: [],
       year: 2016,
       selectedNormalizationName: 'GROSS',
-      populationRange: [-25, 25]
+      populationRange: [-25, 25],
+      width: window.innerWidth
     };
     this.populationRangeCall = this.populationRangeCall.bind(this);
     this.getFormattedName = this.getFormattedName.bind(this);
@@ -253,6 +257,9 @@ class DisplayComponent extends Component {
   }
 
   render() {
+    const { width } = this.state;
+    const isMobile = width <= 800;
+
     var columns = [
       {
         dataField: 'id',
@@ -295,21 +302,52 @@ class DisplayComponent extends Component {
     return (
       <div id="mainDisplay">
         <Normalization />
-        <ToolkitProvider keyField="id" data={data} columns={columns} exportCSV>
-          {props => (
-            <span>
-              <ExportCSVButton
-                className="btn btn-secondary float-right buttonPadding"
-                {...props.csvProps}
-              >
-                Export as csv
-              </ExportCSVButton>
+        {isMobile === true && (
+          <ToolkitProvider
+            keyField="id"
+            data={data}
+            columns={columns}
+            exportCSV
+          >
+            {props => (
+              <span>
+                <Row style={{ margin: '15px' }}>
+                  <ExportCSVButton
+                    className="btn btn-secondary float-right buttonPadding"
+                    {...props.csvProps}
+                  >
+                    Export as csv
+                  </ExportCSVButton>
+                </Row>
+                <hr />
+                <BootstrapTable hover striped {...props.baseProps} />
+              </span>
+            )}
+          </ToolkitProvider>
+        )}
+        {isMobile === false && (
+          <ToolkitProvider
+            keyField="id"
+            data={data}
+            columns={columns}
+            exportCSV
+          >
+            {props => (
+              <span>
+                <ExportCSVButton
+                  className="btn btn-secondary float-right buttonPadding"
+                  {...props.csvProps}
+                >
+                  Export as csv
+                </ExportCSVButton>
 
-              <hr />
-              <BootstrapTable hover striped {...props.baseProps} />
-            </span>
-          )}
-        </ToolkitProvider>
+                <hr />
+                <BootstrapTable hover striped {...props.baseProps} />
+              </span>
+            )}
+          </ToolkitProvider>
+        )}
+
         <div
           className="d-flex justify-content-center"
           style={{ marginTop: '15px' }}
