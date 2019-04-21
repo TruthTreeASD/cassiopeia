@@ -37,7 +37,10 @@ const renderSuggestion = (suggestion, clickable) => {
     );
   } else {
     return (
-      <Link className="text-secondary" to={getSuggestionUrl(suggestion)}>
+      <Link
+        className="text-secondary d-block"
+        to={getSuggestionUrl(suggestion)}
+      >
         {getSuggestionLabel(suggestion)}
       </Link>
     );
