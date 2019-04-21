@@ -6,13 +6,11 @@ import '../../styles/DisplayComponent.css';
 import { TRUTHTREE_URI } from '../../constants';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit';
-import { Col, Row } from 'reactstrap';
+import { Row } from 'reactstrap';
 
 import Normalization from './Normalization';
 import { confirmAlert } from 'react-confirm-alert';
 import Pagination from 'react-js-pagination';
-
-const mobileStyle = 800;
 
 class DisplayComponent extends Component {
   constructor(props) {
