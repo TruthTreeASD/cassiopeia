@@ -277,7 +277,7 @@ class DisplayComponent extends Component {
         text: column[1],
         sort: true,
         formatter: this.colFormatter,
-        headerTitle: () => `${column[2]} + ${column[1]}`
+        headerTitle: () => `${column[2]} , ${column[1]}`
       });
     });
     var data = [];
