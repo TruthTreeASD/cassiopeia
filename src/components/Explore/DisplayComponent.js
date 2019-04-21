@@ -105,7 +105,7 @@ class DisplayComponent extends Component {
     this.setState({
       data: {},
       selectedAttributes: this.props.selectedAttributes,
-      year: this.props.yearSelected,
+      year: this.props.year,
       selectedNormalizationName: this.props.selectedNormalizationName,
       populationRange: this.props.populationRange
     });
@@ -162,8 +162,6 @@ class DisplayComponent extends Component {
           });
         }
         this.setState({ currentPopulation: population });
-        //maxPopulation = Math.floor(population + 0.5 * population);
-        //minPopulation = Math.floor(population - 0.5 * population);
         maxPopulation = Math.floor(
           population + (this.props.populationRange[1] * population) / 100
         );
@@ -276,8 +274,7 @@ class DisplayComponent extends Component {
         dataField: (index + 2).toString(),
         text: column[1],
         sort: true,
-        formatter: this.colFormatter,
-        headerTitle: () => `${column[2]} , ${column[1]}`
+        formatter: this.colFormatter
       });
     });
     var data = [];
