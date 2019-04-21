@@ -173,7 +173,7 @@ class LeftSideBar extends Component {
       } else {
         return (
           <nav className="scrollLeftBar col-md-2 d-md-block bg-dark sidebar ">
-            <div className="row">
+            <div className="row stuck-top">
               <div className="col-10">
                 <input
                   className="form-control leftSearch"
