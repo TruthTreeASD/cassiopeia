@@ -19,6 +19,7 @@ import SimilarPlacesResponse from './SimilarPlacesResponse';
 import axios from 'axios/index';
 import { TRUTHTREE_URI } from '../../constants';
 import { updateLocations } from '../../actions/SimilarLocationsActions';
+import { emptySimilarLocations } from '../../actions/SimilarLocationsActions';
 import { emptyAttributesList } from '../../actions/CommonAttributesActions';
 import { emptyLocationsList } from '../../actions/LocationSearchBoxActions';
 import { confirmAlert } from 'react-confirm-alert';
@@ -195,9 +196,12 @@ class SimilarPlacesSearch extends Component {
     this.setState(initialValues);
     this.props.dispatch(emptyAttributesList());
     this.props.dispatch(emptyLocationsList());
+    this.props.dispatch(emptySimilarLocations());
   }
 
-  componentDidMount() {}
+  componentWillUnmount() {
+    this.reset();
+  }
 
   renderYearInput() {
     if (this.props.selectedAttributes.length < 2) {
@@ -287,6 +291,7 @@ class SimilarPlacesSearch extends Component {
       ]
     });
   }
+
   render() {
     return (
       <Container fluid>
