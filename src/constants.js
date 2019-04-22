@@ -1,4 +1,4 @@
-const TRUTHTREE_URI = 'https://truthtree.herokuapp.com';
+const TRUTHTREE_URI = '';
 module.exports = {
   TRUTHTREE_URI
 };

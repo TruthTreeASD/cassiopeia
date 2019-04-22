@@ -15,8 +15,10 @@ class IntroHeading extends Component {
           <Col style={introHeadingStyle}>
             <h1 className="text-primary">Welcome to TruthTree</h1>
             <Typist avgTypingDelay={20} cursor={{ hideWhenDone: true }}>
-              We're an open source data visualization project that focuses on
-              U.S government financial spending. &nbsp;
+              We seek to unite all the public data in the world into a data
+              visualization tool and reference platform that can facilitate data
+              driven understanding regarding geography, politics, and culture
+              for geographical entities at all scales. &nbsp;
               <Link to="/about">Find out more</Link>
             </Typist>
           </Col>
