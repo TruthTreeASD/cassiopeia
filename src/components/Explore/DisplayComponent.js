@@ -274,7 +274,8 @@ class DisplayComponent extends Component {
         dataField: (index + 2).toString(),
         text: column[1],
         sort: true,
-        formatter: this.colFormatter
+        formatter: this.colFormatter,
+        headerTitle: () => `${column[2]} , ${column[1]}`
       });
     });
     var data = [];
