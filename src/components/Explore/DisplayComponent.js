@@ -107,7 +107,7 @@ class DisplayComponent extends Component {
     this.setState({
       data: {},
       selectedAttributes: this.props.selectedAttributes,
-      year: this.props.yearSelected,
+      year: this.props.year,
       selectedNormalizationName: this.props.selectedNormalizationName,
       populationRange: this.props.populationRange
     });
@@ -140,7 +140,7 @@ class DisplayComponent extends Component {
     let maxPopulation = 0;
     let data = {};
     let population = 0;
-    let year = this.state.year ? this.state.year : 2016;
+    let year = this.props.year; // ? this.state.year : 2016;
     // Calculate min and max population
     axios
       .get(
@@ -164,8 +164,6 @@ class DisplayComponent extends Component {
           });
         }
         this.setState({ currentPopulation: population });
-        //maxPopulation = Math.floor(population + 0.5 * population);
-        //minPopulation = Math.floor(population - 0.5 * population);
         maxPopulation = Math.floor(
           population + (this.props.populationRange[1] * population) / 100
         );
