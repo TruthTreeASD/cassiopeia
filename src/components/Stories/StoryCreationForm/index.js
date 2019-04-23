@@ -239,7 +239,7 @@ class StoryCreationForm extends Component {
           <FormGroup>
             <Recaptcha
               ref={e => (this.recaptchaInstance = e)}
-              sitekey="6Ldb85sUAAAAAKe6zdfI6jMm2SBDTzvmJ8iOP9kV"
+              sitekey="6LdYo58UAAAAAMMydWShl_j1jDzhzAPsjjnO9f8h"
               render="explicit"
               theme="dark"
               verifyCallback={() => this.setState({ isHuman: true })}
