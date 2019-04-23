@@ -75,8 +75,14 @@ class TimeSeriesView extends Component {
       .then(response => {
         population = response.data.population;
         this.setState({ currentPopulation: population });
-        maxPopulation = Math.floor(population + 0.5 * population);
-        minPopulation = Math.floor(population - 0.5 * population);
+        // maxPopulation = Math.floor(population + 0.5 * population);
+        // minPopulation = Math.floor(population - 0.5 * population);
+        maxPopulation = Math.floor(
+          population + (this.props.populationRange[1] * population) / 100
+        );
+        minPopulation = Math.floor(
+          population + (this.props.populationRange[0] * population) / 100
+        );
         return axios
           .get(
             `${TRUTHTREE_URI}/api/${this.props.level}?populationRange=` +

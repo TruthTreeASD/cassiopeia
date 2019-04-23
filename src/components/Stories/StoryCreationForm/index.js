@@ -5,7 +5,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import { withRouter } from 'react-router-dom';
 import { Button, Input, FormGroup, FormFeedback, Spinner } from 'reactstrap';
 import ReactQuill from 'react-quill';
-import Recaptcha from 'react-recaptcha';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import 'react-quill/dist/quill.snow.css'; // ES6
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -40,7 +40,7 @@ class StoryCreationForm extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
-    this.recaptchaInstance = null;
+    this.recaptchaRef = React.createRef();
   }
 
   modules = {
@@ -120,7 +120,7 @@ class StoryCreationForm extends Component {
   };
 
   handleDiscard = () => {
-    this.recaptchaInstance.reset();
+    this.recaptchaRef.current.reset();
     this.setState(initialState, () =>
       this.setState({ shouldShowBodyFieldError: false })
     );
@@ -237,12 +237,11 @@ class StoryCreationForm extends Component {
             </small>
           </FormGroup>
           <FormGroup>
-            <Recaptcha
-              ref={e => (this.recaptchaInstance = e)}
+            <ReCAPTCHA
+              ref={this.recaptchaRef}
               sitekey="6LdYo58UAAAAAMMydWShl_j1jDzhzAPsjjnO9f8h"
-              render="explicit"
               theme="dark"
-              verifyCallback={() => this.setState({ isHuman: true })}
+              onChange={token => this.setState({ isHuman: token !== null })}
             />
             <small
               className={`${
