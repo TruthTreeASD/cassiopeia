@@ -239,7 +239,7 @@ class StoryCreationForm extends Component {
           <FormGroup>
             <ReCAPTCHA
               ref={this.recaptchaRef}
-              sitekey="6Ldb85sUAAAAAKe6zdfI6jMm2SBDTzvmJ8iOP9kV"
+              sitekey="6LdYo58UAAAAAMMydWShl_j1jDzhzAPsjjnO9f8h"
               theme="dark"
               onChange={token => this.setState({ isHuman: token !== null })}
             />
