@@ -1,14 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Media,
-  Row,
-  Badge,
-  Alert,
-  Card,
-  Col,
-  CardHeader,
-  Button
-} from 'reactstrap';
+import { Row, Badge, Col, Button } from 'reactstrap';
 import '../../styles/ViewStories.css';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -128,127 +119,77 @@ class TrendingStoryDetail extends Component {
   }
 
   render() {
-    if (this.props.TrendingStoriesReducer.userSelectedStory === 'none') {
-      return (
-        <div>
-          <Alert color="primary">
-            Please select a story to view its details!
-          </Alert>
-        </div>
-      );
-    } else {
-      return (
-        <Card className="view-story">
-          {window.innerWidth <= mobileStyle && (
-            <button className="text-secondary tag" onClick={this.closeStory}>
-              Close
-            </button>
+    if (!this.props.TrendingStoriesReducer.userSelectedStory) return null;
+    return (
+      <Row className={this.props.className}>
+        <Col>
+          <Button
+            className="my-2"
+            onClick={() =>
+              this.props.dispatch({
+                type: 'TRENDING_STORIES_CLEAR_SELECTION'
+              })
+            }
+          >
+            <i class="fa fa-long-arrow-left" aria-hidden="true" /> Back
+          </Button>
+          <h2 className="my-3 text-center">
+            {this.props.TrendingStoriesReducer.userSelectedStory.title}
+          </h2>
+          <div className="d-flex justify-content-between my-2">
+            <div>
+              <Button
+                className="fa fa-thumbs-o-up thumb view-story"
+                color="primary"
+                onClick={() =>
+                  this.handleUpVoteClick(
+                    this.props.TrendingStoriesReducer.userSelectedStory
+                  )
+                }
+              >
+                &nbsp;
+                {this.props.TrendingStoriesReducer.userSelectedStory.upvote}
+              </Button>
+              &nbsp;
+              <Button
+                className="fa fa-thumbs-o-down thumb view-story"
+                color="primary"
+                onClick={() =>
+                  this.handleDownVoteClick(
+                    this.props.TrendingStoriesReducer.userSelectedStory
+                  )
+                }
+              >
+                &nbsp;
+                {this.props.TrendingStoriesReducer.userSelectedStory.downvote}
+              </Button>
+            </div>
+            <div className="d-flex align-items-center">
+              By:&nbsp;{' '}
+              <strong>
+                {this.props.TrendingStoriesReducer.userSelectedStory.author}
+              </strong>
+            </div>
+          </div>
+          <div>
+            {this.contentHtml(
+              this.props.TrendingStoriesReducer.userSelectedStory.content
+            )}
+          </div>
+          {_.map(
+            this.props.TrendingStoriesReducer.userSelectedStory.tags,
+            tag => {
+              return (
+                <span className="h5">
+                  <Badge color="secondary">{tag}</Badge>
+                  &nbsp;
+                </span>
+              );
+            }
           )}
-          <Media>
-            <Media body>
-              <Media heading>
-                <CardHeader>
-                  {this.props.TrendingStoriesReducer.userSelectedStory.title}
-                </CardHeader>
-              </Media>
-
-              <Row className="view">
-                <Col xs="auto" style={{ marginTop: '5px' }}>
-                  <i> Tags: </i>
-                </Col>
-                <Col>
-                  {_.map(
-                    this.props.TrendingStoriesReducer.userSelectedStory.tags,
-                    tag => {
-                      return (
-                        <Badge className="tag view" color="secondary">
-                          {tag}
-                        </Badge>
-                      );
-                    }
-                  )}
-                </Col>
-              </Row>
-
-              <Row className="view">
-                {window.innerWidth > mobileStyle && (
-                  <div>
-                    <Col xs="auto">
-                      <i>Description:</i>
-                    </Col>
-                    <Col>
-                      {this.contentHtml(
-                        this.props.TrendingStoriesReducer.userSelectedStory
-                          .content
-                      )}
-                    </Col>
-                  </div>
-                )}
-
-                {window.innerWidth <= mobileStyle && (
-                  <div>
-                    <i>Description:</i>
-
-                    <div>
-                      {this.contentHtml(
-                        this.props.TrendingStoriesReducer.userSelectedStory
-                          .content
-                      )}
-                    </div>
-                  </div>
-                )}
-              </Row>
-
-              <Row className="view">
-                <Col xs="auto">
-                  {' '}
-                  <i>Author:</i>
-                </Col>
-                <Col>
-                  <b>
-                    {this.props.TrendingStoriesReducer.userSelectedStory.author}
-                  </b>
-                </Col>
-              </Row>
-
-              <Row className="view float-right">
-                <Col xs="auto">
-                  <Button
-                    className="fa fa-thumbs-o-up thumb view-story"
-                    color="primary"
-                    onClick={() =>
-                      this.handleUpVoteClick(
-                        this.props.TrendingStoriesReducer.userSelectedStory
-                      )
-                    }
-                  >
-                    &nbsp;
-                    {this.props.TrendingStoriesReducer.userSelectedStory.upvote}
-                  </Button>
-                </Col>
-                <Col xs="auto">
-                  <Button
-                    className="fa fa-thumbs-o-down thumb view-story"
-                    color="primary"
-                    onClick={() =>
-                      this.handleDownVoteClick(
-                        this.props.TrendingStoriesReducer.userSelectedStory
-                      )
-                    }
-                  >
-                    &nbsp;
-                    {
-                      this.props.TrendingStoriesReducer.userSelectedStory
-                        .downvote
-                    }
-                  </Button>
-                </Col>
-              </Row>
-            </Media>
-          </Media>
-        </Card>
-      );
-    }
+        </Col>
+      </Row>
+    );
   }
 }
 const mapDispatchToProps = dispatch => ({ dispatch });

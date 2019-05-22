@@ -56,7 +56,6 @@ class TrendingStories extends Component {
           approvedStories: response.data.data,
           approvedStoriesLength: response.data.data.length,
           color: color,
-          userSelectedStory: 'none',
           loading: false
         });
       })
@@ -186,7 +185,6 @@ class TrendingStories extends Component {
             approvedStories: response.data.data,
             approvedStoriesLength: response.data.data.length,
             color: color,
-            userSelectedStory: 'none',
             loading: false
           });
         })
@@ -217,7 +215,6 @@ class TrendingStories extends Component {
             approvedStories: response.data.data,
             approvedStoriesLength: response.data.data.length,
             color: color,
-            userSelectedStory: 'none',
             loading: false
           });
         })
@@ -231,82 +228,85 @@ class TrendingStories extends Component {
     //Displaying spinner untill API fetches the data
     if (this.props.TrendingStoriesReducer.loading) {
       return (
-        <div className="d-flex justify-content-center">
-          <Spinner className="align-self-center" color="secondary" size="sm" />
+        <div className="d-flex justify-content-center mt-4">
+          <Spinner className="align-self-center" color="secondary" />
         </div>
       );
     }
     //Dislaying list of stories + search box
     else {
       return (
-        <div>
-          <form>
-            <Row className="float-right sorting">
-              <Col className="sort-label">{'Sort By: '}</Col>
-              <Col className="form-check">
-                <label>
-                  <input
-                    type="radio"
-                    name="SORT"
-                    value="RECENT"
-                    checked={this.state.selectedSort === 'RECENT'}
-                    onChange={this.handleSortChange}
-                    className="form-check-input"
-                  />
-                  Recent
-                </label>
-              </Col>
+        <Row className={this.props.className}>
+          <Col>
+            <h2 className="pt-4">Trending stories</h2>
+            <form>
+              <Row className="float-right sorting">
+                <Col className="sort-label">{'Sort By: '}</Col>
+                <Col className="form-check">
+                  <label>
+                    <input
+                      type="radio"
+                      name="SORT"
+                      value="RECENT"
+                      checked={this.state.selectedSort === 'RECENT'}
+                      onChange={this.handleSortChange}
+                      className="form-check-input"
+                    />
+                    Recent
+                  </label>
+                </Col>
 
-              <Col className="form-check">
-                <label>
-                  <input
-                    type="radio"
-                    name="SORT"
-                    value="MOST_UPVOTES"
-                    checked={this.state.selectedSort === 'MOST_UPVOTES'}
-                    onChange={this.handleSortChange}
-                    className="form-check-input"
-                  />
-                  Upvotes
-                </label>
-              </Col>
-            </Row>
-          </form>
+                <Col className="form-check">
+                  <label>
+                    <input
+                      type="radio"
+                      name="SORT"
+                      value="MOST_UPVOTES"
+                      checked={this.state.selectedSort === 'MOST_UPVOTES'}
+                      onChange={this.handleSortChange}
+                      className="form-check-input"
+                    />
+                    Upvotes
+                  </label>
+                </Col>
+              </Row>
+            </form>
 
-          <input
-            className="form-control searchBar"
-            data-spy="affix"
-            onChange={this.handleChangeSearch}
-            // onKeyPress={this.handleKeyPressSearch}
-            placeholder="Search stories by title or tag name"
-          />
-          {/* this is a working button in case we want a search button. I removed the css though
-          but i can add it back pretty quickly if we wanted it.
-               <Button
-            className="search-button"
-            color="primary"
-            onClick={this.submitSearch}
-          >
-            Search
-          </Button>
-          <br />
-          <br />*/}
-          <div>
-            <Media className="trending-height">{this.getStoryDetails()}</Media>
-          </div>
-          <br />
-          <div className="d-flex justify-content-center">
-            <Pagination
-              activePage={this.state.activePage}
-              itemsCountPerPage={this.state.pageSize}
-              totalItemsCount={this.state.totalItemsCount}
-              pageRangeDisplayed={5}
-              onChange={this.handlePageChange}
-              itemClass="page-item"
-              linkClass="page-link"
+            <input
+              className="form-control searchBar"
+              data-spy="affix"
+              onChange={this.handleChangeSearch}
+              // onKeyPress={this.handleKeyPressSearch}
+              placeholder="Search stories by title or tag name"
             />
-          </div>
-        </div>
+            {/* this is a working button in case we want a search button. I removed the css though
+            but i can add it back pretty quickly if we wanted it.
+                <Button
+              className="search-button"
+              color="primary"
+              onClick={this.submitSearch}
+            >
+              Search
+            </Button>
+            <br />
+            <br />*/}
+            <div>
+              <Media>{this.getStoryDetails()}</Media>
+            </div>
+            <br />
+            <div className="d-flex justify-content-center">
+              <Pagination
+                activePage={this.state.activePage}
+                itemsCountPerPage={this.state.pageSize}
+                totalItemsCount={this.state.totalItemsCount}
+                pageRangeDisplayed={5}
+                onChange={this.handlePageChange}
+                itemClass="page-item"
+                linkClass="page-link"
+              />
+            </div>
+          </Col>
+        </Row>
       );
     }
   }

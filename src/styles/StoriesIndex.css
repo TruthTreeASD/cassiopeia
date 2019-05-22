@@ -1,26 +1,3 @@
 .stories-page.container {
-  padding-top: 80px;
-  margin-left: 0px;
-  margin-right: 0px;
-  max-width: 100%;
-}
-
-.create-story {
-  float: right;
-}
-.create-story.btn.btn-primary {
-  color: rgba(13, 22, 38, 0.8) !important;
-}
-.trending-card {
-  background-color: rgb(191, 217, 213) !important;
-}
-
-.trending-label {
-  font-size: 20px;
-  font-weight: 600;
-  margin-top: 3px;
-}
-
-.trending-stories-overflow {
-  overflow-x: scroll;
+  padding-top: 75px;
 }
